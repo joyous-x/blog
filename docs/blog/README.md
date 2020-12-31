@@ -1,3 +1,18 @@
+---
+title: blog
+date: 2020-04-13
+lastmod: 
+publish: true
+description: jiao's blog
+permalink: /blog/
+categories: 
+  - blog
+keywords: 
+  - jiao's blog
+tags: 
+  - 
+---
+
 # Table of contents
 
 * [**Catalog**](INTRODUCTION.md)

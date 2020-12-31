@@ -3,9 +3,14 @@ title: lang
 date: 2020-04-13
 lastmod: 
 publish: true
-categories: ["lang"]
-keywords: ["lang"]
 description: "编程语言相关知识汇总"
+permalink: /blog/lang/
+categories: 
+  - lang
+keywords: 
+  - lang
+tags: 
+  - 
 ---
 
 ## Golang

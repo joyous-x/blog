@@ -4,21 +4,21 @@ module.exports = [
   {
     text: 'Blog', link: '/blog/',
     items: [
-      { text: '算法', link: '/algorithm/' },
-      { text: 'AI', link: '/ai/' },
+      { text: '算法', link: '/blog/algorithm/' },
+      { text: 'AI', link: '/blog/ai/' },
       { 
         text: '后台',
         items: [
-          { text: 'backend',  link: '/backend/' },
-          { text: 'devops', link: '/devops/' },
+          { text: 'backend',  link: '/blog/backend/' },
+          { text: 'devops', link: '/blog/devops/' },
         ]
       },
       { 
-        text: '语言', link: '/lang/',
+        text: '语言', link: '/blog/lang/',
         items: [
-          { text: 'Go', link: '/lang/go/' },
-          { text: 'Python', link: '/lang/python/' },
-          { text: 'JavaScript', link: '/lang/js/' },
+          { text: 'Go', link: '/blog/lang/#Golang' },
+          { text: 'Python', link: '/blog/lang/#Python' },
+          { text: 'JavaScript', link: '/blog/lang/#js' },
         ],
       },
     ]
@@ -26,10 +26,10 @@ module.exports = [
   { 
     text: '更多', link: '/more/',
     items: [
-      { text: '友情链接', link: '/friends/' },
+      { text: '关于', link: '/more/about.md' },
+      { text: '友情链接', link: '/more/friends/' },
     ]
   },
-  { text: '关于', link: '/about/' },
   {
     text: '收藏',
     link: '/fav/',
@@ -43,9 +43,9 @@ module.exports = [
     text: '索引',
     link: '/index/',
     items: [
-      { text: '分类', link: '/categories/' },
-      { text: '标签', link: '/tags/' },
-      { text: '归档', link: '/archives/' },
+      { text: '分类', link: '/index/categories/' },
+      { text: '标签', link: '/index/tags/' },
+      { text: '归档', link: '/index/archives/' },
     ],
   },
 ]
