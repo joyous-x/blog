@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s
+  external_labels:
+    monitor: 'codelab-monitor'
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['203.195.201.221:18080','134.175.61.212:18080','123.207.245.139:18080','123.207.118.120:18080']

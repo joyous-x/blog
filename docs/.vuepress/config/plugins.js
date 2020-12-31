@@ -19,10 +19,6 @@ module.exports = [
           behindUrl: '', // 搜索链接的后面部分，可选，默认 ''
         },
         {
-          title: '在Runoob中搜索',
-          frontUrl: 'https://www.runoob.com/?s=',
-        },
-        {
           title: '在Vue API中搜索',
           frontUrl: 'https://cn.vuejs.org/v2/api/#',
         },

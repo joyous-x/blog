@@ -4,7 +4,7 @@
 [![release](https://img.shields.io/github/release/joyous-x/blog.svg)](https://github.com/joyous-x/blog/releases/latest)
 [![Actions Status](https://github.com/joyous-x/blog/workflows/gitbook-action/badge.svg)](https://github.com/joyous-x/blog/actions)
 
-<h2 align="center">Jiao's Blog</h2>
+<h1 align="center">Jiao's Blog</h2>
 
 ![](rsc/cover.png)
 
