@@ -12,8 +12,7 @@ module.exports = [
   [
     'thirdparty-search',
     {
-      thirdparty: [
-        // 可选，默认 []
+      thirdparty: [ // 可选，默认 []
         {
           title: '在MDN中搜索',
           frontUrl: 'https://developer.mozilla.org/zh-CN/search?q=', // 搜索链接的前面部分
