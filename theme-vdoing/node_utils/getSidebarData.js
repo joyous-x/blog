@@ -109,14 +109,14 @@ function mapTocToSidebar (root, collapsable, prefix = '') {
   let sidebar = []; // 结构化文章侧边栏数据
   const files = fs.readdirSync(root); // 读取目录（文件和文件夹）,返回数组
 
-  files.forEach(filename => {
+  files.forEach((filename, index) => {
     const file = path.resolve(root, filename); // 方法：将路径或路径片段的序列解析为绝对路径
     const stat = fs.statSync(file); // 文件信息
     let [order, title, type] = filename.split('.');
     order = parseInt(order, 10);
     if (isNaN(order) || order < 0) {
-      log(chalk.yellow(`warning: 该文件 "${file}" 序号出错，请填写正确的序号`))
-      return;
+      log(chalk.yellow(`warning: 该文件 "${file}" 序号出错，请填写正确的序号, "${index}"`))
+      order = index;
     }
     if (sidebar[order]) { // 判断序号是否已经存在
       log(chalk.yellow(`warning: 该文件 "${file}" 的序号在同一级别中重复出现，将会被覆盖`))

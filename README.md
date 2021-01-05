@@ -28,3 +28,5 @@ the little things in my program life
 
 ## 说明 (Note)
 forked from [vuepress-theme-vdoing](https://github.com/xugaoyi/vuepress-theme-vdoing)
+
+- 注意路径的分隔符：![LVS FULLNAT模式](../rsc/ipvs/LVS_DR.png)
