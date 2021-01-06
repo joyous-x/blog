@@ -1,13 +1,7 @@
 ---
 title: k8s-ipvs连接保持
 date: 2019-10-15 
-lastmod: 2020-05-11
-taxonomies: ["ipvs", "k8s"]
-categories: ["ipvs", "k8s"]
-keywords: ["ipvs", "k8s", "长连接"]
 description: "k8s ipvs recorder"
-tags: ["k8s", "ipvs"]
-thumbnail: "img/404.jpg"
 ---
 
 ## IPVS 在 k8s 中连接保持引发的问题：
@@ -27,13 +21,13 @@ k8s 版本大于 1.8 时，默认采用的 ipvs。我们的集群 k8s 的底层�
 ### 知识点准备
 - ipvs 工作模型
     + LVS DR原理详解图
-        - ![LVS DR原理详解图](..\rsc\ipvs\LVS DR原理详解图.png)
+        - ![LVS DR原理详解图](../rsc/ipvs/LVS DR原理详解图.png)
     + LVS FULLNAT模式
-        - ![LVS FULLNAT模式](..\rsc\ipvs\LVS FULLNAT模式.png)
+        - ![LVS FULLNAT模式](../rsc/ipvs/LVS FULLNAT模式.png)
     + LVS NAT原理详解图
-        - ![LVS NAT原理详解图](..\rsc\ipvs\LVS NAT原理详解图.png)
+        - ![LVS NAT原理详解图](../rsc/ipvs/LVS NAT原理详解图.png)
     + LVS TUN原理
-        - ![LVS TUN原理](..\rsc\ipvs\LVS TUN原理.png)
+        - ![LVS TUN原理](../rsc/ipvs/LVS TUN原理.png)
 - 连接保持：
     + [lvs-persistent-connection](https://www.yangcs.net/posts/lvs-persistent-connection/)
 - ipvs:

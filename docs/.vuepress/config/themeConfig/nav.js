@@ -4,15 +4,12 @@ module.exports = [
   {
     text: 'Blog', link: '/blog/',
     items: [
-      { text: '算法', link: '/blog/algorithm/' },
-      { text: 'AI', link: '/blog/ai/' },
-      { 
-        text: '后台',
-        items: [
-          { text: 'backend',  link: '/blog/backend/' },
-          { text: 'devops', link: '/blog/devops/' },
-        ]
-      },
+      { text: 'Algorithm', link: '/blog/algorithm/' },
+      { text: 'Design', link: '/blog/design/' },
+      { text: 'Network', link: '/blog/network/' },
+      { text: 'Database', link: '/blog/database/' },
+      { text: 'DevOps', link: '/blog/devops/' },
+      { text: 'Explore', link: '/blog/explore/' },
       { 
         text: '语言', link: '/blog/lang/',
         items: [
@@ -21,6 +18,7 @@ module.exports = [
           { text: 'JavaScript', link: '/blog/lang/#js' },
         ],
       },
+      { text: 'ReadNote', link: '/blog/rnote/' },
     ]
   },
   { 

@@ -15,8 +15,6 @@ tags:
 
 # Table of contents
 
-* [**Catalog**](INTRODUCTION.md)
-
 ## Part I - Language
 * [目录](lang/README.md)
 * [Cxx](lang/README.md)

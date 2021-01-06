@@ -1,13 +1,7 @@
 ---
 title: linux 内存缓慢增长问题
 date: 2019-10-15 
-lastmod: 
-taxonomies: ["linux", "memory"]
-categories: ["linux", "memory"]
-keywords: ["linux", "memory", "缓慢增长"]
 description: "linux 内存缓慢增长问题的一种简单处理方式"
-tags: ["linux"]
-thumbnail: ""
 ---
 
 # linux 内存缓慢增长问题

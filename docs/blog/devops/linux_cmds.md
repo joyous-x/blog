@@ -1,12 +1,7 @@
 ---
 title: linux cmds
 date: 2019-12-23
-lastmod: 
-publish: true
-categories: ["linux"]
-keywords: ["linux", "net", "cmds"]
 description: "linux 常用命令集锦"
-thumbnail: ""
 ---
 
 ## Common

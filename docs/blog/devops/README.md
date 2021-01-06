@@ -18,5 +18,5 @@ description: "devops相关知识汇总"
 ## Others
 * [IPVS 在 k8s 中链接保持引发的问题](../devops/ipvs_in_k8s.md)
 * [Linux 常用指令](../devops/linux_cmds.md)
-* [Linux 内存缓慢增长问题](../devops/linux-mem-grows.md)
+* [Linux 内存缓慢增长问题](../devops/linux_mem_grows.md)
 * [Linux 性能领域大师布伦丹·格雷格的工具图谱](../devops/linux_perfermance.md)

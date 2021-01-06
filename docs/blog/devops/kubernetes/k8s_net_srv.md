@@ -1,3 +1,9 @@
+---
+title: K8S网络之service间的通信
+date: 2021-01-05 21:36:12
+description: "K8S网络之service间的通信"
+---
+
 # K8S网络之service间的通信
 从 k8s 1.8 开始，kube-proxy 组件在 iptables模式和用户模式 之外增加了 ipvs模式的支持。从 k8s 1.12 开始，ipvs模式成为默认操作模式。
 
