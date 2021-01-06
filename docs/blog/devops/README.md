@@ -2,9 +2,7 @@
 title: devops
 date: 2020-04-13
 lastmod: 
-publish: true
-categories: ["devops"]
-keywords: ["devops"]
+permalink: /blog/devops/
 description: "devops相关知识汇总"
 ---
 

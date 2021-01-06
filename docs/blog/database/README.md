@@ -2,9 +2,7 @@
 title: database
 date: 2020-04-14
 lastmod: 
-publish: true
-categories: ["database"]
-keywords: ["database"]
+permalink: /blog/database/
 description: "database 相关知识汇总"
 ---
 

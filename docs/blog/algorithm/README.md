@@ -2,9 +2,7 @@
 title: algorithm
 date: 2020-04-13
 lastmod: 
-publish: true
-categories: ["algorithm"]
-keywords: ["algorithm"]
+permalink: /blog/algorithm/
 description: "algorithm 相关知识汇总"
 ---
 

@@ -2,9 +2,7 @@
 title: network
 date: 2020-04-13
 lastmod: 
-publish: true
-categories: ["network"]
-keywords: ["network"]
+permalink: /blog/network/
 description: "网络基础知识汇总"
 ---
 
