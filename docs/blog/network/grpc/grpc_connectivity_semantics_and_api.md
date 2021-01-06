@@ -2,9 +2,6 @@
 title: gRPC Connectivity Semantics and API
 date: 2020-04-13
 lastmod: 
-publish: true
-categories: ["grpc"]
-keywords: ["grpc"]
 description: "gRPC Connectivity Semantics and API"
 ---
 

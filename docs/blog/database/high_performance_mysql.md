@@ -1,3 +1,9 @@
+---
+title: High Performance Mysql, 3th Edition 阅读
+date: 2020-04-21
+description: "High Performance Mysql, 3th Edition"
+---
+
 # High Performance Mysql, 3th Edition
 ```
 知识点：
@@ -163,42 +169,19 @@ MySQL支持两种复制方式：基于行的复制和基于语句的复制。这
 - 降低平均恢复时间
 
 ## 第十五章 备份与恢复
-备份：
-    二进制日志
-逻辑备份：
-    mysqldump
-    符号分隔文件备份
-        mysqldump 使用 --tab 选项
-        使用语句导出到csv格式文件：
-        ```
-            SELECT * INTO OUTFILE '/tmp/t.txt'
-            FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
-            LINES TERMINATED BY '\n'
-            FROM test.t1;--
-
-            LOAD DATA INFILE '/tmp/t.txt'
-            INTO TABLE test.t1
-            FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
-            LINES TERMINATED BY '\n';
-        ```
-文件系统快照
-
 因为 InnoDB 是个 ACID 系统。任何时刻(例如快照时)，每个提交的事务要么在 InnoDB 数据文件中要么在日志文件中。在还原快照后启动MySQL时，InnoDB 将运行恢复进程，就像服务器断过电一样。会查找事务日志中任何提交但没有应用到数据文件中的事务然后应用，因此不会丢失任何事务。这正是要强制 InnoDB 数据文件和日志文件在一起快照的原因。
 
 复制mysql配置，同时观察mysql启动时的错误日志：tail -f /var/log/mysql/mysql.err
 
-
-
 ## EXPLAIN
 在查询中每个表在输出中只有一行。如果查询是两个表的联接，那么输出中将有两行。
 
-EXPLAIN EXTENDED: 
-    看起来和正常的EXPLAIN行为一样，但是它会告诉服务器'逆向编译'执行计划为一个SELECT语句。可以通过紧接气候运行SHOW WARNINGS看到这个生成的语句。这个语句直接来自执行计划，而不是原始SQL语句。
-EXPLAIN PARTITIONS
-    会显示查询将访问的分区，如果查询是基于分区表的话。
+- EXPLAIN EXTENDED: 
+    + 看起来和正常的EXPLAIN行为一样，但是它会告诉服务器'逆向编译'执行计划为一个SELECT语句。可以通过紧接气候运行SHOW WARNINGS看到这个生成的语句。这个语句直接来自执行计划，而不是原始SQL语句。
+- EXPLAIN PARTITIONS
+    + 会显示查询将访问的分区，如果查询是基于分区表的话。
 
 认为增加EXPLAIN时MySQL不会执行查询，这是一个常见的错误。实际上，如果查询在FROM子句中包括子查询，那么MySQL实际上会执行子查询，将其结果放在一个临时表中，然后完成外部查询优化。这意味着，如果语句中包含开销较大的子查询或者使用临时表算法的视图，实际上会给服务器带来大量工作。
-
 
 MySQL EXPLAIN 只能解释 SELECT 查询，并不会对存储程序调用 和 INSERT、UPDATE、DELETE或其他语句做解释。然而，可以重写某些非 SELECT 查询以利用 EXPALIN。为了达到这个目的，只需要将该语句转换成一个等价的访问所有相同列的 SELECT。 
 
@@ -285,5 +268,5 @@ MySQL EXPLAIN 只能解释 SELECT 查询，并不会对存储程序调用 和 IN
 存储引擎中的锁
 InnoDB 在 SHOW INNODB STATUS 的输出中显露了一些锁信息。如果事务正在等待某个锁，这个锁会显示在 SHOW INNODB STATUS 输出的 TRANSACTIONS 部分。
 
-![mysql.执行路径](..\rsc\db\mysql.执行路径.png)
-![mysql.如何分析和配置查询缓存](..\rsc\db\mysql.如何分析和配置查询缓存.png)
+![mysql.执行路径](../rsc/db/mysql.exec_path.png)
+![mysql.如何分析和配置查询缓存](../rsc/db/mysql.analyze_and_query.png)

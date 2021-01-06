@@ -30,3 +30,4 @@ the little things in my program life
 forked from [vuepress-theme-vdoing](https://github.com/xugaoyi/vuepress-theme-vdoing)
 
 - 注意路径的分隔符：![LVS FULLNAT模式](../rsc/ipvs/LVS_DR.png)
+- 注意：markdown中 <xxx> 会解析失败

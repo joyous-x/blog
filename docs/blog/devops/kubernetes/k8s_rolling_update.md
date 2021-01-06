@@ -3,6 +3,7 @@ title: K8S 的 rolling update
 date: 2020-06-05
 description: "k8s rolling update"
 ---
+
 # K8S 之 rolling update
 最近一个重要业务在接入了反向代理后，在服务发布时出现请求 502 的问题，以此为契机，想了解下 k8s 的滚动升级过程中发生了什么。
 

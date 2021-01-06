@@ -1,5 +1,10 @@
-# Redis 基础
+---
+title: Redis 手册
+date: 2020-04-21
+description: "Redis 基础"
+---
 
+# Redis 手册
 
 ## Redis 基础类型
 Redis 常用的数据类型有: 
@@ -56,3 +61,27 @@ stream 的每个消息都有 steam id:
     redis-benchmark -h 10.46.35.1 -p 6379 -a 'passwd' -r 80 -d 1500 -c 1000 -l -k 0 -n 1000000 -t set,mget
     redis-benchmark -h 10.46.35.1 -p 6379 -a 'passwd' -t set -c 3500 -d 128 -n 25000000 -r 5000000
 ```
+
+## redis 的各种使用场景
+boomfilter、限流、GeoHash、分布式锁
+Scan、管道、事务、pubsub
+Sort
+Lua 脚本
+
+## Redis 原理
+单线程模型
+过期策略 以及 原理
+    内存回收
+基础类型实现原理：string: SDS, dict: hashtable, list: ziplist、linkedlist、listpack(5.0, 目前只stream), zset: skiplist
+    渐进式 rehash
+
+## 高可用
+AOF、RDB, PSYNC
+sentinel、cluster
+
+## 指标、监控、安全
+info
+慢查询、热点数据
+rename-command 指令
+
+## 新版本特征追踪

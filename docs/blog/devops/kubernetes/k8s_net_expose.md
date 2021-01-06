@@ -1,3 +1,9 @@
+---
+title: K8S网络之集群外访问service的方式
+date: 2019-12-18
+description: K8S网络之集群外访问service的方式
+---
+
 # K8S网络之集群外访问service的方式
 k8s service 的 cluster ip 只能供集群内部访问使用，如果想将 service 暴露给外部该怎么办？
 

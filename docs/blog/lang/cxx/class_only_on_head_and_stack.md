@@ -1,3 +1,9 @@
+---
+title: 只能分配在堆或栈上的类
+date: 2020-04-13
+description: "只能分配在堆或栈上的类"
+---
+
 ```
 //HeapOnly.cpp  
   #include   <iostream>  

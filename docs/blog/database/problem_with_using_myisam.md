@@ -1,3 +1,9 @@
+---
+title: 批量写入造成mysql访问慢问题
+date: 2020-04-14
+description: "批量写入造成mysql访问慢问题"
+---
+
 # 批量写入造成mysql访问慢问题
 
 ## 现象

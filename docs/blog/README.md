@@ -18,7 +18,6 @@ tags:
 ## Part I - Language
 * [目录](lang/README.md)
 * [Cxx](lang/README.md)
-    * [C++11特性](lang/cxx/c++11_features.md)
     * [只能分配在堆或栈上的类](lang/cxx/class_only_on_head_and_stack.md)
     * [const详解](lang/cxx/const_details.md)
 * [Golang](lang/README.md)
@@ -44,6 +43,8 @@ tags:
 
 ## Part III - Database
 * [目录](database/README.md)
+* [Redis 手册](database/redis_manual.md)
+* [DB 抽象理解](database/dbs_abstract.md)
 * [常见 DB 基础细节](database/common_details.md)
 * [High Performance Mysql, 3th Edition - 笔记](database/high_performance_mysql.md)
 * [mysql 中的索引类型](database/mysql_index.md)
@@ -57,33 +58,38 @@ tags:
     * [K8S网络之网络框架](devops/kubernetes/k8s_net_mode.md)
     * [K8S网络之service间通信](devops/kubernetes/k8s_net_srv.md)
     * [K8S网络之集群外访问service的方式](devops/kubernetes/k8s_net_expose.md)
-* [IPVS 在 k8s 中连接保持引发的问题](devops/ipvs_in_k8s.md)
-* [Linux 常用指令](devops/linux_cmds.md)
-* [Linux 内存缓慢增长问题](devops/linux-mem-grows.md)
-* [Linux 性能领域大师布伦丹·格雷格的工具图谱](devops/linux_perfermance.md)
+* [Others](devops/README.md)
+    * [IPVS 在 k8s 中连接保持引发的问题](devops/ipvs_in_k8s.md)
+    * [Linux 常用指令](devops/linux_cmds.md)
+    * [Linux 内存缓慢增长问题](devops/linux_mem_grows.md)
+    * [Linux 性能领域大师布伦丹·格雷格的工具图谱](devops/linux_perfermance.md)
 
 ## Part Ⅴ - Explore
-* [目录](bigdata/README.md)
-* [Machine Learn](bigdata/README.md)
-    * [PCA原理推导](bigdata/ml/derivation_of_PCA.md)
+* [目录](explore/README.md)
+* [Bigdata](explore/README.md)
+    * [架构理论](explore/bigdata/theory.md)
+    * [PCA原理推导](explore/bigdata/derivation_of_PCA.md)
+* [Image Processing](explore/README.md)
+    * [杂项](explore/imgproc/utils.md)
 
 ## Part Ⅵ - Algorithm
 * [目录](algorithm/README.md)
 * [常用算法列表](algorithm/common_algorithm.md)
 * [分布式一致性协议简介](algorithm/distributed_consensus_protocols.md)
-* [ARC 算法简述](algorithm/arc.md)
 
 ## Part Ⅶ - Design
 * [目录](design/README.md)
 
 ## Part Ⅷ - ReadNote
-* [目录](skills/README.md)
-* [关于沟通、交流](skills/about_communication.md)
-* [Google 技能评分卡](skills/google_skill_level.md)
-* [架构之重构的12条军规](skills/12_rules_in_arch_refactor.md)
-* [驾考指南](skills/driving_test.md)
-* [杂项](skills/utils.md)
-* [RNote](skills/README.md)
-    * [代码重构培训(笔记)](skills/rnote/note_of_refactor.md)
-    * [登高四书(笔记)](skills/rnote/登高四书.md)
-    * [番茄工作法图解(笔记)](skills/rnote/番茄工作法图解.md)
+* [目录](rnote/README.md)
+* [Read](rnote/README.md)
+    * [Google 技能评分卡](rnote/read/google_skill_level.md)
+    * [代码重构(笔记)](rnote/read/note_of_refactor.md)
+    * [汉字字符编码及转换](rnote/read/ch_pinyin_tran.md)
+    * [重构的12条军规](rnote/read/12_rules_in_arch_refactor.md)
+* [Architecture](rnote/README.md)
+    * [软件设计7原则](rnote/architecture/7principle_in_software.md)
+    * [mvc-mvp-mvvm](rnote/architecture/mvc_mvp_mvvm.md)
+    * [ARCHITECTURE(极客时间)摘要](rnote/architecture/readme.md)
+* [面试现场(极客时间)摘要](rnote/interview/interview.md)
+* [持续交付(极客时间)摘要](rnote/devops/readme.md)

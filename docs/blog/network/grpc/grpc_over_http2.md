@@ -2,9 +2,6 @@
 title: gRPC over HTTP2
 date: 2020-04-13
 lastmod: 
-publish: true
-categories: ["grpc"]
-keywords: ["grpc"]
 description: "gRPC over HTTP2"
 ---
 

@@ -1,3 +1,9 @@
+---
+title: MVP MVP MVVM
+date: 2020-04-13
+description: "MVP MVP MVVM"
+---
+
 # MVP MVP MVVM
 
 ## MVC (Model-View-Controller)

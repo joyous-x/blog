@@ -6,6 +6,9 @@ permalink: /blog/database/
 description: "database 相关知识汇总"
 ---
 
+# Database
+* [Redis 手册](../database/redis_manual.md)
+* [DB 抽象理解](../database/dbs_abstract.md)
 * [常见 DB 基础细节](../database/common_details.md)
 * [High Performance Mysql, 3th Edition - 笔记](../database/high_performance_mysql.md)
 * [mysql 中的索引类型](../database/mysql_index.md)

@@ -1,8 +1,6 @@
 ---
 title: Google 技能评分卡
 date: 2020-04-03
-lastmod: 
-publish: true
 categories: ["skill"]
 keywords: ["skill level"]
 description: "Google 技能评分卡"

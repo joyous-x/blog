@@ -2,9 +2,6 @@
 title: docker 基础知识
 date: 2019-12-18 
 lastmod: 
-publish: true
-categories: ["docker"]
-keywords: ["docker", "docker-compose", "cmd", "operations"]
 description: "docker 基础知识汇总，以及常见操作"
 ---
 
@@ -58,7 +55,7 @@ description: "docker 基础知识汇总，以及常见操作"
             + 让镜像变成像命令一样使用
                 - 需要 dockerfile 中指定的启动命令，能够像普通命令一样接收运行时指定的额外参数
             + 应用运行前的准备工作
-                - 将预处理工作写成脚本，然后放入 ENTRYPOINT 中去执行，而这个脚本会将接到的参数(也就是 <CMD>)作为命令，在脚本最后执行。比如官方镜像 redis 中就是这么做的。
+                - 将预处理工作写成脚本，然后放入 ENTRYPOINT 中去执行，而这个脚本会将接到的参数(也就是 CMD)作为命令，在脚本最后执行。比如官方镜像 redis 中就是这么做的。
         - reference: 
             + [ENTRYPOINT 入口点](https://yeasy.gitbooks.io/docker_practice/image/dockerfile/entrypoint.html)
     + ENV 设置环境变量

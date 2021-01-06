@@ -1,3 +1,9 @@
+---
+title: K8S网络之网络框架
+date: 2019-12-18
+description: K8S网络之网络框架
+---
+
 # K8S网络之网络框架
 网络是 k8s 的一个核心部分，但是精准的了解其预期的工作方式可能会比较困难。总的来说，有四个不同的网络问题需要解决：
 - Highly-coupled container-to-container communications

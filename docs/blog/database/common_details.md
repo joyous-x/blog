@@ -1,3 +1,9 @@
+---
+title: 常见 DB 基础
+date: 2020-04-21
+description: "常见 DB 基础知识"
+---
+
 # 常见 DB 基础
 
 ## Mongo

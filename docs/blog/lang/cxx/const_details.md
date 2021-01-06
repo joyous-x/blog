@@ -1,3 +1,9 @@
+---
+title: const详解
+date: 2020-04-13
+description: "const详解"
+---
+
 #### 定义常量
     
 #### 指针使用CONST

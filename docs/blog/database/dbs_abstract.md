@@ -1,3 +1,8 @@
+---
+title: DB 抽象理解
+date: 2020-04-21
+description: "常见db的抽象理解"
+---
 
 ## db 详解
 + 持久化
