@@ -1,3 +1,9 @@
+---
+title: PCA原理推导
+date: 2020-04-13
+description: "PCA原理推导"
+---
+
 # PCA原理推导
 
 ## 理论基础

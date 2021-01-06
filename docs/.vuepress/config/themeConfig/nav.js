@@ -18,24 +18,29 @@ module.exports = [
           { text: 'JavaScript', link: '/blog/lang/#js' },
         ],
       },
-      { text: 'ReadNote', link: '/blog/rnote/' },
+      { 
+        text: 'ReadNote', link: '/blog/rnote/',
+        items: [
+          { text: 'Read', link: '/blog/rnote/#Read' },
+          { text: 'Interview', link: '/blog/rnote/#Interview' },
+          { text: 'Architecture', link: '/blog/rnote/#Architecture' },
+        ],
+      },
     ]
   },
   { 
     text: '更多', link: '/more/',
     items: [
-      { text: '关于', link: '/more/about.md' },
+      { text: '关于', link: '/more/about/' },
       { text: '友情链接', link: '/more/friends/' },
+      { 
+        text: '收藏', link: '/more/favorites/',
+        items: [
+          { text: '网站', link: '/more/favorites/网站/' },
+          { text: '资源', link: '/more/favorites/资源/' },
+        ],
+      },
     ]
-  },
-  {
-    text: '收藏',
-    link: '/fav/',
-    // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
-    items: [
-      { text: '网站', link: '/fav/beb6c0bd8a66cea6/' },
-      { text: '资源', link: '/fav/eee83a9211a70f9d/' },
-    ],
   },
   {
     text: '索引',

@@ -5,12 +5,12 @@ const htmlModules = require('./themeConfig/htmlModules.js');
 module.exports = {
   nav,
   sidebarDepth: 2, // 侧边栏显示深度，默认1，最大2（显示到h3标题）
-  logo: '/img/EB-logo.png', // 导航栏logo
-  repo: 'xugaoyi/vuepress-theme-vdoing', // 导航栏右侧生成Github链接
+  logo: '/img/web_logo.png', // 导航栏logo
+  repo: 'joyous-x/blog', // 导航栏右侧生成Github链接
   searchMaxSuggestions: 10, // 搜索结果显示最大数
   lastUpdated: '上次更新', // 开启更新时间，并配置前缀文字   string | boolean (取值为git提交时间)
   docsDir: 'docs', // 编辑的文件夹
-  editLinks: true, // 启用编辑
+  editLinks: false, // 启用编辑
   editLinkText: '编辑',
 
   //*** 以下配置是Vdoing主题改动和新增的配置 ***//
@@ -51,7 +51,7 @@ module.exports = {
   },
   blogger: {
     // 博主信息，显示在首页侧边栏
-    avatar: 'https://cdn.jsdelivr.net/gh/xugaoyi/image_store/blog/20200103123203.jpg',
+    avatar: '/img/avatar.png',
     name: 'Jiao',
     slogan: '知行合一',
   },
@@ -62,7 +62,7 @@ module.exports = {
       {
         iconClass: 'icon-youjian',
         title: '发邮件',
-        link: 'mailto:xxxxxxx@qq.com',
+        link: 'mailto:929843628@qq.com',
       },
       {
         iconClass: 'icon-github',

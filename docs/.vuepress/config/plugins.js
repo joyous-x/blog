@@ -14,13 +14,9 @@ module.exports = [
     {
       thirdparty: [ // 可选，默认 []
         {
-          title: '在MDN中搜索',
-          frontUrl: 'https://developer.mozilla.org/zh-CN/search?q=', // 搜索链接的前面部分
+          title: '在Google搜索',
+          frontUrl: 'https://www.google.com//search?q=', // 搜索链接的前面部分
           behindUrl: '', // 搜索链接的后面部分，可选，默认 ''
-        },
-        {
-          title: '在Vue API中搜索',
-          frontUrl: 'https://cn.vuejs.org/v2/api/#',
         },
         {
           title: '在Bing中搜索',
@@ -81,8 +77,8 @@ module.exports = [
         clientID: 'a6e1355287947096b88b',
         clientSecret: 'f0e77d070fabfcd5af95bebb82b2d574d7248d71',
         repo: 'blog-gitalk-comment', // GitHub 仓库
-        owner: 'xugaoyi', // GitHub仓库所有者
-        admin: ['xugaoyi'], // 对仓库有写权限的人
+        owner: 'joyous-x', // GitHub仓库所有者
+        admin: ['joyous-x'], // 对仓库有写权限的人
         // distractionFreeMode: true,
         pagerDirection: 'last', // 'first'正序 | 'last'倒序
         id: '<%- (frontmatter.permalink || frontmatter.to.path).slice(-16) %>', //  页面的唯一标识,长度不能超过50

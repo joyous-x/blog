@@ -67,7 +67,6 @@ tags:
 ## Part Ⅴ - Explore
 * [目录](explore/README.md)
 * [Bigdata](explore/README.md)
-    * [架构理论](explore/bigdata/theory.md)
     * [PCA原理推导](explore/bigdata/derivation_of_PCA.md)
 * [Image Processing](explore/README.md)
     * [杂项](explore/imgproc/utils.md)

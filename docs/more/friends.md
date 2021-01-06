@@ -1,7 +1,7 @@
 ---
 title: 友情链接
-date: 2019-12-25 14:27:01
-permalink: /friends
+date: 2020-12-25
+permalink: /more/friends/
 article: false
 sidebar: false
 ---
@@ -30,68 +30,18 @@ cardList 后面可跟随一个数字表示每行最多显示多少个，选值�
   link: https://www.lookroot.cn/
   bgColor: '#B7DBFF'
   textColor: '#294D71'
-- name: 平凡的你我
-  desc: 理想成为大牛的<br/>小陈同学
-  avatar: https://reinness.com/avatar.png
-  link: https://reinness.com
-  bgColor: '#FFE5B4'
-  textColor: '#A05F2C'
-- name: znote
-  desc: 荷尽已无擎雨盖，<br/>菊残犹有傲霜枝。
-  avatar: https://zpj80231.gitee.io/znote/vuepress/head-fish.jpg
-  link: https://zpj80231.gitee.io/znote/
-  bgColor: '#FCE5BF'
-  textColor: '#7B2532'
-- name: 全栈软件开发直通车
-  desc: 全栈软件开发技术博客，<br/>从小白到大神!
-  avatar: https://gitee.com/wangshibiao/blog_picBed2/raw/master/images/20200806151030.png
-  link: https://sofineday.com
-  bgColor: '#FBEBEC'
-  textColor: '#603420'
-- name: 易良同学的博客
-  desc: 正在努力！
-  avatar: https://yiliang.site/assets/images/avatar.jpeg
-  link: https://yiliang.site
-  bgColor: '#FFEFE2'
-  textColor: '#A05F2C'
-- name: 永远的救赎者
-  desc: 知者减半，省者全无。
-  avatar: https://i.loli.net/2020/08/10/PkQMGL6pATW1vBg.jpg
-  link: http://www.yuanchengcheng.vip/
-  bgColor: '#FBEBEC'
-  textColor: '#603420'
-- name: 辰旭博客
-  desc: 凤鸣初阳，百鸟朝凰
-  avatar: https://s1.ax1x.com/2020/08/09/aoLTDx.png
-  link: https://kareny.cn
-  bgColor: '#FFCEDE'
-  textColor: '#621529'
-- name: JokerM's Palace
-  desc: Take your heart
-  avatar: https://cdn.jokerm.com/?/imgcdn/logo.png
-  link: https://jokerm.com/
-- name: Saul.J.Wu
-  desc: 立身之本，不在高低。
-  avatar: https://raw.githubusercontent.com/SaulJWu/images/main/20201114225611.jpg
-  link: https://sauljwu.github.io/
-- name: Lake's blog
-  desc: 不积跬步，无以至千里；不积小流，无以成江海。
-  avatar: https://cdn.jsdelivr.net/gh/taixingyiji/image_store@main/blog/logo/img.png
-  link: https://taixingyiji.com/
   ```
 :::
 
 
 ### 友链申请
-
 与我[ 联系 ](/about/#联系)或者 在本页面评论区留言您的友链信息，格式：(点击代码块右上角一键复制)
 
-
 ```yaml
-- name: Evan's blog # 昵称
-  desc: 积跬步以至千里，喜欢学习喜欢你。 # 介绍
-  avatar: https://cdn.jsdelivr.net/gh/xugaoyi/image_store/blog/20200103123203.jpg # 头像
-  link: https://xugaoyi.com/  # 链接
+- name: Jiao's blog # 昵称
+  desc: 知行合一 # 介绍
+  avatar: '/img/avatar.png' # 头像
+  link: https://.com/  # 链接
 ```
 
 申请前记得先添加本站哦~
