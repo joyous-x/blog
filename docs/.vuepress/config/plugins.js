@@ -66,17 +66,17 @@ module.exports = [
   [
     'vuepress-plugin-baidu-tongji', // 百度统计
     {
-      hm: '503f098e7e5b3a5b5d8c5fc2938af002',
+      hm: 'xxxx',
     },
   ],
   [
     'vuepress-plugin-comment', // 评论
     {
-      choosen: 'gitalk',
+      choosen: 'gittalk',
       options: {
-        clientID: 'a6e1355287947096b88b',
-        clientSecret: 'f0e77d070fabfcd5af95bebb82b2d574d7248d71',
-        repo: 'blog-gitalk-comment', // GitHub 仓库
+        clientID: '874ae7777f9ba6ae4dc8',
+        clientSecret: '8c75a7494bc02652016bd5d0ccef60717a383b5d',
+        repo: 'blog-gittalk-comment', // GitHub 仓库
         owner: 'joyous-x', // GitHub仓库所有者
         admin: ['joyous-x'], // 对仓库有写权限的人
         // distractionFreeMode: true,

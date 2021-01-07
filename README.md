@@ -31,3 +31,6 @@ forked from [vuepress-theme-vdoing](https://github.com/xugaoyi/vuepress-theme-vd
 
 - 注意路径的分隔符：![LVS FULLNAT模式](../rsc/ipvs/LVS_DR.png)
 - 注意：markdown中 <xxx> 会解析失败
+
+### TODO:
+- vuepress-plugin-baidu-tongji
