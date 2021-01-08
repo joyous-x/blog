@@ -2,14 +2,14 @@
 package-lock.json
 node_modules
 
+# vuepress
+docs/.vuepress/dist
+
 # yarn
 yarn.lock
 
 # vscode
 .vscode
-
-# vuepress
-docs/.vuepress/dist
 
 # 百度链接推送
 urls.txt
