@@ -39,7 +39,9 @@ jobs:
           BASE_BRANCH: main # 要部署的文件夹所在的分支.
           BRANCH: gh-pages # 部署到的分支
           FOLDER: docs/.vuepress/dist # 要部署的文件夹.
-          BUILD_SCRIPT: npm install && npm run build && cd docs/.vuepress/dist && echo 'myhost.com' > CNAME && cd - # 部署前要执行的命令（记得cd进入某个目录后，后面要cd -退回开始的目录）
+          ## 部署前要执行的命令，CNAME 可以将其绑定到一个域名（记得cd进入某个目录后，后面要cd -退回开始的目录）
+          # BUILD_SCRIPT: npm install && npm run build && cd docs/.vuepress/dist && echo 'https://joyous-x.github.io/blog/' > CNAME && cd -
+          BUILD_SCRIPT: npm install && npm run build # 部署前要执行的命令（记得cd进入某个目录后，后面要cd -退回开始的目录）
       
       # - name: Build && Deploy #同时部署到github和coding
       #   env: # 设置环境变量
