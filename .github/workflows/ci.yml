@@ -1,31 +1,40 @@
 name: CI
 
-#on: [push]
-
-# 在master分支发生push事件时触发。
-on: 
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
   push:
     branches:
       - master
+    #tags:
+    #  - act-v*
 
-jobs: # 工作流
-  build: # 自定义名称
-    runs-on: ubuntu-latest #运行在虚拟机环境ubuntu-latest
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [10.x]
 
-    steps: # 步骤
-      - name: Checkout # 步骤1
-        uses: actions/checkout@v1 # 使用的动作。格式：userName/repoName。作用：检出仓库，获取源码。 官方actions库：https://github.com/actions
-      - name: Use Node.js ${{ matrix.node-version }} # 步骤2
-        uses: actions/setup-node@v1 # 作用：安装nodejs
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v1
         with:
-          node-version: ${{ matrix.node-version }} # 版本
-      - name: run deploy.sh # 步骤3 （同时部署到github和coding）
+          submodules: true
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+      - name: Build && Deploy #同时部署到github和coding
         env: # 设置环境变量
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }} # toKen私密变量
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }} # toKen私密变量
           CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
         run: npm install && npm run deploy
 
@@ -36,4 +45,4 @@ jobs: # 工作流
       #     BASE_BRANCH: master # 要部署的文件夹所在的分支.
       #     BRANCH: gh-pages # 部署到的分支
       #     FOLDER: docs/.vuepress/dist # 要部署的文件夹.
-      #     BUILD_SCRIPT: npm install && npm run build && cd docs/.vuepress/dist && echo 'xugaoyi.com' > CNAME && cd - # 部署前要执行的命令（记得cd进入某个目录后，后面要cd -退回开始的目录）
+      #     BUILD_SCRIPT: npm install && npm run build && cd docs/.vuepress/dist && echo 'myhost.com' > CNAME && cd - # 部署前要执行的命令（记得cd进入某个目录后，后面要cd -退回开始的目录）
