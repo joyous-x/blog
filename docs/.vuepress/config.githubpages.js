@@ -8,7 +8,7 @@ module.exports = {
 
   title: "Jiao's Blog",
   description: '知行合一 --- 技术博客，代码中的点点滴滴',
-  base: '/', // 格式：'/<仓库名>/'， 默认'/'
+  base: '/blog/', 
   markdown: {
     lineNumbers: true, // 代码行号
     extendMarkdown: md => {
