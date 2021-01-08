@@ -33,7 +33,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Deploy # 只提交到github
-        uses: JamesIves/github-pages-deploy-action@master # 作用：将项目构建和部署到github
+        uses: JamesIves/github-pages-deploy-action@releases/v2 # 作用：将项目构建和部署到github
         env: # 设置环境变量
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }} # toKen私密变量
           BASE_BRANCH: main # 要部署的文件夹所在的分支.
