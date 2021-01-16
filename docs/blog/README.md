@@ -14,7 +14,7 @@ tags:
 ---
 
 # Table of Contents
-按照软件系统的组成架构，划分成以下几个部分并分别进行展开。
+按照软件系统的组成架构，划分成以下几个部分并分别进行展开
 
 ## Part I - Language
 * [目录](lang/README.md)
