@@ -1,4 +1,4 @@
-<p align="center"><a href="https://homepage.com/" target="_blank" rel="noopener noreferrer"><img width="180" src="https://cdn.jsdelivr.net/20200409124835.png" alt="logo"></a></p>
+<p align="center"><a href="https://github.com/joyous-x/" target="_blank" rel="noopener noreferrer"><img width="180" src="https://github.com/joyous-x/blog/blob/main/docs/blog/rsc/cover.png" alt="logo"></a></p>
 
 [![license](https://img.shields.io/github/license/joyous-x/blog.svg)](https://github.com/joyous-x/blog/blob/main/LICENSE)
 [![release](https://img.shields.io/github/release/joyous-x/blog.svg)](https://github.com/joyous-x/blog/releases/latest)
@@ -15,20 +15,15 @@ The little things in my program life
 - [*Github Pages*](https://joyous-x.github.io/blog/)
 - [*GitHub Repo*](https://github.com/joyous-x/blog/)
 
-## [目录](https://joyous-x.github.io/blog/)
-
 ## 更新日志 (update log)
-- 2020-04-10：initialize
+- 2021-01-17：initialize
 - ***To be Continue***
 
 ## 附录 (Appendix)
-- [*Gitbook Plugins*](https://gitbook.icasture.top/part_one/function_development/plugin_recommandation.html)
-
-## 说明 (Note)
-forked from [vuepress-theme-vdoing](https://github.com/xugaoyi/vuepress-theme-vdoing)
-
-- 注意路径的分隔符：![LVS FULLNAT模式](../rsc/ipvs/LVS_DR.png)
-- 注意：markdown中 <xxx> 会解析失败
-
+### Note
+- 注意路径的分隔符：``` ![LVS FULLNAT模式](../rsc/ipvs/LVS_DR.png) ```
+- 注意：markdown中 ``` <xxx> ```会解析失败
 ### TODO:
 - vuepress-plugin-baidu-tongji
+### Theme
+forked from [vuepress-theme-vdoing](https://github.com/xugaoyi/vuepress-theme-vdoing)
