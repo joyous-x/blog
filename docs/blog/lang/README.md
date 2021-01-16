@@ -13,7 +13,7 @@ tags:
   - 
 ---
 
-## C++
+## Cxx
 * [只能分配在堆或栈上的类](../lang/cxx/class_only_on_head_and_stack.md)
 * [const详解](../lang/cxx/const_details.md)
 
@@ -29,7 +29,3 @@ tags:
 
 ## Python
 * [python 基础](../lang/python/utils.md)
-
-
-* [Cxx](lang/README.md)
-    

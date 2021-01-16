@@ -13,7 +13,8 @@ tags:
   - 
 ---
 
-# Table of contents
+# Table of Contents
+按照软件系统的组成架构，划分成以下几个部分并分别进行展开。
 
 ## Part I - Language
 * [目录](lang/README.md)
@@ -31,7 +32,15 @@ tags:
 * [Python](lang/README.md)
     * [python 基础](../lang/python/utils.md)
 
-## Part II - Network
+## Part II - Design
+### Chapter I - Algorithm
+* [目录](design/algorithm/README.md)
+* [常用算法列表](design/algorithm/common_algorithm.md)
+* [分布式一致性协议简介](design/algorithm/distributed_consensus_protocols.md)
+### Chapter II - Design
+* [目录](design/README.md)
+
+## Part III - Network
 * [目录](network/README.md)
 * [TCP与UDP 对比](network/introduce_tcp_udp.md)
 * [http2](network/README.md)
@@ -41,7 +50,7 @@ tags:
     * [gRPC over http/2](network/grpc/grpc_over_http2.md)
     * [gRPC 的 go 拦截器](network/grpc/grpc_interceptor_with_go.md)
 
-## Part III - Database
+## Part IV - Database
 * [目录](database/README.md)
 * [Redis 手册](database/redis_manual.md)
 * [DB 抽象理解](database/dbs_abstract.md)
@@ -50,36 +59,39 @@ tags:
 * [mysql 中的索引类型](database/mysql_index.md)
 * [批量写入造成mysql访问慢问题追踪](database/problem_with_using_myisam.md)
 
-## Part Ⅳ - Devops
-* [目录](devops/README.md)
-* [Docker](devops/README.md)
+## Part V - Platform
+### Chapter I - Android
+### Chapter II - Window
+### Chapter III - Linux
+* [目录](platform/linux/README.md)
+* [Linux 常用指令](platform/linux/linux_cmds.md)
+* [Linux 性能领域大师布伦丹·格雷格的工具图谱](platform/linux/linux_perfermance.md)
+* [Linux 内存缓慢增长问题](platform/linux/linux_mem_grows.md)
+
+## Part VI - Skills
+### Chapter I - Backend
+### Chapter II - Devops
+* [目录](skills/devops/README.md)
+* [Docker](skills/devops/README.md)
     * [Docker 基础使用指南](devops/docker/docker-base.md)
-* [Kubernetes](devops/README.md)
-    * [K8S网络之网络框架](devops/kubernetes/k8s_net_mode.md)
-    * [K8S网络之service间通信](devops/kubernetes/k8s_net_srv.md)
-    * [K8S网络之集群外访问service的方式](devops/kubernetes/k8s_net_expose.md)
-* [Others](devops/README.md)
-    * [IPVS 在 k8s 中连接保持引发的问题](devops/ipvs_in_k8s.md)
-    * [Linux 常用指令](devops/linux_cmds.md)
-    * [Linux 内存缓慢增长问题](devops/linux_mem_grows.md)
-    * [Linux 性能领域大师布伦丹·格雷格的工具图谱](devops/linux_perfermance.md)
+* [Kubernetes](skills/devops/README.md)
+    * [K8s简述](skills/devops/k8s_base.md)
+    * [K8S网络之网络框架](skills/devops/k8s_net_mode.md)
+    * [K8S网络之service间通信](skills/devops/k8s_net_srv.md)
+    * [K8S网络之集群外访问service的方式](skills/devops/k8s_net_expose.md)
+    * [K8S之rolling update](skills/devops/k8s_rolling_update.md)
+* [Others](skills/devops/README.md)
+    * [IPVS 在 k8s 中连接保持引发的问题](skills/devops/ipvs_in_k8s.md)
+### Chapter III - Bigdata
+* [架构理论](skills/bigdata/bigdata_arch_theory.md)
+* [PCA原理推导](skills/bigdata/derivation_of_PCA.md)
+### Chapter IV - Image Processing
+* [杂项](skills/imgproc/utils.md)
+### Chapter V - Explore
+## Part VII - Utilization
 
-## Part Ⅴ - Explore
-* [目录](explore/README.md)
-* [Bigdata](explore/README.md)
-    * [PCA原理推导](explore/bigdata/derivation_of_PCA.md)
-* [Image Processing](explore/README.md)
-    * [杂项](explore/imgproc/utils.md)
-
-## Part Ⅵ - Algorithm
-* [目录](algorithm/README.md)
-* [常用算法列表](algorithm/common_algorithm.md)
-* [分布式一致性协议简介](algorithm/distributed_consensus_protocols.md)
-
-## Part Ⅶ - Design
-* [目录](design/README.md)
-
-## Part Ⅷ - ReadNote
+## Part VIII - Utility
+### Chapter I - ReadNote
 * [目录](rnote/README.md)
 * [Read](rnote/README.md)
     * [Google 技能评分卡](rnote/read/google_skill_level.md)
@@ -92,3 +104,4 @@ tags:
     * [ARCHITECTURE(极客时间)摘要](rnote/architecture/readme.md)
 * [面试现场(极客时间)摘要](rnote/interview/interview.md)
 * [持续交付(极客时间)摘要](rnote/devops/readme.md)
+### Chapter II - Tools

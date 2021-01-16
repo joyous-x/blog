@@ -2,7 +2,7 @@
 title: algorithm
 date: 2020-04-13
 lastmod: 
-permalink: /blog/algorithm/
+permalink: /blog/design/algorithm/
 description: "algorithm 相关知识汇总"
 ---
 
