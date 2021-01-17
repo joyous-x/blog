@@ -1,5 +1,5 @@
 ---
-title: go_utils
+title: Go 知识点
 date: 2021-01-16 23:29:06
 categories:
   - blog
@@ -8,7 +8,7 @@ categories:
 tags:
   - 
 ---
-# go 知识点
+# Go 知识点
 
 - Go
     + (u)int(8|16|32|64)、bool、string、uintptr、byte(=uint8)、rune(=uint32)、float[32|64]、complex[64|128]

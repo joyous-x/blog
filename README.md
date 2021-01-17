@@ -2,7 +2,7 @@
 [![release](https://img.shields.io/github/release/joyous-x/blog.svg)](https://github.com/joyous-x/blog/releases/latest)
 [![Actions Status](https://github.com/joyous-x/blog/workflows/CI/badge.svg)](https://github.com/joyous-x/blog/actions)
 
-<p align="center"><a href="https://github.com/joyous-x/" target="_blank" rel="noopener noreferrer"><img width="180" src="https://github.com/joyous-x/blog/blob/main/docs/blog/rsc/cover.png" alt="logo"></a></p>
+<p align="center"><a href="https://github.com/joyous-x/" target="_blank" rel="noopener noreferrer"><img width="180" src="https://github.com/joyous-x/blog/blob/main/blog_raw/blog/rsc/cover.png" alt="logo"></a></p>
 
 <h1 align="center">Jiao's Blog</h2>
 

@@ -1,5 +1,5 @@
 ---
-title: platform
+title: Platform 目录
 date: 2020-04-14 00:00:00
 lastmod: null
 permalink: /blog/platform/
@@ -14,6 +14,6 @@ tags:
 ## Windows
 ## Android
 ## Linux
-* [Linux 常用指令](../blog/linux/linux_cmds.md)
-* [Linux 内存缓慢增长问题](../blog/linux/linux_mem_grows.md)
-* [Linux 性能领域大师布伦丹·格雷格的工具图谱](../blog/linux/linux_perfermance.md)
+* [Linux 常用指令](../platform/linux/linux_cmds.md)
+* [Linux 内存缓慢增长问题](../platform/linux/linux_mem_grows.md)
+* [Linux 性能领域大师布伦丹·格雷格的工具图谱](../platform/linux/linux_perfermance.md)

@@ -1,5 +1,5 @@
 ---
-title: js
+title: JS 零基础起步
 date: 2020-04-14 00:00:00
 lastmod: null
 publish: true

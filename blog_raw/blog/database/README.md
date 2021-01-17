@@ -1,5 +1,5 @@
 ---
-title: database
+title: Database 目录
 date: 2020-04-14 00:00:00
 lastmod: null
 permalink: /blog/database/
