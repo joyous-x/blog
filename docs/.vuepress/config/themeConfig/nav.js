@@ -15,7 +15,7 @@ module.exports = [
                 text: '设计',
                 link: '/blog/design/',
                 items: [
-                    { text: 'Algorithm', link: '/blog/design/algorithm/' },
+                    { text: 'Algorithm', link: '/blog/design/##algorithm' },
                     { text: 'Design', link: '/blog/design/' },
                 ],
             },
@@ -60,8 +60,8 @@ module.exports = [
                 text: '杂项',
                 link: '/blog/utility/',
                 items: [
-                    { text: 'ReadNote', link: '/blog/utility/rnote/' },
-                    { text: 'Tools', link: '/blog/utility/tools/' },
+                    { text: 'ReadNote', link: '/blog/utility/##rnote' },
+                    { text: 'Tools', link: '/blog/utility/##tools' },
                 ],
             },
         ]

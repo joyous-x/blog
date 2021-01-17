@@ -7,7 +7,7 @@ description: "MVP MVP MVVM"
 # MVP MVP MVVM
 
 ## MVC (Model-View-Controller)
-![MVC](https://github.com/joyoushunter/Pluto/blob/master/blog/Architecture/graph/Standard-MVC.jpg)
+![MVC](./images/Standard-MVC.jpg)
 - 分层：
     + 当有用户的行为触发操作时，会有控制器更新模型，并通知视图进行更新，在这时视图向模型请求新的数据
         - Model: *管理应用的行为和数据，响应数据请求(经常来自视图)和更新状态的指令(经常来自控制器)*
@@ -29,7 +29,7 @@ description: "MVP MVP MVVM"
         - 模型都不会主动向视图或者控制器推送消息。它对于视图和控制器的存在并不知情，只是向外部提供接口并响应视图和控制器对于数据的请求和更新操作。
 
 ## MVP (Model-View-Presenter)
-![MVP](https://github.com/joyoushunter/Pluto/blob/master/blog/Architecture/graph/Standard-MVP.jpg)
+![MVP](./images/Standard-MVP.jpg)
 - 分层
     + Model负责数据(的存储、以及增删改查等动作)。一般会使用 Model interface 用来降低耦合
     + View负责显示(绘制UI元素)以及与用户进行交互(在Android中体现为Activity)
