@@ -5,6 +5,9 @@ node_modules
 # vuepress
 docs/.vuepress/dist
 
+# blog data
+docs/blog
+
 # yarn
 yarn.lock
 
