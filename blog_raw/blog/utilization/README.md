@@ -14,4 +14,6 @@ tags:
 ---
 
 # Utilization
+* [实践：创建redis cluster](../utilization/foo_redis_cluster.md)
+* [实践：k8s 之 downward api](../utilization/foo_k8s_downward_api.md)
 * [汉字字符编码及转换](../utilization/ch_pinyin_tran.md)

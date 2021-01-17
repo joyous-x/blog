@@ -1,3 +1,10 @@
+---
+title: 实践：k8s 之 downward api
+date: 2020-04-13
+description: "k8s 之 downward api"
+---
+
+#
 
 - expose Pod and Container fields to a running Container
   + docs: https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/#the-downward-api
