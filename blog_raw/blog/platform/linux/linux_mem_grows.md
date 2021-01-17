@@ -8,6 +8,7 @@ categories:
   - linux
 tags: 
   - null
+permalink:
 ---
 
 # linux 内存缓慢增长问题

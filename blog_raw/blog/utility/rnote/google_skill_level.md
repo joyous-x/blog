@@ -4,6 +4,7 @@ date: 2020-04-03
 categories: ["skill"]
 keywords: ["skill level"]
 description: "Google 技能评分卡"
+permalink:
 ---
 
 # Google 技能评分卡

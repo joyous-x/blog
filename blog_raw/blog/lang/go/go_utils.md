@@ -7,6 +7,7 @@ categories:
   - go
 tags:
   - 
+permalink:
 ---
 # Go 知识点
 

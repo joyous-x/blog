@@ -12,6 +12,7 @@ keywords:
 description: golang 中 recover 的使用，以及 const 类型转换使用过程中遇到的的问题
 tags: 
   - 
+permalink:
 ---
 
 # recover & const 简述

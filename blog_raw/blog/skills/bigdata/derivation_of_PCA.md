@@ -8,6 +8,7 @@ categories:
   - bigdata
 tags: 
   - 
+permalink:
 ---
 
 # PCA原理推导

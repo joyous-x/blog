@@ -8,6 +8,7 @@ categories:
   - bigdata
 tags: 
   - 
+permalink:
 ---
 # 大数据架构理论
 

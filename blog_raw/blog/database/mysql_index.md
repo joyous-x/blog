@@ -8,6 +8,7 @@ categories:
   - database
 tags: 
   - 
+permalink:
 ---
 
 # mysql 中的索引类型

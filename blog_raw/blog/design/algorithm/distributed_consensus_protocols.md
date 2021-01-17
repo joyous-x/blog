@@ -7,6 +7,7 @@ categories:
   - algorithm
 tags:
   - 
+permalink:
 ---
 # 分布式一致性协议简介
 

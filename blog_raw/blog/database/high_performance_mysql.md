@@ -7,6 +7,7 @@ categories:
   - database
 tags: 
   - 
+permalink:
 ---
 
 # High Performance Mysql, 3th Edition

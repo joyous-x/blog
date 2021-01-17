@@ -2,6 +2,7 @@
 title: 重构的12条军规
 date: 2020-04-13
 description: "架构之重构的12条军规"
+permalink:
 ---
 
 # 架构之重构的12条军规

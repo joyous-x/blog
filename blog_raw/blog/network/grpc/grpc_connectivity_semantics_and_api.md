@@ -9,6 +9,7 @@ categories:
   - grpc
 tags: 
   - 
+permalink:
 ---
 
 # gRPC Connectivity Semantics and API

@@ -8,6 +8,7 @@ categories:
   - imgproc
 tags: 
   - 
+permalink:
 ---
 # 图像处理基础
 

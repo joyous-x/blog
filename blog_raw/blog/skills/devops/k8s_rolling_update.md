@@ -8,6 +8,7 @@ categories:
   - devops
 tags: 
   - 
+permalink:
 ---
 
 # K8S 之 rolling update

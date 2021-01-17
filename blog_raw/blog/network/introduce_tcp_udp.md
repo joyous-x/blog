@@ -7,6 +7,7 @@ categories:
   - network
 tags: 
   - 
+permalink:
 ---
 
 # TCP与UDP 对比

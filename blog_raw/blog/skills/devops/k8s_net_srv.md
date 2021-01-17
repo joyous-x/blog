@@ -8,6 +8,7 @@ categories:
   - devops
 tags: 
   - 
+permalink:
 ---
 
 # K8S网络之service间的通信

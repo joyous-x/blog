@@ -7,6 +7,7 @@ categories:
   - database
 tags: 
   - 
+permalink:
 ---
 
 # 常见 DB 基础

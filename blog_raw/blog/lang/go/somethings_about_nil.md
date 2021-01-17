@@ -12,7 +12,7 @@ keywords:
 description: 关于 nil 的一些事情
 tags: 
   - golang
-thumbnail: 
+permalink:
 ---
 
 # 关于 nil 的一些事情

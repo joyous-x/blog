@@ -7,6 +7,7 @@ categories:
   - database
 tags: 
   - 
+permalink:
 ---
 
 ## db 详解

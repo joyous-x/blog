@@ -9,6 +9,7 @@ categories:
   - grpc
 tags: 
   - 
+permalink:
 ---
 
 # grpc interceptor with go

@@ -14,6 +14,7 @@ keywords:
 description: kubernetes 基础知识汇总，以及mesh services---后 Kubernetes 时代的微服务
 tags: 
   - 
+permalink:
 ---
 # Kubernetes
 

@@ -8,6 +8,7 @@ categories:
   - linux
 tags: 
   - null
+permalink:
 ---
 
 ## Common

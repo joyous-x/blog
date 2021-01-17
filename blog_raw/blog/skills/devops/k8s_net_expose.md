@@ -8,6 +8,7 @@ categories:
   - devops
 tags: 
   - 
+permalink:
 ---
 
 # K8S网络之集群外访问service的方式

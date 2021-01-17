@@ -2,6 +2,7 @@
 title: 代码重构(笔记)
 date: 2020-04-13
 description: "代码重构笔记"
+permalink:
 ---
 
 # 代码重构培训(笔记)

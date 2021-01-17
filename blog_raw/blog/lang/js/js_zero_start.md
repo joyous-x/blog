@@ -10,6 +10,7 @@ keywords:
 description: js 基础知识汇总
 tags: 
   - 
+permalink:
 ---
 
 # JS 零基础起步

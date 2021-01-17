@@ -7,6 +7,7 @@ categories:
   - database
 tags: 
   - 
+permalink:
 ---
 
 # 批量写入造成mysql访问慢问题

@@ -18,7 +18,7 @@ tags:
 
 ## DevOps
 ### Docker
-* [Docker 基础使用指南](../skills/devops/docker/docker-base.md)
+* [Docker 基础使用指南](../skills/devops/docker-base.md)
 ### K8S
 * [K8s简述](../skills/devops/k8s_base.md)
 * [K8S网络之网络框架](../skills/devops/k8s_net_mode.md)

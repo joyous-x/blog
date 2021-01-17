@@ -8,6 +8,7 @@ categories:
   - cxx
 tags: 
   - 
+permalink:
 ---
 
 ```

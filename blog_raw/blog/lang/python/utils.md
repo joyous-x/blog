@@ -7,6 +7,7 @@ categories:
   - python
 tags:
   - 
+permalink:
 ---
 # python 基础
 

@@ -8,6 +8,7 @@ categories:
   - cxx
 tags: 
   - 
+permalink:
 ---
 
 #### 定义常量

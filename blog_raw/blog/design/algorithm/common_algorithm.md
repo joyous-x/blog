@@ -7,6 +7,7 @@ categories:
   - algorithm
 tags:
   - 
+permalink:
 ---
 # Algorithm
 

@@ -2,6 +2,7 @@
 title: ARCHITECTURE(极客时间)摘要
 date: 2020-04-13
 description: "ARCHITECTURE(极客时间)摘要"
+permalink:
 ---
 
 ## ARCHITECTURE

@@ -11,6 +11,7 @@ keywords:
 description: golang 中 mod 的简介以及使用
 tags: 
   - 
+permalink:
 ---
 
 # Go Mod 简介

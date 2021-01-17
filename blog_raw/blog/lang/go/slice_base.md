@@ -14,7 +14,7 @@ keywords:
 description: slice 的底层结构，了解 slice 的实现基础
 tags: 
   - golang
-thumbnail: 
+permalink:
 ---
 
 # slice 底层结构

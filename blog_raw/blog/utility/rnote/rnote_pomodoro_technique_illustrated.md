@@ -2,6 +2,7 @@
 title: 番茄工作法图解笔记
 date: 2019-04-03
 description: "番茄工作法图解笔记"
+permalink:
 ---
 
 # 番茄工作法图解笔记

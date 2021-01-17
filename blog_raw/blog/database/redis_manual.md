@@ -7,6 +7,7 @@ categories:
   - database
 tags: 
   - 
+permalink:
 ---
 
 # Redis 手册

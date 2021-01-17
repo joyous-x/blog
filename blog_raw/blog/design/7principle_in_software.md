@@ -2,6 +2,7 @@
 title: 软件设计的7大原则
 date: 2020-04-13
 description: "软件设计的7大原则"
+permalink:
 ---
 
 # 软件设计的7大原则

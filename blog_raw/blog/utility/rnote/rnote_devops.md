@@ -2,6 +2,7 @@
 title: 持续交付(极客时间)摘要
 date: 2020-04-13
 description: "Devops 持续交付(极客时间)摘要"
+permalink:
 ---
 
 # Devops 持续交付

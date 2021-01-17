@@ -8,6 +8,7 @@ categories:
   - http2
 tags: 
   - 
+permalink:
 ---
 
 # http/2.0 and http/2.0 in Go
