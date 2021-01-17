@@ -1,8 +1,13 @@
 ---
 title: mysql 中的索引
-date: 2020-04-21
-lastmod: 
-description: "关于 mysql 中的引擎 以及 索引类型，以帮助更好的了解 mysql"
+date: 2020-04-21 00:00:00
+lastmod: null
+description: 关于 mysql 中的引擎 以及 索引类型，以帮助更好的了解 mysql
+categories: 
+  - blog
+  - database
+tags: 
+  - 
 ---
 
 # mysql 中的索引类型

@@ -1,7 +1,13 @@
 ---
 title: k8s-ipvs连接保持
-date: 2019-10-15 
-description: "k8s ipvs recorder"
+date: 2019-10-15 00:00:00
+description: k8s ipvs recorder
+categories: 
+  - blog
+  - skills
+  - devops
+tags: 
+  - 
 ---
 
 ## IPVS 在 k8s 中连接保持引发的问题：

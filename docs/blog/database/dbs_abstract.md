@@ -1,7 +1,12 @@
 ---
 title: DB 抽象理解
-date: 2020-04-21
-description: "常见db的抽象理解"
+date: 2020-04-21 00:00:00
+description: 常见db的抽象理解
+categories: 
+  - blog
+  - database
+tags: 
+  - 
 ---
 
 ## db 详解

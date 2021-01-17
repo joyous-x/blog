@@ -1,11 +1,16 @@
 ---
 title: Go Mod 简介
-date: 2020-03-23
-lastmod: 
+date: 2020-03-23 00:00:00
+lastmod: null
 publish: true
-categories: ["golang"]
-keywords: ["go", "mod"]
-description: "golang 中 mod 的简介以及使用"
+categories: 
+  - golang
+keywords: 
+  - go
+  - mod
+description: golang 中 mod 的简介以及使用
+tags: 
+  - 
 ---
 
 # Go Mod 简介

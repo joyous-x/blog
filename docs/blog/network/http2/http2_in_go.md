@@ -1,7 +1,13 @@
 ---
 title: http/2.0 and http/2.0 in Go
-date: 2019-01-05
-description: "http/2.0 and http/2.0 in Go"
+date: 2019-01-05 00:00:00
+description: http/2.0 and http/2.0 in Go
+categories: 
+  - blog
+  - network
+  - http2
+tags: 
+  - 
 ---
 
 # http/2.0 and http/2.0 in Go

@@ -1,7 +1,13 @@
 ---
 title: const详解
-date: 2020-04-13
-description: "const详解"
+date: 2020-04-13 00:00:00
+description: const详解
+categories: 
+  - blog
+  - lang
+  - cxx
+tags: 
+  - 
 ---
 
 #### 定义常量

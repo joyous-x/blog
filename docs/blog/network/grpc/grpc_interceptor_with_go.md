@@ -1,8 +1,14 @@
 ---
 title: grpc interceptor with go
-date: 2020-04-13
-lastmod: 
-description: "grpc interceptor with go"
+date: 2020-04-13 00:00:00
+lastmod: null
+description: grpc interceptor with go
+categories: 
+  - blog
+  - network
+  - grpc
+tags: 
+  - 
 ---
 
 # grpc interceptor with go

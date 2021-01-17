@@ -1,13 +1,20 @@
 ---
 title: slice 底层结构
-date: 2020-04-09
-lastmod: 
-taxonomies: ["golang", "slice"]
-categories: ["golang", "slice"]
-keywords: ["golang", "nil"]
-description: "slice 的底层结构，了解 slice 的实现基础"
-tags: ["golang"]
-thumbnail: ""
+date: 2020-04-09 00:00:00
+lastmod: null
+taxonomies: 
+  - golang
+  - slice
+categories: 
+  - golang
+  - slice
+keywords: 
+  - golang
+  - nil
+description: slice 的底层结构，了解 slice 的实现基础
+tags: 
+  - golang
+thumbnail: 
 ---
 
 # slice 底层结构

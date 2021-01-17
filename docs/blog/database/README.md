@@ -1,9 +1,14 @@
 ---
 title: database
-date: 2020-04-14
-lastmod: 
+date: 2020-04-14 00:00:00
+lastmod: null
 permalink: /blog/database/
-description: "database 相关知识汇总"
+description: database 相关知识汇总
+categories: 
+  - blog
+  - database
+tags: 
+  - 
 ---
 
 # Database

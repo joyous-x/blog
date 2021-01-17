@@ -1,7 +1,13 @@
 ---
 title: 只能分配在堆或栈上的类
-date: 2020-04-13
-description: "只能分配在堆或栈上的类"
+date: 2020-04-13 00:00:00
+description: 只能分配在堆或栈上的类
+categories: 
+  - blog
+  - lang
+  - cxx
+tags: 
+  - 
 ---
 
 ```

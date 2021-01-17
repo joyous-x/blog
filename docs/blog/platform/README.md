@@ -1,9 +1,14 @@
 ---
 title: platform
-date: 2020-04-14
-lastmod: 
+date: 2020-04-14 00:00:00
+lastmod: null
 permalink: /blog/platform/
-description: "platform 相关知识汇总"
+description: platform 相关知识汇总
+categories: 
+  - blog
+  - platform
+tags: 
+  - 
 ---
 
 ## Windows

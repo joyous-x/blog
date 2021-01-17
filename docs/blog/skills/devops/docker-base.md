@@ -1,8 +1,14 @@
 ---
 title: docker 基础知识
-date: 2019-12-18 
-lastmod: 
-description: "docker 基础知识汇总，以及常见操作"
+date: 2019-12-18 00:00:00
+lastmod: null
+description: docker 基础知识汇总，以及常见操作
+categories: 
+  - blog
+  - skills
+  - devops
+tags: 
+  - 
 ---
 
 # Docker 基础使用指南

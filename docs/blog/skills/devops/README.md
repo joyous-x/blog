@@ -1,9 +1,15 @@
 ---
 title: devops
-date: 2020-04-13
-lastmod: 
+date: 2020-04-13 00:00:00
+lastmod: null
 permalink: /blog/skills/devops/
-description: "devops相关知识汇总"
+description: devops相关知识汇总
+categories: 
+  - blog
+  - skills
+  - devops
+tags: 
+  - 
 ---
 
 ## Docker

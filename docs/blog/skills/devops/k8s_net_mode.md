@@ -1,7 +1,13 @@
 ---
 title: K8S网络之网络框架
-date: 2019-12-18
+date: 2019-12-18 00:00:00
 description: K8S网络之网络框架
+categories: 
+  - blog
+  - skills
+  - devops
+tags: 
+  - 
 ---
 
 # K8S网络之网络框架

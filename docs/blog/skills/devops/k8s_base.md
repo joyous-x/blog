@@ -1,9 +1,19 @@
 ---
 title: kubernetes 简述
-date: 2019-12-18 
-categories: ["kubernetes", "istio", "envoy", "mesh services"]
-keywords: ["envoy", "k8s", "istio", "mesh services"]
-description: "kubernetes 基础知识汇总，以及mesh services---后 Kubernetes 时代的微服务"
+date: 2019-12-18 00:00:00
+categories: 
+  - kubernetes
+  - istio
+  - envoy
+  - mesh services
+keywords: 
+  - envoy
+  - k8s
+  - istio
+  - mesh services
+description: kubernetes 基础知识汇总，以及mesh services---后 Kubernetes 时代的微服务
+tags: 
+  - 
 ---
 # Kubernetes
 

@@ -1,11 +1,17 @@
 ---
 title: recover & const 简述
-date: 2019-12-23
-lastmod: 
+date: 2019-12-23 00:00:00
+lastmod: null
 publish: true
-categories: ["golang"]
-keywords: ["recover", "panic", "const"]
-description: "golang 中 recover 的使用，以及 const 类型转换使用过程中遇到的的问题"
+categories: 
+  - golang
+keywords: 
+  - recover
+  - panic
+  - const
+description: golang 中 recover 的使用，以及 const 类型转换使用过程中遇到的的问题
+tags: 
+  - 
 ---
 
 # recover & const 简述

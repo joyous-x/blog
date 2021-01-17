@@ -1,13 +1,18 @@
 ---
 title: 关于 nil 判定的一些事情
-date: 2020-04-09
-lastmod: 
-taxonomies: ["golang"]
-categories: ["golang"]
-keywords: ["golang", "nil"]
-description: "关于 nil 的一些事情"
-tags: ["golang"]
-thumbnail: ""
+date: 2020-04-09 00:00:00
+lastmod: null
+taxonomies: 
+  - golang
+categories: 
+  - golang
+keywords: 
+  - golang
+  - nil
+description: 关于 nil 的一些事情
+tags: 
+  - golang
+thumbnail: 
 ---
 
 # 关于 nil 的一些事情

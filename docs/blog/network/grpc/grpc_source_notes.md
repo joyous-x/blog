@@ -1,8 +1,14 @@
 ---
 title: grpc source notes
-date: 2020-04-13
-lastmod: 
-description: "grpc source notes"
+date: 2020-04-13 00:00:00
+lastmod: null
+description: grpc source notes
+categories: 
+  - blog
+  - network
+  - grpc
+tags: 
+  - 
 ---
 
 # grpc source notes

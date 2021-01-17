@@ -1,9 +1,14 @@
 ---
 title: network
-date: 2020-04-13
-lastmod: 
+date: 2020-04-13 00:00:00
+lastmod: null
 permalink: /blog/network/
-description: "网络基础知识汇总"
+description: 网络基础知识汇总
+categories: 
+  - blog
+  - network
+tags: 
+  - 
 ---
 
 * [TCP与UDP 对比](../network/introduce_tcp_udp.md)
