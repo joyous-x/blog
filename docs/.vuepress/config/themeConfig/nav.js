@@ -44,9 +44,9 @@ module.exports = [
                 text: '技能',
                 link: '/blog/skills/',
                 items: [
-                    { text: 'Devops', link: '/blog/skills/devops/' },
-                    { text: 'Bigdata', link: '/blog/skills/bigdata/' },
-                    { text: 'Image Processing', link: '/blog/skills/imgproc/' },
+                    { text: 'Devops', link: '/blog/skills/##devops' },
+                    { text: 'Bigdata', link: '/blog/skills/##bigdata' },
+                    { text: 'Image Processing', link: '/blog/skills/##imgproc' },
                 ],
             },
             {
