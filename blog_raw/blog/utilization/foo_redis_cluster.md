@@ -1,7 +1,7 @@
 ---
 title: 实践：创建redis cluster
 date: 2020-04-13
-description: "中文字符编码实现方案"
+description: "实践：创建redis cluster"
 permalink:
 ---
 
