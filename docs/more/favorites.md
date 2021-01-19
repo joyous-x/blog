@@ -1,22 +1,16 @@
 ---
 title: 网站
 date: 2020-04-19
-permalink: /more/favorites/网站/
+permalink: /more/favorites/
 article: false
 ---
+::: tip
+收集一些常用的页面，持续整理中...
+:::
+
 # 个人收藏夹
 
-## 大佬收藏夹
-* [panjiachen](https://panjiachen.github.io/awesome-bookmarks/)
-
 <!-- more -->
-
-## 文档
-* [现代JavaScript教程](https://zh.javascript.info) 以最新标准为基准的JS教程
-* [ES5教程](https://wangdoc.com/javascript/) 阮一峰的JS教程
-* [Bash 脚本教程](https://wangdoc.com/bash/) 阮一峰编写
-* [ECMA](https://www.ecma-international.org/) ECMA官网
-* [菜鸟教程](https://www.runoob.com/) 涵盖多种语言的初级教程
 
 ## 社区
 * [掘金](https://juejin.im/) 一个帮助开发者成长的社区
@@ -28,23 +22,12 @@ article: false
 * [鱼塘热榜](https://mo.fish/main/home/hot) 划水网站，收集了很多网站，当天热门文章
 * [码力全开资源库](https://maliquankai.com/designnav/) 很全很强大，独立开发者/设计干货/优质利器/工具资源...
 
-## 博客
-* [samanthaming](https://www.samanthaming.com/) 对前端小知识点的总结，并为每个知识点制作精美的小卡片。
-
-
-## 科学上网
-- [谷歌chrome商店访问助手](https://www.ggfwzs.com/)
-- [谷歌云(GCP)一键搭建 V2Ray 让你畅快科学上网](https://www.datacenterfarm.com/2549.html)
-
 ## 视频
 * [慕课网](https://www.imooc.com/) 实战视频教程
 * [妙味课堂](https://www.miaov.com/) 比较系统的前端入门视频教程
 * [中国大学MOOC](https://www.icourse163.org/) 涵盖计算机、外语、心理学等专业免费课程
 * [bilibili](https://www.bilibili.com/) B站，上面也有一些可供学习的免费视频
 * [egghead](http://egghead.io) 质量还不错的短视频教程，外网
-
-### 电视直播
-* [CCTV、卫视高清直播](http://ivi.bupt.edu.cn/)
 
 ## Github
 * [github 短域名服务](https://git.io/)
@@ -95,7 +78,6 @@ article: false
 ### 其他
 * [Linux命令手册](https://ipcmen.com/)
 * [代码图片生成器](https://carbon.now.sh/)
-
 
 ## 设计
 - [创造师导航](http://chuangzaoshi.com/)
@@ -185,7 +167,6 @@ article: false
 - [browser-update](https://browser-update.org/) 浏览器版本更新提示插件
 - [typeform](https://admin.typeform.com/signup) 一个国外的在线调查问卷网站
 - [VideoFk](https://www.videofk.com/) VideoFk 视频在线解析下载
-- [全历史](https://www.allhistory.com/) 历史内容聚合网站
 - [UzerMe](https://www.uzer.me/) 云端办公工具
 - [SoBooks](https://sobooks.cc/) 强大的电子书资源网站
 - [稿定设计](https://www.gaoding.com/) 键式设计工具+智能抠图
@@ -201,3 +182,6 @@ article: false
 ## Talk
 - [peerigon-talks](https://github.com/peerigon/talks) 收集了不少有意思的 talks
 
+## 科学上网
+- [谷歌chrome商店访问助手](https://www.ggfwzs.com/)
+- [谷歌云(GCP)一键搭建 V2Ray 让你畅快科学上网](https://www.datacenterfarm.com/2549.html)

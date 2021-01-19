@@ -76,8 +76,7 @@ module.exports = [
                 text: '收藏',
                 link: '/more/favorites/',
                 items: [
-                    { text: '网站', link: '/more/favorites/网站/' },
-                    { text: '资源', link: '/more/favorites/资源/' },
+                    { text: 'favorites', link: '/more/favorites/' },
                 ],
             },
         ]
