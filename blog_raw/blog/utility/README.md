@@ -20,6 +20,7 @@ tags:
 * [重构的12条军规](../utility/rnote/rnote_refactor_12_rules.md)
 * [代码重构(笔记)](../utility/rnote/rnote_of_refactor.md)
 * [番茄工作法图解笔记](../utility/rnote/rnote_pomodoro_technique_illustrated.md)
+* [关于PM](../utility/rnote/about_pm.md)
 * [关于交流沟通](../utility/rnote/about_communication.md)
 * [持续交付(极客时间)摘要](../utility/rnote/rnote_devops.md)
 * [ARCHITECTURE(极客时间)摘要](../utility/rnote/rnote_architecture.md)
