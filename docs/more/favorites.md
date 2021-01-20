@@ -32,7 +32,6 @@ article: false
 * [remove](https://www.remove.bg/zh) AI抠图
 * [稿定设计](https://www.gaoding.com/) 键式设计工具+智能抠图
 * [vectorizer](https://www.vectorizer.io/) 真正的 png 转 svg 神器
-
 ### 实用
 - [正则可视化](https://regex101.com/)
 - [Linux命令手册](https://ipcmen.com/)
@@ -42,7 +41,6 @@ article: false
 - [来画视频](https://www.laihua.com/) 像做 PPT 一样做短视频
 - [优品 PPT](http://www.ypppt.com/)
 - [比格 PPT](http://www.tretars.com/)
-
 ### CSS
 * [CSS Tricks](http://css-tricks.neatbang.com/) CSS技巧收集与演示
 * [CSS生成器](https://neumorphism.io/)
@@ -51,17 +49,16 @@ article: false
 * [3D字体](https://bennettfeely.com/ztext/)
 * [css-tricks](https://css-tricks.com/) css技巧文章
 * [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/zh-cn/) CSS的各种DEMO，很全
-
+* [CSS triangle generator](http://apps.eky.hk/css-triangle-generator/) 帮你快速用 css 做出三角形
+* [clippy](http://bennettfeely.com/clippy/) 在线帮你使用 css clip-path 做出各种形状的图形
 ### Emoji表情
 * [emoji表情](https://emojipedia.org/)
 * [emoji表情备忘录](https://www.webfx.com/tools/emoji-cheat-sheet)
 * [gitmoji](https://github.com/carloscuesta/gitmoji) 通过 emoji 表达 git 的操作内容
 > windows系统下按<kbd>Win</kbd>+<kbd>.</kbd>快速打开表情选择框
-
 ### 科学上网
 - [谷歌chrome商店访问助手](https://www.ggfwzs.com/)
 - [谷歌云(GCP)一键搭建 V2Ray 让你畅快科学上网](https://www.datacenterfarm.com/2549.html)
-
 ### CDN加速
 * [jsDelivr](http://www.jsdelivr.com/) 国外的一家优秀的公共 CDN 服务提供商
 * [unpkg](https://unpkg.com/) cdn 服务
@@ -73,16 +70,8 @@ article: false
 - [awwwards](https://www.awwwards.com/)是一个一个专门为设计精美的网站以及富有创意的网站颁奖的网站
 - [dribbble](https://dribbble.com/) 经常能在上面找到很多有创意好看的 gif 或者图片
 - [Bēhance](https://www.behance.net/) dribbble 是设计师的微博，Bēhance 是设计师的博客
-- [Logojoy](https://logojoy.com/) 使用 ai 做 logo 的网站，做出来的 logo 质量还不错。∂∂
-- [brandmark](http://brandmark.io/) 另一个在线制作 logo 网站
-- [instant](https://instantlogodesign.com/) 又一个 logo 制作网站
-- [namecheap](https://www.namecheap.com/logo-maker/app/)又一个 logo 制作网站
-- [logo-maker](https://www.designevo.com/logo-maker/) 又一个 logo 制作网站 这个更简单点 就是选模板之后微调
 - [designcap](https://www.designcap.com/) 在线海报设计
-- [nord ](https://github.com/arcticicestudio/nord) 北欧性冷淡风主题配色
 - [design.youzan](http://design.youzan.com/) 有赞设计原则
-* [CSS triangle generator](http://apps.eky.hk/css-triangle-generator/) 帮你快速用 css 做出三角形
-* [clippy](http://bennettfeely.com/clippy/) 在线帮你使用 css clip-path 做出各种形状的图形
 * [Lorem Picsum](https://picsum.photos/) 提供免费的占位图
 * [Canva 可画](https://www.canva.cn/) 生成插画、封面、海报、头像等
 - [搞定设计](https://www.gaoding.com/) 可以抠图
@@ -96,7 +85,6 @@ article: false
 - [pexels](https://www.pexels.com/) 高清免费图片
 - [pixabay](https://pixabay.com/photos/) 高清免费图片
 - [alphacoders](https://art.alphacoders.com/) 手机壁纸
-- [unsplash](https://unsplash.com/) 高清免费图片
 ### 矢量图 & Icon
 - [Ikonate](https://github.com/mikolajdobrucki/ikonate) 提供免费的图标 icons
 - [remixicon](https://remixicon.com/) 又一个提供免费图标 icons
@@ -104,8 +92,14 @@ article: false
 - [iconfont](https://www.iconfont.cn/) 阿里巴巴矢量图标库
 - [easyicon](https://www.easyicon.net/) easyicon图标库
 - [Undraw](https://undraw.co/illustrations) 免费的矢量插画
-* [icomoon](https://icomoon.io/) 矢量图标库
+- [icomoon](https://icomoon.io/) 矢量图标库
 - [cssicon](http://cssicon.space/#/) 所有的 icon 都是纯 css 画的 缺点：icon 不够多
+### Logo
+- [Logojoy](https://logojoy.com/) ai 在线制作 logo，做出来的 logo 质量还不错
+- [brandmark](http://brandmark.io/) 在线制作 logo 网站
+- [instant](https://instantlogodesign.com/) 在线制作 logo 网站
+- [namecheap](https://www.namecheap.com/logo-maker/app/) 在线制作 logo 网站
+- [logo-maker](https://www.designevo.com/logo-maker/) 在线制作 logo 网站
 ### 配色
 - [uigradients](https://uigradients.com/) 渐变色生成工具
 - [Flat UI 色表](https://flatuicolors.com/) Flat UI 色表
