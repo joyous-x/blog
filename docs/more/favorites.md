@@ -1,5 +1,5 @@
 ---
-title: 网站
+title: 收藏夹
 date: 2020-04-19
 permalink: /more/favorites/
 article: false
@@ -8,8 +8,7 @@ article: false
 收集一些常用的页面，持续整理中...
 :::
 
-# 个人收藏夹
-
+# 收藏夹
 <!-- more -->
 
 ## 社区
@@ -20,32 +19,9 @@ article: false
 * [InfoQ](https://www.infoq.cn/topic/Front-end)
 * [V2EX](https://www.v2ex.com/)
 * [鱼塘热榜](https://mo.fish/main/home/hot) 划水网站，收集了很多网站，当天热门文章
-* [码力全开资源库](https://maliquankai.com/designnav/) 很全很强大，独立开发者/设计干货/优质利器/工具资源...
-
-## 视频
-* [慕课网](https://www.imooc.com/) 实战视频教程
-* [妙味课堂](https://www.miaov.com/) 比较系统的前端入门视频教程
-* [中国大学MOOC](https://www.icourse163.org/) 涵盖计算机、外语、心理学等专业免费课程
-* [bilibili](https://www.bilibili.com/) B站，上面也有一些可供学习的免费视频
-* [egghead](http://egghead.io) 质量还不错的短视频教程，外网
-
-## Github
-* [github 短域名服务](https://git.io/)
-* [shields](https://shields.io/) 徽章图标
-* [followers 全球排名](https://wangchujiang.com/github-rank/index.html)
-* [star-history](https://star-history.t9t.io/) 展示一个项目 Stars 增长曲线
+* [Github followers 全球排名](https://wangchujiang.com/github-rank/index.html)
 
 ## 在线工具
-### 代码编辑
-* [codepen](https://codepen.io) 在线代码编辑与演示
-* [codesandbox](https://codesandbox.io) 内嵌VSCode的在线IDE
-
-### Emoji表情
-* [emoji表情](https://emojipedia.org/)
-* [emoji表情备忘录](https://www.webfx.com/tools/emoji-cheat-sheet)
-* [gitmoji](https://github.com/carloscuesta/gitmoji) 通过 emoji 表达 git 的操作内容
-> windows系统下按<kbd>Win</kbd>+<kbd>.</kbd>快速打开表情选择框
-
 ### 图片工具
 * [tinypng图片压缩](https://tinypng.com) 压缩png很有用
 * [Squoosh](https://squoosh.app/) 谷歌出品在线免费图片压缩工具
@@ -54,30 +30,41 @@ article: false
 * [vectorizer](https://www.vectorizer.io/) 真正的 png 转 svg 神器
 * [在线AI图片处理](https://photo.opencool.cn/) 黑白修复、无损放大、动漫化、铅笔画等。
 * [remove](https://www.remove.bg/zh) AI抠图
+* [稿定设计](https://www.gaoding.com/) 键式设计工具+智能抠图
+
+### 实用
+- [正则可视化](https://regex101.com/)
+- [Linux命令手册](https://ipcmen.com/)
+- [代码图片生成器](https://carbon.now.sh/)
+- [Github shields](https://shields.io/) 徽章图标
+- [大力盘](https://dalipan.com/) 百度网盘搜索
+- [来画视频](https://www.laihua.com/) 像做 PPT 一样做短视频
+- [优品 PPT](http://www.ypppt.com/)
+- [比格 PPT](http://www.tretars.com/)
+
+### 科学上网
+- [谷歌chrome商店访问助手](https://www.ggfwzs.com/)
+- [谷歌云(GCP)一键搭建 V2Ray 让你畅快科学上网](https://www.datacenterfarm.com/2549.html)
 
 ### CSS
 * [CSS Tricks](http://css-tricks.neatbang.com/) CSS技巧收集与演示
 * [CSS生成器](https://neumorphism.io/)
 * [CSS渐变生成器](https://www.colorzilla.com/gradient-editor/)
 * [CSS3-Box Shadow(阴影)](https://www.html.cn/tool/css3Preview/Box-Shadow.html)
-* [贝塞尔曲线生成器	](https://cubic-bezier.com)
-* [花纹背景生成器](http://www.heropatterns.com/)
-* [花纹背景-pattern.css](https://github.com/bansal-io/pattern.css)
 * [3D字体](https://bennettfeely.com/ztext/)
 * [css-tricks](https://css-tricks.com/) css技巧文章
 * [You-need-to-know-css](https://lhammer.cn/You-need-to-know-css/#/zh-cn/) CSS的各种DEMO，很全
-* [animista](https://animista.net/) CSS动画可视化工具
+
+### Emoji表情
+* [emoji表情](https://emojipedia.org/)
+* [emoji表情备忘录](https://www.webfx.com/tools/emoji-cheat-sheet)
+* [gitmoji](https://github.com/carloscuesta/gitmoji) 通过 emoji 表达 git 的操作内容
+> windows系统下按<kbd>Win</kbd>+<kbd>.</kbd>快速打开表情选择框
 
 ### CDN加速
 * [jsDelivr](http://www.jsdelivr.com/) 国外的一家优秀的公共 CDN 服务提供商
 * [unpkg](https://unpkg.com/) cdn 服务
 
-### 正则
-* [正则可视化](https://regex101.com/)
-
-### 其他
-* [Linux命令手册](https://ipcmen.com/)
-* [代码图片生成器](https://carbon.now.sh/)
 
 ## 设计
 - [创造师导航](http://chuangzaoshi.com/)
@@ -119,8 +106,9 @@ article: false
 * [Lorem Picsum](https://picsum.photos/) 提供免费的占位图
 
 * [Canva 可画](https://www.canva.cn/) 生成插画、封面、海报、头像等
-### 图库
 
+## 图库 & 壁纸
+- [wallhaven](https://alpha.wallhaven.cc/) 壁纸网站-
 - [uigradients](https://uigradients.com/) 渐变色生成工具
 - [freepik](https://www.freepik.com/) banner 图库
 - [觅元素](http://www.51yuansu.com/)一天免费下载十张 psd
@@ -131,57 +119,22 @@ article: false
 - [虎克](https://huke88.com/) Ps 学习教程
 - [beTheme](https://themes.muffingroup.com/be/splash/)
 - [UI 中国](https://www.ui.cn/)
-
-## 有趣
-- [奇趣网站收藏家](https://fuun.fun/) 收藏了很多有趣的网站
-- [帮你百度一下](http://www.baidu-x.com/) 可以 [点我测试一下](http://www.baidu-x.com/?q=和谐有爱富强)-
-- [国际版](http://lmgtfy.com/) 同`帮我百度一下`-[点我测试一下](http://lmgtfy.com/?q=a)-
-- [wallhaven](https://alpha.wallhaven.cc/) 壁纸网站-
-- [URL 地址播放 Emojis 动画](http://matthewrayfield.com/articles/animating-urls-with-javascript-and-emojis/#🌖) 在地址栏里面播放 emoji
-- [Can't Unsee](https://cantunsee.space/) 强烈建议前端、客户端、UI 开发的同学玩下，检查一下自己对设计稿的敏感度怎么样
-- [ggtalk](https://talk.swift.gg/) 平时一直在听的一个技术博客
-- [awesome-comment](https://github.com/Blankj/awesome-comment) 里面收集了很多有趣的代码注释
-- [text-img](https://www.text-image.com/index.html) 都将图片转化为 ascii 用来写注释
-- [weird-fonts](https://github.com/beizhedenglong/weird-fonts) 将普通字母转化为 特殊 unicode
-- [snake](https://github.com/epidemian/snake) 在地址栏里面玩贪吃蛇
-- [zero-width-lib](https://github.com/yuanfux/zero-width-lib) 利用零宽度字符实现 隐形水印、加密信息分享、逃脱词匹配，很有创意
-- [abbreviations](https://www.abbreviations.com/) 查看一个简写是什么意思的网站
-- [magi](https://magi.com/) ai 搜索神器，超屌
-- [诺基亚短信图片生成器](https://zzkia.noddl.me:8020/)
-
-## 交互
-
-- [微交互](http://aliscued.lofter.com/) 里面收集了市面上很多很好的微交互例子 值得学习
-- [Little Big Details](http://littlebigdetails.com/) 同上，一个国外微交互汇集网站
-- [cruip](https://cruip.com/) 登录页的各种页面设计，可以免费下载模板
-- [Comixify](https://comixify.ii.pw.edu.pl/) 一个波兰团队做了非常好玩的工具，可以把视频自动转成漫画，上图是他们提供的 demo，效果很棒。
-- [taiko-web](https://github.com/bui/taiko-web) 太鼓达人网页版 只能说很 6
-
-## 产品
-
-- [产品大牛](http://www.pmdaniu.com/) 什么有很多完整的产品原型可以借鉴
-- [磨刀](https://modao.cc/pricing) 快速出 ui 原型
-
-## 实用
-
-- [browser-update](https://browser-update.org/) 浏览器版本更新提示插件
-- [typeform](https://admin.typeform.com/signup) 一个国外的在线调查问卷网站
-- [VideoFk](https://www.videofk.com/) VideoFk 视频在线解析下载
-- [UzerMe](https://www.uzer.me/) 云端办公工具
-- [SoBooks](https://sobooks.cc/) 强大的电子书资源网站
-- [稿定设计](https://www.gaoding.com/) 键式设计工具+智能抠图
-- [大力盘](https://dalipan.com/) 百度网盘搜索
-- [ENFI 下载器](https://www.macbl.com/app/internet/enfi) 不限速下载器
-- [来画视频](https://www.laihua.com/) 像做 PPT 一样做短视频
-- [Arkie 海报制作工具](https://www.arkie.cn/)
-- [优品 PPT](http://www.ypppt.com/)
-- [比格 PPT](http://www.tretars.com/)
 - [高清免费图片](https://www.pexels.com/)
 - [高清免费图片 2](https://unsplash.com/)
 
-## Talk
-- [peerigon-talks](https://github.com/peerigon/talks) 收集了不少有意思的 talks
+## 有趣
+- [awesome-comment](https://github.com/Blankj/awesome-comment) 里面收集了很多有趣的代码注释
+- [text-img](https://www.text-image.com/index.html) 都将图片转化为 ascii 用来写注释
+- [weird-fonts](https://github.com/beizhedenglong/weird-fonts) 将普通字母转化为 特殊 unicode
+- [magi](https://magi.com/) ai 搜索神器，超屌
+- [Comixify](https://comixify.ii.pw.edu.pl/) 一个波兰团队做了非常好玩的工具，可以把视频自动转成漫画，上图是他们提供的 demo，效果很棒。
 
-## 科学上网
-- [谷歌chrome商店访问助手](https://www.ggfwzs.com/)
-- [谷歌云(GCP)一键搭建 V2Ray 让你畅快科学上网](https://www.datacenterfarm.com/2549.html)
+
+## 产品
+- [产品大牛](http://www.pmdaniu.com/) 什么有很多完整的产品原型可以借鉴
+- [磨刀](https://modao.cc/pricing) 快速出 ui 原型
+### 交互
+- [Can't Unsee](https://cantunsee.space/) 强烈建议前端、客户端、UI 开发的同学玩下，检查一下自己对设计稿的敏感度怎么样
+- [微交互](http://aliscued.lofter.com/) 里面收集了市面上很多很好的微交互例子 值得学习
+- [Little Big Details](http://littlebigdetails.com/) 同上，一个国外微交互汇集网站
+- [cruip](https://cruip.com/) 登录页的各种页面设计，可以免费下载模板
