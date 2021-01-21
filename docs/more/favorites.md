@@ -69,13 +69,19 @@ article: false
 - [uimovement](https://uimovement.com/) 能从这个网站找到不少动画交互的灵感
 - [awwwards](https://www.awwwards.com/)是一个一个专门为设计精美的网站以及富有创意的网站颁奖的网站
 - [dribbble](https://dribbble.com/) 经常能在上面找到很多有创意好看的 gif 或者图片
-- [Bēhance](https://www.behance.net/) dribbble 是设计师的微博，Bēhance 是设计师的博客
 - [designcap](https://www.designcap.com/) 在线海报设计
 - [design.youzan](http://design.youzan.com/) 有赞设计原则
-* [Lorem Picsum](https://picsum.photos/) 提供免费的占位图
 * [Canva 可画](https://www.canva.cn/) 生成插画、封面、海报、头像等
 - [搞定设计](https://www.gaoding.com/) 可以抠图
 - [UI 中国](https://www.ui.cn/)
+### 配色
+- [uigradients](https://uigradients.com/) 渐变色生成工具
+- [Flat UI 色表](https://flatuicolors.com/) Flat UI 色表
+- [0to255](https://www.0to255.com/) 颜色梯度
+- [colorhunt](http://colorhunt.co/) 另一个配色网站
+- [uigradients](https://uigradients.com/#SummerDog) 渐变色网站
+- [coolors](https://coolors.co/) 帮你在线配色的网站 你能找到不少配色灵感
+- [colorkitty](https://colorkitty.com/) 从你的图片中提取配色
 
 ## 图库 & 壁纸
 - [wallhaven](https://alpha.wallhaven.cc/) 壁纸网站-
@@ -85,7 +91,7 @@ article: false
 - [pexels](https://www.pexels.com/) 高清免费图片
 - [pixabay](https://pixabay.com/photos/) 高清免费图片
 - [alphacoders](https://art.alphacoders.com/) 手机壁纸
-### 矢量图 & Icon
+### 矢量图(Icon)
 - [Ikonate](https://github.com/mikolajdobrucki/ikonate) 提供免费的图标 icons
 - [remixicon](https://remixicon.com/) 又一个提供免费图标 icons
 - [feather](https://github.com/feathericons/feather) 免费的 icons
@@ -100,14 +106,7 @@ article: false
 - [instant](https://instantlogodesign.com/) 在线制作 logo 网站
 - [namecheap](https://www.namecheap.com/logo-maker/app/) 在线制作 logo 网站
 - [logo-maker](https://www.designevo.com/logo-maker/) 在线制作 logo 网站
-### 配色
-- [uigradients](https://uigradients.com/) 渐变色生成工具
-- [Flat UI 色表](https://flatuicolors.com/) Flat UI 色表
-- [0to255](https://www.0to255.com/) 颜色梯度
-- [colorhunt](http://colorhunt.co/) 另一个配色网站
-- [uigradients](https://uigradients.com/#SummerDog) 渐变色网站
-- [coolors](https://coolors.co/) 帮你在线配色的网站 你能找到不少配色灵感
-- [colorkitty](https://colorkitty.com/) 从你的图片中提取配色
+
 
 ## 产品
 - [产品大牛](http://www.pmdaniu.com/) 什么有很多完整的产品原型可以借鉴
