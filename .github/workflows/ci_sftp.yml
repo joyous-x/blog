@@ -1,0 +1,42 @@
+name: CI_SFTP
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches:
+      - main
+    #tags:
+    # - ftp-v*
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Deploy files to Cloud
+        uses: wlixcc/SFTP-Deploy-Action@v1.0 
+        with:  
+          username: 'jiao'
+          server: '${{ secrets.SSH_RSA_SERVER_IP }}' 
+          ssh_private_key: ${{ secrets.SSH_RSA_PRIVATE_KEY }} 
+          local_path: 'docs/.vuepress/dist/*'  # 对应我们项目build的文件夹路径
+          remote_path: '/data/www/myapp'

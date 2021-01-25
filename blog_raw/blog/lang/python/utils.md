@@ -199,3 +199,14 @@ This is equivalent to:
 
 func = decomaker(argA, argB, ...)(func)
 ```
+
+
+#### 常用源
+
+编辑配置文件 ~/.pip/pip.conf，添加内容如下：
+
+[global]
+index-url = https://pypi.doubanio.com/simple
+trusted-host = pypi.doubanio.com
+
+- 也可以通过命令行的 -i 参数指定源
