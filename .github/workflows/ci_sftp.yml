@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Build
-        run: npm install && npm run build 
+        run: mv -f docs/.vuepress/config.base_blog.js docs/.vuepress/config.js && npm install && npm run build 
 
       - name: Deploy files to Cloud
         uses: wlixcc/SFTP-Deploy-Action@v1.0 
@@ -40,4 +40,4 @@ jobs:
           server: '${{ secrets.SSH_RSA_SERVER_IP }}' 
           ssh_private_key: ${{ secrets.SSH_RSA_PRIVATE_KEY }} 
           local_path: 'docs/.vuepress/dist/*'  # 对应我们项目build的文件夹路径
-          remote_path: '/data/www/myapp'
+          remote_path: '/data/www/myapp_blog'
