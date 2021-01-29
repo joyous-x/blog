@@ -24,13 +24,6 @@ cardList 后面可跟随一个数字表示每行最多显示多少个，选值�
   link: https://xaoxuu.com
   bgColor: '#B9D59C'
   textColor: '#3B551F'
-- name: lookroot的个人空间
-  desc: 寻求理想和显示的平衡
-  avatar: https://www.lookroot.cn/logo.png
-  link: https://www.lookroot.cn/
-  bgColor: '#B7DBFF'
-  textColor: '#294D71'
-  ```
 :::
 
 

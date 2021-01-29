@@ -1,6 +1,6 @@
 ---
 title: 收藏夹
-date: 2020-04-19
+date: 2021-01-19
 permalink: /more/favorites/
 article: false
 ---
@@ -21,10 +21,34 @@ article: false
 * [鱼塘热榜](https://mo.fish/main/home/hot) 划水网站，收集了很多网站，当天热门文章
 * [Github followers 全球排名](https://wangchujiang.com/github-rank/index.html)
 
-## 在线工具
+## 图库 & 壁纸
+- [wallhaven](https://alpha.wallhaven.cc/) 壁纸网站-
+- [freepik](https://www.freepik.com/) banner 图库
+- [觅元素](http://www.51yuansu.com/)一天免费下载十张 psd
+- [虎克](https://huke88.com/) Ps 学习教程
+- [pexels](https://www.pexels.com/) 高清免费图片
+- [pixabay](https://pixabay.com/photos/) 高清免费图片
+- [alphacoders](https://art.alphacoders.com/) 手机壁纸
+- [konachan](https://konachan.net/) 高质量二次元图片
+### 矢量图(Icon)
+- [Ikonate](https://github.com/mikolajdobrucki/ikonate) 提供免费的图标 icons
+- [remixicon](https://remixicon.com/) 又一个提供免费图标 icons
+- [feather](https://github.com/feathericons/feather) 免费的 icons
+- [iconfont](https://www.iconfont.cn/) 阿里巴巴矢量图标库
+- [easyicon](https://www.easyicon.net/) easyicon图标库
+- [Undraw](https://undraw.co/illustrations) 免费的矢量插画
+- [icomoon](https://icomoon.io/) 矢量图标库
+- [cssicon](http://cssicon.space/#/) 所有的 icon 都是纯 css 画的 缺点：icon 不够多
+### Logo
+- [Logojoy](https://logojoy.com/) ai 在线制作 logo，做出来的 logo 质量还不错
+- [brandmark](http://brandmark.io/) 在线制作 logo 网站
+- [instant](https://instantlogodesign.com/) 在线制作 logo 网站
+- [namecheap](https://www.namecheap.com/logo-maker/app/) 在线制作 logo 网站
+- [logo-maker](https://www.designevo.com/logo-maker/) 在线制作 logo 网站
 ### 图片工具
 * [tinypng图片压缩](https://tinypng.com) 压缩png很有用
 * [Squoosh](https://squoosh.app/) 谷歌出品在线免费图片压缩工具
+* [iloveimg](https://www.iloveimg.com/zh-cn) 在线编辑图片：缩放、剪裁、压缩
 * [waifu2x](http://waifu2x.udp.jp/) 通过卷积网络放大图片([github开源](https://github.com/nagadomi/waifu2x))
 * [vectormagic](https://vectormagic.com/) 转换矢量图
 * [vectorizer](https://www.vectorizer.io/) 真正的 png 转 svg 神器
@@ -32,6 +56,38 @@ article: false
 * [remove](https://www.remove.bg/zh) AI抠图
 * [稿定设计](https://www.gaoding.com/) 键式设计工具+智能抠图
 * [vectorizer](https://www.vectorizer.io/) 真正的 png 转 svg 神器
+
+
+## 设计
+- [创造师导航](http://chuangzaoshi.com/)
+- [设计师网址导航](http://hao.uisdc.com/)
+- [uimovement](https://uimovement.com/) 能从这个网站找到不少动画交互的灵感
+- [awwwards](https://www.awwwards.com/)是一个一个专门为设计精美的网站以及富有创意的网站颁奖的网站
+- [dribbble](https://dribbble.com/) 经常能在上面找到很多有创意好看的 gif 或者图片
+- [designcap](https://www.designcap.com/) 在线海报设计
+- [design.youzan](http://design.youzan.com/) 有赞设计原则
+* [Canva 可画](https://www.canva.cn/) 生成插画、封面、海报、头像等
+- [搞定设计](https://www.gaoding.com/) 可以抠图
+- [UI 中国](https://www.ui.cn/)
+### 配色
+- [uigradients](https://uigradients.com/) 渐变色生成工具
+- [Flat UI 色表](https://flatuicolors.com/) Flat UI 色表
+- [0to255](https://www.0to255.com/) 颜色梯度
+- [colorhunt](http://colorhunt.co/) 另一个配色网站
+- [uigradients](https://uigradients.com/#SummerDog) 渐变色网站
+- [coolors](https://coolors.co/) 帮你在线配色的网站 你能找到不少配色灵感
+- [colorkitty](https://colorkitty.com/) 从你的图片中提取配色
+
+## 产品
+- [产品大牛](http://www.pmdaniu.com/) 什么有很多完整的产品原型可以借鉴
+- [磨刀](https://modao.cc/pricing) 快速出 ui 原型
+### 交互
+- [Can't Unsee](https://cantunsee.space/) 强烈建议前端、客户端、UI 开发的同学玩下，检查一下自己对设计稿的敏感度怎么样
+- [微交互](http://aliscued.lofter.com/) 里面收集了市面上很多很好的微交互例子 值得学习
+- [Little Big Details](http://littlebigdetails.com/) 同上，一个国外微交互汇集网站
+- [cruip](https://cruip.com/) 登录页的各种页面设计，可以免费下载模板
+
+## 在线工具
 ### 实用
 - [正则可视化](https://regex101.com/)
 - [Linux命令手册](https://ipcmen.com/)
@@ -62,61 +118,6 @@ article: false
 ### CDN加速
 * [jsDelivr](http://www.jsdelivr.com/) 国外的一家优秀的公共 CDN 服务提供商
 * [unpkg](https://unpkg.com/) cdn 服务
-
-## 设计
-- [创造师导航](http://chuangzaoshi.com/)
-- [设计师网址导航](http://hao.uisdc.com/)
-- [uimovement](https://uimovement.com/) 能从这个网站找到不少动画交互的灵感
-- [awwwards](https://www.awwwards.com/)是一个一个专门为设计精美的网站以及富有创意的网站颁奖的网站
-- [dribbble](https://dribbble.com/) 经常能在上面找到很多有创意好看的 gif 或者图片
-- [designcap](https://www.designcap.com/) 在线海报设计
-- [design.youzan](http://design.youzan.com/) 有赞设计原则
-* [Canva 可画](https://www.canva.cn/) 生成插画、封面、海报、头像等
-- [搞定设计](https://www.gaoding.com/) 可以抠图
-- [UI 中国](https://www.ui.cn/)
-### 配色
-- [uigradients](https://uigradients.com/) 渐变色生成工具
-- [Flat UI 色表](https://flatuicolors.com/) Flat UI 色表
-- [0to255](https://www.0to255.com/) 颜色梯度
-- [colorhunt](http://colorhunt.co/) 另一个配色网站
-- [uigradients](https://uigradients.com/#SummerDog) 渐变色网站
-- [coolors](https://coolors.co/) 帮你在线配色的网站 你能找到不少配色灵感
-- [colorkitty](https://colorkitty.com/) 从你的图片中提取配色
-
-## 图库 & 壁纸
-- [wallhaven](https://alpha.wallhaven.cc/) 壁纸网站-
-- [freepik](https://www.freepik.com/) banner 图库
-- [觅元素](http://www.51yuansu.com/)一天免费下载十张 psd
-- [虎克](https://huke88.com/) Ps 学习教程
-- [pexels](https://www.pexels.com/) 高清免费图片
-- [pixabay](https://pixabay.com/photos/) 高清免费图片
-- [alphacoders](https://art.alphacoders.com/) 手机壁纸
-- [konachan](https://konachan.net/) 高质量二次元图片
-### 矢量图(Icon)
-- [Ikonate](https://github.com/mikolajdobrucki/ikonate) 提供免费的图标 icons
-- [remixicon](https://remixicon.com/) 又一个提供免费图标 icons
-- [feather](https://github.com/feathericons/feather) 免费的 icons
-- [iconfont](https://www.iconfont.cn/) 阿里巴巴矢量图标库
-- [easyicon](https://www.easyicon.net/) easyicon图标库
-- [Undraw](https://undraw.co/illustrations) 免费的矢量插画
-- [icomoon](https://icomoon.io/) 矢量图标库
-- [cssicon](http://cssicon.space/#/) 所有的 icon 都是纯 css 画的 缺点：icon 不够多
-### Logo
-- [Logojoy](https://logojoy.com/) ai 在线制作 logo，做出来的 logo 质量还不错
-- [brandmark](http://brandmark.io/) 在线制作 logo 网站
-- [instant](https://instantlogodesign.com/) 在线制作 logo 网站
-- [namecheap](https://www.namecheap.com/logo-maker/app/) 在线制作 logo 网站
-- [logo-maker](https://www.designevo.com/logo-maker/) 在线制作 logo 网站
-
-
-## 产品
-- [产品大牛](http://www.pmdaniu.com/) 什么有很多完整的产品原型可以借鉴
-- [磨刀](https://modao.cc/pricing) 快速出 ui 原型
-### 交互
-- [Can't Unsee](https://cantunsee.space/) 强烈建议前端、客户端、UI 开发的同学玩下，检查一下自己对设计稿的敏感度怎么样
-- [微交互](http://aliscued.lofter.com/) 里面收集了市面上很多很好的微交互例子 值得学习
-- [Little Big Details](http://littlebigdetails.com/) 同上，一个国外微交互汇集网站
-- [cruip](https://cruip.com/) 登录页的各种页面设计，可以免费下载模板
 
 ## 有趣
 - [awesome-comment](https://github.com/Blankj/awesome-comment) 里面收集了很多有趣的代码注释
