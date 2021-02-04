@@ -243,7 +243,7 @@ load_state_dict() 是 nn.Module 的一个API，利用模型文件反序列化后
 ## 3 数据变换操作
 这里主要介绍下 Pytorch 中 torchvision.transforms 提供的几种数据增强函数的使用。在加载数据时，可以通过指定 ``` transforms.Compose() ``` 方便、高效的进行数据预处理。
 
-### 常用方法
+### 常用方法(共：5类22种)
 测试代码：
 ```
   from torchvision import transforms
@@ -259,8 +259,7 @@ load_state_dict() 是 nn.Module 的一个API，利用模型文件反序列化后
   new_img = transform(img)
 ```
 
-基础操作
-
+#### 基础操作
 ##### transforms.ToTensor()
 ##### transforms.Lambda()
 ```
@@ -271,6 +270,7 @@ Apply a user-defined lambda as a transform. 根据用户自定义的方式进行
 ###### transforms.ToPILImage()
 ###### transforms.Normalize(mean, std)
 
+#### 随机应用
 ##### transforms.RandomApply(transforms, p=0.5)
 给定一定概率从一组 transformations 应用
 ##### transforms.RandomChoice(transforms)
@@ -278,6 +278,7 @@ Apply single transformation randomly picked from a list
 ##### transforms.RandomOrder
   Apply a list of transformations in a random order
 
+#### 剪裁、填充
 ##### transforms.Resize()
 ##### transforms.Pad()
 padding_mode：填充的模式：constant, edge（填充值为边缘）, reflect (从边缘往内一个像素开始做镜像) or symmetric（从边缘做镜像）
@@ -292,6 +293,7 @@ Crop the given PIL Image to random size and aspect ratio. 裁剪给定的 PIL �
 ##### transforms.TenCrop
 裁剪一张图片的 4 个角以及中间得到指定大小的图片，并且进行水平翻转 / 竖直翻转 共 10 张
 
+#### 仿射变换
 ##### transforms.RandomHorizontalFlip(p=0.5) 、transforms.RandomVerticalFlip(p=0.5)
 Horizontally/Vertically flip the given PIL Image randomly with a given probability. 按一定概率进行水平 / 竖直翻转
 ##### transforms.RandomRotation
@@ -299,11 +301,11 @@ Horizontally/Vertically flip the given PIL Image randomly with a given probabili
 ##### transforms.RandomAffine 
 保持图像中心不变的随机仿射变换，可以进行随心所欲的变化
 ##### transforms.RandomPerspective
-  对给定的 PIL 图像以给定的概率随机进行透视变换
+对给定的 PIL 图像以给定的概率随机进行透视变换
 ##### transforms.LinearTransformation() 
-  常应用于 白化，以去除输入数据的冗余信息。假设训练数据是图像，由于图像中相邻像素之间具有很强的相关性，所以用于训练时输入是冗余的；白化的目的就是降低输入的冗余性。
+常应用于 白化，以去除输入数据的冗余信息。假设训练数据是图像，由于图像中相邻像素之间具有很强的相关性，所以用于训练时输入是冗余的；白化的目的就是降低输入的冗余性。
 
-
+#### 颜色相关
 ##### transforms.ColorJitter
 Randomly change the brightness, contrast and saturation of an image. 随机改变图像的亮度、对比度和饱和度
 ##### transforms.Grayscale 
@@ -311,9 +313,7 @@ Randomly change the brightness, contrast and saturation of an image. 随机改�
 ##### transforms.RandomGrayscale 
 Randomly convert image to grayscale with a probability of p (default 0.1). 以一定的概率对图像进行灰度化，转换后的图片还是 3 通道的
 
-
 [more docs...](https://pytorch.org/docs/stable/torchvision/transforms.html)
-
 
 
 ## 4 数据加载
