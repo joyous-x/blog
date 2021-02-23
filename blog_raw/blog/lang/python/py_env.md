@@ -25,7 +25,7 @@ Conda 是一个开源跨平台语言无关的包管理与环境管理系统，�
 
 常用命令有：
 1. ``` conda env list ``` 
-2. ``` conda create -n [env.name] [python=3.8 | --clone exists.env.name]```
+2. ``` conda create -n [env.name] [python=3.8 | --clone exists.env.name | -f environment.xml]```
    - 可以指定 python 版本，也可以 clone 现有的环境
 3. ``` conda activate [env.name] ``` 
 4. ``` conda deactivate [env.name] ``` 
@@ -43,7 +43,13 @@ Conda 是一个开源跨平台语言无关的包管理与环境管理系统，�
 2. search 指令会找到很多个版本的 pkg 相关信息，通过 ``` anaconda show [Name] ``` 查看详细信息，其中包括 channel 信息
 c. 通过以下命令指定 channel 进行安装：``` conda install --channel https://xxxx [pkg_name] ``` 或者 ``` conda install -c https://xxxx [pkg_name] ```
 
-## Pytorch
+## AI 框架
+### Pytorch
+### Tensorflow
+1. 安装
+   - 参考： https://www.tensorflow.org/install/pip?hl=zh-cn
+
+## CUDA
 ### 查看对GPU的支持
 - 查看显卡信息： ``` lspci | grep -i vga ``` , 如果是 NVIDIA 可以用：``` lspci | grep -i nvidia ```
 - 查看NVIDIA显卡信息

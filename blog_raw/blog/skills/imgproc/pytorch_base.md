@@ -50,7 +50,9 @@ autograd.Variable 是这个包中最核心的类。它有三个常用属性：
 - creator ： 引用了一个创建 Variable 的 Function。(除了用户创建的 Variable 中的 creator 属性是 None)
 - grad ： 关于这一 Variable 的梯度则集中存储于此属性
 
-当通过 Variable 定义了完整计算后，可以调用计算结果的 .backward() 来自动计算出所有的梯度。
+当通过 Variable 定义了完整计算后，可以调用计算结果的 .backward() 来自动计算出所有的梯度。当然，也可以指定 Variable 不计算梯度，如：指定 requires_grad=False。
+
+**思考：如果 ``` a = Variable(torch.randn(5, 5), requires_grad=True) + Variable(torch.randn(5, 5), requires_grad=False) ```, 那个 a.requires_grad 是什么？**
 
 [more docs...](https://pytorch.org/docs/stable/torch.html)
 
@@ -349,5 +351,4 @@ https://github.com/mingx9527/Data_Label_Tools
 ## Reference
 - [github pytorch examples](https://github.com/pytorch/examples)
 
-
-
+ 
