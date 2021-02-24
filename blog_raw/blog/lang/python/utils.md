@@ -200,3 +200,7 @@ This is equivalent to:
 func = decomaker(argA, argB, ...)(func)
 ```
 
+#### dir() help()
+
+opencv 读取图片是 numpy 类型
+PIL 读取图片是 具体的类型

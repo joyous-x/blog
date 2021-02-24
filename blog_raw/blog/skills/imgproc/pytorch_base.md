@@ -1,7 +1,7 @@
 ---
 title: PyTorch入门(快速、深度)
-date: 2019-12-18 00:00:00
-description: 快速又有深度的PyTorch 入门
+date: 2021-02-18 00:00:00
+description: 快速又有深度的 PyTorch 入门
 categories: 
   - pytorch
 tags: 
@@ -322,14 +322,6 @@ Randomly convert image to grayscale with a probability of p (default 0.1). 以�
 https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 
 
-
-使用torch.nn.DataParallel训练的模型如何序列化
-
-torch.nn.DataParallel 是一个wrapper，用来帮助在多个GPU上并行进行运算。这种情况下要保存训练好的模型，最好使用model.module.state_dict()，请参考本章第1节：state_dict。这种情况下你在重新加载pth模型文件的时候，就会有极大的灵活性，而不是出现一大堆unexpected keys和missed keys：
-
-torch.save(model.module.state_dict(), PATH)
-
-
 ## 5 模型
 
 ## 6 数据标注
@@ -347,6 +339,15 @@ https://github.com/mingx9527/Data_Label_Tools
   https://github.com/Labelbox/Labelbox
   https://github.com/UniversalDataTool/universal-data-tool
   https://github.com/DataTurks/DataTurks
+
+> To Be Continue ....
+
+
+使用torch.nn.DataParallel训练的模型如何序列化
+
+torch.nn.DataParallel 是一个wrapper，用来帮助在多个GPU上并行进行运算。这种情况下要保存训练好的模型，最好使用model.module.state_dict()，请参考本章第1节：state_dict。这种情况下你在重新加载pth模型文件的时候，就会有极大的灵活性，而不是出现一大堆unexpected keys和missed keys：
+
+torch.save(model.module.state_dict(), PATH)
 
 ## Reference
 - [github pytorch examples](https://github.com/pytorch/examples)

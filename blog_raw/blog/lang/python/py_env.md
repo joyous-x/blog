@@ -19,6 +19,9 @@ permalink:
     trusted-host = pypi.doubanio.com
     ```
 2. 通过命令行的 -i 参数指定源
+    ```
+    pip install tensorflow -i https://pypi.douban.com/simple
+    ```
 
 ## [Conda](https://www.anaconda.com/)
 Conda 是一个开源跨平台语言无关的包管理与环境管理系统，允许用户通过*虚拟环境*方便地安装不同版本的二进制软件包与该计算平台需要的所有库。使用它可以方便、快捷的创建出用于科学计算、大数据等相关的一个 python 环境，例如：可以很方便的处理掉 windows 环境下 ssl 安装的问题等等. 
