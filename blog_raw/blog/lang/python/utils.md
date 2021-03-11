@@ -11,6 +11,12 @@ permalink:
 ---
 # python 基础
 
+## 1. 万能函数
+python 中的两个万能函数：```dir([pkg]) 和 help([attribute、pkg...])```。
+
+之所以称之为万能，是因为可以在遇到不熟悉的 package 时，可以通过 ```dir()``` 快速查看 package 中的内容，遇到感兴趣的 attribute 时，又可以通过 ```help()``` 来打开其“说明书”。
+
+## 2. 模块
 #### module
 * 通常模块为一个文件，直接使用import来导入就好了。可以作为module的文件类型有".py"、".pyo"、".pyc"、".pyd"、".so"、".dll"。
 * 系统在导入模块时，要做以下三件事：
@@ -74,6 +80,10 @@ else:
     statements 
 ``` 
 
+#### sys.path 和 sys.modules
+sys.path包含了module的查找路径；
+sys.modules包含了当前所load的所有的modules的dict（其中包含了builtin的modules）；
+
 #### 模块搜索路径
 导入模块时,解释器会搜索sys.path列表,这个列表中保存着一系列目录。一个典型的sys.path 列表的值：
 ```
@@ -83,6 +93,10 @@ Windows:
 ['', 'C:\\Python24\\DLLs', 'C:\\Python24\\lib', 'C:\\Python24\\lib\\plat-win', 'C:\\Python24\\lib\\lib-tk']
 ```
 空字符串 代表当前目录. 要加入新的搜索路径,只需要将这个路径加入到这个列表. 
+
+有些时候我们需要给 python interpreter 增加一些包的查找路径，如：想引用自定义的包时。这就需要修改包的搜索路径，一般来说，有两种方式：
+1. 直接在运行时，修改 sys.path
+2. 在开始运行前，修改 PYTHONPATH 环境变量（这个环境变量会在运行时被包含进 sys.path 以参与模块搜索）
  
 #### 模块导入和汇编
 到现在为止，本章介绍的模块都是包含Python源代码的文本文件. 不过模块不限于此，可以被 import 语句导入的模块共有以下四类: 
@@ -174,10 +188,8 @@ import lines, fill, text, ...
 ```
 这样import Graphics语句就可以导入所有的子模块(只能用全名来访问这些模块的属性).
 
-#### sys.path 和sys.modules
-sys.path包含了module的查找路径；
-sys.modules包含了当前所load的所有的modules的dict（其中包含了builtin的modules）；
 
+## 3. 语法
 #### Decorator
 ```
 @dec2
@@ -199,8 +211,3 @@ This is equivalent to:
 
 func = decomaker(argA, argB, ...)(func)
 ```
-
-#### dir() help()
-
-opencv 读取图片是 numpy 类型
-PIL 读取图片是 具体的类型

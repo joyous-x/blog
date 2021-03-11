@@ -20,6 +20,7 @@ article: false
 * [V2EX](https://www.v2ex.com/)
 * [鱼塘热榜](https://mo.fish/main/home/hot) 划水网站，收集了很多网站，当天热门文章
 * [Github followers 全球排名](https://wangchujiang.com/github-rank/index.html)
+* [牛油果烤面包 - 听硅谷从业人员谈论科技趋势和其他有趣的话题](https://avocadotoast.live/)
 
 ## 图库 & 壁纸
 - [wallhaven](https://alpha.wallhaven.cc/) 壁纸网站-

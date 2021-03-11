@@ -319,8 +319,73 @@ Randomly convert image to grayscale with a probability of p (default 0.1). 以�
 
 
 ## 4 数据加载
-https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
+pytorch 中对数据集合处理的方法集中在 torch.utils.data 包中，主要包含了以下方法：
+| class | description | additions |
+| --- | --- | --- |
+| torch.utils.data.Dataset | 一个抽象类， 所有其他类的数据集类都应该是它的子类 | 其子类必须重载两个重要的函数：len(提供数据集的大小）、getitem(支持整数索引)
+| torch.utils.data.TensorDataset | 封装成tensor的数据集，每一个样本都通过索引张量来获得 | |
+| torch.utils.data.ConcatDataset | 连接不同的数据集以构成更大的新数据集 | |
+| torch.utils.data.Subset(dataset, indices) | 获取指定一个索引序列对应的子数据集 | |
+| torch.utils.data.DataLoader | 数据加载器, 组合了一个数据集和采样器，并提供关于数据的迭代器 | |
+| torch.utils.data.random_split(dataset, lengths) | 按照给定的长度将数据集划分成没有重叠的新数据集组合 | |
+| | | |
+| torch.utils.data.Sampler(data_source) | 所有采样的器的基类 | 每个采样器子类都需要提供 iter 方-法以方便迭代器进行索引 和一个 len方法 以方便返回迭代器的长度。
+| torch.utils.data.SequentialSampler | 顺序采样样本，始终按照同一个顺序 | |
+| torch.utils.data.RandomSampler | 无放回地随机采样样本元素 | |
+| torch.utils.data.SubsetRandomSampler | 无放回地按照给定的索引列表采样样本元素 | |
+| torch.utils.data.WeightedRandomSampler | 按照给定的概率来采样样本 | |
+| torch.utils.data.BatchSampler(sampler, batch_size, drop_last) | 在一个batch中封装一个其他的采样器 | |
+| torch.utils.data.distributed.DistributedSampler(dataset, num_replicas=None, rank=None) | 采样器可以约束数据加载进数据集的子集 | |
 
+### 数据采样(划分)
+在进行训练时，常将用于训练的数据集分割成 8:2 两部分，一部分用于训练，另一部分用于每个 epoch 结束后的 test，以判断当前模型的收敛效果。
+
+借助上文中所述的方法，我们常用的分割方法如下：
+1. random_split
+  ```
+  train_size = int(0.8 * len(full_dataset))
+  test_size = len(full_dataset) - train_size
+  train_dataset, test_dataset = torch.utils.data.random_split(full_dataset, [train_size, test_size])
+  ```
+
+这个过程的效果等同于：手动对数据索引进行shuffle后进行切分。
+
+2. SubsetRandomSampler
+  ```
+  ...
+
+  dataset = MyCustomDataset(my_path)
+  batch_size = 16
+  validation_split = .2
+  shuffle_dataset = True
+  random_seed= 42
+
+  # Creating data indices for training and validation splits:
+  dataset_size = len(dataset)
+  indices = list(range(dataset_size))
+  split = int(np.floor(validation_split * dataset_size))
+  if shuffle_dataset :
+      np.random.seed(random_seed)
+      np.random.shuffle(indices)
+  train_indices, val_indices = indices[split:], indices[:split]
+
+  # Creating PT data samplers and loaders:
+  train_sampler = SubsetRandomSampler(train_indices)
+  valid_sampler = SubsetRandomSampler(val_indices)
+
+  train_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=train_sampler)
+  validation_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=valid_sampler)
+
+  # Usage Example:
+  num_epochs = 10
+  for epoch in range(num_epochs):
+      # Train:   
+      for batch_index, (faces, labels) in enumerate(train_loader):
+          # ...
+  ```
+
+[more docs...](https://pytorch.org/docs/master/data.html#torch.utils.data.SubsetRandomSampler)
+https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 
 ## 5 模型
 
@@ -340,14 +405,20 @@ https://github.com/mingx9527/Data_Label_Tools
   https://github.com/UniversalDataTool/universal-data-tool
   https://github.com/DataTurks/DataTurks
 
-> To Be Continue ....
-
-
+## To Be Continue ....
+```
 使用torch.nn.DataParallel训练的模型如何序列化
 
 torch.nn.DataParallel 是一个wrapper，用来帮助在多个GPU上并行进行运算。这种情况下要保存训练好的模型，最好使用model.module.state_dict()，请参考本章第1节：state_dict。这种情况下你在重新加载pth模型文件的时候，就会有极大的灵活性，而不是出现一大堆unexpected keys和missed keys：
 
 torch.save(model.module.state_dict(), PATH)
+
+
+pytorch-lightning
+  https://pytorch-lightning.readthedocs.io/en/1.0.2/trainer.html
+  https://github.com/3017218062/Pytorch-Lightning-Learning
+  https://blog.csdn.net/weixin_46062098/article/details/109713240
+```
 
 ## Reference
 - [github pytorch examples](https://github.com/pytorch/examples)

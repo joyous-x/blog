@@ -13,21 +13,34 @@ permalink:
 
 
  GAN | Type | Code | Online | Note 
- --- | --- | --- | ---
+ --- | --- | --- | --- | ---
  CartoonGAN | pytorch | https://github.com/znxlwm/pytorch-CartoonGAN | x | 
  CartoonGAN | tensorflow | https://github.com/mnicnc404/CartoonGan-tensorflow | 自带预训练 | 预训练模型: http://cg.cs.tsinghua.edu.cn/people/~Yongjin/CartoonGAN-Models.rar， 效果较差（图片细节保留不足）
  AnimeGAN | pytorch | https://github.com/XuHangkun/AnimeGAN_in_Pytorch | https://animegan.js.org/ | 
- AnimeGAN | tensorflow | https://github.com/TachibanaYoshino/AnimeGAN | 
+ AnimeGAN | tensorflow | https://github.com/TachibanaYoshino/AnimeGAN | x |
  AnimeGANv2 | tensorflow | https://github.com/TachibanaYoshino/AnimeGANv2 | x ｜ 效果未知
- White-box Cartoon | tensorflow | https://github.com/SystemErrorWang/White-box-Cartoonization | 自带预训练 | 效果最好
- White-box Cartoon | pytorch | https://github.com/zhen8838/AnimeStylized | 
- White-box Cartoon (ex) | pytorch | https://github.com/ayhokuyan/CartooNet | 
+ White-box Cartoon | tensorflow | https://github.com/SystemErrorWang/White-box-Cartoonization | 自带预训练 | 效果最好，应用：https://github.com/margaretmz/cartoonizer-with-tflite
+ White-box Cartoon | pytorch | https://github.com/zhen8838/AnimeStylized | x | 
+ White-box Cartoon (ex) | pytorch | https://github.com/ayhokuyan/CartooNet | x |
 
+
+Models
+  https://github.com/tensorflow/models
+
+cat & dog
+  https://github.com/aleju/imgaug
+  https://www.robots.ox.ac.uk/~vgg/data/pets/
+
+
+垃圾分类：
+  https://github.com/wusaifei/garbage_classify
 
   - tensorflow==1.12.0 -> python=3.6
   - tensorflow==1.12.0 -> python[version='>=3.6,<3.7.0a0']
 
 
+opencv 读取图片是 numpy 类型， RGB，HWC
+PIL 读取图片是 具体的类型， 根据图像格式：一般为RGB，HWC
 
 最强的目标检测网络：DetectoRS
   https://zhuanlan.zhihu.com/p/145897444
@@ -47,3 +60,11 @@ AnimeGAN
 
   https://github.com/SystemErrorWang/White-box-Cartoonization
 
+
+
+Microsoft Remote Desktop Beta
+
+
+理解 Normalize： https://blog.csdn.net/qq_35027690/article/details/103742697
+数据分割：https://www.cnblogs.com/marsggbo/p/10496696.html
+Softmax：https://zhuanlan.zhihu.com/p/67759205
