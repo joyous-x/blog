@@ -1,9 +1,10 @@
 ---
-title: 论文阅读摘要
+title: NN 论文阅读
 date: 2021-03-10 09:50:00
-description: 论文阅读摘要
+description: 神经网络论文阅读、翻译
 categories: 
   - imgproc
+  - pixel2pixel
 tags: 
   - 
 permalink:
@@ -42,7 +43,7 @@ contrast, conditional GANs learn a mapping from observed
 image x and random noise vector z, to y, G : {x, z} → y
 
 #### 3.1 Objective
-![Objective](./images/image-to-image_objective.jpg)
+![Objective](./images/image-to-image_objective.png)
 
 这里需要注意的是 z 是必须的。以往的 cGANs 使用已经意识到这点，并且通常采用 Gaussian noise 作为 z 来微调输入。
 
@@ -52,7 +53,7 @@ image x and random noise vector z, to y, G : {x, z} → y
 尽管采用了 dropout 噪声，我们观察到我们的网络输出的随机性依然很小。设计可产生更大随机性的条件GAN，从而捕获他们建模的条件分布的完全熵，是当前工作悬而未决的重要问题。
 
 #### 3.2 Network architectures
-1. Generator with skips
+1. **Generator with skips**
 
 一个 image-to-image 转换问题的定义特征是：他们将高分辨率的输入网格映射到高分辨率的输出网格。此外，对于我们考虑的问题，输入和输出的表面外观不同，但是两者是相同基础结构的效果图。所以，输入与输出中的结构是大致对齐的。我们围绕这些事项来设计生成架构。
 
@@ -60,7 +61,7 @@ image x and random noise vector z, to y, G : {x, z} → y
 
 为了给生成器一种避免此类信息瓶颈的方法，我们按照“ U-Net”的一般形状添加了跳过连接。具体来说，我们在第i层和第n-i层之间添加跳过连接，其中n是层的总数。每个跳过连接仅将第i层和第n-i层的所有通道连接在一起。
 
-2. Markovian discriminator (PatchGAN)
+2. **Markovian discriminator (PatchGAN)**
    
 众所周知，L2 和 L1 loss 在图像生成任务中会产生模糊结果。尽管这些损失并不能鼓励高频率清晰度，尽管如此，它们在许多情况下仍能准确捕获低频信息。对于这里的问题，确实是这样，我们不需要全新的框架来强化低频信息的正确性，L1 已经做了。
 
@@ -83,12 +84,12 @@ image x and random noise vector z, to y, G : {x, z} → y
 6. Sketch → photo
 7. Day → night
 8. Thermal → color photos
-9. Photo with missing pixels  →  inpainted photo
+9. Photo with missing pixels → inpainted photo
 
 #### 4.2 Analysis of the objective function
 在 final objective 中，哪部分比较重要呢？我们进行消融研究来隔离 L1 、GAN 项的影响，以比较 cGAN 和 GAN 分别作用在输入上的效果。
 
-论文中的 Figure 4 显示了这些变化在 two labels -> photo 问题上的定性影响：
+论文中的 Figure 4 显示了这些变化在 two labels → photo 问题上的定性影响：
 - 仅L1会导致合理但模糊的结果
 - 单独使用cGAN（将 λ=0）给出了更清晰的结果，但在某些应用程序上引入了视觉瑕疵
 - 将两个部分加在一起（λ= 100）减少了这些伪像
