@@ -143,3 +143,7 @@ permalink:
 + tag
     - git tag -a v0.0.1 -m 'tag message to describe this version'
     - git push origin v0.0.1
+
+## Problems
+1. 在 ubuntu 中移动 50000 张图片的图片的时候遇到如下问题：*-bash: /bin/mv: Argument list too long*
+    - 使用 ``` find sourcePath/ -type f -name "*.*" -exec mv {} targetPath/  \; ``` 可以解决，注意不能缺少结尾的 **;**

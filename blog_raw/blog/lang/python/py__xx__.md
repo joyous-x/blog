@@ -1,5 +1,5 @@
 ---
-title: Python 中 _、__和__xx__的区别
+title: Python 中 "_、__和__xx__" 的区别
 date: 2021-02-24
 categories:
   - python
@@ -8,7 +8,7 @@ tags:
 permalink:
 ---
 
-# Python 中 _、__和__xx__的区别
+# Python 中 "_、__和__xx__" 的区别
 > [英文原文](http://igorsobreira.com/2010/09/16/difference-between-one-underline-and-two-underlines-in-python.html)
 
 ## "_"单下划线

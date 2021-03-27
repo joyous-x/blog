@@ -211,3 +211,227 @@ This is equivalent to:
 
 func = decomaker(argA, argB, ...)(func)
 ```
+
+## 4. 异步IO
+### 基础要素
+Python在3.4中引入了协程的概念，这个是以生成器对象为基础，3.5则确定了协程的语法。实现协程的不仅仅是asyncio，tornado和gevent都实现了类似的功能。
+
+asyncio 的几个主要元素有：
+1. event_loop
+   1. 程序开启一个无限的事件循环，并依次执行满足条件的协程函数
+2. coroutine
+   1. 协程对象，由关键字 async 定义的函数在被调用时不会立即执行，而是返回一个协程对象。协程对象需要通过注册动作交由事件循环来调用。
+3. task
+   1. 任务，是对协程的进一步封装，其中包含了任务的各种状态。
+4. future
+   1. 代表将要执行或没被执行的任务的结果。
+   2. task 对象是 Future 类的子类
+5. async/await
+   1. python3.5 中用于定义协程的关键字，async定义一个协程，await用于挂起(阻塞的)异步调用。
+
+例如：
+```
+import asyncio
+
+async def work(args):
+    print('i am working : {}'.format(x))
+
+coroutine = work("new job")
+loop = asyncio.get_event_loop() # 创建一个事件循环
+loop.run_until_complete(coroutine) # 将协程注册到事件循环，并启动事件循环
+```
+
+### 任务(Task)
+通过上边的示例，可以发现 coroutine 不能直接执行，而是需要通过 *loop.run_until_complete()* 来执行，这里边的隐含动作是：将协程包装成为了一个 task 对象，并在事件循环中执行。为什么？
+
+*loop.run_until_complete()* 的参数是一个 futrue 对象，但真正动作是执行注册到事件循环上的 coroutines。如上文提到的，task 是对 coroutine 的封装，同时也是 Future 类的子类。所以，当传入一个协程时，函数内部会自动封装成 task 以满足调用需要。
+
+当然，我们也可以主动构造 task 对象: ```asyncio.ensure_future(coroutine)``` 和 ```loop.create_task(coroutine)``` 都可以创建一个task 对象。
+
+### 协程返回值
+1. task.add_done_callback
+
+通过 task.add_done_callback(callback) 可以对 task 绑定回调函数，在 coroutine 执行结束时候会调用这个回调函数。
+```
+import asyncio
+
+async def work(args):
+    return 'i am working : {}'.format(args)
+
+def callback(future):
+    print('callback: {}'.format(future.result()))
+
+coroutine = work("new job")
+loop = asyncio.get_event_loop()
+task = asyncio.ensure_future(coroutine)
+task.add_done_callback(callback)
+loop.run_until_complete(task)
+```
+这里可以看到，callback 的参数是一个 future 对象，如果想传递其他数据到 callback，可以通过以下方式：
+```
+def callback(t, future):
+    print('callback:', t, future.result())
+
+task.add_done_callback(functools.partial(callback, 1))
+```
+此外，如果在调试过程中观察 task 和 其回调里的 future 的话，可以发现它们实际上是同一个对象。
+
+2. future.result()
+
+上边的例子我们可以知道，运行结果实际上是可以通过 *future.result()* 来取得。而回调里的 futrue 和 创建的 task 是同一个对象，那我们是不是可以在任务执行结束后，主动调用 *task.result()* 来获取结果呢？当然可以。
+```
+import asyncio
+
+async def work(args):
+    return 'i am working : {}'.format(args)
+
+coroutine = work("new job")
+loop = asyncio.get_event_loop()
+task = asyncio.ensure_future(coroutine)
+loop.run_until_complete(task)
+
+print('task result is {}'.format(task.result()))
+```
+
+### 并发
+首先，要明白 并发和并行 是不一样的：并发指有多个任务需要同时进行(如，单核cpu通过时间片轮转运行不同的程序)，并行则是同一时刻有多个任务执行(多核cpu的每个核心在同一个时刻独立运行不同的程序)。
+
+asyncio 通过 事件循环和await/async 来协调多个协程来实现并发。每当有任务阻塞的时候就 await，然后其他协程继续工作。
+```
+import time
+import asyncio
+
+async def work(sleep_sec):
+    print('sleep {} : before'.format(sleep_sec))
+    await asyncio.sleep(sleep_sec)
+    return 'sleep {} : after'.format(sleep_sec)
+
+now = lambda: time.time()
+
+coroutine1 = work(1)
+coroutine2 = work(2)
+coroutine3 = work(4)
+tasks = [
+    asyncio.ensure_future(coroutine1),
+    asyncio.ensure_future(coroutine2),
+    asyncio.ensure_future(coroutine3)
+]
+loop = asyncio.get_event_loop()
+# 使用 syncio.wait(tasks) 或 asyncio.gather(*tasks) 来汇集多任务
+loop.run_until_complete(asyncio.wait(tasks))
+
+for task in tasks:
+    print('task result is {}'.format(task.result()))
+print('spend {} seconds'.format(now() - start))
+```
+我们可以观察上例中的各个任务的执行时机和总耗时来确认并发现象。
+
+### 协程停止
+如果需要停止事件循环，就需要先把task取消。先看例子：
+```
+import time
+import asyncio
+
+async def work(sleep_sec):
+    print('sleep {} : before'.format(sleep_sec))
+    await asyncio.sleep(sleep_sec)
+    return 'sleep {} : after'.format(sleep_sec)
+
+coroutine1 = work(1)
+coroutine2 = work(2)
+coroutine3 = work(4)
+tasks = [
+    asyncio.ensure_future(coroutine1),
+    asyncio.ensure_future(coroutine2),
+    asyncio.ensure_future(coroutine3)
+]
+loop = asyncio.get_event_loop()
+try:
+    loop.run_until_complete(asyncio.wait(tasks))
+except KeyboardInterrupt as e:
+    print(asyncio.Task.all_tasks())
+    for task in asyncio.Task.all_tasks():
+        print(task.cancel())
+    loop.stop()
+    loop.run_forever()
+finally:
+    loop.close()
+```
+启动事件循环之后，马上ctrl+c，会触发run_until_complete的执行异常 KeyBorardInterrupt。然后通过循环asyncio.Task获取获取事件循环的task通过其 task.cancel() 取消future。注意，loop.stop()之后还需要再次开启事件循环，最后再close，不然还会抛出异常。
+
+我们还可以通过下边这种方式停止协程：
+```
+import time
+import asyncio
+
+async def work(sleep_sec):
+    print('sleep {} : before'.format(sleep_sec))
+    await asyncio.sleep(sleep_sec)
+    return 'sleep {} : after'.format(sleep_sec)
+
+async def main():
+    coroutine1 = work(1)
+    coroutine2 = work(2)
+    coroutine3 = work(2)
+    tasks = [
+        asyncio.ensure_future(coroutine1),
+        asyncio.ensure_future(coroutine2),
+        asyncio.ensure_future(coroutine3)
+    ]
+    done, pending = await asyncio.wait(tasks)
+    for task in done:
+        print('task result is {}'.format(task.result()))
+
+loop = asyncio.get_event_loop()
+task = asyncio.ensure_future(main())
+try:
+    loop.run_until_complete(task)
+except KeyboardInterrupt as e:
+    print(asyncio.Task.all_tasks())
+    print(asyncio.gather(*asyncio.Task.all_tasks()).cancel())
+    loop.stop()
+    loop.run_forever()
+finally:
+    loop.close()
+```
+简单的说，就是通过协程嵌套，将一系列协程封装到另一个协程中，此时处理外层包装的 main 函数即可。
+
+### 异步事件循环
+除了在主线程运行事件循环，还可以在子线程中运行。在子线程中运行事件循环的好处，显而易见，不会阻塞主线程，但也带来了异步处理的问题。
+
+通过以下示例，细细品味下子线程的事件循环吧：
+```
+from threading import Thread
+
+def start_loop(loop):
+    asyncio.set_event_loop(loop)
+    loop.run_forever()
+
+async def work(sleep_sec):
+    print('work: sleep {} : before'.format(sleep_sec))
+    await asyncio.sleep(sleep_sec)
+    return 'work: sleep {} : after'.format(sleep_sec)
+
+def more_work(sleep_sec):
+    print('more_work: sleep {}:before'.format(sleep_sec))
+    time.sleep(sleep_sec)
+    print('more_work: sleep {}:after'.format(sleep_sec))
+
+new_loop = asyncio.new_event_loop()
+t = Thread(target=start_loop, args=(new_loop,))
+t.start()
+
+# 新线程中会按照顺序执行通过 call_soon_threadsafe 注册的方法
+new_loop.call_soon_threadsafe(more_work, 6)
+new_loop.call_soon_threadsafe(more_work, 3)
+
+# 通过 run_coroutine_threadsafe 注册新协程对象，这样可以让子线程中的事件循环的并发的处理协程
+asyncio.run_coroutine_threadsafe(work(6), new_loop)
+asyncio.run_coroutine_threadsafe(work(4), new_loop)
+```
+
+### 总结
+这里简单的介绍了 asyncio 的基础元素：事件循环，协程，future和任务。通过这些基础内容的组合，我们可以实现出更多更有意思的异步、并发任务，比如：生产者消费者模型... 更多用法亟待被开发出来。
+
+---
+## *TO BE CONTINUE ...*

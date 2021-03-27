@@ -32,7 +32,6 @@ face-alignment | 2D and 3D Face alignment library | pytorch | https://github.com
 first-order-model | the source code for the paper First Order Motion Model for Image Animation | pytorch | https://github.com/AliaksandrSiarohin/first-order-model | x
 MMDetection | 最强的目标检测 | pytorch | https://github.com/open-mmlab/mmdetection | x
 Bringing-Old-Photos-Back-to-Life | Bringing Old Photo Back to Life (CVPR 2020 oral) | pytorch | https://github.com/microsoft/Bringing-Old-Photos-Back-to-Life | x
-Anime4K | A High-Quality Real Time Upscaler for Anime Video | tensorflow | https://github.com/bloc97/Anime4K | x
 
 头像动态：https://github.com/alievk/avatarify-python
 动漫识别：https://github.com/soruly/trace.moe ：（数据源：https://anilist.co/anime）
