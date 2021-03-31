@@ -130,6 +130,8 @@ load_state_dict() 是 nn.Module 的一个API，利用模型文件反序列化后
 
 看到这里，是否好奇存储的模型文件(.pth)里都包含了什么信息？比如，模型的网络结构、model.state_dict 具体是什么内容呢... 接下来我们就看看 module 里都包含了什么吧。
 
+**注意**，使用 *torch.nn.DataParallel* 训练的模型要保存的话，最好使用 *torch.save(model.module.state_dict(), PATH)*。这样的话，在重新加载 pth模型文件 的时候，会有极大的灵活性，而不是出现一大堆 **unexpected keys**和**missed keys**
+
 
 ### 2.2 网络结构
 #### 模型
@@ -417,13 +419,25 @@ pytorch 中对数据集合处理的方法集中在 torch.utils.data 包中，主
   ```
 
 [more docs...](https://pytorch.org/docs/master/data.html#torch.utils.data.SubsetRandomSampler)
-https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 
-## 5 模型
+## 5 损失函数
+pytorch 中常用的 loss 有：
+| Name | Describe | Feature | Note |
+| --- | --- | --- | --- | 
+| L1 Loss | 绝对值误差 | 主要应用在回归任务 | |
+| MSE Loss(L2Loss) | 均方误差 | 主要应用在回归任务 | |
+| CrossEntropy Loss | 交叉熵 | 主要应用在多分类问题中(二分类也可以用) | 实际上它是由nn.LogSoftmax()和nn.NLLLoss()组成 |
+| BCE Loss | 二分类的交叉熵(严格按照交叉熵的公式去算) | 一般应用在单标签二分类和多标签二分类 | |
+| BCEWithLogits Loss | 把 Sigmoid 和 BCELoss 合成一步 |  | 如果想用BCE损失，推荐这种，不需要自己写sigmoid那部分 |
+| MultiLabelMarginLoss | | 用于一个样本属于多个类别时的分类任务 | |
+| NLLLoss | 负对数似然损失 | 主要应用在分类任务 | |
+| SmoothL1Loss | 其实是L2Loss和L1Loss的结合 | 当预测值和ground truth差别较小的时候（绝对值差小于 beta）使用是L2；当差别大时，使用 L1 的平移 | |
+| Focal Loss | 主要是为了解决难易样本数量不平衡 | 只是针对二分类问题 | 注意，有区别于正负样本数量不平衡, 难易程度即易分程度 |
+| GHM Loss | Focal Loss 的升级版 |  | |
 
-## 6 损失函数
+[more docs...](https://pytorch.org/docs/stable/nn.html#loss-functions)
 
-## 7 优化器
+## 6 优化器
 pytorch 中常用的 optimizer 有：
 | Name | Describe | Good | Bad | Note |
 | --- | --- | --- | --- | --- |
@@ -442,8 +456,11 @@ pytorch 中常用的 optimizer 有：
 
 在实际应用中，选择哪种优化器应结合具体问题；同时，也优化器的选择也取决于使用者对优化器的熟悉程度（比如参数的调节等等）。
 
-## 8 数据标注
+[more docs...](https://pytorch.org/docs/stable/optim.html#module-torch.optim)
+
+## 7 数据标注
 数据标注工具：
+```
 https://github.com/topics/annotation-tool
 https://github.com/mingx9527/Data_Label_Tools
   https://github.com/heartexlabs/label-studio
@@ -457,16 +474,10 @@ https://github.com/mingx9527/Data_Label_Tools
   https://github.com/Labelbox/Labelbox
   https://github.com/UniversalDataTool/universal-data-tool
   https://github.com/DataTurks/DataTurks
+```
 
 ## To Be Continue ....
 ```
-使用torch.nn.DataParallel训练的模型如何序列化
-
-torch.nn.DataParallel 是一个wrapper，用来帮助在多个GPU上并行进行运算。这种情况下要保存训练好的模型，最好使用model.module.state_dict()，请参考本章第1节：state_dict。这种情况下你在重新加载pth模型文件的时候，就会有极大的灵活性，而不是出现一大堆unexpected keys和missed keys：
-
-torch.save(model.module.state_dict(), PATH)
-
-
 pytorch-lightning
   https://pytorch-lightning.readthedocs.io/en/1.0.2/trainer.html
   https://github.com/3017218062/Pytorch-Lightning-Learning
