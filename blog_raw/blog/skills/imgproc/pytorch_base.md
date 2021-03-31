@@ -75,6 +75,38 @@ autograd.Variable 是这个包中最核心的类。它有三个常用属性：
 
 [docs...](https://pytorch.org/docs/stable/nn.html)
 
+### 1.4 Device
+
+在 pytorch 中，我们可以选择将 tensor 运行在 cpu 或者 gpu 上，如上文所述的方式：``` tensor.cpu() ``` 或 ``` tensor.gpu() ``` 就可以简单的实现 cpu 和 gpu 的选择或切换。
+
+有些时候，我们想在代码的全局位置上指定使用的设备类型，然后就可以不用修改的将代码跑在 gpu 或者 cpu 上，这也很容易实现：
+```
+if gpu_id == -1:
+  device = torch.device("cpu")
+else:
+  device = torch.device("cuda")
+  torch.cuda.set_device(gpu_id)
+  # torch.cuda.set_device("cuda:1,2") # 指定多张显卡
+
+ones = tensor.ones(5).to(device)
+```
+
+注意到，使用 cuda 时，我们指定了 gpu_id, 如果不显示的设置，默认使用 cuda:0，即系统的第一块显卡。
+
+如果在一个节点上有多块 gpu，分别跑同一个模型的不同参数，这时我们可以通过 set_device() 显示的将模型分配到某一个 cuda 上。还有其他方法可以实现吗？
+
+有，可以通过 *CUDA_VISIBLE_DEVICES* 环境变量来限制 CUDA 程序所能使用的 GPU 设备。CUDA 应用运行时，CUDA 将遍历当前可见的设备，并从零开始为可见设备编号。这样，就可以让我们的程序都认为自己看到的 gpu 是零号开始编号的设备。
+```
+  CUDA_VISIBLE_DEVICES=0,2,3 ./cuda_executable
+```
+也就是说通过这个环境变量，可以使得系统中 GPU 设备的编号 和 CUDA应用看到的设备编号产生**不一致**。使用得当的话，可以通过灵活的配置 *CUDA_VISIBLE_DEVICES* 环境变量为 CUDA 应用分配需要的硬件资源。
+
+如果为 *CUDA_VISIBLE_DEVICES* 设置了不存在的设备，所有实际设备将被隐藏，CUDA 应用将无法使用 GPU 设备；如果设备序列是存在和不存在设备的混合，那么不存在设备前的所有存在设备将被重新编号，不存在设备之后的所有设备将被屏蔽。
+
+当然，对于在代码内通过代码修改可见设备的情况，只有在代码访问 GPU 设备之前设置 *CUDA_VISIBLE_DEVICES* 变量才有效。
+
+这里我们提到了多个 GPU 设备，自然会想到当训练迭代次数或者epoch足够大的时候希望用多个 GPU 来加速训练。一般我们会使用：``` net = torch.nn.DataParallel(net, device_ids=[0, 1]) ``` 来实现使用多个 GPU 训练模型。[更多关于多卡的内容...](https://zhuanlan.zhihu.com/p/166161217)
+
 
 ## 2 模型(Module)
 ### 2.1 保存和加载
@@ -389,7 +421,28 @@ https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
 
 ## 5 模型
 
-## 6 数据标注
+## 6 损失函数
+
+## 7 优化器
+pytorch 中常用的 optimizer 有：
+| Name | Describe | Good | Bad | Note |
+| --- | --- | --- | --- | --- |
+| SGD | 随机梯度下降 | 对梯度的要求很低（计算梯度快）。而对于引入的噪声，大量的理论和实践工作证明，只要噪声不是特别大，SGD都能很好地收敛。| 1.SGD在随机选择梯度的同时会引入噪声；<br>2.容易陷入局部最优解 | |
+| Momentum | SGD 的升级版，使用动量的SGD，主要思想是引入一个积攒历史梯度信息动量来加速SGD | 动量主要解决SGD的两个问题: <br> 1.随机梯度的方法（引入的噪声）<br> 2.解决了Hessian矩阵病态问题(可以理解为：SGD 在收敛过程中和正确梯度相比来回摆动比较大的问题) | | 效果上类似于小球向下滚动的时候带上了惯性 |
+| RMSProp | 自适应学习率优化算法，Momentum的升级版 | 相对于Adagrad，由于取了个加权平均，避免了学习率越来越低的的问题 | | 在经验上已经被证明是一种有效且实用的深度神经网络优化算法。目前它是深度学习从业者经常采用的优化方法之一。 |
+| Adam | 自适应学习率优化算法，RMSProp 的升级版 | 相比于缺少修正因子导致二阶矩估计可能在训练初期具有很高偏置的RMSProp | | 通常被认为对超参数的选择相当鲁棒。一般比RMSProp要好一点。 |
+
+效果如下(图片来源于互联网)：
+- 曲面上
+  ![曲面上](./images/optim_on_normal.gif)
+- 存在鞍点的曲面
+  ![存在鞍点的曲面](./images/optim_on_saddle.gif)
+
+注意到，两个动量优化器 Momentum 和 NAG 以及 SGD 都顺势进入了鞍点。但两个动量优化器在鞍点抖动了一会，但最终逃离了鞍点并迅速地下降，而 SGD 却始终停留在了鞍点。
+
+在实际应用中，选择哪种优化器应结合具体问题；同时，也优化器的选择也取决于使用者对优化器的熟悉程度（比如参数的调节等等）。
+
+## 8 数据标注
 数据标注工具：
 https://github.com/topics/annotation-tool
 https://github.com/mingx9527/Data_Label_Tools

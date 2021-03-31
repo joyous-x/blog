@@ -25,6 +25,11 @@ permalink:
 - [AnimeGAN将现实照片动漫化，超越清华的CartoonGAN](https://zhuanlan.zhihu.com/p/76574388)
 
 
+## Scaling
+https://github.com/k4yt3x/video2x 
+https://github.com/nagadomi/waifu2x/
+
+
 ## 优质模型
 Name | Description | Type | Code | Note
 --- | --- | --- | --- | ---
