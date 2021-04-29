@@ -130,3 +130,8 @@ PixelGAN 对空间清晰度没有特别的影响，但是可以增加结果的�
 
 ### 5. Conclusion
 本文的结果表明，条件对抗网络是许多 image-to-image 转换任务的有前途的方法，特别是那些涉及高度结构化图形输出的任务。这些网络可以学到适应于手头的任务和数据的 loss，这就让这些网络可以适用于各种各样的设置。
+
+
+---
+## Deconvolution and Checkerboard Artifacts
+[Deconvolution and Checkerboard Artifacts](https://distill.pub/2016/deconv-checkerboard/)
