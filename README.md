@@ -15,12 +15,14 @@ The little things in my program life
 
 ## 更新日志 (update log)
 - 2021-01-17：initialize
+- 2021-06-01：一、二级分类通过目录区分，更多的分类通过前缀标识
 - ***To be Continue***
 
 ## 附录 (Appendix)
 ### Note
 - 注意路径的分隔符：``` ![LVS FULLNAT模式](../rsc/ipvs/LVS_DR.png) ```
 - 注意：markdown中 ``` <xxx> ```会解析失败
+
 ### TODO:
 - vuepress-plugin-baidu-tongji
 ### Theme

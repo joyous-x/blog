@@ -5,7 +5,6 @@ lastmod: null
 permalink: /blog/skills/
 description: devops、bigdata、ml、ai 等前沿技术技能
 categories: 
-  - blog
   - skills
   - devops
   - image processing
