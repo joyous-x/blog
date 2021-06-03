@@ -17,7 +17,7 @@ permalink:
         - 技术选型、标准落地、部门协作、知识传承、关注业务、节奏平稳、提高工作效率和质量
 - 如何评估持续交付的价值
 - 常见的持续交付平台架构
-    + ![持续交付平台架构](../images/../../skills/devops/image/cni_calico.png)
+    + ![持续交付平台架构](../images/../../skills/devops/rsc/cni_calico.png)
 
 ## 第02讲 影响持续交付的因素有哪些？
 - 影响因素

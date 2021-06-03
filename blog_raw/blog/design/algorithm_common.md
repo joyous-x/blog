@@ -34,7 +34,7 @@ permalink:
 
 ## 树
 + 二叉树、完全二叉树、平衡二叉树、二叉查找树（BST）
-    - ![二叉平衡树](../../rsc/algorithm/algorithm.avl_rebalancing.png)
+    - ![二叉平衡树](rsc/algorithm.avl_rebalancing.png)
 + 红黑树
 + B，B+，B*树
 + LSM 树
