@@ -19,3 +19,5 @@ urls.txt
 
 # mac
 .DS_Store
+
+blog_raw/scripts/.idea
