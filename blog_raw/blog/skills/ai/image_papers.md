@@ -43,7 +43,7 @@ contrast, conditional GANs learn a mapping from observed
 image x and random noise vector z, to y, G : {x, z} → y
 
 ### 3.1 Objective
-![Objective](./images/image-to-image_objective.png)
+![Objective](./rsc/image-to-image_objective.png)
 
 这里需要注意的是 z 是必须的。以往的 cGANs 使用已经意识到这点，并且通常采用 Gaussian noise 作为 z 来微调输入。
 
@@ -135,7 +135,7 @@ PixelGAN 对空间清晰度没有特别的影响，但是可以增加结果的�
 ---
 # [Deconvolution and Checkerboard Artifacts](https://distill.pub/2016/deconv-checkerboard/)
 
-> paper: [Deconvolution and Checkerboard Artifacts](./images/Deconvolution_and_Checkerboard_Artifacts.pdf)
+> paper: [Deconvolution and Checkerboard Artifacts](./rsc/Deconvolution_and_Checkerboard_Artifacts.pdf)
 
 ## Abstract
 当我们非常仔细地观察由神经网络生成的图像时，我们经常会看到一种奇怪的棋盘状伪像图案。这种现象在一些模型中尤为明显，但是最近的模型中有很大一部分都表现出了这种行为。

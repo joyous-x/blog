@@ -41,7 +41,7 @@ permalink:
 | skywalking | 华为 | java | 完全 | 侵入性低 | 时效性好 | 虽然调用链路更细化，但作者在性能和追踪细粒度之间保持了比较好的平衡。决策好 | 数据报表丰富 | 消耗较低 | 延展性非常好，水平理论上无限扩展 |
 
 ### jaeger
-![jaeger](resource/jaeger.png)
+![jaeger](./rsc/jaeger.png)
 - 核心组件
     + Jaeger核心后端组件：jaeger-agent、jaeger-collector、jaeger-query
     + 其中 jaeger-agent、jaeger-collector 都可以通过分布式部署 配合 LB 很容易做到横向扩展，所以对于业务体量较大的场景很有优势
@@ -79,7 +79,7 @@ permalink:
     + [jaegertracing docs](https://www.jaegertracing.io/docs/1.12/architecture/)
 
 ### zipkin
-![zipkin](resource/zipkin.png)
+![zipkin](./rsc/zipkin.png)
 - 持久化
     + Cassandra、ElasticSearch和MySQL
 - 采样方式

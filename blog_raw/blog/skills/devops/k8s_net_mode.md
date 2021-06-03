@@ -75,7 +75,7 @@ CNI(Conteinre Network Interface) 是 google 和 CoreOS 主导制定的容器网�
 
 这个协议连接了两个组件：容器管理系统(如 rkt 或 k8s)和网络插件。它们之间通过 JSON 格式的文件进行通信，实现容器的网络功能。具体的事情都是插件来实现的，包括：创建容器网络空间(network namespace)、把网络接口(interface)放到对应的网络空间、给网络接口分配 IP 等等。
 
-![cni_drivers](./image/cni_drivers.png)
+![cni_drivers](./rsc/cni_drivers.png)
 
 #### CNI 设计考量
 CNI设计的时候考虑了以下问题：
@@ -131,7 +131,7 @@ flannel 的路由流程：
 
 flannel 有多种不同的 Backends (如 udp，VxLan、host-gw)来进行 封包和路由，默认的也是推荐的方式是：VxLan，相对于其他的实现，它提供了较好的性能和需要较少的人工干预。
 
-![cni_flannel](./image/cni_flannel.png)
+![cni_flannel](./rsc/cni_flannel.png)
 
 #### Calico
 Calico 是一个纯三层的数据中心网络方案（不需要Overlay），并且与OpenStack、Kubernetes、AWS、GCE等IaaS和容器平台都有良好的集成。它为每个容器会分配一个可路由的IP，由于通信时不需要解包和封包，网络性能损耗小，易于排查。
@@ -140,7 +140,7 @@ Calico在每一个节点利用 Linux Kernel 实现了一个高效的 vRouter 来
 
 小规模部署的 Calico 网络可以直接互联，大规模下可通过指定的 BGP route reflector 来完成。 这样保证最终所有的 workload 之间的数据流量都是通过 IP 路由的方式完成互联的。Calico节点组网可以直接利用数据中心的网络结构(无论是L2或者L3)，不需要额外的NAT，隧道或者Overlay Network。
 
-![cni_flannel](./image/cni_calico.png)
+![cni_flannel](./rsc/cni_calico.png)
 
 Calico主要由 Felix、etcd、BGP client 以及 BGP Route Reflector 组成
 - Felix：Calico Agent，每个节点都需要运行，主要负责配置路由、配置ACLs、报告状态，确保Endpoint的连通状态

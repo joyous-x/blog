@@ -448,9 +448,9 @@ pytorch 中常用的 optimizer 有：
 
 效果如下(图片来源于互联网)：
 - 曲面上
-<br>![曲面上](./images/optim_on_normal.gif)
+<br>![曲面上](./rsc/optim_on_normal.gif)
 - 存在鞍点的曲面
-<br>![存在鞍点的曲面](./images/optim_on_saddle.gif)
+<br>![存在鞍点的曲面](./rsc/optim_on_saddle.gif)
 
 注意到，两个动量优化器 Momentum 和 NAG 以及 SGD 都顺势进入了鞍点。但两个动量优化器在鞍点抖动了一会，但最终逃离了鞍点并迅速地下降，而 SGD 却始终停留在了鞍点。
 

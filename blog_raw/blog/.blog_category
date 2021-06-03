@@ -17,35 +17,6 @@ tags:
 按照软件系统的组成架构，划分成以下几个部分并分别进行展开
 
 ## Part I - Language
-* [Chapter I - Cxx](lang/README.md)
-* [Chapter II - Golang](lang/README.md)
-* [Chapter III - Python](lang/README.md)
-* [Chapter IV - JS](lang/README.md)
-
-## Part II - Design
-* [Chapter I - Algorithm](design/algorithm/README.md)
-* [Chapter II - Design](design/README.md)
-
-## Part III - Network
-* [目录](network/README.md)
-
-## Part IV - Database
-* [目录](database/README.md)
-
-## Part V - Platform
-* [Chapter I - Android](platform/android/README.md)
-* [Chapter II - Window](platform/window/README.md)
-* [Chapter III - Linux](platform/linux/README.md)
-
-## Part VI - Skills
-* [Chapter I - Backend](skills/backend/README.md)
-* [Chapter II - Devops](skills/devops/README.md)
-* [Chapter III - Bigdata](skills/bigdata/README.md)
-* [Chapter IV - Image Processing](skills/imgproc/README.md)
-* [Chapter V - Explore](skills/explore/README.md)
-
-## Part VII - Utilization
-* [目录](utilization/README.md)
 
 ## Part VIII - Utility
 * [Chapter I - ReadNote](utility/rnote/README.md)

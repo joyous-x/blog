@@ -24,7 +24,7 @@ NodePort 服务是引导外部流量到 k8s 服务的最基础的方式。
 
 正如 NodePort 这个名字所示，在所有 k8s 节点上开放一个特定端口，任何发送到该端口的流量都被转发到对应服务。这个端口可以自己指定，如果不指定的话，系统将选择一个随机端口。
 
-![k8s_nodeport](./image/k8s_srv_nodeport.png)
+![k8s_nodeport](./rsc/k8s_srv_nodeport.png)
 
 这种方法有许多缺点：
 - 每个端口只能是一种服务
@@ -40,7 +40,7 @@ LoadBalancer 的工作方式，是在集群外创建一个 lb (拥有独立的 i
 
 LoadBalancer 方式的最大不足是，每个需要暴露给 internet 的服务都要一个拥有独立 ip 地址的 lb，并且需要为此支付费用。
 
-![k8s_loadbanance](./image/k8s_srv_loadbanance.png)
+![k8s_loadbanance](./rsc/k8s_srv_loadbanance.png)
 
 ## Ingress
 Ingress 不同于上文的 NodePort、LoadBalancer，它事实上不是一种服务类型, 而是一种资源类型，是一个 Ingress Controller 的规则集合。而 Ingress Controller 实际上就是一个解析 Ingress 规则的集群内 service。
@@ -74,7 +74,7 @@ Ingress 示例
             servicePort: 80
 ```
 
-![srv_ingress](./image/k8s_srv_ingress.png)
+![srv_ingress](./rsc/k8s_srv_ingress.png)
 
 在 k8s 集群中最常见的 ingress controller 就是 nginx，此时 Ingress Controller 的作用就是监听 Ingress 规则的变化，并解析成对应的 nginx 规则，并写入 nginx 配置(/etc/nginx.conf)。
 

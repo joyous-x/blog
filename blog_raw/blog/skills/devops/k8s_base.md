@@ -30,10 +30,10 @@ permalink:
     + xDS 协议控制了 Istio Service Mesh 中所有流量的具体行为，可以进行更加完善、精准的管理流量
 
 - k8s架构如下:
-    + ![k8s架构图](./image/k8s_architecture.png)
+    + ![k8s架构图](./rsc/k8s_architecture.png)
 
 - 各个模块之间的工作流：
-    + ![k8s工作流](./image/k8s_workflow_deploy.png)
+    + ![k8s工作流](./rsc/k8s_workflow_deploy.png)
 
 总的来说，k8s 由以下几部分组成：
 + kube-apiserver ::: 提供统一接口
