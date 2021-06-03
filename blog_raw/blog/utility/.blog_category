@@ -6,9 +6,10 @@ publish: true
 description: jiao's blog
 permalink: /blog/utility/
 categories: 
-  - blog
+  - tools
+  - rnote
 keywords: 
-  - jiao's blog
+  - 
 tags: 
   - 
 ---

@@ -1,5 +1,5 @@
 ---
-title: Python 中 "\_"、"\__"和"\__xx__" 的区别
+title: Python 中 "\_"、"\_\_" 和 "\_\_xx\_\_" 的区别
 date: 2021-02-24
 categories:
   - python
@@ -8,10 +8,10 @@ tags:
 permalink:
 ---
 
-# Python 中 "\_"、"\__"和"\__xx__" 的区别
+# Python 中 "\_"、"\_\_" 和 "\_\_xx\_\_" 的区别
 > [英文原文](http://igorsobreira.com/2010/09/16/difference-between-one-underline-and-two-underlines-in-python.html)
 
-## "_"单下划线
+## ```_```单下划线
 Python中不存在真正的私有方法。为了实现类似于c++中私有方法，可以在类的方法或属性前加一个“_”单下划线，意味着该方法或属性不应该去调用，它并不属于API。
 
 在使用property时，经常出现这个问题：
@@ -29,7 +29,7 @@ class BaseForm(StrAndUnicode):
 ```
 上面的代码片段来自于django源码（django/forms/forms.py）。这里的errors是一个属性，属于API的一部分，但是_get_errors是私有的，是不应该访问的，但可以通过errors来访问该错误结果。
 
-## "__"双下划线
+## ```__```双下划线
 这个双下划线更会造成更多混乱，但它并不是用来标识一个方法或属性是私有的，真正作用是用来避免子类覆盖其内容。
 
 让我们来看一个例子：
@@ -76,8 +76,8 @@ I'm a method in A
 ```
 如果你试图调用a.__method，它还是无法运行的，就如上面所说，只可以在类的内部调用__method。
 
-## "__xx__"前后各双下划线
-当你看到"__this__"的时，就知道不要调用它。为什么？因为它的意思是它是用于Python调用的，如下：
+## ```__xx__```前后各双下划线
+当你看到```__this__```的时，就知道不要调用它。为什么？因为它的意思是它是用于Python调用的，如下：
 ```
 >>> name = "igor" 
 >>> name.__len__()
@@ -90,9 +90,9 @@ I'm a method in A
 >>> number + 20
  30
 ```
-“__xx__”经常是操作符或本地函数调用的magic methods。在上面的例子中，提供了一种重写类的操作符的功能。
+```__xx__```经常是操作符或本地函数调用的magic methods。在上面的例子中，提供了一种重写类的操作符的功能。
 
-在特殊的情况下，它只是python调用的hook。例如，__init__()函数是当对象被创建初始化时调用的;__new__()是用来创建实例。
+在特殊的情况下，它只是python调用的hook。例如，```__init__()```函数是当对象被创建初始化时调用的;```__new__()```是用来创建实例。
 ```
 class CrazyNumber(object):
     def __init__(self, n): 

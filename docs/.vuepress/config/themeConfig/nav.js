@@ -15,7 +15,6 @@ module.exports = [
                 text: '设计',
                 link: '/blog/design/',
                 items: [
-                    { text: 'Algorithm', link: '/blog/design/##algorithm' },
                     { text: 'Design', link: '/blog/design/' },
                 ],
             },
@@ -44,9 +43,8 @@ module.exports = [
                 text: '技能',
                 link: '/blog/skills/',
                 items: [
-                    { text: 'Devops', link: '/blog/skills/##devops' },
-                    { text: 'Bigdata', link: '/blog/skills/##bigdata' },
-                    { text: 'Image Processing', link: '/blog/skills/##imgproc' },
+                    { text: 'Devops', link: '/blog/skills/##Devops' },
+                    { text: 'AI', link: '/blog/skills/##Ai' },
                 ],
             },
             {
@@ -60,8 +58,8 @@ module.exports = [
                 text: '杂项',
                 link: '/blog/utility/',
                 items: [
-                    { text: 'ReadNote', link: '/blog/utility/##rnote' },
-                    { text: 'Tools', link: '/blog/utility/##tools' },
+                    { text: 'ReadNote', link: '/blog/utility/##Rnote' },
+                    { text: 'Tools', link: '/blog/utility/##Tools' },
                 ],
             },
         ]

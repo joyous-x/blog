@@ -29,6 +29,7 @@ class CategoryItem(object):
         self.name = name
         self.path = path
         self.metas = DictObject()
+        self.metas.published = True
 
     def id(self):
         return self._id
