@@ -28,6 +28,8 @@ Anime4K | x | x |non-machine-learning based | https://github.com/bloc97/Anime4K
 
 还有很多其他的算法，比如 *https://github.com/cszn/KAIR* 和 *https://github.com/xinntao/BasicSR* 中都实现了很多其他算法...
 
++ image-super-resolution: https://github.com/idealo/image-super-resolution
++ 压缩：https://github.com/caoscott/SReC
 
 ## 3. Reference
 - https://blog.csdn.net/gwplovekimi/article/details/83041627
