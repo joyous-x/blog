@@ -4,7 +4,6 @@ date: 2020-04-13 00:00:00
 lastmod: null
 description: gRPC Connectivity Semantics and API
 categories: 
-  - blog
   - network
   - grpc
 tags: 
