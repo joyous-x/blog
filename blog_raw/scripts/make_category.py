@@ -231,7 +231,7 @@ class BlogCategory(object):
 
 
 if __name__ == "__main__":
-    blogCategory = BlogCategory("..\\blog")
+    blogCategory = BlogCategory("../blog")
     result = blogCategory.generate()
     result = blogCategory.write()
     message("node count: {}".format(result))

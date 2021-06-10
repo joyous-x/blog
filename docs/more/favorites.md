@@ -32,10 +32,12 @@ article: false
 - [alphacoders](https://art.alphacoders.com/) 手机壁纸
 - [konachan](https://konachan.net/) 高质量二次元图片
 ### 矢量图(Icon)
-- [Ikonate](https://github.com/mikolajdobrucki/ikonate) 提供免费的图标 icons
-- [remixicon](https://remixicon.com/) 又一个提供免费图标 icons
-- [feather](https://github.com/feathericons/feather) 免费的 icons
-- [iconfont](https://www.iconfont.cn/) 阿里巴巴矢量图标库
+- [Pngtree](https://pngtree.com/)
+- [Icons8](https://icons8.com/)
+- [Iconfinder](https://www.iconfinder.com/)
+- [iconfactory](https://freeware.iconfactory.com/)
+- [feather](https://github.com/feathericons/feather) 矢量图标(open source)
+- [iconfont](https://www.iconfont.cn/) 矢量图标(阿里巴巴)
 - [easyicon](https://www.easyicon.net/) easyicon图标库
 - [Undraw](https://undraw.co/illustrations) 免费的矢量插画
 - [icomoon](https://icomoon.io/) 矢量图标库
