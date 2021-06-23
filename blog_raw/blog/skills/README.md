@@ -28,6 +28,7 @@ tags:
 * [Single Image Super Resolution](../skills/ai/super_resolution.md)
 
 ## 二、 Devops
+* [Kubernetes 简述](../skills/devops/k8s_base.md)
 * [K8S网络之集群外访问Service的方式](../skills/devops/k8s_net_expose.md)
 * [K8S网络之网络框架](../skills/devops/k8s_net_mode.md)
 * [K8S网络之Service间的通信](../skills/devops/k8s_net_srv.md)
@@ -35,4 +36,6 @@ tags:
 * [Opentracing 简介](../skills/devops/opentracing_overview.md)
 * [Docker 基础知识](../skills/devops/docker-base.md)
 * [K8S-Ipvs连接保持](../skills/devops/ipvs_in_k8s.md)
-* [Kubernetes 简述](../skills/devops/k8s_base.md)
+
+## 三、 Pdf
+* [Pdf 格式解读](../skills/pdf/pdf_struct.md)

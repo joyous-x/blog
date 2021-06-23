@@ -15,7 +15,10 @@ tags:
 
 # UTILITY
 
-## 一、 Rnote
+## 一、 Tools
+* [Interesting Xxx](../utility/tools/interesting_repo.md)
+
+## 二、 Rnote
 * [关于交流沟通](../utility/rnote/about_communication.md)
 * [关于Persional](../utility/rnote/about_personal.md)
 * [关于Pm](../utility/rnote/about_pm.md)
@@ -25,6 +28,3 @@ tags:
 * [代码重构(笔记)](../utility/rnote/rnote_of_refactor.md)
 * [番茄工作法图解笔记](../utility/rnote/rnote_pomodoro_technique_illustrated.md)
 * [重构的12条军规](../utility/rnote/rnote_refactor_12_rules.md)
-
-## 二、 Tools
-* [Interesting Xxx](../utility/tools/interesting_repo.md)

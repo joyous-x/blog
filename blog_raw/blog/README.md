@@ -41,11 +41,12 @@ tags:
 * [目录](skills/README.md)
 * [Chapter - Ai](skills/ai/README.md)
 * [Chapter - Devops](skills/devops/README.md)
+* [Chapter - Pdf](skills/pdf/README.md)
 
 ## Part VII -  Utility
 * [目录](utility/README.md)
-* [Chapter - Rnote](utility/rnote/README.md)
 * [Chapter - Tools](utility/tools/README.md)
+* [Chapter - Rnote](utility/rnote/README.md)
 
 ## Part VIII -  Utilization
 * [目录](utilization/README.md)
