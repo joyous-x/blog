@@ -271,15 +271,82 @@ PDF文件破损，通常是一些非法操作造成的。PDF文件中有部分�
 在读取到异常对象时，要及时的判断对象是否异常终止，比如：读取到一个破损的文件，发现对象长度异常的长，且连续出现多个“obj”和“endobject”，那就可以判断该对象错误了，并将该对象设置为无效，然后重新定位新的间接对象的开始位置，继续往后解析。
 
 ## 5 Document structure
+![](./rsc/pdf_doc_structure.png)
 
-### 5.1 PageLabel
+### 5.1 Catalog
+文档对象层次结构的根是 ```Catalog``` 字典，通过PDF文件 ```trailer``` 中的 ```Root``` 条目进行定位。 一个简单的示例如下：
+```
+1 0 obj 
+  << /Type /Catalog  
+     /Pages 2 0 R  
+     /PageMode /UseOutlines
+     /Outlines 3 0 R
+  >>
+endobj
+```
+
+该目录包含对定义文档内容，大纲（outline），文章线程（article threads），命名目标（named destinations）和其他属性的其他对象的引用。 此外，它还包含有关如何在屏幕上显示文档的信息，例如是否应自动显示其大纲（outline）和缩略图页面图像（thumbnail），以及打开文档时是否显示除第一页以外的某些位置。
+
+PDF Reader 应当从此节点开始，构建 ```Page Tree```, 并逐步展开页面细节并进行渲染。
+
+### 5.2 Common Data Structures
+PDF格式中，一些通用用途的数据结构被定义，它们是由基本对象类型组合而来，在整个PDF中的许多地方都有使用。这里简单介绍文本字符串，日期，矩形，名称树和数字树相关的数据结构。更加复杂的数据结构可以参考 PDF 文档。
+
+#### 5.2.1 String & Text
+PDF 1.7 标准中定义的 ```PDF data types``` 中常见的 string 有：
+
+Type | Description | Note
+--- | --- | --- 
+ASCII string | ASCII 字符组成的字节流 | 
+byte string | 表示字符或其他二进制数据的一系列字节 | 如果这种类型表示字符，则编码应由上下文确定
+string | 非 text string 的字符串 | 从 PDF 1.7 开始，此类型进一步限定为以下类型：PDFDocEncoded string、ASCII string和 byte string。
+date | Date (ASCII string) | 严格遵循ISO / IEC 8824的定义, 日期格式为：(D:YYYYMMDDHHmmSSOHH'mm )
+PDFDocEncoded string | 使用 PDFDocEncoding 加密字符串形成的字节流 | PDF格式只使用 UTF-16BE 编码 Unicode(带字节序标记)
+text string | 使用 PDFDocEncoding 或 UTF-16BE 编码字符串形成的字节流，并带有前导字节序标记 | 主要用在人工可读的字符串信息，例如文本注释，书签名称，文档信息等
+text stream | Text stream | 本质上是一个流，不过其未编码字节应满足与 ```text string``` 在编码、字节顺序和前导字节方面有相同要求
+
+关于 ```date``` 格式的说明:
+
+1. 前缀D必需存在，年份字段（YYYY）必需存在，后面字段可以不存在
+2. 其它字段说明: 
+      Name | Description
+      --- | --- 
+      YYYY | 年份
+      MM | 月份（01-12）, 默认值为01
+      DD | 当天（01-31）, 默认值为01
+      HH | 小时（00-23）, 默认值为0
+      mm | 分钟（00-59）, 默认值为0
+      SS | 秒（00-59）, 默认值为0
+      O | 时差，由加号（+ , 本地时间晚于UT），减号（ - , 本地时间早于UT）或 大写Z（本地时间等于UT）表示
+      HH | 时差中的小时数（00-23），后面跟着符号（’）, 默认值为0
+      mm | 时差中的分钟数（00-59）, 默认值为0
+
+#### 5.2.2 Others
+PDF 1.7 标准中定义的其它 ```PDF data types``` 如下：
+Type | Description | Note
+--- | --- | --- 
+array | Array object | 
+boolean | Boolean value | 
+dictionary | Dictionary object |
+file specification | File specification (string or dictionary) | 用于引用外部文件内容
+function | Function (dictionary or stream) | 
+integer | Integer number | 
+name | Name object | 
+name tree | Name tree (dictionary) | 树形结构，每个节点都应是字典对象。键是字符串，并且键是排序的，可以用于高效查找
+null | Null object | 
+number | Number (integer or real) | 
+number tree | Number tree (dictionary) | 树形结构，每个节点都应是字典对象。键是整数，并且键按数字升序排序，可以用于高效查找
+rectangle | Rectangle (array) | 矩形用于描述页面上的位置和各种对象的边界框。矩形是由一个四个数字的数组(一对对角线的坐标)表示。通常表示为：[llx lly urx ury]，按顺序指定矩形的左下x，左下y，右上y和右上y坐标。
+stream | Stream object |
+
+### 5.3 PageLabel
 PDF PageLabel 页面标签可用于描述页面的页码。允许非连续页面编号，可以看为页面添加任意标签（例如在文档的开头包含罗马数字）。PageLabel对象可用于指定要使用的编号样式（例如，大写或小写罗马，十进制等），第一页的起始编号以及要预先附加到的任意前缀每个数字（例如，“A-”生成“A-1”，“A-2”，“A-3”等。）
 
 PDF文档中的每个页面都由整数页索引标识，该索引表示页面在文档中的相对位置。另外，文档可以有选择地定义页面标签以在屏幕上或在打印中可视地识别每个页面。
 
 页面标签和页面索引不需要重合：索引是固定的，从第一页的1开始连续通过文档运行，但标签可以以适合特定文档的任何方式指定。例如，如果文档以12页用罗马数字编号的前端内容开头，而文档的其余部分用阿拉伯语编号，则第一页的页面索引为1，页面标签为i，第12页将具有索引12和标签xii，第十三页将具有索引13和标签1。
 
-### 5.2 Outlines
+### 5.4 Outlines
 outlines，书签。PDF文档支持文件大纲（书签），用户可以通过点击书签完成跳转功能，类似与```office word```中的大纲功能。
 
 常用的跳转功能有：跳转到文档内部页面、跳转到其他PDF文档的某一页、跳转到web页面、跳转到外部文件（非PDF）等等。
@@ -355,7 +422,7 @@ endobj
 endobj
 ```
 
-### 5.3 Action
+### 5.5 Action
 Action 字典的内容大致如下：
 ```
 3 0 obj
@@ -393,35 +460,17 @@ Rendition | 控制多媒体内容的播放 |
 Trans | 使用transition字典更新文档的显示 | PDF 1.5 中 transition 可用于控制一系列 action 期间的绘图
 GoTo3DView | 设置3D注释的当前视图 | PDF 1.6 中标识3D注释并指定要使用的注释的视图
 
-### 5.4 Destinations
-Destinations定义文档的特定视图，包括以下各项：
+### 5.6 Destinations
+```Destinations```本质上是一个命名的页面视图。它将一个独一无二的名称与单个 PDF 文档中的特定页面位置相关联。书签和链接可以在 ```Go to a page view```, ```Go to a page view in another document```和```Go to a page in attachment``` actions 中使用命名目标而不是直接页面引用。
 
-•应显示的文档页面
-•该页面上文档窗口的位置
-•放大（缩放）系数
+那为什么要使用它呢？
 
-Destinations应用于outline，注释（“Link注释”）或Action（“Go-To Actions”和“Remote Go-To Actions“）。
+```Destinations```允许设置跨 PDF 文档集合的导航路径。链接多个 PDF 文档时建议使用命名目标，因为与链接到页面不同，链接到```Destinations```不受单个文档中页面添加或删除的影响。例如，如果 A.pdf 中的链接指向 B.pdf 中的命名目的地“Chapter1”，那么如果 B.pdf 中的某些页面已被删除、移动或插入新页面，则此链接将继续正常工作。如果 A.pdf 直接引用 B.pdf 中的特定页面，则情况并非如此。对 B.pdf 中页面的任何更改都会破坏直接页面链接。
 
-### 5.5 Document Catalog 详细说明
-文档对象层次结构的根是 Catalog 字典，通过PDF文件 trailer 中的Root条目进行定位。 该目录包含对定义文档内容，大纲（outline），文章线程（article threads），命名目标（named destinations）和其他属性的其他对象的引用。 此外，它还包含有关如何在屏幕上显示文档的信息，例如是否应自动显示其大纲（outline）和缩略图页面图像（thumbnail），以及打开文档时是否显示除第一页以外的某些位置。
-
-
-Common Data Structures 通用格式结构 ：https://blog.csdn.net/steve_cui/article/details/82701061
-PDF格式中，一些通用数据结构是根据基本对象类型构建的，并且在整个PDF中的许多地方都使用。本章节会介绍文本字符串，日期，矩形，名称树和数字树的数据结构。
-
-String Object Types 字符串对象类型
-PDF 字符串对象根据具体的功能作用可以分为：文本字符串，PDFDocEncoded字符串，ASCII字符串或字节字符串。主要通过表示字符串描述的字符或字形的编码进行区分。
-
-字符串对象类型如下表：
-
-类型	描述
-text string	应用于人工可读的文本，例如文本注释，书签名称，文章名称和文档信息。 这些字符串应使用PDFDocEncoding或带有前导字节顺序标记的UTF-16BE进行编码。
-PDFDocEncoded string	用于单个字节中表示的字符和字形。
-ASCII string	用于使用ASCII编码在单个字节中表示的字符。
-byte string	用于表示为一系列字节的二进制数据，其中每个字节可以是以8位表示的任何值。 字符串可以表示字符，但编码是未知的。 字符串的字节可以不表示字符。 此类型应用于MD5哈希值，签名证书和Web捕获标识值等数据。
-
-
-### 5.6 Article thread
+-----------------------------
+-----------------------------
+-----------------------------
+### 5.7 Article thread
 用途
 某些类型的文档可能会包含逻辑连接，而这个逻辑顺序并不是物理顺序。比如：新闻报道可以从新闻通讯的第一页开始，然后转到一个或多个非连续的内页。
 
