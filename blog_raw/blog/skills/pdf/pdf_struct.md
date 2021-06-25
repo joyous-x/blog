@@ -75,12 +75,6 @@ Portable Document Format (PDF), 由Adobe System Incorporated 公司在1992年发
 
 另外，PDF 中可以存在注释，它是以 `%` 符号开始。PDF 中的 object 可以分为 direct (embedded in another object) 和 indirect。Indirect objects 使用 objid 和 genid 进行编号，并且如果驻留在文档根中，则会在 obj 和 endobj 关键字之间定义。
 
-### object streams
-从 PDF 1.5 开始，indirect objects (except other streams) 可能会存在于 `object streams`(标记为 `/Type /ObjStm`) 中。这项技术使 non-stream 对象能够应用标准流过滤器，减小具有大量小型间接对象的文件的大小，并且对于标记 PDF 尤其有用。 对象流不支持指定对象的代号（0 除外）。
-
-### linearized
-PDF 文件有两种布局：non-linearized (not "optimized") 和 linearized ("optimized")。 非线性 PDF 文件可能比线性 PDF 文件小，但访问速度较慢，因为组装文档页面所需的部分数据分散在整个 PDF 文件中。 线性化 PDF 文件（也称为 "optimized" 或 "web optimized" PDF 文件）的构造方式使它们能够在 Web 浏览器插件中读取，而无需等待整个文件下载完成，因为第一页所需的所有对象以最佳方式组织显示在文件的开头。 PDF 文件可以使用 Adobe Acrobat 软件或 QPDF 进行优化。
-
 ### 2.1 Header
 一般情况下，文件头，即，PDF文件的第一行，它用来定义PDF的版本，从而确定该PDF遵循的哪个版本的PDF规范。PDF版本是向下兼容的，即高版本的规范，兼容低版本的规范。
 
@@ -175,124 +169,142 @@ objid genid obj
 ...
 endobj
 ```
+#### 2.4.1 Encryption
+PDF 中的加密，主要是针对内容的处理，这也就说明了为什么 PDF 的加密主要应用在 strings 和 streams 对象。总有例外，如：
+- The values for the ID entry in the trailer
+- Any strings in an Encrypt dictionary
+- Any strings that are inside streams such as content streams and compressed object streams, which themselves are encrypted
 
-## 3. Encryption
-PDF加密方式目前已经增加为三种：
-1. 口令加密
-2. 证书加密
-3. Adobe LiveCycle Rights Management
+如果``` Stream ```对象引用了一个外部文件，那么它的内容就不应被加密，因为它不是当前 PDF 文件的一部分。然而，如果内容是内嵌在 PDF 文件内时("Embedded File Streams")，是应该像其他流对象一样被加密的。
+从 PDF 1.5 开始，嵌入的文件可以在未加密的文档中加密(可以参考 "Crypt Filters")
 
-### 口令加密：
+那么怎么判断文档是否加密以及加密方式、如果解密呢？
+
+PDF 文档的加密信息存储在 Trailer 段的 ```trailer``` 字典的 ```Encrypt``` 条目。如果没有找到这个条目，那么可以认为当前文档没有被加密。这个条目有以下内容：
+- ```Filter``` 
+  + 指定文档的首选```security handler```的名称，它应该是用于加密文档的安全处理程序的名称。这个安全处理程序(handler)是一个软件模块，它实现了加密过程的各个方面并控制对加密文档内容的访问。
+  + PDF 指定了一个标准的基于密码的安全处理程序，所有符合要求的阅读器都应支持，但符合要求的阅读器可以选择提供他们自己的附加安全处理程序。
+  + 如果```SubFilter```不存在，则在打开文档时仅应使用此安全处理程序。如果存在，则符合标准的读取器可以使用任何实现```SubFilter```指定格式的安全处理程序。
+- ```SubFilter```
+  + 指定```encryption dictionary```的语法。它允许处理程序之间的互操作性；也就是说，文档可以由首选处理程序(```Filter```)以外的处理程序解密, 如果它们都支持```SubFilter```指定的格式的话。
+- ```V```
+  + Optional，指定加密算法。可以不存在，不存在时当做默认值 0；如果存在，则值应当大于 0。
+  + 对于 V 值 2 和 3，长度条目指定加密密钥的确切长度。在 PDF 1.5 中，V 的值 4 允许安全处理程序使用自己的加密和解密算法，并指定要在特定```stream```上使用的 ```Crypt Filters```。
+- ```Length``` 加密秘钥的长度(bits)
+
+**详细解密流程，可以参考官方文档...**
+
+目前来说，PDF加密方式目前已经增加为三种：口令加密、证书加密、Adobe LiveCycle Rights Management，下面进行简单的介绍：
+1. 口令加密：
+
 作为第一代PDF安全加密方式，到现在也一直广泛应用。口令加密分为：文档打开密码（open password）、权限密码（permission password）。
 - 文档打开密码：要求用户在打开文件时，需要输入密码
 - 权限密码：打开PDF文件并进行阅读，并不需要权限密码，只有更改权限设置或进行受限制操作时（打印，编辑和复制PDF中的内容），才需要输入权限密码。
 
 如果使用两种类型的密码保护PDF，则可以使用任一密码打开它。但是，只有权限密码才允许用户更改受限制的功能。
 
-这种方式相对简单，加密算法和解密算法，在一些开源的PDF解析库（PDFBox）中，就可以很方便的获取到。
+2. 证书加密：
 
-### 证书加密：
-现在证书被大家广泛的应用，如：我们每天会访问大量的HTTPS网站，而这些网站的Web服务器正在使用基于证书的SSL加密来防止窃听和篡改。
-在PDF文件中，我们也可以通过证书加密来确保PDF的安全。数字签名可确保收件人证明文件来自制作者，而证书加密可确保只有预期的收件人才能查看内容。
+使用证书保护PDF时，可以指定收件人并为每个收件人或用户组定义文件访问级别。类似与口令加密的权限密码，可以进行权限限制，例如，允许一个组签名并填写表单，另一个组可以编辑文本或删除页面。
 
-使用证书保护PDF时，可以指定收件人并为每个收件人或用户组定义文件访问级别。类似与口令加密的权限密码，可以进行权限限制，例如，允许一个组签名并填写表单，另一个组可以编辑文本或删除页面。您可以从可信任身份列表，磁盘上的文件，LDAP服务器或Windows证书存储区（仅限Windows）中选择证书。始终将您的证书包含在收件人列表中，以便以后可以打开该文档。
+用户可以从可信任身份列表，磁盘上的文件，LDAP服务器或Windows证书存储区（仅限Windows）中选择证书。始终将您的证书包含在收件人列表中，以便以后可以打开该文档。
 
-## 4. increamental update
+
+3. Adobe LiveCycle Rights Management
+
+TODO
+
+#### 2.4.2 Object Streams
+从 PDF 1.5 开始，indirect objects (except other streams) 可能会存在于 `object streams`(标记为 `/Type /ObjStm`) 中。这项技术使 non-stream 对象能够应用标准流过滤器，减小具有大量小型间接对象的文件的大小，并且对于标记 PDF 尤其有用。 对象流不支持指定对象的代号（0 除外）。
+
+#### 2.4.3 Linearized PDF 线性化
+PDF 文件有两种布局：non-linearized (not "optimized") 和 linearized ("optimized")。 非线性 PDF 文件可能比线性 PDF 文件小，但访问速度较慢，因为组装文档页面所需的部分数据分散在整个 PDF 文件中。 线性化 PDF 文件（也称为 "optimized" 或 "web optimized" PDF 文件）的构造方式使它们能够在 Web 浏览器插件中读取，而无需等待整个文件下载完成，因为第一页所需的所有对象以最佳方式组织显示在文件的开头。 PDF 文件可以使用 Adobe Acrobat 软件或 QPDF 进行优化。
+
+Linearized PDF 文件的主要目标是：打开文档时，尽快显示第一页。 要查看的第一页可以是文档的任意页面，不一定是页面0（尽管在第0页打开是最常见的）。
+
+注意, 已经线性化的PDF，可以进行增量更新，但是，修改后的文档就不再是线性化文件，需要重新整理文件才能再次生成线性化文件。另外，基于 Linearized PDF 文件的以上特性，可以认识到只有在页面数量很多的情况下，才能突出表现出它快速网络浏览的优势。
+
+#### 2.4.4 Extensions
+```Extensions```字典保存在```catalog``字典中，该字典应包含一个或多个键，用于标识开发人员定义的ISO 32000-1标准扩展。
+
+Adobe公司后面进行功能扩展和改善，又为了与之前PDF1.7标准做区别，通常用Extensions来标识。
+```
+PDF–1.7
+<</Type /Catalog
+  /Extensions
+  <</GLGR
+    <</BaseVersion /1.7
+    /ExtensionLevel 1002
+    >>
+  >>
+>>
+```
+
+```Extensions```字典的内容，不用来显示，通常包含的是用于开发用的内容。扩展字典中的所有开发人员扩展字典条目，以及它们的条目，都应是直接对象。
+
+例如：
+- BaseVersion ：PDF版本的名称。 该名称应与catalog的Version使用的语法一致
+- ExtensionLevel ：由开发人员定义的整数，表示正在使用的扩展名。 如果开发人员为给定的BaseVersion引入了多个扩展，则该开发人员分配的扩展级别编号将随着时间的推移而增加。
+
+### 2.5 Increamental update
 increamental update 增量更新提供了一种更新PDF文件而无需完全重写的方法，根据PDF规范（1.7），增量更新的工作方式如下：可以逐步更新PDF文件的内容，而无需重写整个文件。更改将附加到文件末尾，保留原始内容。
 
 当PDF阅读器呈现PDF文档时，它从文件末尾开始。它读取最后一个预告片并跟随到根对象和交叉引用表的链接，以构建它将要呈现的文档的逻辑结构。当阅读器遇到更新的对象时，它会忽略相同对象的原始版本。
 
 一个PDF文件允许增量更新的次数不受限制。简单的判断PDF是否增量更新的方法是：文档中存在多个`%%EOF`。
 
-## 5. Fix Pdf Structure
+## 4. Fix Pdf Structure
 PDF文件破损，通常是一些非法操作造成的。PDF文件中有部分内容缺失，如xref，重要的object对象等。
 
 1. xref破损
 
-确实解决这个问题，并不复杂，只需要从文件头开始读取对象，记录下对象号和对象起始偏移位置，重新建立xref（交叉引用表），将无效的简介引用置空值，就可以了，如果同一个间接对象出现多次，取最晚出现的那个为准。如果PDF文件是加密的，要先将加密对象进行解析，然后计算出密钥，用于其他对象的解密。
+解决这个问题，并不复杂，只需要从文件头开始读取对象，记录下对象号和对象起始偏移位置，重新建立xref（交叉引用表），将无效的简介引用置空值，就可以了，如果同一个间接对象出现多次，取最晚出现的那个为准。如果PDF文件是加密的，要先将加密对象进行解析，然后计算出密钥，用于其他对象的解密。
 
 2. 间接对象破损
 
-间接对象通常是对象没有正常的结束符号，reader在进行该对象解析时，发生错误。
-这种情况，如果没有损害到xref，问题也好解决，根据xref可以计算出每个间接对象其实偏移位置，在读取间接对象感觉异常的时候，判断一下当前位置是否超出了该对象在PDF文件中保存的区域，如果超出对应区域，将该对象设置为无效对象，且所有引用到该对象的间接引用对象修改为null。
+间接对象通常是对象没有正常的结束符号，reader在进行该对象解析时，发生错误。这种情况，如果没有损害到xref，可以根据xref计算出每个间接对象其实偏移位置，在读取间接对象时发现当前位置超出该对象在PDF文件中保存的区域时，将该对象设置为无效对象，且所有引用到该对象的间接引用对象修改为null。
 
 3. xref和间接对象都破损
 
-这种情况相对复杂，核心方法，还是要重建xref，在读取到异常对象时，要及时的判断对象是否异常终止，比如：读取到一个破损的文件，发现对象长度异常的长，且连续出现多个“obj”和“endobject”，那就可以判断该对象错误了，并将该对象设置为无效，然后重新定位新的间接对象的开始位置，继续往后解析。
+这种情况比较麻烦，核心方法，还是要重建xref。
 
-### 2.1 Steps
+在读取到异常对象时，要及时的判断对象是否异常终止，比如：读取到一个破损的文件，发现对象长度异常的长，且连续出现多个“obj”和“endobject”，那就可以判断该对象错误了，并将该对象设置为无效，然后重新定位新的间接对象的开始位置，继续往后解析。
 
-非 stream 的行，有最大长度 255 字符的限制
+## 5 Document structure
 
-
-
-
-
-## How to read the file
-https://web.archive.org/web/20120831112327/http://www.gnupdf.org/Introduction_to_PDF
-
-
-
-
+### 5.1 PageLabel
 PDF PageLabel 页面标签可用于描述页面的页码。允许非连续页面编号，可以看为页面添加任意标签（例如在文档的开头包含罗马数字）。PageLabel对象可用于指定要使用的编号样式（例如，大写或小写罗马，十进制等），第一页的起始编号以及要预先附加到的任意前缀每个数字（例如，“A-”生成“A-1”，“A-2”，“A-3”等。）
 
 PDF文档中的每个页面都由整数页索引标识，该索引表示页面在文档中的相对位置。另外，文档可以有选择地定义页面标签以在屏幕上或在打印中可视地识别每个页面。
 
 页面标签和页面索引不需要重合：索引是固定的，从第一页的1开始连续通过文档运行，但标签可以以适合特定文档的任何方式指定。例如，如果文档以12页用罗马数字编号的前端内容开头，而文档的其余部分用阿拉伯语编号，则第一页的页面索引为1，页面标签为i，第12页将具有索引12和标签xii，第十三页将具有索引13和标签1。
 
+### 5.2 Outlines
+outlines，书签。PDF文档支持文件大纲（书签），用户可以通过点击书签完成跳转功能，类似与```office word```中的大纲功能。
 
+常用的跳转功能有：跳转到文档内部页面、跳转到其他PDF文档的某一页、跳转到web页面、跳转到外部文件（非PDF）等等。
 
-Extensions字典保存在catalog字典中，该字典应包含一个或多个键，用于标识开发人员定义的ISO 32000-1标准扩展。
-
-adobe公司后面进行功能扩展和改善，又为了与之前PDF1.7标准做区别，通常用Extensions来标识。
-
- %PDF–1.7
-<</Type /Catalog
-/Extensions
-<</GLGR
-<</BaseVersion /1.7
-/ExtensionLevel 1002
->>
->>
->>
-
-
-Extensions字典的内容，不用来显示，通常包含的是用于开发用的内容。扩展字典中的所有开发人员扩展字典条目，以及它们的条目，都应是直接对象。
-
-BaseVersion ：PDF版本的名称。 该名称应与catalog的Version使用的语法一致
-ExtensionLevel：由开发人员定义的整数，表示正在使用的扩展名。 如果开发人员为给定的BaseVersion引入了多个扩展，则该开发人员分配的扩展级别编号将随着时间的推移而增加。
-
-
-
-书签 outlines
-PDF文档支持文件大纲（书签），用户可以通过点击书签完成跳转功能，类似与office word中的大纲功能。
-常用的跳转功能有：
-
-跳转到文档内部页面
-跳转到其他PDF文档的某一页
-跳转到web页面
-跳转到外部文件（非PDF）
-等等
-书签是一个树状结构，根据遍历“First”，“Next”，得到完整的书签节点。
-
-下面是一个书签的例子：
+书签是一个树状结构，根据遍历```First```、```Next```，得到完整的书签节点。下面是一个书签的例子，可以通过这个例子深入了解其结构：
+```
 48 0 obj
-<</MarkInfo<</Marked true>>
+<</MarkInfo <</Marked true>>
 /Metadata 3 0 R
 /Outlines 73 0 R
-/PageLayout/OneColumn
-/PageMode/UseOutlines            % 书签根节点
+/PageLayout /OneColumn
+/PageMode /UseOutlines            % 书签根节点
 /Pages 2 0 R
 /StructTreeRoot 5 0 R
 /Type/Catalog
 /ViewerPreferences<</HideMenubar true/HideToolbar true>>>>
 endobj
+
 73 0 obj
 <</Count 4                     % 子节点数量
 /First 74 0 R                  % 第一个子节点对应的间接引用对象
 /Last 75 0 R                   % 最后一个子节点对应的间接引用对象
 /Type/Outlines>>
 endobj
+
 74 0 obj
 <</A 77 0 R                  % 跳转功能的间接引用对象
 /Count 2                     % 子节点数量
@@ -302,6 +314,7 @@ endobj
 /Parent 73 0 R               % 父节点对应的间接引用对象
 /Title(book1)>>              % 书签显示内容
 endobj
+
 75 0 obj
 <</A 78 0 R
 /C[1.0 0.333328 0.0]         % 书签字体颜色
@@ -310,6 +323,7 @@ endobj
 /Parent 71 0 R
 /Title(mark1)>>
 endobj
+
 76 0 obj
 <<
 /D[
@@ -319,31 +333,67 @@ endobj
 /S/GoTo                      % 跳转类型，该类型告诉浏览器跳转到文档内页面
 >>
 endobj
+
 77 0 obj
 <</D[49 0 R/Fit]/S/GoTo>>
 endobj
+
 78 0 obj
 <</A 81 0 R/Next 79 0 R/Parent 74 0 R/Title(mark1)>>
 endobj
+
 79 0 obj
 <</A 80 0 R/Parent 74 0 R/Prev 78 0 R/Title(mark2)>>
 endobj
+
 80 0 obj
 <</D[49 0 R/Fit]/S/GoTo>>
 endobj
+
 81 0 obj
 <</D[49 0 R/Fit]/S/GoTo>>
 endobj
+```
 
+### 5.3 Action
+Action 字典的内容大致如下：
+```
+3 0 obj
+<< /Type /Action
+/S /GoToE
+/D (Chapter 1)
+/T << /R /P
+/T << /R /C
+/N (Another embedded document) >>
+```
+```/Type /Action```说明当前字典为```Action```的描述，```/S```指明动作类型，```/N```(可选)指定当前动作完成后需要执行的动作或动作序列。
 
+Action 动作，除了用于跳转到文档中的某个页面之外，```annotation```或```outline```也可以指定要执行的动作，例如：启动应用程序，播放声音，改变注释的外观状态。 ```annotation```或```outline```字典中的```A```(optional)条目可以指定一个在```annotation```或```outline```被激活时执行的动作。在 PDF 1.2 中，各种其他情况(```Trigger Events```)也可能触发```Action```。此外，文档的```Catalog```也可以通过```OpenAction```(optional)条目指定在打开文档时应执行的操作。
 
-Action动作
-Action动作，除了跳转到文档中的某个页面之外，还可以指定其他类型的动作，例如启动应用程序，播放声音，改变注释的外观状态。
-这些动作可以通过鼠标点击来触发，还可以通过其他的触发事件进行触发，如：OpenAction，可以指定在打开文档时应执行Action动作。
-下面列出PDF支持的标准的Action类型： https://blog.csdn.net/steve_cui/article/details/82380970
+下面列出PDF支持的标准的Action类型：
 
+Action | Description | Note
+--- | --- | --- 
+GoTo | 转到当前文档中的目标位置 |
+GoToR | 转到另一个文档中的目标位置 | Go-to remote
+GoToE | 转到某个嵌入文件 | Go-to embedded
+Launch | 启动应用程序，通常是打开文件 | 
+Thread | 开始阅读文章线索
+URI | 解析到URI(统一资源标识符，代表Internet上资源的字符串) | 通常是作为超文本链接的目标的文件
+Sound | 播放音频 | 
+Movie | 播放视频 | 
+Hide | 设置 annotation 的隐藏标志 | 通过设置或清除一个或多个注释的隐藏标志，来隐藏或显示这些注释
+Named | 执行符合PDF标准的阅读器预定义的操作 | 
+SubmitForm | 将数据发送到服务器（类似于网页的form）| 此操作会将所选交互式表单字段的名称和值传送到指定的URL
+ResetForm | 将字段设置为其默认值 | 
+ImportData | 从文件导入字段值 | 此操作应将表单数据格式（FDF）数据从指定文件导入到文档的交互式表单中
+JavaScript | 执行 JS 脚本 | 
+SetOCGState | 设置可选内容组的状态 | 
+Rendition | 控制多媒体内容的播放 | 
+Trans | 使用transition字典更新文档的显示 | PDF 1.5 中 transition 可用于控制一系列 action 期间的绘图
+GoTo3DView | 设置3D注释的当前视图 | PDF 1.6 中标识3D注释并指定要使用的注释的视图
 
-Destinations
+### 5.4 Destinations
 Destinations定义文档的特定视图，包括以下各项：
 
 •应显示的文档页面
@@ -352,33 +402,7 @@ Destinations定义文档的特定视图，包括以下各项：
 
 Destinations应用于outline，注释（“Link注释”）或Action（“Go-To Actions”和“Remote Go-To Actions“）。
 
-
-Linearized PDF 线性化 - 介绍
-概念：
-线性化 PDF文件是PDF文件的一种特殊格式，可以通过Internet更快地进行查看。线性化PDF文件包含允许的信息字节流服务器一次下载PDF文件一页。如果在服务器上禁用了字节流，或者PDF文件未禁用线性化后，必须先下载整个PDF文件才能查看。所有受支持的IDS版本都会生成线性化的PDF文件。
-
-基本上，Web优化的PDF是一种允许“ 流式 ”行为的PDF 。更确切地说，这转换是为了浏览器中第一页的快速显示，而对于多页PDF文件的其余部分仍在下载中。
-
-优势：
-对于线性化来说，只有在页面数量很多的情况下，才能突出表现出它快速网络浏览的优势。
-
-线性化PDF文件的主要目标是：
-打开文档时，尽快显示第一页。 要查看的第一页可以是文档的任意页面，不一定是页面0（尽管在第0页打开是最常见的）。
-当用户请求打开文档的另一页（例如，通过转到下一页或通过链接到任意页面）时，尽快显示该页面。
-当页面数据通过慢速通道传送时，在页面到达时以递增方式显示页面。 尽可能先显示最有用的数据。
-即使在收到并显示整个页面之前，也允许执行用户交互，例如关注链接。
-注意：
-已经线性化的PDF，可以进行增量更新，但是，修改后的文档就不再是线性化文件，需要重新整理文件才能再次生成线性化文件。
-
-如何进行线性化：
-线性化PDF需要对原有的PDF文件进行两次操作：
-
-PDF对象按照一定的规则进行排序
-添加 hint 表，可在文档中实现高效导航
-
-
-
-Document Catalog 详细说明
+### 5.5 Document Catalog 详细说明
 文档对象层次结构的根是 Catalog 字典，通过PDF文件 trailer 中的Root条目进行定位。 该目录包含对定义文档内容，大纲（outline），文章线程（article threads），命名目标（named destinations）和其他属性的其他对象的引用。 此外，它还包含有关如何在屏幕上显示文档的信息，例如是否应自动显示其大纲（outline）和缩略图页面图像（thumbnail），以及打开文档时是否显示除第一页以外的某些位置。
 
 
@@ -397,8 +421,7 @@ ASCII string	用于使用ASCII编码在单个字节中表示的字符。
 byte string	用于表示为一系列字节的二进制数据，其中每个字节可以是以8位表示的任何值。 字符串可以表示字符，但编码是未知的。 字符串的字节可以不表示字符。 此类型应用于MD5哈希值，签名证书和Web捕获标识值等数据。
 
 
-
-Article thread
+### 5.6 Article thread
 用途
 某些类型的文档可能会包含逻辑连接，而这个逻辑顺序并不是物理顺序。比如：新闻报道可以从新闻通讯的第一页开始，然后转到一个或多个非连续的内页。
 
@@ -514,7 +537,8 @@ XFA条目应该包含整个XFA资源的流对象，或者是指定组成XFA资�
 
 
 
-Graphics Objects 图形对象
+
+### 5.9 Graphics Objects 图形对象
 
 内容流中存在两种类型的元素：一、图形对象（字体，shading，图片，通常用name对象表示），二、修饰图形对象的操作符（定位，缩放，颜色，大小，剪切，透明等），由这两类元素描绘出了页面的外观。
 
@@ -535,7 +559,7 @@ PDF 1.4开始支持透明成像模型，对象可以根据设置透明程度。
 
 
 
-Coordinate Systems 坐标系
+### 5.10 Coordinate Systems 坐标系
 https://blog.csdn.net/steve_cui/article/details/87796893
 
 
