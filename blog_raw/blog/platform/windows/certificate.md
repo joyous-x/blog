@@ -39,18 +39,18 @@ windows 平台下的 PE签名 大致可以分为```embedded、catalog```两种�
     + 名字、邮箱、签名时间(一般以'副署'中时间戳为准)
 - 签名时间
     + 一般用*副署签名*中的时间戳
-- 嵌套签名(nested_signature)
-    + optional，一个独立、完整的签名
-    + 如果签名列表有多个签名，从结构上讲，第二个(包含)签名开始就是嵌套签名
-- 副署签名(counter_signature)
+- 副署签名(counter signature)
     + optional，一个独立、完整的签名
     + 一般用于签名时间戳，指明允许用当前时间签名数据
+- 嵌套签名(nested signature)
+    + optional，一个独立、完整的签名
+    + 如果文件属性中的签名列表有多个签名，从结构上讲，第二个(包含)签名开始就是嵌套签名
 - 证书(certificate)：
     - 证书链(certificate chain)
         + 文件中内嵌的证书链，只到 ca 证书，不包含根证书
     - 签名
         + 不能在属性中查看
-        + 用 CA 私钥对(Subject)公钥加密形成的签名
+        + 用 CA 私钥对证书主体(即下文 X509 证书的```TBSCertificate```结构)加密形成的签名
     - 证书详情
         + 版本(Version)
         + 序列号(Serial Number)
@@ -61,7 +61,7 @@ windows 平台下的 PE签名 大致可以分为```embedded、catalog```两种�
             + Subject Public Key 相关的信息
         + 签名哈希算法
         + CRL(证书吊销列表, Certificate revocation list) 分发点
-        + 指纹(?)
+        + 指纹
             + windows 查看 PE 属性时能看到，对 证书完整内容 进行 SHA1 计算得到
         + 秘钥用法(Key Usage)、增强型(enhanced)秘钥用法
             + 指明证书的用途范围

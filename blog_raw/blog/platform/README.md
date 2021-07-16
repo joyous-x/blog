@@ -21,4 +21,5 @@ tags:
 * [Linux 内存缓慢增长问题](../platform/linux/linux_mem_grows.md)
 
 ## 二、 Windows
+* [Pe 签名](../platform/windows/certificate.md)
 * [生成 Win10 下调试服务时的证书](../platform/windows/make_cert.md)
