@@ -385,3 +385,5 @@ Hash的计算原则为排除且仅排除掉签名过程中可能会改动的数�
 ## Reference
 - [对Windows 平台下PE文件数字签名的一些研究](https://blog.mtian.org/2015/06/windowspesign/#_Toc419139202)
 - [using-inf2cat-to-create-a-catalog-file](https://docs.microsoft.com/zh-cn/windows-hardware/drivers/install/using-inf2cat-to-create-a-catalog-file)
+- [CSP学习之CryptoAPI初识](https://www.cnblogs.com/dspeeding/p/3338129.html)
+- [用于内核模式代码签名的交叉证书](https://docs.microsoft.com/zh-cn/windows-hardware/drivers/install/cross-certificates-for-kernel-mode-code-signing)
