@@ -303,7 +303,7 @@ authenticatedAttributes 包含了 contentType和messageDigest，messageDigest �
 
 用 IssuerAndSerialNumber 找到签名者的证书，使用里面的公钥解密EncryptedDigest 得到一个 DigestInfo 结构（一般是RSA算法），将这个结构与authenticatedAttributes 做摘要得到的结构对比，一致的话才进行下一步。
 
-### 验证证书链
+### 3. 验证证书链
 相关结构如下：
 ```
 -- X509的证书格式
@@ -351,7 +351,7 @@ AuthorityKeyIdentifier ::= SEQUENCE {
 
 然后，校验证书链中每个证书的签名、有效期和用法（是否可以用于代码签名）。签名验证的算法为证书中的 signatureAlgorithm，签名是 signatureValue，被签名的数据为 tbsCertificate，公钥从父证书的 subjectPublicKeyInfo 里面拿。
 
-### 计算PE文件的Hash，并与签名数据中的Hash对比。
+### 4. 比对PE文件和签名数据中的Hash
 签名数据中的Hash算法和Hash在SignedData的contentInfo中，contentinfo的结构为：
 ```
     ContentInfo ::= SEQUENCE {
@@ -395,3 +395,4 @@ Hash的计算原则为排除且仅排除掉签名过程中可能会改动的数�
 - [using-inf2cat-to-create-a-catalog-file](https://docs.microsoft.com/zh-cn/windows-hardware/drivers/install/using-inf2cat-to-create-a-catalog-file)
 - [CSP学习之CryptoAPI初识](https://www.cnblogs.com/dspeeding/p/3338129.html)
 - [用于内核模式代码签名的交叉证书](https://docs.microsoft.com/zh-cn/windows-hardware/drivers/install/cross-certificates-for-kernel-mode-code-signing)
+- [RFC3161 timestamp information in digital signature (authenticode)](https://social.msdn.microsoft.com/Forums/lync/en-US/40dcf50b-c637-4d7d-b0c0-598a61f96f8c/rfc3161-timestamp-information-in-digital-signature-authenticode?forum=windowsgeneraldevelopmentissues)
