@@ -42,9 +42,16 @@ windows 平台下的 PE签名 大致可以分为```embedded、catalog```两种�
 - 副署签名(counter signature)
     + optional，一个独立、完整的签名
     + 一般用于签名时间戳，指明允许用当前时间签名数据
+    + 常见的两种数据格式:
+        - ```szOID_RFC3161_counterSign```
+            + ```To obtain the timestamp information (RFC3161) of that signature, search the Unauthenticated attribute with pszObjId = szOID_RFC3161_counterSign (1.3.6.1.4.1.311.3.3.1).```
+        - ```szOID_RSA_counterSign```
 - 嵌套签名(nested signature)
     + optional，一个独立、完整的签名
     + 如果文件属性中的签名列表有多个签名，从结构上讲，第二个(包含)签名开始就是嵌套签名
+    + ```Authenticode stores secondary signatures in the UnauthenticatedAttributes of primary signer (index 0), instead of additional PKCS 7 signer.```
+        - ``` From the primary signature, search the UnauthenticatedAttribue for below: define szOID_NESTED_SIGNATURE "1.3.6.1.4.1.311.2.4.1". The encoded object of this attribute is a full PKCS 7 signer.```
+    + **注意***对照下文 SignedData 结构的 SignerInfos 字段的用途*
 - 证书(certificate)：
     - 证书链(certificate chain)
         + 文件中内嵌的证书链，只到 ca 证书，不包含根证书
