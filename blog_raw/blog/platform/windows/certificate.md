@@ -45,6 +45,7 @@ windows 平台下的 PE签名 大致可以分为```embedded、catalog```两种�
     + 常见的两种数据格式:
         - ```szOID_RFC3161_counterSign```
             + ```To obtain the timestamp information (RFC3161) of that signature, search the Unauthenticated attribute with pszObjId = szOID_RFC3161_counterSign (1.3.6.1.4.1.311.3.3.1).```
+            + *暂未找到此字段的完整格式描述，但能找到解出时间戳的相关代码*
         - ```szOID_RSA_counterSign```
 - 嵌套签名(nested signature)
     + optional，一个独立、完整的签名
