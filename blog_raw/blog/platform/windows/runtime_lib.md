@@ -13,7 +13,7 @@ permalink:
 # 运行时库
 在用 visual studio 进行开发时，*属性->常规* 设置页面里看到的 "Windows SDK 版本" 和 "平台工具集" 两个属性，是否不明白用途？开发的程序发布后经常遇到提示缺少*msvcp140.dll* 或 *msvcr100.dll* 或者其他的运行库文件？是否经常遇到安装软件时提示需要安装 "vc_redist.x86.exe" 文件？这里会为你解答这些疑惑。
 
-## "Windows SDK 版本" 和 "平台工具集"
+## 一 "Windows SDK 版本" 和 "平台工具集"
 ### "Windows SDK 版本"
 此属性指定用于生成项目的 ```Windows SDK``` 的版本。"Windows SDK 版本" 是 ```Visual Studio 2019``` 中的属性名，在 ``` ~ Visual Studio 2015``` 中名为 "目标平台版本"。
 
@@ -37,7 +37,7 @@ permalink:
 ```
 
 ### "平台工具集"
-此属性指定用于生成当前配置的工具集。包含了需要为 C++ 项目指定的以下内容：
+此属性指定用于生成当前配置的工具集。包含了(不限于)需要为 C++ 项目指定的以下内容：
 - 编译器
     + 例如：v142 导致使用 Visual Studio 2019 编译器
 - Visual C ++库
@@ -49,12 +49,12 @@ permalink:
 
 另外，需要注意的是 Platform Toolset 是项目级别的设置(请参见 *.vcxproj 中的 PlatformToolset)，而所选的 Windows SDK Version 保存在其他位置。
 
-## 运行库(MT MTd MD MDd)
+## 二 运行库(MT MTd MD MDd)
 运行时库(Runtime Library), 也简称 CRT(C Run Time Library)。是程序在运行时所需要的库文件，通常运行时库是以 Lib 或 Dll 形式提供的。
 
 Windows 下 C Runtime Library 是微软对 C 标准库函数的实现，这样每个程序可以直接使用 C 标准库的函数；后来出现了 C++，于是又在 C Runtime Library 基础上开发了 C++ Runtime Library，实现了对 C++ 标准库的支持。因此现在 Windows 下的 C/C++ 运行时库既包含 C 标准库，也包含 C++ 标准库。
 
-### VS2015以前版本
+### VS2013及以前版本
 VS2015以前版本 中的 Runtime Library 的类型有：CRT 和 C++ Standard Library.
 
 This table lists the libraries that implement CRT initialization and termination.
@@ -100,7 +100,7 @@ Multi-Threaded DLL Debug | /MDd | Debug版的多线程动态库 | vcruntimed.lib
 
 根据上表，我们可以发现 ```MT MTd MD MDd``` 的依赖不同。至于 动态库、静态库 的不同，大伙可以自行查找资料(主要区别在于一个进程中的多个模块使用的同一个库是否共享)~ 
 
-## (动态链接)库文件
+## 三 (动态链接)库文件
 1. ```msvcrt*.dll``` 
     + 它是 ```vc6``` 以及之前的 ```CRT``` 库，特点是 ```c 和 c++``` 的函数都在一个文件
 2. ```msvcp*.dll``` 和 ```msvcr*.dll```
@@ -112,7 +112,7 @@ Multi-Threaded DLL Debug | /MDd | Debug版的多线程动态库 | vcruntimed.lib
         - ```ucrtbase.dll``` 包含标准c库的内容
           - UCRT(The Universal CRT) contains the functions and globals exported by the standard C99 CRT library.
         - ```vcruntime140.dll``` 包含 c++ 运行期需要处理的特别功能，如：调试支持、异常处理、以及耦合到相关编译器的功能。
-4. ```api-ms-win-*.dll``` 和 ```ext-ms-win-*.dll```
+4. ```api-ms-win-*.dll```
     + ```vs2015``` 以及之后版本的还需要 ```Windows API Sets (形如api-ms-win-crt-runtime-l1-1-0.dll)```
     + 所有版本的 Windows 10 共享一个通用的操作系统组件基础，称为```core OS```（在某些情况下，此通用基础也称为 ```OneCore```）。在核心操作系统组件中，```Win32 API``` 被组织成称为 API 集的功能组。
     + ```Windows API Sets``` 主要是为了以下场景：跨各种不同的 win10 设备平台(如 HoloLens, Xbox, and other devices running Windows 10x)、为各平台提供最小的可用 API 集合
@@ -137,22 +137,22 @@ MSVC++ 7.0  | _MSC_VER == 1300 (Visual Studio .NET 2002) | msvcr70.dll msvcp70.d
 MSVC++ 6.0  | _MSC_VER == 1200 (Visual Studio 6.0) | msvcrt.dll
 MSVC++ 5.0  | _MSC_VER == 1100 (Visual Studio 97) | msvcrt.dll
 
-## 思考
+## 四 思考
 1. c++ 版本的选择 怎么生效的？
 2. 为什么运行库会有这么多历史变化？
 3. 总结
     ```mermaid
     graph LR
-        A[运行库] --> |包含| B[c/c++ 运行库]
-        A[运行库] --> |包含| C[os api 运行库]
-        A[运行库] --> |包含| D[编译器扩展功能 运行库]
+        A[运行库] --> B[c/c++ 运行库]
+        A[运行库] --> C[os api 运行库]
+        A[运行库] --> D[编译器扩展功能 运行库]
         B --> E[动态]
         B --> F[静态]
         C --> G[sdk 版本 和 os 版本的兼容]
-        D --> H[根据C++标准提供的编译器扩展功能, 如 OpenMP]
+        D --> |例如| H[根据C++标准提供的编译器扩展功能, 如 OpenMP]
     ```
 
-## Reference
+## 五 Reference
 - [“常规”属性页（项目）](https://docs.microsoft.com/zh-cn/cpp/build/reference/general-property-page-project?view=msvc-140)
 - [C runtime (CRT) and C++ Standard Library (STL) .lib files](https://docs.microsoft.com/en-us/cpp/c-runtime-library/crt-library-features?view=msvc-160)
 - [Windows API sets](https://docs.microsoft.com/en-us/windows/win32/apiindex/windows-apisets)
