@@ -390,6 +390,22 @@ Hash的计算原则为排除且仅排除掉签名过程中可能会改动的数�
 ## 总结
 通过上文，我们对 Windows 下的签名有了一定的了解，而这只是 Microsoft 复杂的签名系统中的一小部分，不过有了这些认知，就更容易去学习签名相关的其他细节以及更加复杂的内容了。
 
+## 思考
++ counter signature 是对哪块内容计算签名内容呢？
+    - 这个 signature 是父签名的一个属性，表达这个属性的结构体([参考链接](https://chromium.googlesource.com/external/omaha/+/8328814108609a7061697caea3f48bca98c2938f/common/signaturevalidator.cc))为：
+        ```
+        typedef struct _CRYPT_ATTRIBUTE {
+            LPSTR            pszObjId;
+            DWORD            cValue;
+            PCRYPT_ATTR_BLOB rgValue;
+        } CRYPT_ATTRIBUTE, *PCRYPT_ATTRIBUTE;
+
+        typedef struct _CRYPTOAPI_BLOB {
+        DWORD cbData;
+        BYTE  *pbData;
+        } CRYPT_INTEGER_BLOB, *PCRYPT_ATTR_BLOB;
+        ```
+
 ## Reference
 - [对Windows 平台下PE文件数字签名的一些研究](https://blog.mtian.org/2015/06/windowspesign/#_Toc419139202)
 - [using-inf2cat-to-create-a-catalog-file](https://docs.microsoft.com/zh-cn/windows-hardware/drivers/install/using-inf2cat-to-create-a-catalog-file)
