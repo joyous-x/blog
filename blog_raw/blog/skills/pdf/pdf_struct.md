@@ -1,5 +1,5 @@
 ---
-title: PDF 格式解读
+title: PDF 格式简析
 date: 2021-06-18 13:50:00
 lastmod: null
 description: PDF格式解析，深入PDF内部结构
@@ -11,7 +11,7 @@ tags:
 permalink:
 ---
 
-# PDF 
+# PDF 格式简析
 
 ## 1. Introduce
 Portable Document Format (PDF), 由Adobe System Incorporated 公司在1992年发明的一种编程形式的文档格式，它所有显示的内容，都是通过相应的操作符进行绘制的。
