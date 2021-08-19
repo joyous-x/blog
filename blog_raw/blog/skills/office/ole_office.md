@@ -31,6 +31,45 @@ docm、xlsm、pptm 是启用宏的Office文档，存储 Visual Basic Application
 docx、xlsx、pptx 三种扩展名文档可解析出 xml 文件。
 ppsx 是 2007 的PPT的一种格式，打开就是幻灯片播放模式。
 
+ole 文件可能风险：
+- linked object or embedded object 
+    + OLEStream
+        - linked object or embedded object 的结构描述信息
+        - OLE2.0 中，由复合文档的以 "\1Ole" 为名的 stream object 包含。OLEStream structure 表述了存储对象是用于 linked object 还是 embedded object。当此结构是为 linked object 指定 storage object 时，它还指定了对此链接对象的引用。
+    + Embedded Object Native Data
+        - OLE1.0 中，其由 EmbeddedObject structure 的 NativeData field 指定。
+        - OLE2.0 中，Native Data 的指定方式有以下两种，可以互换使用：
+            + 由复合文档的以 "\1Ole10Native" 为名的 stream object 包含。如 OLENativeStream structure 的 NativeData field 所指定。
+            + 由 creating application 创建的 stream objects 可以包含 native data。此类流对象是 creating application 的私有对象，未在文档中说明。
+                - creating application: An application whose data is stored in or referenced by documents from other applications.
+    + Embedded Object Presentation Data
+        - OLE1.0 中，其由 EmbeddedObject structure 的 Presentation field 指定
+        - OLE2.0 中，由复合文档的以 "\2OlePres" 为前缀的 stream objects 指定。每一个 stream 都包含一个 OLEPresentationStream structure。
+- vba 
+    - vba project storage
+    - book\workbook stream (microsoft office excel 4.0)
+        - formula 
+        - drawing group (可能是shellcode ？)
+    - 'powerpoint document' stream
+        - VbaProjectStg
+- officeart
+    - worddocument、book\workbook、'powerpoint document' stream
+        - Office Drawing Binary File Format (MS-ODRAW)
+            + This file format is also known as OfficeArt.
+
+障碍：
+- encryption and obfuscation
+    + 对象
+        - vba project
+        - ole file
+    + 方式
+        - XOR Obfuscation
+        - Encryption
+    
+
+
+OLE Property Sets 通过以下两个 stream 存储: ``` "\005SummaryInformation" ``` 和 ``` "\005DocumentSummaryInformation" ```。这两个 stream 都以 PropertySetStream 结构(见 [MS-OSHARED]() 的 section3.2.1 )开头。
+
 ### VBA project
 VBA project 是由一系列 records 组成的结构。其中每个 record 都定义了 project 的三要素之一的部分内容。
 
@@ -65,7 +104,7 @@ ole 中 VBA 存储(storage)结构如下：
             + 指定 特定实现和版本相关 的性能缓存的流。必须是读取时忽略。写入时不得出现。
 - PROJECT Stream
     + MUST
-    + Project Properties, VBA project 的附加信息。
+    + Project Properties, VBA project 的附加信息，如：ProjectPassword、ProjectVisibilityState 等
 - PROJECTwm Stream
     + Optional
     + contains information for mapping module names between multibyte character set (MBCS) and UTF-16.
@@ -146,8 +185,10 @@ https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml
 - [Office File Formats](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
 - [[MS-OVBA]: Office VBA File Format Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-ovba/575462ba-bf67-4190-9fac-c275523c75fc)
 - [[MS-XLS]: Excel Binary File Format (.xls) Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/cd03cb5f-ca02-4934-a391-bb674cb8aa06)
+- [Microsoft Office Excel 97 - 2007 Binary File Format (.xls) Specification](http://download.microsoft.com/download/5/0/1/501ED102-E53F-4CE0-AA6B-B0F93629DDC6/Office/Excel97-2007BinaryFileFormat(xls)Specification.pdf)
 - [Introducing the Office (2007) Open XML File Formats](https://docs.microsoft.com/zh-cn/previous-versions/office/developer/office-2007/aa338205(v=office.12))
 - [OLE1.0 and OLE2.0 Formats](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/fdc5e702-d09e-4344-a77f-eb079d41f23f)
+- [[MS-OFFCRYPTO]: Office Document Cryptography Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)
 
 - [oledump-py](https://blog.didierstevens.com/programs/oledump-py/)
     + [github-code: oledump.py](https://github.com/DidierStevens/DidierStevensSuite/blob/master/oledump.py)
