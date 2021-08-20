@@ -14,16 +14,48 @@ permalink:
 
 # Office 格式简析
 
+- 解析 ole 格式
+  - [x] 格式解析
+  - [x] 解压缩 vba 脚本
+  - [ ] 解压缩 embedded ole
+- 解析 excel4.0 格式 
+  - [x] 代码已完成，待测试
+  - [ ] 格式解读、使用(不同于vba脚本)
+- 文件格式判断分流
+  - [x] office2007
+  - [x] zip 
+  - [ ] rtf
+  - [ ] cab
+- office 2007 格式
+  - [ ] 解压
+  - [ ] 宏模板(本地、云端)
+- Decryption 
+  - [ ] vba
+  - [ ] ole
+- 漏洞
+  - [ ] 检测
+- 特征匹配方式
+  - [ ] 库格式
+  - [ ] 库工具
+- 去误报
+  - [ ] TODO
+
+- [ ] unpackstream error
+- [ ] unzip error
+
+
+
 ## MS-CFB
-
-
-
 https://blog.csdn.net/darcy_123/article/details/104925066
 https://blog.csdn.net/Cody_Ren/article/details/103886098
 
-
 ### OLE
  OLE, Object Linking and Embedded
+
+
+OLE Property Sets 通过以下两个 stream 存储: ``` "\005SummaryInformation" ``` 和 ``` "\005DocumentSummaryInformation" ```。这两个 stream 都以 PropertySetStream 结构(见 [MS-OSHARED]() 的 section3.2.1 )开头。
+
+
 
 Office文档主要基于三种格式：ole、xml、ooxml —— ooxml 以 xml 为基础，可以理解为 zip文件。
 doc、xls、ppt 三种扩展名文档属于97-2003版Office，可解析出ole格式文件。
@@ -52,6 +84,8 @@ ole 文件可能风险：
         - drawing group (可能是shellcode ？)
     - 'powerpoint document' stream
         - VbaProjectStg
+    - docx、xslx
+        - /word/_rels/settings.xml.rels 引用远程 模板文件
 - officeart
     - worddocument、book\workbook、'powerpoint document' stream
         - Office Drawing Binary File Format (MS-ODRAW)
@@ -65,10 +99,15 @@ ole 文件可能风险：
     + 方式
         - XOR Obfuscation
         - Encryption
-    
 
-
-OLE Property Sets 通过以下两个 stream 存储: ``` "\005SummaryInformation" ``` 和 ``` "\005DocumentSummaryInformation" ```。这两个 stream 都以 PropertySetStream 结构(见 [MS-OSHARED]() 的 section3.2.1 )开头。
+#### 密码逃逸
+- VelvetSweatshop Default Password Ploy
+    - 对象：Excel 4.0 xls 97-2003 files with a compromised macro
+    - 表现：XLS files appear password protected but aren’t, opening automatically to install malware from compromised macros.
+    - 原因：Excel 会首先尝试使用默认密码 'VelvetSweatshop' 以 read-only 模式打开文件，如果失败时，再向用户要求输入密码。(This read-only technique has been known about for over 10 years.)
+    - Reference
+        + https://threatpost.com/hackers-update-age-old-excel-4-0-macro-attack/154898/    
+- XLSX
 
 ### VBA project
 VBA project 是由一系列 records 组成的结构。其中每个 record 都定义了 project 的三要素之一的部分内容。
@@ -162,8 +201,8 @@ OOXML(Office Open XML File Formats),
 │  │      theme1.xml//记录样式，颜色编号，字体大小等等
 │  │
 │  └─_rels
-│          document.xml.rels//文档间的关系
-│          vbaProject.bin.rels//记录vba文件
+│          document.xml.rels    // Relationships 使用 ID 和 URL 来定义文档各零件
+│          vbaProject.bin.rels  // vba
 │
 └─_rels
         .rels//描述各个部分之间的关系
@@ -191,7 +230,8 @@ https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml
 - [[MS-OFFCRYPTO]: Office Document Cryptography Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)
 
 - [oledump-py](https://blog.didierstevens.com/programs/oledump-py/)
-    + [github-code: oledump.py](https://github.com/DidierStevens/DidierStevensSuite/blob/master/oledump.py)
+    + [oledump.py](https://github.com/DidierStevens/DidierStevensSuite/blob/master/oledump.py)
+    + [msoffcrypto-crack.py](https://blog.didierstevens.com/2020/03/31/update-msoffcrypto-crack-py-version-0-0-5/)
 - [REMnux: Analyze Documents](https://docs.remnux.org/discover-the-tools/analyze+documents)
 - [0xevilc0de.com](https:0xevilc0de.com) 此博客包含一些宏病毒等的分析相关
     + [Maldoc uses template injection for macro execution](https://0xevilc0de.com/maldoc-uses-template-injection-for-macro-execution/)
@@ -205,3 +245,7 @@ https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml
     + [Word Doc uses Template Injection for macro execution](https://github.com/jstrosch/malware-samples/tree/master/maldocs/unknown/2020/May)
 - [复合文档文件格式研究](https://www.cnblogs.com/AspDotNetMVC/p/3810839.html)
 
+- [宏病毒研究2——实战研究篇](https://bbs.ichunqiu.com/thread-35164-1-1.html)
+    +  Microsoft Office Visualization Tool
+- [VelvetSweatshop: Default Passwords Can Still Make a Difference](https://blogs.vmware.com/networkvirtualization/2020/11/velvetsweatshop-when-default-passwords-can-still-make-a-difference.html/)
+- [spiderlabs-blog](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/)
