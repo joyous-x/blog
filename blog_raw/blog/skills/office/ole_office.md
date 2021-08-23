@@ -17,45 +17,119 @@ permalink:
 - 解析 ole 格式
   - [x] 格式解析
   - [x] 解压缩 vba 脚本
-  - [ ] 解压缩 embedded ole
+  - [x] 解压缩 embedded ole
 - 解析 excel4.0 格式 
-  - [x] 代码已完成，待测试
+  - [x] 代码已完成
   - [ ] 格式解读、使用(不同于vba脚本)
 - 文件格式判断分流
   - [x] office2007
-  - [x] zip 
+  - [x] zip、cab
   - [ ] rtf
-  - [ ] cab
 - office 2007 格式
-  - [ ] 解压
+  - [x] 解压
   - [ ] 宏模板(本地、云端)
-- Decryption 
+- **Decryption** 
   - [ ] vba
   - [ ] ole
-- 漏洞
-  - [ ] 检测
-- 特征匹配方式
+- **特征匹配方式**
   - [ ] 库格式
   - [ ] 库工具
-- 去误报
-  - [ ] TODO
-
-- [ ] unpackstream error
-- [ ] unzip error
-
+- 其他
+  - [ ] 去误报
+  - [ ] 漏洞检测
+- **下周工作**
+  - [ ] script 解读、特征规则
 
 
 ## MS-CFB
+经常被称为 OLE(Object Linking and Embedded)，实际上 OLE 包含的内容更多，是 COM 技术的一部分，而 CFB 只是 OLE 中关于文件格式的一种描述。
+
 https://blog.csdn.net/darcy_123/article/details/104925066
 https://blog.csdn.net/Cody_Ren/article/details/103886098
+
+## OOXML
+```
+OOXML(Office Open XML File Formats), 
+│  [Content_Types].xml //描述文档各个部分的ContentType，协助程序解析文档
+│
+├─docProps
+│      app.xml//程序级别的文档属性，如：页数、文本行数、程序版本等
+│      core.xml//用户填写的文档属性，如：标题、主题、作者等
+│
+├─word
+│  │  document.xml//word文档的正文
+│  │  fontTable.xml//word文档的页脚
+│  │  settings.xml//
+│  │  styles.xml
+│  │  vbaData.xml//vba属性，是否auoopen，是否加密
+│  │  vbaProject.bin//记录vba工程信息 ole
+│  │  webSettings.xml
+│  │
+│  ├─theme
+│  │      theme1.xml//记录样式，颜色编号，字体大小等等
+│  │
+│  └─_rels
+│          document.xml.rels    // Relationships 使用 ID 和 URL 来定义文档各零件
+│          vbaProject.bin.rels  // vba
+└─_rels
+        .rels//描述各个部分之间的关系
+```
+
+```
+OOXML
+├── [Content_Types].xml
+├── _rels
+├── docProps
+│   ├── app.xml
+│   └── core.xml
+└── xl
+    ├── _rels
+    │   └── workbook.xml.rels
+    ├── macrosheets          // microsoft excel 4.0 macros
+    │   ├── _rels
+    │   │   └── sheet1.xml.rels
+    │   └── sheet1.xml
+    ├── printerSettings      // Reference to Printer Settings Data
+    │   └── printerSettings1.bin
+    ├── styles.xml
+    ├── theme
+    │   └── theme1.xml
+    ├── workbook.xml
+    └── worksheets
+        └── sheet1.xml
+```
+
+## malicious
+
+### 检出：
+- hash (忽略大小写、空字符)
+  - function
+  - stream
+- 模糊匹配
+  - 简单的模式匹配
+  - eg.
+    - 搜索到 ：VirtualProtectEx、WriteProcessMemory、CreateRemoteThread、VirtualAllocEx
+    - Shell Environ$("comspec") & " /c attrib -S -h """ & Application.StartupPath & "\K4.XLS""", vbMinimizedFocus
+    - Shell ("\\jdq\cc$\b.exe")
+    - If .Lines(1, 1) = "APMP" & .Lines(1, 2) <> "KILL" Then ........ End If
+    - 混淆的文件：熵 ？
+
+### 清理：
+- 抹除(替换为空格)
+  - function
+  - stream
+- 还原
+  - 还原被加密破坏的文件内容
+
+## macro
+
+## object linking and embedded
 
 ### OLE
  OLE, Object Linking and Embedded
 
 
 OLE Property Sets 通过以下两个 stream 存储: ``` "\005SummaryInformation" ``` 和 ``` "\005DocumentSummaryInformation" ```。这两个 stream 都以 PropertySetStream 结构(见 [MS-OSHARED]() 的 section3.2.1 )开头。
-
-
 
 Office文档主要基于三种格式：ole、xml、ooxml —— ooxml 以 xml 为基础，可以理解为 zip文件。
 doc、xls、ppt 三种扩展名文档属于97-2003版Office，可解析出ole格式文件。
@@ -173,40 +247,20 @@ contain source code as described in [MS-VBAL] section 4.2 and other user-configu
 - Microsoft Office Excel 4.0
     + MS-XLS 的 BIFF 结构
 
+Notes for using Excel 4 Macros
+- When using a relative named range, the cell distance between the subject of the function and the result must be the same, else it may calculate an incorrect result.
+- Any file with an Excel 4 Macro must be saved as a macro-enabled workbook (.xlsm), trying to save as standard Excel file will trigger the following error message
+![must_save_excel4_as_xlsm](./rsc/must_save_excel4_as_xlsm.png)
+- Any function which contains an Array, such as GET.WORKSPACE(37) or NAMES() should be wrapped within the INDEX function.
+Example: =INDEX(GET.WORKSPACE(37),!A1)
+In the example above A1 contains the number from the array which should be retrieved, e.g. the if A1 contains the value 2, it will return the 2nd item from the GET.WORKSPACE(37) array.
+- When using a Macro Worksheet the worksheet is set to display the formula, not the result of the formula.  Use Ctrl + | to toggle between the formula view and the result view.
 
 ### MS-DOC
 
 ### MS-PPT
 
 
-## OOXML
-```
-OOXML(Office Open XML File Formats), 
-│  [Content_Types].xml //描述文档各个部分的ContentType，协助程序解析文档
-│
-├─docProps
-│      app.xml//程序级别的文档属性，如：页数、文本行数、程序版本等
-│      core.xml//用户填写的文档属性，如：标题、主题、作者等
-│
-├─word
-│  │  document.xml//word文档的正文
-│  │  fontTable.xml//word文档的页脚
-│  │  settings.xml//
-│  │  styles.xml
-│  │  vbaData.xml//vba属性，是否auoopen，是否加密
-│  │  vbaProject.bin//记录vba工程信息 ole
-│  │  webSettings.xml
-│  │
-│  ├─theme
-│  │      theme1.xml//记录样式，颜色编号，字体大小等等
-│  │
-│  └─_rels
-│          document.xml.rels    // Relationships 使用 ID 和 URL 来定义文档各零件
-│          vbaProject.bin.rels  // vba
-│
-└─_rels
-        .rels//描述各个部分之间的关系
-```
 ### MS-XLSX
 
 
@@ -249,3 +303,4 @@ https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml
     +  Microsoft Office Visualization Tool
 - [VelvetSweatshop: Default Passwords Can Still Make a Difference](https://blogs.vmware.com/networkvirtualization/2020/11/velvetsweatshop-when-default-passwords-can-still-make-a-difference.html/)
 - [spiderlabs-blog](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/)
+- [Old school: evil Excel 4.0 macros (XLM)](https://outflank.nl/blog/2018/10/06/old-school-evil-excel-4-0-macros-xlm/)
