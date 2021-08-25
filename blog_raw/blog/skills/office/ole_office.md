@@ -295,23 +295,16 @@ In the example above A1 contains the number from the array which should be retri
 
 ### MS-DOC
 
+
 ### MS-PPT
 
 
 ### MS-XLSX
-
-
-
 xls && xlsx
  MS-XLS (BIFF8, Binary Interchange File Format )
 
-https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml
-    https://www.loc.gov/preservation/digital/formats/fdd/fdd000398.shtml
-    http://officeopenxml.com/anatomyofOOXML-xlsx.php
-
 
 ## Reference
-
 - [[MS-Office File Formats]](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
 - [[MS-OOXML]: Introducing the Office (2007) Open XML File Formats](https://docs.microsoft.com/zh-cn/previous-versions/office/developer/office-2007/aa338205(v=office.12))
   - [Understanding the Open XML file formats](https://docs.microsoft.com/en-us/office/open-xml/understanding-the-open-xml-file-formats)
@@ -319,15 +312,12 @@ https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml
 - [[MS-XLS]: Excel Binary File Format (.xls) Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/cd03cb5f-ca02-4934-a391-bb674cb8aa06)
 - [Microsoft Office Excel 97 - 2007 Binary File Format (.xls) Specification](http://download.microsoft.com/download/5/0/1/501ED102-E53F-4CE0-AA6B-B0F93629DDC6/Office/Excel97-2007BinaryFileFormat(xls)Specification.pdf)
 
-
 - [OLE1.0 and OLE2.0 Formats](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/fdc5e702-d09e-4344-a77f-eb079d41f23f)
 - [[MS-OFFCRYPTO]: Office Document Cryptography Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)
-
 
 - [Old school: evil Excel 4.0 macros (XLM)](https://outflank.nl/blog/2018/10/06/old-school-evil-excel-4-0-macros-xlm/)
 - [Attacking Interoperability: An OLE Edition](https://www.blackhat.com/docs/us-15/materials/us-15-Li-Attacking-Interoperability-An-OLE-Edition.pdf)
   - [[翻译]攻击互通性-以OLE为例](https://bbs.pediy.com/thread-218941.htm)
-
 
 - [oledump-py](https://blog.didierstevens.com/programs/oledump-py/)
     + [oledump.py](https://github.com/DidierStevens/DidierStevensSuite/blob/master/oledump.py)
@@ -341,11 +331,10 @@ https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml
     + [Maldoc uses Windows API to perform process hollowing](https://0xevilc0de.com/maldoc-uses-windows-api-to-perform-process-hollowing/)
 - [malware-samples](https://github.com/jstrosch/malware-samples/tree/master/malware_analysis_exercises/2020/December)
 
-
 - [Template Injection](https://sevrosecurity.com/2019/09/12/dynamic-office-template-injection-for-sandbox-bypass/)
     + [Word Doc uses Template Injection for macro execution](https://github.com/jstrosch/malware-samples/tree/master/maldocs/unknown/2020/May)
 - [复合文档文件格式研究](https://www.cnblogs.com/AspDotNetMVC/p/3810839.html)
-- [宏病毒研究2——实战研究篇](https://bbs.ichunqiu.com/thread-35164-1-1.html)
+- [介绍了一些宏病毒常用的trick](https://bbs.ichunqiu.com/thread-35164-1-1.html)
     +  Microsoft Office Visualization Tool
 - [VelvetSweatshop: Default Passwords Can Still Make a Difference](https://blogs.vmware.com/networkvirtualization/2020/11/velvetsweatshop-when-default-passwords-can-still-make-a-difference.html/)
 - [spiderlabs-blog](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/)
