@@ -21,7 +21,7 @@ permalink:
 - 解析 excel4.0 格式 
   - [x] 代码已完成
   - [x] 格式解读、使用(不同于vba脚本)
-  - [ ] 处理维度 以及 处理方式
+  - [ ] 处理: 维度 以及 方式
 - 文件格式判断分流
   - [x] office2007
   - [x] zip、cab
@@ -43,10 +43,11 @@ permalink:
   - 学习 clamav 的特征方式
 - **下周工作**
   - 宏模板(本地、云端) 的模板地址解析
-  - rtf 中的 ole 解析
-  - xml 中的 macro 解析
-  - [ ] script 解读、特征规则
     - to be continued
+  - xml 中的 macro 解析
+  - rtf 中的 ole 解析
+  - [ ] script 解读、特征规则
+    - 未完成 (对 1k 样本的约 2k 个 script 分类、逐个查看，待抽象特征）
 
 ```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
 
@@ -124,6 +125,7 @@ OOXML
     │    └── theme1.xml
     │
     ├─ _rels             //all, relationships
+    |    ├── settings.xml.rels   // 指定 模板 引用
     │    ├── document.xml.rels   // 使用 ID 和 URL 来定义文档各零件
     │    └── vbaProject.bin.rels // vba
     │ 
@@ -139,6 +141,18 @@ OOXML
 > TODO:
 
 ## malicious
+
+1. 宏
+   - vba project macros
+   - excel4.0 macros
+   - 模板注入
+   ![office2007_template_inject](./rsc/office2007_template_inject.png)
+2. embedded
+   - ole
+   - images
+   - stream
+   - others, eg. video、 audio、pdf...
+3. 漏洞利用
 
 ### 检出：
 - hash (忽略大小写、空字符)
@@ -162,9 +176,6 @@ OOXML
 
 FlareSystemComServer.V100Application ?
     Aspen Flare System Analyzer V10.0
-
-
-
 
 ## macro
 
