@@ -20,7 +20,8 @@ permalink:
   - [x] 解压缩 embedded ole
 - 解析 excel4.0 格式 
   - [x] 代码已完成
-  - [ ] 格式解读、使用(不同于vba脚本)
+  - [x] 格式解读、使用(不同于vba脚本)
+  - [ ] 处理维度 以及 处理方式
 - 文件格式判断分流
   - [x] office2007
   - [x] zip、cab
@@ -32,13 +33,20 @@ permalink:
   - [ ] vba
   - [ ] ole
 - **特征匹配方式**
-  - [ ] 库格式
-  - [ ] 库工具
+  - [ ] 库格式 & 库工具
 - 其他
   - [ ] 去误报
   - [ ] 漏洞检测
+- **本周工作**
+  - excel4.0 解析
+  - 确认宏 project 的处理维度，并完成 stream 删除动作
+  - 学习 clamav 的特征方式
 - **下周工作**
+  - 宏模板(本地、云端) 的模板地址解析
+  - rtf 中的 ole 解析
+  - xml 中的 macro 解析
   - [ ] script 解读、特征规则
+    - to be continued
 
 ```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
 
