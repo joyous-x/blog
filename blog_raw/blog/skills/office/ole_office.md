@@ -12,8 +12,7 @@ tags:
 permalink:
 ---
 
-# Office 格式简析
-
+## work
 - 解析 ole 格式
   - [x] 格式解析
   - [x] 解压缩 vba 脚本
@@ -49,13 +48,20 @@ permalink:
   - [ ] script 解读、特征规则
     - 未完成 (对 1k 样本的约 2k 个 script 分类、逐个查看，待抽象特征）
 
-```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
+# Office 格式简析
+目前常见的 Microsoft Office 格式主要分为 97 ~ 2003 和 2007 ~ 两种格式。```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示的 OLE 文件。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
 
-doc、xls、ppt 三种扩展名文档属于97-2003版Office，可解析出ole格式文件。
-docm、xlsm、pptm 是启用宏的Office文档，存储 Visual Basic Applications（VBA）宏代码，可解析出 xml 文件。
-docx、xlsx、pptx 三种扩展名文档可解析出 xml 文件。
-ppsx 是 2007 的PPT的一种格式，打开就是幻灯片播放模式。
+而 OOXML 又是以 XML 文件为基础的，所以，概括的说，Office文档主要基于 ole、xml、ooxml 这三种文件格式构建起来的。
 
+常见的文件扩展名以及用途如下：
+- doc、xls、ppt 
+  - 属于 97-2003 版 Office
+- docx、xlsx、pptx 
+  - 属于 2007 ~ 版 Office 文档，但没有启用宏
+- docm、xlsm、pptm 
+  - 属于启用了宏的 2007 ~ 版 Office 文档，可以存储 Visual Basic Applications（VBA）宏代码
+- ppsx
+  - 是 2007 的 PPT 的一种格式，打开就是幻灯片播放模式
 
 ## MS-CFB
 经常被称为 OLE(Object Linking and Embedded)，实际上 OLE (是一种面向对象的技术)包含的内容更多，是 COM 技术的基础，而 CFB 只是 OLE 中关于文件格式的一种描述。
@@ -91,155 +97,81 @@ ppsx 是 2007 的PPT的一种格式，打开就是幻灯片播放模式。
 
 这些内容就存放在 Compound File Header 和 Directory Entry Root 中。
 
-## OOXML
-OOXML(Office Open XML File Formats), 它的主要目录结构如下所示：
-```
-OOXML
-├── [Content_Types].xml // 描述文档各个部分的ContentType，协助解析文档
-│           
-├─ docProps
-│   ├── app.xml    //程序级别的文档属性，如：页数、文本行数、程序版本等
-│   └── core.xml   //用户填写的文档属性，如：标题、主题、作者等
-│
-├─ _rels
-│   └── .rels      //描述各个部分之间的关系
-│
-└─ word / xl / ppt
-    ├── document.xml     //word
-    ├── fontTable.xml    //word，页脚
-    │
-    ├── workbook.xml     // xl
-    ├── worksheets       // xl
-    │    └── sheet1.xml
-    ├── macrosheets      // xl, microsoft excel 4.0 macros
-    │      ├── _rels
-    │      │   └── sheet1.xml.rels
-    │      └── sheet1.xml
-    |
-    |── presentation.xml // ppt
-    │
-    |── vbaData.xml     //all, vba属性，是否auoopen，是否加密
-    |── vbaProject.bin  //all, 记录 vba project 信息, ole 格式
-    |
-    ├─ theme             //all, 记录样式，颜色编号，字体大小等等
-    │    └── theme1.xml
-    │
-    ├─ _rels             //all, relationships
-    |    ├── settings.xml.rels   // 指定 模板 引用
-    │    ├── document.xml.rels   // 使用 ID 和 URL 来定义文档各零件
-    │    └── vbaProject.bin.rels // vba
-    │ 
-    ├── printerSettings //all, Reference to Printer Settings Data
-    │      └── printerSettings1.bin
-    │ 
-    └─ styles.xml       //all
-```
+## OLE
+OLE, Object Linking and Embedded。
 
-## RTF
-富文本格式（Rtf，rich text tormat）是微软的文本和图像信息交换指定的格式。Rtf文件可以划分为文件头和文档区两个部分组成。文件头和文档区由文本、控制字和控制符组成，同时利用{…}来表明层级关系。
+微软在 1991 年制定的 OLE1.0 规范，主要解决多个应用程序之间的通信和消息传递问题，微软希望第三方开发商能够遵守这个规范，以使在当时的Windows平台上的应用程序能够相互协调工作，更大的提高工作效率。然而事与愿违，只有很少的软件开发商支持它。为此，微软于1993 年发布了新的规范 OLE2.0，它在原有的基础上完善并增强了以下各方面的性能：
+1. OLE自动化：一个程序有计划地控制另一个程序的能力。
+2. OLE控件：小型的组件程序，可嵌入到另外的程序，提供自己的专有功能。
+3. OLE文档：完善了早期的混合文档功能，不仅支持简单链接和嵌入，还支持在位激活、拖放等功能。
 
-> TODO:
+强大的功能使得很多的开发商开始支持新的 OLE 技术，因为微软在 OLE2.0 中建立了 COM（Component Object Model即组件对象模式）规范。
 
-## malicious
+OLE 相关的基础概念有：
+- 容器：
+  + 容器是一个客户程序，它具有申请并使用其它COM组件通过接口为其它程序实现的功能；
+- 服务器：
+  + 服务器通过特定的接口将自己完成的一些功能，提供给使用自己的应用程序（例如画笔程序是一个文档服务器，它提供创建并编辑BMP 图像的功能）。当打开Word，选择【插入】菜单下的【对象...】项，您可以看到在您的系统中存在哪些文档服务器，此时的Word以文档容器的身份出现。 
+- 在位激活：
+  + 当您双击插入的对象后发现Word的菜单有些改变成文档服务器程序的菜单，可以在当前的环境下编辑对象，这称为在位激活。
 
-1. 宏
-   - vba project macros
-   - excel4.0 macros
-   - 模板注入
-   ![office2007_template_inject](./rsc/office2007_template_inject.png)
-2. embedded
-   - ole
-   - images
-   - stream
-   - others, eg. video、 audio、pdf...
-3. 漏洞利用
+简单的说，OLE 是一种可以用来创建复杂文档的技术，这些复杂文档可以包含来自不同渠道（数据源）的信息，并保留其原始属性。例如，一个支持 OLE 的文档（例如word）能够支持嵌入的表格对象，并且嵌入的文档会保留所有原来的属性。如果用户打算编辑嵌入的数据，windows 操作系统会激活原来的应用程序（如excel）并载入这个嵌入的文档。
 
-### 检出：
-- hash (忽略大小写、空字符)
-  - function
-  - stream
-- 模糊匹配
-  - 简单的模式匹配
-  - eg.
-    - 搜索到 ：VirtualProtectEx、WriteProcessMemory、CreateRemoteThread、VirtualAllocEx
-    - Shell Environ$("comspec") & " /c attrib -S -h """ & Application.StartupPath & "\K4.XLS""", vbMinimizedFocus
-    - Shell ("\\jdq\cc$\b.exe")
-    - If .Lines(1, 1) = "APMP" & .Lines(1, 2) <> "KILL" Then ........ End If
-    - 混淆的文件：熵 ？
+### OLE 格式
+OLE 文件的 Property Sets 通过以下两个 stream 存储: 
+- ``` "\005SummaryInformation" ``` 
+- ``` "\005DocumentSummaryInformation" ```
 
-### 清理：
-- 抹除(替换为空格)
-  - function
-  - stream
-- 还原
-  - 还原被加密破坏的文件内容
+这两个 stream 都以 PropertySetStream 结构(见 [MS-OSHARED]() 的 section3.2.1 )开头。
 
-FlareSystemComServer.V100Application ?
-    Aspen Flare System Analyzer V10.0
+OLE文件中包含的常见内容主要有：
+#### 1. linked object or embedded object 
++ OLEStream
+    - linked object or embedded object 的结构描述信息
+    - OLE2.0 中，由复合文档的以 "\1Ole" 为名的 stream object 包含。OLEStream structure 表述了存储对象是用于 linked object 还是 embedded object。当此结构是为 linked object 指定 storage object 时，它还指定了对此链接对象的引用。
++ Embedded Object Native Data
+    - OLE1.0 中，其由 EmbeddedObject structure 的 NativeData field 指定。
+    - OLE2.0 中，Native Data 的指定方式有以下两种，可以互换使用：
+        + 由复合文档的以 "\1Ole10Native" 为名的 stream object 包含。如 OLENativeStream structure 的 NativeData field 所指定。
+        + 由 creating application 创建的 stream objects 可以包含 native data。此类流对象是 creating application 的私有对象，未在文档中说明。
+            - creating application: An application whose data is stored in or referenced by documents from other applications.
++ Embedded Object Presentation Data
+    - OLE1.0 中，其由 EmbeddedObject structure 的 Presentation field 指定
+    - OLE2.0 中，由复合文档的以 "\2OlePres" 为前缀的 stream objects 指定。每一个 stream 都包含一个 OLEPresentationStream structure。
 
-## macro
+#### 2. 宏
+常见的 宏 有两种：vba 和 ms-excel4.0, 它们出现的主要位置有：
+- vba project 
+  - office97 ~ 2003: vba project storage
+  - office2007 ~ : vbaProject.bin
+- microsoft office excel 4.0
+  - office97 ~ 2003: book\workbook stream
+    - 注：主要通过 BIFF 格式保存了 formula、drawing group 等内容
+  - office2007 ~ : macrosheets
+- macro template
+  - office2007 ~ : /[xx]/_rels/settings.xml.rels 中引用外部(远程)模板文件
+- VbaProjectStg
+  - office97 ~ 2003: 'powerpoint document' stream
+  - 注：此内容待继续了解详情
 
-## object linking and embedded
+#### 3. officeart
+- office97 ~ 2003:
+  - worddocument、book\workbook、'powerpoint document' stream
+    - Office Drawing Binary File Format (MS-ODRAW)，This file format is also known as OfficeArt.
+- office2007 ~ :
+  - *TODO*
 
-### OLE
- OLE, Object Linking and Embedded
+#### 4. encryption and obfuscation
+office 可以在以下两个纬度上增加密码：
++ 对象
+  - ole file
+  - vba project
+    - 可以对期中的 stream 设置独立的密码
++ 方式
+  - XOR Obfuscation
+  - Encryption
 
-
-OLE Property Sets 通过以下两个 stream 存储: ``` "\005SummaryInformation" ``` 和 ``` "\005DocumentSummaryInformation" ```。这两个 stream 都以 PropertySetStream 结构(见 [MS-OSHARED]() 的 section3.2.1 )开头。
-
-Office文档主要基于三种格式：ole、xml、ooxml —— ooxml 以 xml 为基础，可以理解为 zip文件。
-doc、xls、ppt 三种扩展名文档属于97-2003版Office，可解析出ole格式文件。
-docm、xlsm、pptm 是启用宏的Office文档，存储 Visual Basic Applications（VBA）宏代码，可解析出 xml 文件。
-docx、xlsx、pptx 三种扩展名文档可解析出 xml 文件。
-ppsx 是 2007 的PPT的一种格式，打开就是幻灯片播放模式。
-
-ole 文件可能风险：
-- linked object or embedded object 
-    + OLEStream
-        - linked object or embedded object 的结构描述信息
-        - OLE2.0 中，由复合文档的以 "\1Ole" 为名的 stream object 包含。OLEStream structure 表述了存储对象是用于 linked object 还是 embedded object。当此结构是为 linked object 指定 storage object 时，它还指定了对此链接对象的引用。
-    + Embedded Object Native Data
-        - OLE1.0 中，其由 EmbeddedObject structure 的 NativeData field 指定。
-        - OLE2.0 中，Native Data 的指定方式有以下两种，可以互换使用：
-            + 由复合文档的以 "\1Ole10Native" 为名的 stream object 包含。如 OLENativeStream structure 的 NativeData field 所指定。
-            + 由 creating application 创建的 stream objects 可以包含 native data。此类流对象是 creating application 的私有对象，未在文档中说明。
-                - creating application: An application whose data is stored in or referenced by documents from other applications.
-    + Embedded Object Presentation Data
-        - OLE1.0 中，其由 EmbeddedObject structure 的 Presentation field 指定
-        - OLE2.0 中，由复合文档的以 "\2OlePres" 为前缀的 stream objects 指定。每一个 stream 都包含一个 OLEPresentationStream structure。
-- vba 
-    - vba project storage
-    - book\workbook stream (microsoft office excel 4.0)
-        - formula 
-        - drawing group (可能是shellcode ？)
-    - 'powerpoint document' stream
-        - VbaProjectStg
-    - docx、xslx
-        - /word/_rels/settings.xml.rels 引用远程 模板文件
-- officeart
-    - worddocument、book\workbook、'powerpoint document' stream
-        - Office Drawing Binary File Format (MS-ODRAW)
-            + This file format is also known as OfficeArt.
-
-障碍：
-- encryption and obfuscation
-    + 对象
-        - vba project
-        - ole file
-    + 方式
-        - XOR Obfuscation
-        - Encryption
-
-#### 密码逃逸
-- VelvetSweatshop Default Password Ploy
-    - 对象：Excel 4.0 xls 97-2003 files with a compromised macro
-    - 表现：XLS files appear password protected but aren’t, opening automatically to install malware from compromised macros.
-    - 原因：Excel 会首先尝试使用默认密码 'VelvetSweatshop' 以 read-only 模式打开文件，如果失败时，再向用户要求输入密码。(This read-only technique has been known about for over 10 years.)
-    - Reference
-        + https://threatpost.com/hackers-update-age-old-excel-4-0-macro-attack/154898/    
-- XLSX
-
-### VBA project
+### VBA Project 格式
 VBA project 是由一系列 records 组成的结构。其中每个 record 都定义了 project 的三要素之一的部分内容。
 
 每个 record 都是以结构开头：```ID(2 bytes) + Size(4 bytes) + ...```
@@ -291,37 +223,119 @@ ole 中 VBA 存储(storage)结构如下：
 dir Stream 中的 records 包含了 VBA project 对外部资源引用的信息。主要有三类：REFERENCECONTROL、REFERENCEREGISTERED、REFERENCEPROJECT。
 
 #### 3. project items
-VBA project 包含一系列用于嵌入 macros 的 project items。而 project item 是由多个 records 组合定义。主要有以下 5 种 project item(详见 MS-OVBA 文档): project package, document modules, procedural modules, class modules, 和 designer modules。 are items that can
-contain source code as described in [MS-VBAL] section 4.2 and other user-configurable settings. 
+VBA project 包含一系列用于嵌入 macros 的 project items。而 project item 是由多个 records 组合定义。主要有以下 5 种 project item(详见 MS-OVBA 文档): ```project package, document modules, procedural modules, class modules``` 和 ```designer modules```。
 
-### MS-XLS
- MS-XLS (BIFF8, Binary Interchange File Format )
+### Microsoft Office Excel 4.0
+Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中。此 stream 以 BIFF8(Binary Interchange File Format) 格式组织各个细节。
 
-包含的宏有:
-- vba_project
-    + OLE 的名为 vba_project 的 storage 中
-- Microsoft Office Excel 4.0
-    + MS-XLS 的 BIFF 结构
-
-Notes for using Excel 4 Macros
-- When using a relative named range, the cell distance between the subject of the function and the result must be the same, else it may calculate an incorrect result.
-- Any file with an Excel 4 Macro must be saved as a macro-enabled workbook (.xlsm), trying to save as standard Excel file will trigger the following error message
+使用 Excel 4 Macros 的一些细节：
+- 使用 relative named range 时，函数主体和结果之间的单元格距离必须都相同，否则可能会计算出错误的结果。
+- Office 2007 ~ 中，任何带有 Excel 4 Macro 的文件都必须另存为启用宏的工作簿 (.xlsm)，尝试另存为标准 Excel 文件将触发以下错误消息:
 ![must_save_excel4_as_xlsm](./rsc/must_save_excel4_as_xlsm.png)
-- Any function which contains an Array, such as GET.WORKSPACE(37) or NAMES() should be wrapped within the INDEX function.
-Example: =INDEX(GET.WORKSPACE(37),!A1)
-In the example above A1 contains the number from the array which should be retrieved, e.g. the if A1 contains the value 2, it will return the 2nd item from the GET.WORKSPACE(37) array.
-- When using a Macro Worksheet the worksheet is set to display the formula, not the result of the formula.  Use Ctrl + | to toggle between the formula view and the result view.
+- 任何包含数组的函数，例如 GET.WORKSPACE(37) 或 NAMES() 都应该包含在 INDEX 函数中: 如，=INDEX(GET.WORKSPACE(37),!A1)，在这个例子中，A1 包含应该检索的数组中的数字，例如如果 A1 包含值 2，它将返回 GET.WORKSPACE(37) 数组中的第二项。
+- 使用 Macro Worksheet 时，工作表设置为显示公式，而不是公式的结果。可以使用 ```Ctrl + |``` 在公式视图和结果视图之间切换。
 
-### MS-DOC
+## OOXML
+OOXML(Office Open XML File Formats), 简单来说，OOXML 是一个基于 XML 的文档格式标准，最早是微软 Office2007 的产品开发技术规范，先是成为 Ecma(ECMA-376) 的标准，最后改进推广成为了 ISO 和 IEC (as ISO/IEC 29500) 的国际文档格式标准。也就是说，通过 OOXML 标准，我们能够在不依赖 Office 产品的情况下，在任何平台读写Office Word，PPT 和 Excel 文件。
 
+OOXML 的主要目录结构如下所示：
+```
+OOXML
+├── [Content_Types].xml // 描述文档各个部分的ContentType，协助解析文档
+│           
+├─ docProps
+│   ├── app.xml    //程序级别的文档属性，如：页数、文本行数、程序版本等
+│   └── core.xml   //用户填写的文档属性，如：标题、主题、作者等
+│
+├─ _rels
+│   └── .rels      //描述各个部分之间的关系
+│
+└─ word / xl / ppt
+    ├── document.xml     //word
+    ├── fontTable.xml    //word，页脚
+    │
+    ├── workbook.xml     // xl
+    ├── worksheets       // xl
+    │    └── sheet1.xml
+    ├── macrosheets      // xl, microsoft excel 4.0 macros
+    │      ├── _rels
+    │      │   └── sheet1.xml.rels
+    │      └── sheet1.xml
+    |
+    |── presentation.xml // ppt
+    │
+    |── vbaData.xml     //all, vba属性，是否auoopen，是否加密
+    |── vbaProject.bin  //all, 记录 vba project 信息, ole 格式
+    |
+    ├─ theme             //all, 记录样式，颜色编号，字体大小等等
+    │    └── theme1.xml
+    │
+    ├─ _rels             //all, relationships
+    |    ├── settings.xml.rels   // 指定 模板 引用
+    │    ├── document.xml.rels   // 使用 ID 和 URL 来定义文档各零件
+    │    └── vbaProject.bin.rels // vba
+    │ 
+    ├── printerSettings //all, Reference to Printer Settings Data
+    │      └── printerSettings1.bin
+    │ 
+    └─ styles.xml       //all
+```
 
-### MS-PPT
+## RTF
+富文本格式（Rtf，rich text tormat）是微软的文本和图像信息交换指定的格式。Rtf文件可以划分为文件头和文档区两个部分组成。文件头和文档区由文本、控制字和控制符组成，同时利用{…}来表明层级关系。
 
+> TODO:
 
-### MS-XLSX
-xls && xlsx
- MS-XLS (BIFF8, Binary Interchange File Format )
+## Malware
+由于 Office 文件的广泛使用，恶意软件作者对其进行了充分的挖掘、利用，期中常常被用于恶意目的的组件或者方式有：
 
+1. 宏
+   - vba project macros
+   - excel4.0 macros
+   - 模板注入
+     - 实际上还是上述两种 macros 的利用，不过内容可能会随时发生变化
+     - ![office2007_template_inject](./rsc/office2007_template_inject.png)
+2. embedded
+   - ole
+   - images
+   - video、audio
+   - other streams, eg. rtf、pdf、docx ... (rtf、docx等复合文档又可以继续嵌套... MY GOD ~)
+3. 漏洞利用
+  - eg. 利用 ole 的特点调用第三方组件并执行；栈溢出造成的任意代码执行漏洞 CVE-2017-11882 ...
+
+另外，病毒作者常用**密码逃逸**手段以增加检测难度，事实上也很有效。这种方法的全称是：```VelvetSweatshop Default Password Ploy```。
+
+- 对象：Excel 4.0 xls 97-2003 files with a compromised macro
+- 表现：XLS files appear password protected but aren’t, opening automatically to install malware from compromised macros.
+- 原因：Excel 会首先尝试使用默认密码 'VelvetSweatshop' 以 read-only 模式打开文件，如果失败时，再向用户要求输入密码。(This read-only technique has been known about for over 10 years.)
+- Reference
+  + https://threatpost.com/hackers-update-age-old-excel-4-0-macro-attack/154898/
+  
+据悉，Office 2007 ~ 也会受到影响，待确认：*TODO*。
+
+### 检出
+- hash (忽略大小写、空字符)
+  - function
+  - stream
+- 模糊匹配
+  - 简单的模式匹配
+  - eg.
+    - 搜索到 ：VirtualProtectEx、WriteProcessMemory、CreateRemoteThread、VirtualAllocEx
+    - Shell Environ$("comspec") & " /c attrib -S -h """ & Application.StartupPath & "\K4.XLS""", vbMinimizedFocus
+    - Shell ("\\jdq\cc$\b.exe")
+    - If .Lines(1, 1) = "APMP" & .Lines(1, 2) <> "KILL" Then ........ End If
+    - 混淆的文件：熵 ？
+
+### 清理
+- 抹除
+  - function
+    - 替换函数内容为空格
+  - stream : 
+    - 将 stream 的 size 置 0，同时抹除第一个扇区内容，断开内容扇区链
+    - 一般来说，只修改 size 就可以让 office 软件无法读取相关内容。但其他杀软可能会继续报毒，毕竟 stream 的其他信息依然有效，可以在容错情况下还原出来 malicious 内容。 
+- 还原
+  - 还原被加密破坏的文件内容
+    - 病毒感染时是有机会操作原有的正常 vba 脚本的，比如，加密（目前还没见到此类样本）。
 
 ## Reference
 - [[MS-Office File Formats]](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
