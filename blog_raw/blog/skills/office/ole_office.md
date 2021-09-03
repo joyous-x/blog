@@ -20,14 +20,15 @@ permalink:
 - 解析 excel4.0 格式 
   - [x] 代码已完成
   - [x] 格式解读、使用(不同于vba脚本)
-  - [ ] 处理: 维度 以及 方式
+  - [x] 处理: 维度 以及 方式
+    - [ ] 删除整个 sheet 表格
 - 文件格式判断分流
   - [x] office2007
   - [x] zip、cab
   - [ ] rtf
 - office 2007 格式
   - [x] 解压
-  - [ ] 宏模板(本地、云端)
+  - [x] 宏模板(本地、云端)
 - **Decryption** 
   - [ ] vba
   - [ ] ole
@@ -37,16 +38,19 @@ permalink:
   - [ ] 去误报
   - [ ] 漏洞检测
 - **本周工作**
-  - excel4.0 解析
-  - 确认宏 project 的处理维度，并完成 stream 删除动作
-  - 学习 clamav 的特征方式
+  - 
 - **下周工作**
-  - 宏模板(本地、云端) 的模板地址解析
-    - to be continued
-  - xml 中的 macro 解析
+  - worddocument
+    - word7
+  - linkshell
+  - zip repair
+  - ooxml 清理
   - rtf 中的 ole 解析
   - [ ] script 解读、特征规则
     - 未完成 (对 1k 样本的约 2k 个 script 分类、逐个查看，待抽象特征）
+  - 对比
+    - go 只解析了 xlsx 的默认密码， 但处理了 linkshell、word7、zip repair
+    - 
 
 # Office 格式简析
 目前常见的 Microsoft Office 格式主要分为 97 ~ 2003 和 2007 ~ 两种格式。```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示的 OLE 文件。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
@@ -148,6 +152,7 @@ OLE文件中包含的常见内容主要有：
   - office97 ~ 2003: book\workbook stream
     - 注：主要通过 BIFF 格式保存了 formula、drawing group 等内容
   - office2007 ~ : macrosheets
+    - Microsoft 365 新增 [LAMBDA function](https://support.microsoft.com/en-us/office/lambda-function-bd212d27-1cd1-4321-a34a-ccbf254b8b67)
 - macro template
   - office2007 ~ : /[xx]/_rels/settings.xml.rels 中引用外部(远程)模板文件
 - VbaProjectStg
@@ -164,12 +169,84 @@ OLE文件中包含的常见内容主要有：
 #### 4. encryption and obfuscation
 office 可以在以下两个纬度上增加密码：
 + 对象
-  - ole file
+  - OLE compound files
+    - 别称：The Information Rights Management Data Space (IRMDS) 
+    - 对象：office97 ~ 2003
+    - 特点："\006DataSpaces" "EncryptInfo"
+  - xls
+    - certain storages and streams are encoded 
+      - If RC4 CryptoAPI encryption is used, certain storages and streams are stored in the Encryption Stream 
+    - for the records that are encrypted, the record type and size are not encrypted in the BIFF streams.
+      - 特点："workbook" 中(BIFF结构)的 record 的加密。加密信息存放在 FilePass record 中
+      - 注意：不止 Workbook Stream 可以包含 BIFF，User Names Stream、Revision Stream 也可以。
+  - WordDocument stream
+    - 特点：MUST have an FIB at offset 0. 用 FibBase.fEncrypted and FibBase.fObfuscation 进行标记。
+    - 注意：The WordDocument stream, the Table stream, and the Data stream MUST be obfuscated using XOR Data Transformation Method 2 as specified in [MS-OFFCRYPTO] section 2.3.7.6. All other streams and storages MUST NOT be obfuscated
+      - When XOR obfuscation is used, data can be easily extracted and the document password might be retrievable.
+      - When obfuscation or encryption is used, the ObjectPool storage, Macros storage, Custom XML Data storage, XML Signatures storage, and Signatures stream are not obfuscated or encrypted.
+      - When XOR obfuscation or Office binary document RC4 encryption is used or when Office binary document RC4 CryptoAPI encryption is used with fDocProps set to false in EncryptionHeader.Flags, the Document Summary Information stream and the Summary Information stream are not obfuscated or encrypted.
+      - When Office binary document RC4 encryption or Office binary document RC4 CryptoAPI encryption is used, the same block numbers are reused in the WordDocument stream, the Table stream, and the entire Data stream. This reuse can occur potentially with known cleartext, implying that certain portions of encrypted data can be directly extracted or easily retrieved.
+  - ppt
+    - CryptSession10Container
+      - information about how to encrypt and decrypt encrypted documents
+      - PowerPoint 2002 uses the headerToken 0xE391C05F for encrypted documents.
+    - Encrypted Summary Information Stream
+      - An optional stream whose name MUST be "EncryptedSummary". This stream exists only in an encrypted document.
   - vba project
-    - 可以对期中的 stream 设置独立的密码
-+ 方式
+    - 可以对期中的 stream 设置独立的密码 (未确认)
+      - VBA uses a reversible encryption algorithm for selected data.
+    - PROJECT Stream: ProjectProtectionState
+      - ProjectProtectionState: "CMG="0705D8E3D8EDDBF1DBF1DBF1DBF1"" specifies no sources are restricted access to the VBA project. The value is obfuscated by Data Encryption (section 2.4.3).
+      - ProjectPassword (section 2.3.1.16): "DPB="0E0CD1ECDFF4E7F5E7F5E7"" specifies the VBA project has no password. The value is obfuscated by Data Encryption (section 2.4.3). 
+      - ProjectVisibilityState (section 2.3.1.17): "GC="1517CAF1D6F9D7F9D706"" specifies the VBA project is visible. The value is obfuscated by Data Encryption (section 2.4.3).
+      - LibName: "VBE" specifies a built in name for the VBA Automation type library.
+  - ooxml (待确认)
+
+
++ Encryption and Obfuscation
   - XOR Obfuscation
+    - There are two methods for performing XOR obfuscation, known as Method 1 and Method 2. Method 1 specifies structures and procedures used by the Excel Binary File Format (.xls) Structure [MS-XLS], and Method 2 specifies structures and procedures used by the Word Binary File Format (.doc) Structure 
   - Encryption
+    - 40-bit RC4 Encryption
+      - [MS-XLS] and [MS-DOC]. 
+    - CryptoAPI RC4 Encryption
+      - [MS-XLS], [MS-DOC], and [MS-PPT].
+      - The documents will contain a new stream (1) to contain encrypted information but can also encrypt other streams (1) in place. 
+    - ECMA-376 Document Encryption
+      - Encrypted ECMA-376 documents [ECMA-376] use the data spaces functionality (section 1.3.1) to contain the entire document as a single stream (1) in an OLE compound file.
+      - The overall approach is very similar to that used by IRMDS
+
+- Write Protection (password-based write protection for Office binary documents)
+  - .xls
+    - The password is converted to a 16-bit password verifier, stored in the document as described in [MS-XLS], and the document is then encrypted as described in [MS-XLS] and in this specification. If the user does not supply an encryption password, a fixed password is used.
+  - .doc
+    - The password is stored in the clear, as described in [MS-DOC], and the document is not encrypted.
+  - .ppt
+    - The password is stored in the clear, as described in [MS-PPT], and the document can then be encrypted as described in [MS-PPT] and in this specification. If encryption is used and the user does not supply an encryption password, a fixed password is used.
+  
+- Digital Signatures 
+  - A binary format stored in a _signatures storage
+  - A format that uses XML-Signature Syntax and Processing, as described in [XMLDSig], stored in an _xmlsignatures storage. 
+
+- Byte Ordering
+  + RgceLoc 可以按照 RgceLocRel 来解析，以简化解析流程。
+
+- OLE Compound File Path Encoding
+  + Paths to specific storages and streams (1) in an OLE compound file are separated by the backslash (\). 
+  + Paths that begin with a backslash signify the root storage of the OLE compound file.
+
+解析 formula 的过程中，会遇到 "is part of a revision or not" 的分支流程，这里涉及以下三个概念：
+- UserBView Record:
+	+ fPersonalView : MUST be 0 if this is not a shared workbook.
+- Revision Stream
+	+ An instance of the Revision Stream specifies the revision logs (section 2.2.11.2) and revision records (section 2.2.11.3) for a shared workbook (section 2.2.11).
+	+ The name of this stream MUST be "Revision Log". A file MUST contain at most one Revision Stream. The Revision Stream MUST exist if the workbook is a shared workbook.
+- Revision Records
+  + a series of records. 详情可以参考 [MS-XLS] 文档。
+
+external references：
+- Supporting Link 包含了 Self-Referencing、Same-Sheet Referencing、External Workbook Referencing 等等类型。
+
 
 ### VBA Project 格式
 VBA project 是由一系列 records 组成的结构。其中每个 record 都定义了 project 的三要素之一的部分内容。
@@ -362,7 +439,7 @@ OOXML
     + [Removing Passwords from VBA Projects](https://0xevilc0de.com/removing-passwords-from-vba-projects/)
     + [Maldoc uses RC4 to hide PowerShell script, retrieves payload from DNS TXT record](https://0xevilc0de.com/maldoc-uses-rc4-to-hide-powershell-script-retrieves-payload-from-dns-txt-record/)
     + [Maldoc uses Windows API to perform process hollowing](https://0xevilc0de.com/maldoc-uses-windows-api-to-perform-process-hollowing/)
-- [malware-samples](https://github.com/jstrosch/malware-samples/tree/master/malware_analysis_exercises/2020/December)
+- [malware-samples](https://github.com/jstrosch/malware-samples)
 
 - [Template Injection](https://sevrosecurity.com/2019/09/12/dynamic-office-template-injection-for-sandbox-bypass/)
     + [Word Doc uses Template Injection for macro execution](https://github.com/jstrosch/malware-samples/tree/master/maldocs/unknown/2020/May)
