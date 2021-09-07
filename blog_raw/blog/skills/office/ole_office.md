@@ -202,50 +202,114 @@ office 可以在以下两个纬度上增加密码：
       - LibName: "VBE" specifies a built in name for the VBA Automation type library.
   - ooxml (待确认)
 
+### MS-OFFCRYPTO
+MS-OFFCRYPTO 只对 windows office 生效，所以有一些常见的规则约定：
+- OLE Compound File Path Encoding
+  + Paths to specific storages and streams (1) in an OLE compound file are separated by the backslash (\). 
+  + Paths that begin with a backslash signify the root storage of the OLE compound file.
+- Byte Ordering
+  + little-endian
 
-+ Encryption and Obfuscation
-  - XOR Obfuscation
-    - There are two methods for performing XOR obfuscation, known as Method 1 and Method 2. Method 1 specifies structures and procedures used by the Excel Binary File Format (.xls) Structure [MS-XLS], and Method 2 specifies structures and procedures used by the Word Binary File Format (.doc) Structure 
-  - Encryption
-    - 40-bit RC4 Encryption
-      - [MS-XLS] and [MS-DOC]. 
-    - CryptoAPI RC4 Encryption
-      - [MS-XLS], [MS-DOC], and [MS-PPT].
-      - The documents will contain a new stream (1) to contain encrypted information but can also encrypt other streams (1) in place. 
-    - ECMA-376 Document Encryption
-      - Encrypted ECMA-376 documents [ECMA-376] use the data spaces functionality (section 1.3.1) to contain the entire document as a single stream (1) in an OLE compound file.
-      - The overall approach is very similar to that used by IRMDS
+#### Data Spaces
+data spaces 结构描述了一种存储经过某种方式转换(transformed)后的 OLE 复合文件的一致性方法。所以，该结构需要存储受保护的内容(protected content)和应用于内容的转换信息(information about the transforms)。例如，下文的 IRMDS 和 Encryption 等都是基于 data spaces 结构进行的。
 
-- Write Protection (password-based write protection for Office binary documents)
+#### Information Rights Management Data Space(IRMDS)
+The IRMDS structure is required when reading, modifying, or creating documents with rights management policies applied.
+
+IRMDS 可以被应用于以下两种类型的文档:
+- Office binary documents
+- ECMA-376 documents (也就是 Office Open XML)
+
+具体的差别如下：
+- "\0x06DataSpaces\DataSpaceMap" Stream
+  - Office binary document
+    - 至少有一个 DataSpaceMapEntry 结构
+    - 必须有一个 DataSpaceMapEntry 结构的 DataSpaceName 字段为 "\009DRMDataSpace"
+      - 此结构中，有且只有一个 ReferenceComponents 结构，名为 "\009DRMContent" 并且类型为 stream
+    - 第二种 DataSpaceMapEntry 结构的 DataSpaceName 字段必须为 "\009LZXDRMDataSpace"
+      - 此结构中，有且只有一个 ReferenceComponents 结构，名为 "\009DRMViewerContent" 并且类型为 stream
+  - ECMA-376 document
+    - 有且只有一个 DataSpaceMapEntry 结构，这个结构的 DataSpaceName 字段为 "DRMEncryptedDataSpace"
+    - 这个 DataSpaceMapEntry 结构, 有且只有一个 ReferenceComponents 结构，名为 "EncryptedPackage" 并且类型为 stream
+- "\0x06DataSpaces\DataSpaceInfo" Storage
+  - Office binary document
+    - 必须包含一个名为 "\009DRMDataSpace" 的 stream, 它必须含有一个 DataSpaceDefinition 结构，此结构有且仅有一个名为 "\009DRMTransform" 的 TransformReferences
+    - 可能会包含一个名为 "\009LZXDRMDataSpace" 的 stream, 这个流中必须一个这样的 DataSpaceDefinition 结构：
+      - 有且仅有两个 TransformReferences 条目："\009DRMTransform" 和 "\009LZXTransform"
+  - ECMA-376 document
+    - 必须包含一个名为 "DRMEncryptedDataSpace" 的 stream, 它必须含有一个 DataSpaceDefinition 结构，此结构有且仅有一个名为 "DRMEncryptedTransform" 的 TransformReferences 条目
+- "\0x06DataSpaces\TransformInfo" Storage
+  - Office binary document
+    - 必须包含一个 "\009DRMTransform" storage，此 storage 下必须包含一个名为 "\006Primary" 的 stream (完整路径为："0x09DRMTransform\0x06Primary")。
+      - 此 stream 必定包含 IRMDSTransformInfo 结构，其内容如下：
+        - TransformInfoHeader.TransformType MUST be 0x00000001
+        - TransformInfoHeader.TransformID MUST be "{C73DFACD-061F-43B0-8B64-0C620D2A8B50}"
+        - TransformInfoHeader.TransformName MUST be "Microsoft.Metadata.DRMTransform"
+      - "\009DRMTransform" storage 同时必须包含一个或多个 end-user license streams
+    - 可能包含一个名为 "\009LZXTransform" 的 substorage。如果此 storage 存在，则其下必须包含一个名为 "\006Primary" 的 stream
+      - 此 stream 必定包含 TransformInfoHeader 结构，其内容如下：
+        - TransformType MUST be 0x00000001
+        - TransformID MUST be "{86DE7F2B-DDCE-486d-B016-405BBE82B8BC}"
+        - TransformName MUST be "Microsoft.Metadata.CompressionTransform"
+  - ECMA-376 document
+    - 必须包含一个名为 "DRMEncryptedTransform" storage，此 storage 下必须包含一个名为 "\006Primary" 的 stream
+      - 此 stream 必定包含 IRMDSTransformInfo 结构，其内容如下：
+        - TransformInfoHeader.TransformType MUST be 0x00000001
+        - TransformInfoHeader.TransformID MUST be ""{C73DFACD-061F-43B0-8B64-0C620D2A8B50}"
+        - TransformInfoHeader.TransformName MUST be "Microsoft.Metadata.DRMTransform"
+      - "DRMEncryptedTransform" storage 同时必须包含一个或多个 end-user license streams
+
+上文中涉及到的定义有：
+ - End-User License Stream
+   - 包含了缓存的 licenses 信息。这些 end-user license stream 的命名必须以 "EUL-" 为前缀，为："EUL-" + "一个 base-32-encoded 的GUID"
+
+#### Encryption and Obfuscation
+应用于加密和混淆的四种不同的技术有：
+1. XOR Obfuscation
+   - There are two methods for performing XOR obfuscation, known as Method 1 and Method 2. Method 1 specifies structures and procedures used by the Excel Binary File Format (.xls) Structure [MS-XLS], and Method 2 specifies structures and procedures used by the Word Binary File Format (.doc) Structure 
+2. 40-bit RC4 Encryption
+  - [MS-XLS] and [MS-DOC]. 
+3. CryptoAPI RC4 Encryption
+  - [MS-XLS], [MS-DOC], and [MS-PPT].
+  - The documents will contain a new stream (1) to contain encrypted information but can also encrypt other streams (1) in place. 
+4. ECMA-376 Document Encryption
+  - Encrypted ECMA-376 documents [ECMA-376] use the data spaces functionality (section 1.3.1) to contain the entire document as a single stream (1) in an OLE compound file.
+  - The overall approach is very similar to that used by IRMDS
+  - 可以使用被称为 extensible encryption 的基于第三方加密扩展的加密方法
+
+##### ECMA-376 Document Encryption
+- "\0x06DataSpaces\DataSpaceMap" Stream
+  - 有且只有一个 DataSpaceMapEntry 结构，这个结构的 DataSpaceName 字段为 "StrongEncryptionDataSpace"
+  - 这个 DataSpaceMapEntry 结构, 有且只有一个 ReferenceComponents 结构，名为 "EncryptedPackage" 并且类型为 stream
+- "\0x06DataSpaces\TransformInfo" Storage
+  - 必须包含一个名为 "0x06Primary" 的 stream, 这个流必须包含一个 IRMDSTransformInfo 结构，其内容如下：
+    - TransformInfoHeader.TransformType MUST be 0x00000001
+    - TransformInfoHeader.TransformID MUST be "{FF9A3F03-56EF-4613-BDD5-5A41C1D07246}"
+    - TransformInfoHeader.TransformName MUST be "Microsoft.Container.EncryptionTransform".
+  - 紧跟着 IRMDSTransformInfo 的是一个 EncryptionTransformInfo 结构
+    - 如果 EncryptionInfo 和 EncryptionTransformInfo 中的算法不一致时，认为 EncryptionInfo 中的更加权威。
+    - 如果使用 agile encryption method 时，EncryptionTransformInfo 的 EncryptionName 字段必须为空字符串(0x00000000)
+- "\EncryptedPackage" Stream
+  - 是一个加密的 stream，它包含了完整的 ECMA376 (压缩后的)原文件
+  - 由 StreamSize(8 bytes) + EncryptedData (variable) 组成
+    - StreamSize 指明 EncryptedData 的字节数。另外，StreamSize 的大小实际上可能会与流的大小有出入，这依赖于所用加密算法的 block size
+- "\EncryptionInfo" Stream (Standard Encryption)
+  - 包含用于初始化用于加密 "\EncryptedPackage" 流的密码学详细信息
+- "\EncryptionInfo" Stream (Extensible Encryption)
+  - ECMA-376 文档可以选择使用用户提供的自定义（可扩展）加密模块。当使用可扩展加密时，\EncryptionInfo 流的结构描述不同于标准模式，详细可以参考文档[MS-OFFCRYPTO]
+
+#### Write Protection
+ + Write Protection (password-based write protection for Office binary documents)
   - .xls
     - The password is converted to a 16-bit password verifier, stored in the document as described in [MS-XLS], and the document is then encrypted as described in [MS-XLS] and in this specification. If the user does not supply an encryption password, a fixed password is used.
   - .doc
     - The password is stored in the clear, as described in [MS-DOC], and the document is not encrypted.
   - .ppt
     - The password is stored in the clear, as described in [MS-PPT], and the document can then be encrypted as described in [MS-PPT] and in this specification. If encryption is used and the user does not supply an encryption password, a fixed password is used.
-  
-- Digital Signatures 
+
+#### Digital Signatures 
   - A binary format stored in a _signatures storage
   - A format that uses XML-Signature Syntax and Processing, as described in [XMLDSig], stored in an _xmlsignatures storage. 
-
-- Byte Ordering
-  + RgceLoc 可以按照 RgceLocRel 来解析，以简化解析流程。
-
-- OLE Compound File Path Encoding
-  + Paths to specific storages and streams (1) in an OLE compound file are separated by the backslash (\). 
-  + Paths that begin with a backslash signify the root storage of the OLE compound file.
-
-解析 formula 的过程中，会遇到 "is part of a revision or not" 的分支流程，这里涉及以下三个概念：
-- UserBView Record:
-	+ fPersonalView : MUST be 0 if this is not a shared workbook.
-- Revision Stream
-	+ An instance of the Revision Stream specifies the revision logs (section 2.2.11.2) and revision records (section 2.2.11.3) for a shared workbook (section 2.2.11).
-	+ The name of this stream MUST be "Revision Log". A file MUST contain at most one Revision Stream. The Revision Stream MUST exist if the workbook is a shared workbook.
-- Revision Records
-  + a series of records. 详情可以参考 [MS-XLS] 文档。
-
-external references：
-- Supporting Link 包含了 Self-Referencing、Same-Sheet Referencing、External Workbook Referencing 等等类型。
 
 
 ### VBA Project 格式
@@ -311,6 +375,19 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 ![must_save_excel4_as_xlsm](./rsc/must_save_excel4_as_xlsm.png)
 - 任何包含数组的函数，例如 GET.WORKSPACE(37) 或 NAMES() 都应该包含在 INDEX 函数中: 如，=INDEX(GET.WORKSPACE(37),!A1)，在这个例子中，A1 包含应该检索的数组中的数字，例如如果 A1 包含值 2，它将返回 GET.WORKSPACE(37) 数组中的第二项。
 - 使用 Macro Worksheet 时，工作表设置为显示公式，而不是公式的结果。可以使用 ```Ctrl + |``` 在公式视图和结果视图之间切换。
+
+解析过程中遇到的问题：
++ RgceLoc 可以按照 RgceLocRel 来解析，以简化解析流程。
++ 解析 formula 的过程中，会遇到 "is part of a revision or not" 的分支流程，这里涉及以下三个概念：
+  - UserBView Record:
+  	+ fPersonalView : MUST be 0 if this is not a shared workbook.
+  - Revision Stream
+  	+ An instance of the Revision Stream specifies the revision logs (section 2.2.11.2) and revision records (section 2.2.11.3) for a shared workbook (section 2.2.11).
+  	+ The name of this stream MUST be "Revision Log". A file MUST contain at most one Revision Stream. The Revision Stream MUST exist if the workbook is a shared workbook.
+  - Revision Records
+    + a series of records. 详情可以参考 [MS-XLS] 文档。
++ external references：
+  - Supporting Link 包含了 Self-Referencing、Same-Sheet Referencing、External Workbook Referencing 等等类型。
 
 ## OOXML
 OOXML(Office Open XML File Formats), 简单来说，OOXML 是一个基于 XML 的文档格式标准，最早是微软 Office2007 的产品开发技术规范，先是成为 Ecma(ECMA-376) 的标准，最后改进推广成为了 ISO 和 IEC (as ISO/IEC 29500) 的国际文档格式标准。也就是说，通过 OOXML 标准，我们能够在不依赖 Office 产品的情况下，在任何平台读写Office Word，PPT 和 Excel 文件。
