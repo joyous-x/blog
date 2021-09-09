@@ -142,6 +142,23 @@ XOR、RC4 以及 RC4 CryptoAPI 都可以应用于 Office Binary Document 文件�
   - A format that uses XML-Signature Syntax and Processing, as described in [XMLDSig], stored in an _xmlsignatures storage. 
 
 ## xls
+
+### Password Verifier Algorithm
+一些 records (Password, FileSharing, Prot4RevPass, FeatProtection, 和 FilePass) 会利用 password verifier 来锁定或解锁对 workbook 部分内容的查看或编辑。这个 password verifier 的设计主要是为了防止意外编辑，而不是安全特性。
+
+**It is possible to remove the passwords by removing the records containing the verifier values.**
+
+这个 verifier 的值由两个阶段计算:
+- 将 Unicode 的 password 转换为当前系统的 ANSI 字符编码
+  + 任何不能被转换为 ANSI 字符编码的 Unicode 字符用 0x3F 替换。这个替换动作在验证 hash 时将生成正数哈希值匹配。在某些语言环境中，这些字符可能是日常字符集的重要组成部分。
+- 使用 [MS-OFFCRYPTO] 中指定的 XOR obfuscation 算法(Binary Document Password Verifier Derivation Method 1)计算出16-bit 的 password verifier 值
+  
+
+#### Password record
+Password record 为 sheet or workbook 指定了 password verifier。如果 record 结构中的 wPassword 值为 0，则表示没有密码。
+
+如果此 record 存在于 Globals Substream, 那么它是整个 workbook 的密码. 如果此 record 存在于 worksheet substream, chart sheet substream, macro sheet substream, or dialog sheet substream, 那么它仅仅适用于那个 sheet。此外，workbook 中必定存在此 record，而 sheet 则当且仅当有密码时才存在此 record。
+
 ### Encryption (Password to Open)
 其 obfuscation or encryption 信息存放于 workbook 流的 FilePass Record 中.
 
@@ -155,9 +172,7 @@ XOR、RC4 以及 RC4 CryptoAPI 都可以应用于 Office Binary Document 文件�
 
 其中带 (**) 标记的，表示这个流当且仅当 EncryptionHeader.flags 的 0x08 bit 为 0 时，必须按照指定方式加密。(EncryptionHeader 见 [MS-OFFCRYPTO] section 2.3.5.1)。
 
-The record data is then encrypted by the specific RC4
-algorithm in 1024-byte blocks. The block number is set to zero at the beginning of every BIFF record
-stream, and incremented by one at each 1024-byte boundary. 
+The record data is then encrypted by the specific RC4 algorithm in 1024-byte blocks. The block number is set to zero at the beginning of every BIFF record stream, and incremented by one at each 1024-byte boundary. 
 
 ## doc
 ### Encryption and Obfuscation (Password to Open)
@@ -214,5 +229,5 @@ ppt 文档中有一个名字必定为 "EncryptedSummary" 的可选流，它只�
 
 ## Reference
 - [[MS-Office File Formats]](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
-- [[MS-XLS]: Excel Binary File Format (.xls) Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/cd03cb5f-ca02-4934-a391-bb674cb8aa06)
-- [[MS-OFFCRYPTO]: Office Document Cryptography Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)
+- [[MS-XLS] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/cd03cb5f-ca02-4934-a391-bb674cb8aa06)
+- [[MS-OFFCRYPTO] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)

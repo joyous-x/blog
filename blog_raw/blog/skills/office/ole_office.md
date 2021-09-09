@@ -516,36 +516,38 @@ OOXML
     - 病毒感染时是有机会操作原有的正常 vba 脚本的，比如，加密（目前还没见到此类样本）。
 
 ## Reference
-- [[MS-Office File Formats]](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
-- [[MS-OOXML]: Introducing the Office (2007) Open XML File Formats](https://docs.microsoft.com/zh-cn/previous-versions/office/developer/office-2007/aa338205(v=office.12))
-  - [Understanding the Open XML file formats](https://docs.microsoft.com/en-us/office/open-xml/understanding-the-open-xml-file-formats)
-- [[MS-OVBA]: Office VBA File Format Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-ovba/575462ba-bf67-4190-9fac-c275523c75fc)
-- [[MS-XLS]: Excel Binary File Format (.xls) Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/cd03cb5f-ca02-4934-a391-bb674cb8aa06)
+- [MS-Office File Formats](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
+- [[MS-OVBA] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-ovba/575462ba-bf67-4190-9fac-c275523c75fc)
+- [[MS-OFFCRYPTO] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)
+- [[MS-XLS] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/cd03cb5f-ca02-4934-a391-bb674cb8aa06)
+- [[MS-DOC] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-doc/ccd7b486-7881-484c-a137-51170af7cc22)
+- [[MS-PPT] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-ppt/6be79dde-33c1-4c1b-8ccc-4b2301c08662)
+- [Introducing the Office (2007) Open XML File Formats](https://docs.microsoft.com/zh-cn/previous-versions/office/developer/office-2007/aa338205(v=office.12))
 - [Microsoft Office Excel 97 - 2007 Binary File Format (.xls) Specification](http://download.microsoft.com/download/5/0/1/501ED102-E53F-4CE0-AA6B-B0F93629DDC6/Office/Excel97-2007BinaryFileFormat(xls)Specification.pdf)
-
 - [OLE1.0 and OLE2.0 Formats](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/fdc5e702-d09e-4344-a77f-eb079d41f23f)
-- [[MS-OFFCRYPTO]: Office Document Cryptography Structure](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)
 
+- [[翻译]攻击互通性-以OLE为例](https://bbs.pediy.com/thread-218941.htm)
+  - [Attacking Interoperability: An OLE Edition](https://www.blackhat.com/docs/us-15/materials/us-15-Li-Attacking-Interoperability-An-OLE-Edition.pdf)
+- [宏病毒常用的一些trick](https://bbs.ichunqiu.com/thread-35164-1-1.html)
 - [Old school: evil Excel 4.0 macros (XLM)](https://outflank.nl/blog/2018/10/06/old-school-evil-excel-4-0-macros-xlm/)
-- [Attacking Interoperability: An OLE Edition](https://www.blackhat.com/docs/us-15/materials/us-15-Li-Attacking-Interoperability-An-OLE-Edition.pdf)
-  - [[翻译]攻击互通性-以OLE为例](https://bbs.pediy.com/thread-218941.htm)
 
-- [oledump-py](https://blog.didierstevens.com/programs/oledump-py/)
-    + [oledump.py](https://github.com/DidierStevens/DidierStevensSuite/blob/master/oledump.py)
-    + [msoffcrypto-crack.py](https://blog.didierstevens.com/2020/03/31/update-msoffcrypto-crack-py-version-0-0-5/)
-- [REMnux: Analyze Documents](https://docs.remnux.org/discover-the-tools/analyze+documents)
-- [0xevilc0de.com](https:0xevilc0de.com) 此博客包含一些宏病毒等的分析相关
+- DidierStevens
+  + [oledump-py](https://blog.didierstevens.com/programs/oledump-py/)
+  + [oledump.py](https://github.com/DidierStevens/DidierStevensSuite/blob/master/oledump.py)
+  + [msoffcrypto-crack.py](https://blog.didierstevens.com/2020/03/31/update-msoffcrypto-crack-py-version-0-0-5/)
+- 0xevilc0de
     + [Maldoc uses template injection for macro execution](https://0xevilc0de.com/maldoc-uses-template-injection-for-macro-execution/)
     + [Excel 4 Macros – Get.Workspace Reference](https://0xevilc0de.com/excel-4-macros-get-workspace-reference/)
     + [Removing Passwords from VBA Projects](https://0xevilc0de.com/removing-passwords-from-vba-projects/)
     + [Maldoc uses RC4 to hide PowerShell script, retrieves payload from DNS TXT record](https://0xevilc0de.com/maldoc-uses-rc4-to-hide-powershell-script-retrieves-payload-from-dns-txt-record/)
     + [Maldoc uses Windows API to perform process hollowing](https://0xevilc0de.com/maldoc-uses-windows-api-to-perform-process-hollowing/)
-- [malware-samples](https://github.com/jstrosch/malware-samples)
+- jstrosch
+  - [malware-samples](https://github.com/jstrosch/malware-samples)
+- spiderlabs
+  - [spiderlabs-blog](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/)
 
 - [Template Injection](https://sevrosecurity.com/2019/09/12/dynamic-office-template-injection-for-sandbox-bypass/)
-    + [Word Doc uses Template Injection for macro execution](https://github.com/jstrosch/malware-samples/tree/master/maldocs/unknown/2020/May)
+    + [malware-samples: Word Doc uses Template Injection](https://github.com/jstrosch/malware-samples/tree/master/maldocs/unknown/2020/May)
 - [复合文档文件格式研究](https://www.cnblogs.com/AspDotNetMVC/p/3810839.html)
-- [介绍了一些宏病毒常用的trick](https://bbs.ichunqiu.com/thread-35164-1-1.html)
-    +  Microsoft Office Visualization Tool
 - [VelvetSweatshop: Default Passwords Can Still Make a Difference](https://blogs.vmware.com/networkvirtualization/2020/11/velvetsweatshop-when-default-passwords-can-still-make-a-difference.html/)
-- [spiderlabs-blog](https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/)
+- [REMnux: Analyze Documents](https://docs.remnux.org/discover-the-tools/analyze+documents)
