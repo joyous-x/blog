@@ -268,14 +268,25 @@ IRMDS 可以被应用于以下两种类型的文档:
 1. XOR Obfuscation
    - There are two methods for performing XOR obfuscation, known as Method 1 and Method 2. Method 1 specifies structures and procedures used by the Excel Binary File Format (.xls) Structure [MS-XLS], and Method 2 specifies structures and procedures used by the Word Binary File Format (.doc) Structure 
 2. 40-bit RC4 Encryption
-  - [MS-XLS] and [MS-DOC]. 
-3. CryptoAPI RC4 Encryption
-  - [MS-XLS], [MS-DOC], and [MS-PPT].
+  - Office Binary Document：[MS-XLS] and [MS-DOC]
+  - 针对 Office binary 文档的 RC4 encryption 不会修改使用的 storages 和 streams。如果一个 stream 是被加密的，那它一定是就地加密。
+3. RC4 CryptoAPI Encryption
+  - Office Binary Document：[MS-XLS], [MS-DOC], and [MS-PPT]
   - The documents will contain a new stream (1) to contain encrypted information but can also encrypt other streams (1) in place. 
 4. ECMA-376 Document Encryption
   - Encrypted ECMA-376 documents [ECMA-376] use the data spaces functionality (section 1.3.1) to contain the entire document as a single stream (1) in an OLE compound file.
-  - The overall approach is very similar to that used by IRMDS
-  - 可以使用被称为 extensible encryption 的基于第三方加密扩展的加密方法
+  - 包含三种方法：
+    - Standard encryption:
+      + 此方法使用了二进制(binary)类型的 EncryptionInfo 结构。它使用 AES 作为加密算法，SHA-1 作为散列(hash)算法
+    - Agile encryption: 
+      + 此方法使用一个 XML 类型的 EncryptionInfo 结构。加密和散列算法在结构中指定，可以用于主机支持的任何加密。
+    - Extensible encryption: 
+      + 此方法使用可扩展的机制来允许使用任意的第三方加密扩展模块
+
+The EncryptionHeader structure is used by ECMA-376 document encryption and Office
+binary document RC4 CryptoAPI encryption。
+
+European Computer Manufacturers Association or for short ECMA
 
 ##### ECMA-376 Document Encryption
 - "\0x06DataSpaces\DataSpaceMap" Stream
@@ -297,6 +308,19 @@ IRMDS 可以被应用于以下两种类型的文档:
   - 包含用于初始化用于加密 "\EncryptedPackage" 流的密码学详细信息
 - "\EncryptionInfo" Stream (Extensible Encryption)
   - ECMA-376 文档可以选择使用用户提供的自定义（可扩展）加密模块。当使用可扩展加密时，\EncryptionInfo 流的结构描述不同于标准模式，详细可以参考文档[MS-OFFCRYPTO]
+- "\EncryptionInfo" Stream (Agile Encryption)
+  - 包含了用于加密 "\EncryptedPackage stream"  的详细信息
+
+
+
+
+
+##### Office Binary Document Encryption
+XOR、RC4 以及 RC4 CryptoAPI 都可以应用于 Office Binary Document 文件。
+
+1. xls
+   - Encryption (Password to Open)
+     - 其 obfuscation or encryption 信息存放于 workbook 流的 FilePass Record 中
 
 #### Write Protection
  + Write Protection (password-based write protection for Office binary documents)
