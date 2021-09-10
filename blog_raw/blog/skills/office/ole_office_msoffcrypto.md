@@ -80,6 +80,7 @@ IRMDS 可以被应用于以下两种类型的文档:
    - 对 Office Binary Document 的部分执行 XOR 混淆。文档中的流是被就地混淆的。
    - 包含两种方法：Method 1 和 Method 2
      - Method 1 指明了应用于 Excel Binary File Format (.xls) 的 structures 和 procedures
+       - 文档中用于加解密的 XorArrayIndex 字段没找到来源~~~
      - Method 2 指明了应用于 Word Binary File Format (.doc) 的 structures 和 procedures
 2. 40-bit RC4 Encryption
   - Office Binary Document：[MS-XLS] and [MS-DOC]
@@ -87,6 +88,8 @@ IRMDS 可以被应用于以下两种类型的文档:
 3. RC4 CryptoAPI Encryption
   - Office Binary Document：[MS-XLS], [MS-DOC], and [MS-PPT]
   - The documents will contain a new stream (1) to contain encrypted information but can also encrypt other streams (1) in place. 
+  - Unless otherwise specified, the maximum password length MUST be 255 Unicode characters.
+  - An SHA-1 hash is 160 bits long, and the maximum RC4 key length is 128 bits; therefore, keyLength MUST be less than or equal to 128 bits. If keyLength is exactly 40 bits, the encryption key MUST be composed of the first 40 bits of Hfinal and 88 bits set to zero, creating a 128-bit key.
 4. ECMA-376 Document Encryption
   - Encrypted ECMA-376 documents [ECMA-376] use the data spaces functionality (section 1.3.1) to contain the entire document as a single stream (1) in an OLE compound file.
   - 包含三种方法：

@@ -29,28 +29,34 @@ permalink:
 - office 2007 格式
   - [x] 解压
   - [x] 宏模板(本地、云端)
+- **TODO**
+  - word7、linkshell、zip repair
+  - ooxml 清理
 - **Decryption** 
-  - [ ] vba
-  - [ ] ole
-- **特征匹配方式**
-  - [ ] 库格式 & 库工具
-- 其他
-  - [ ] 去误报
-  - [ ] 漏洞检测
+  - ooxml
+    - ecma std
+      - [x] aes
+      - [ ] rc4
+    - ~~[ ] ecma extensible~~
+    - [ ] ecma agile
+  - xls
+    - [x] xor
+      - 待测试
+    - [ ] rc4
+    - [ ] rc4 capi
+  - doc
+    - [ ] xor
+    - [ ] rc4
+    - [ ] rc4 capi
+  - ppt
+    - [ ] rc4 capi
 - **本周工作**
-  - 
+  - 调研 office 的加密相关
+  - 解密 ooxml ecma std
 - **下周工作**
   - worddocument
-    - word7
-  - linkshell
-  - zip repair
-  - ooxml 清理
-  - rtf 中的 ole 解析
-  - [ ] script 解读、特征规则
-    - 未完成 (对 1k 样本的约 2k 个 script 分类、逐个查看，待抽象特征）
   - 对比
     - go 只解析了 xlsx 的默认密码， 但处理了 linkshell、word7、zip repair
-    - 
 
 # Office 格式简析
 目前常见的 Microsoft Office 格式主要分为 97 ~ 2003 和 2007 ~ 两种格式。```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示的 OLE 文件。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
