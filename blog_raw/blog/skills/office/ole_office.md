@@ -21,7 +21,8 @@ permalink:
   - [x] 代码已完成
   - [x] 格式解读、使用(不同于vba脚本)
   - [x] 处理: 维度 以及 方式
-    - [ ] 删除整个 sheet 表格
+    - [x] 删除整个 sheet 表格: binary
+    - [ ] 删除整个 sheet 表格: ooxml
 - 文件格式判断分流
   - [x] office2007
   - [x] zip、cab
@@ -30,8 +31,10 @@ permalink:
   - [x] 解压
   - [x] 宏模板(本地、云端)
 - **TODO**
-  - word7、linkshell、zip repair
-  - ooxml 清理
+  - linkshell
+  - ppt macro
+  - doc macro、word7
+  - zip repair
 - **Decryption** 
   - ooxml
     - ecma std
@@ -40,10 +43,9 @@ permalink:
     - ~~[ ] ecma extensible~~
     - [ ] ecma agile
   - xls
-    - [x] xor
-      - 待测试
+    - [x] xor：待测试
     - [ ] rc4
-    - [ ] rc4 capi
+    - [x] rc4 capi
   - doc
     - [ ] xor
     - [ ] rc4
@@ -51,12 +53,10 @@ permalink:
   - ppt
     - [ ] rc4 capi
 - **本周工作**
-  - 调研 office 的加密相关
-  - 解密 ooxml ecma std
+  - 
 - **下周工作**
   - worddocument
-  - 对比
-    - go 只解析了 xlsx 的默认密码， 但处理了 linkshell、word7、zip repair
+  - 对比：go 只解析了 xlsx 的默认密码， 但处理了 linkshell、、zip repair
 
 # Office 格式简析
 目前常见的 Microsoft Office 格式主要分为 97 ~ 2003 和 2007 ~ 两种格式。```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示的 OLE 文件。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
