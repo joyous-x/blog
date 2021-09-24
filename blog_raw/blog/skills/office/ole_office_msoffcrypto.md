@@ -226,14 +226,16 @@ Password record 为 sheet or workbook 指定了 password verifier。如果 recor
 在使用 RC4、RC4 CAPI 算法加密时，需要以 1024-byte 的块来进行。从每个 BIFF record stream 的第一个字节开始，block number 置为 0，后续每 1024-byte 增加 1。
 
 ## 三、DOC
-### Encryption and Obfuscation (Password to Open)
+### 3.1 Encryption and Obfuscation (Password to Open)
 二进制格式的 word 文件可以通过以下三种方式进行密码保护：XOR obfuscation、 RC4 encryption 以及  RC4 CryptoAPI encryption。
 
 当 FibBase.fEncrypted 和 FibBase.fObfuscated 都为 1 时, 文件被使用 XOR obfuscation 方式进行了混淆。
 
 当 FibBase.fEncrypted 和 FibBase.fObfuscated 都为 0 时, 文件被使用 XOR obfuscation 或 RC4 encryption 方式进行了加密。此时 EncryptionHeader 结构被存放在 Table stream 的头部 FibBase.lKey 个字节中。而具体使用哪种加密方式，则由 EncryptionHeader.EncryptionVersionInfo 结构决定。
 
-其中，Table stream 可以是 1Table stream 或 the 0Table stream, 具体是由 Fib.base.fWhichTblStm 字段决定：值为 1 时，应为 1Table stream；值为 0 时，应为 0Table stream。
+其中，Table stream 可以是 1Table 或 0Table，判定方法如下：
+- 当 Fib.base.fWhichTblStm == 1 时，为 1Table stream
+- 当 Fib.base.fWhichTblStm == 0 时，为 0Table stream
 
 #### XOR Obfuscation
 文档的 WordDocument stream、Table stream 以及 Data stream 必须使用 [MS-OFFCRYPTO] 中的 XOR Data Transformation Method 2 进行混淆，所有其他的 streams 和 storages 必须不能(MUST NOT)被混淆。
@@ -243,38 +245,39 @@ Password record 为 sheet or workbook 指定了 password verifier。如果 recor
 #### Office Binary Document RC4 Encryption
 Table stream 的头部 FibBase.lKey 个字节中以未加密未混淆的方式存储了 EncryptionHeader 结构。Table stream 的剩余部分, WordDocument stream 的超出最初的 68 bytes 的部分, 以及 Data stream 的全部，必须被加密。所有其他的 streams 和 storages 必须不能(MUST NOT)被加密。
 
-被加密的三个流的数据必须(MUST)以 512-byte 的 blocks 的形式被加密。在流的起始位置，block number 必须被设置为 0，必须在每个 512-byte 边界处递增。注意，加密算法必须在流的第一个字节开始被执行，尽管一些字节是以未加密的形式被写入文件的。
+被加密的三个流的数据必须(MUST)以 512-byte 的 blocks 的形式被加密。在流的起始位置，block number 必须被设置为 0，在每个 512-byte 边界处递增。注意，加密算法必须在流的第一个字节开始被执行，尽管一些字节是以未加密的形式被写入文件的。
 
 #### Office Binary Document RC4 CryptoAPI Encryption
 Table stream 的头部 FibBase.lKey 个字节中以未加密未混淆的方式存储了 EncryptionHeader 结构。Table stream 的剩余部分, WordDocument stream 的超出最初的 68 bytes 的部分, 以及 Data stream 的全部，必须被加密。
 
-被加密的三个流的数据必须(MUST)以 512-byte 的 blocks 的形式被加密。在流的起始位置，block number 必须被设置为 0，必须在每个 512-byte 边界处递增。注意，加密算法必须在流的第一个字节开始被执行，尽管一些字节是以未加密的形式被写入文件的。
+被加密的三个流的数据必须(MUST)以 512-byte 的 blocks 的形式被加密。在流的起始位置，block number 必须被设置为 0，在每个 512-byte 边界处递增。注意，加密算法必须在流的第一个字节开始被执行，尽管一些字节是以未加密的形式被写入文件的。
 
-ObjectPool storage 必定不会出现。如果文件包含有 OLE objects 的话，用于 OLE objects 的 storage objects 必定(像 sprmCPicLocation 描述的那样)被存储在 Data stream 中。
+此外，ObjectPool storage 必定不会出现。如果文件包含有 OLE objects 的话，用于 OLE objects 的 storage objects 必定(像 sprmCPicLocation 描述的那样)被存储在 Data stream 中。
 
-> 注：
->
-> ObjectPool storage: 包含多个用于 embedded OLE objects 的 storages，storages 中的每一个都一定包含一个名为 "\003ObjInfo" 的流，其中有一个用于描述 embedded OLE objects 的 ODT 结构
->
-> OLE object: 支持 Object Linking and Embedding (OLE) 协议的对象
-
-如果 EncryptionHeader.Flags 中的 fDocProps 被置位，那么 Encryption Stream 必定存在，Summary Information stream 必定不存在，一个被用作占位符的 Document Summary Information stream 必定存在。这些信息在 [[MS-OFFCRYPTO] section 2.3.5.4] 中有详细描述。
-
-关于 Encryption Stream (名为 encryption 的 stream) 可以进一步描述：*当以下两个条件满足时，它必定存在，反之，当以下两个条件不能同时满足时，这个 stream 必定不会(MUST NOT)出现*：
-1. 文档被使用 Office Binary Document RC4 CryptoAPI Encryption 方法加密
-2. EncryptionHeader.Flags 中的 fDocProps 被置位
+如果 EncryptionHeader.Flags 中的 fDocProps 被置位，那么 Encryption Stream 必定存在，Summary Information stream 必定不存在，一个被用作占位符的 Document Summary Information stream 必定存在。这些信息在 [MS-OFFCRYPTO] section 2.3.5.4 中有详细描述。
 
 如果 EncryptionHeader.Flags 中的 fDocProps 没被置位，那么 Document Summary Information stream 和 Summary Information stream 必定没有被加密。
 
 所有其他的 streams 和 storages 必须不能(MUST NOT)被加密。
 
-## 四、PPTß
+相关名词说明：
+- ObjectPool storage
+  + 包含多个用于 embedded OLE objects 的 storages，storages 中的每一个都一定包含一个名为 "\003ObjInfo" 的流，其中有一个用于描述 embedded OLE objects 的 ODT 结构
+- OLE object
+  + 支持 Object Linking and Embedding (OLE) 协议的对象
+- Encryption Stream
+  + 一个名为 encryption 的 stream
+  + *当以下两个条件同时满足时，它必定存在，反之，当它们不能同时满足时，这个 stream 必定不会(MUST NOT)出现*：
+    1. 文档被使用 Office Binary Document RC4 CryptoAPI Encryption 方法加密
+    2. EncryptionHeader.Flags 中的 fDocProps 被置位
+
+## 四、PPT
 只支持 RC4 CryptoAPI 加密方式。
 
 ### Encryption
 ppt 文档中可能有一个名字为 "EncryptedSummary" 的可选流，它只在被加密的文档中存在。当这个流存在时，也必定存在一个名为 "\0x05DocumentSummaryInformation" 的流，而名为 "\0x05SummaryInformation" 则必定不能存在。
 
-关于 "EncryptedSummary" 这个 Encrypted Summary Stream 的详细描述见 [MS-OFFCRYPTO] section 2.3.5.4ß。
+关于 "EncryptedSummary" 这个 Encrypted Summary Stream 的详细描述见 [MS-OFFCRYPTO] section 2.3.5.4。
 
 ## Reference
 - [[MS-Office File Formats]](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
