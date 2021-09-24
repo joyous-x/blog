@@ -12,52 +12,6 @@ tags:
 permalink:
 ---
 
-## work
-- 解析 ole 格式
-  - [x] 格式解析
-  - [x] 解压缩 vba 脚本
-  - [x] 解压缩 embedded ole
-- 解析 excel4.0 格式 
-  - [x] 代码已完成
-  - [x] 格式解读、使用(不同于vba脚本)
-  - [x] 处理: 维度 以及 方式
-    - [x] 删除整个 sheet 表格: binary
-    - [ ] 删除整个 sheet 表格: ooxml
-- 文件格式判断分流
-  - [x] office2007
-  - [x] zip、cab
-  - [ ] rtf
-- office 2007 格式
-  - [x] 解压
-  - [x] 宏模板(本地、云端)
-- **TODO**
-  - linkshell
-  - ppt macro
-  - doc macro、word7
-  - zip repair
-- **Decryption** 
-  - ooxml
-    - ecma std
-      - [x] aes
-      - [ ] rc4
-    - ~~[ ] ecma extensible~~
-    - [ ] ecma agile
-  - xls
-    - [x] xor：待测试
-    - [ ] rc4
-    - [x] rc4 capi
-  - doc
-    - [ ] xor
-    - [ ] rc4
-    - [ ] rc4 capi
-  - ppt
-    - [ ] rc4 capi
-- **本周工作**
-  - 
-- **下周工作**
-  - worddocument
-  - 对比：go 只解析了 xlsx 的默认密码， 但处理了 linkshell、、zip repair
-
 # Office 格式简析
 目前常见的 Microsoft Office 格式主要分为 97 ~ 2003 和 2007 ~ 两种格式。```Microsoft Office 97 ~ 2003``` 的文件格式都是由 MS-CFB 结构来表示的 OLE 文件。```Microsoft Office 2007 ~ ```则是由 OOXML 格式的文件结构压缩而成的 zip 包来存储。
 
@@ -73,13 +27,58 @@ permalink:
 - ppsx
   - 是 2007 的 PPT 的一种格式，打开就是幻灯片播放模式
 
+## 宏病毒
+随着 ms-office 的应用越来越广泛，催生出了一系列针对这些文档的病毒，常见的有两种：宏病毒 和 漏洞利用。
+
+### 1. 漏洞
+漏洞利用是指软件自身缺陷被攻击者利用来执行高危动作，如：
+- [CVE-2018-0802](https://www.secpulse.com/archives/67027.html)
+- [CVE-2019-0801](https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2019-0801)
+- [CVE-2021-40444](https://bbs.pediy.com/thread-269266.htm)
+
+### 2. 宏
+宏（Macro）是 ms-office 提供的一种利用一系列独立的 office 命令来实现任务执行的自动化，以简化日常工作的工具。当前的 ms-office 是使用 Visual Basic for Applications（VBA）编写的，它是 Microsoft 的 Visual Basic 编程语言专门为 Office 服务的一种变体。VBA 可在大多数 Office 程序中使用，例如 Access，Excel，Outlook，PowerPoint，Project，Publisher，Visio 和 Word 等等。
+
+宏病毒主要是利用 宏 来进行感染和传播。它利用宏语言的功能寄存在文档或模板中，一旦带有宏病毒的文档被打开，宏就可能会执行，而宏病毒就会被激活。
+
+它的主要感染路径大致如下：```单个Office文档 => Office文档模板 => 多个Office文档```。
+
+常见的宏主要存在于以下两种形式：
+<center class="half">
+    <img src="./rsc/sample_vba_a.png" width="300"/>
+    <img src="./rsc/sample_vba_b.png" width="460">
+</center>
+
+此外，宏病毒常常用以下方式保护、隐藏自己：
+1. 禁止提示信息
+  ```
+  On Error Resume Next                     '如果发生错误，不弹出出错窗口，继续执行下面语句
+  Application.DisplayAlerts = wdAlertsNone '不弹出警告窗口
+  Application.DisplayStatusBar = False     '不显示状态栏，以免显示宏的运行状态
+  Options.VirusProtection = False          '关闭病毒保护功能，运行前如果包含宏，不提示
+  ```
+2. 屏蔽命令菜单，不许查看宏
+  ```
+  ' Disable或者删除特定菜单项，用来使“工具—宏”菜单失效的语句：
+  CommandBars(“Tools”).Controls(16).Enabled = False
+  ```
+3. 隐藏宏的真实代码
+  - 在“自动宏”中，不包括任何感染或破坏的代码，但包含了创建、执行和删除新宏（实际进行感染和破坏的宏）的代码；将宏代码字体颜色设置成与背景一样的白色等
+  - “自动宏” 是指利用 AutoExec、AutoNew、AutoOpen、AutoClose、AutoExit 自动触发执行的宏
+4. 文档密码保护
+  - 打开文档时需要密码或利用默认密码机制自动执行
+
 ## MS-CFB
 经常被称为 OLE(Object Linking and Embedded)，实际上 OLE (是一种面向对象的技术)包含的内容更多，是 COM 技术的基础，而 CFB 只是 OLE 中关于文件格式的一种描述。
 
-复合文档的结构初看比较简单：![cfb_sectors](./rsc/cfb_sectors.png)
+复合文档的物理结构比较简单：
+- ![cfb_sectors](./rsc/cfb_sectors.png)
+
 *注意：Compound File Header (512 bytes)也会独占一个 sector, 没有用到的地方填充 0.*
 
-其中的内容有：![cfb_summary](./rsc/cfb_summary.png)
+这里是逻辑结构：
+- ![cfb_summary](./rsc/cfb_summary.png)
+
 文档中的内容都以 stream 来保持具体内容，storage 来组织 stream 的结构。而这些内容在文件中的位置、查找方式、解读方式，就由 ```Directory Entry Array``` 来表达。
 
 复合文档的结构非常类似 FAT 文件系统，storage 相当于 directory，stream 相当于 file。为了文件的快速定位，我们需要相应的分区索引表(DiFat 和 Fat)。在 复合文档中，为了节省空间，会将 sector 划分成等长的 ```short-sector``` 用于小对象(```short-stream```)的存储，而它的索引需要 ```Mini-Fat```。
@@ -418,6 +417,28 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
     + a series of records. 详情可以参考 [MS-XLS] 文档。
 + external references：
   - Supporting Link 包含了 Self-Referencing、Same-Sheet Referencing、External Workbook Referencing 等等类型。
++ name manager:
+  + LblRecord : TODO (关联 name 和 sheet)
+    - 内置名字的索引，可能由 1 或 2 字节表示
+    - NameParsedFormula 可能出现 ptgRef3d 的 ixti == 0xFFFF，此时，此时的结构未被文档记录：
+      - we can reproduce it: make a macro sheet in ooxml and export it to xls. 
+      ```
+				uint8_t ptg = uint8_t(data[cce_offset] & 0x7f);
+				if (ptg == ptgRef3d || ptg == ptgRef3dA || ptg == ptgRef3dV) {
+					uint16_t ixti = *(uint16_t*)(data + cce_offset + 1);
+					if (ixti > 0xFF00 && record->cce >= 15 + 3) {
+						assert(record->itab == 0 || record->itab == 1);
+            uint16_t iscope_1base = (record->itab == 1) ? record->reserved1 : record->itab;
+						uint16_t isheet_0base_a = *(uint16_t*)(data + cce_offset + 11);
+						uint16_t isheet_0base_b = *(uint16_t*)(data + cce_offset + 13);
+						assert(isheet_0base_a == isheet_0base_b);
+						auto row = *(uint16_t*)(data + cce_offset + 15);
+						auto col = (uint16_t)*(uint8_t*)(data + cce_offset + 17);
+					}
+				}
+			}
+      ```
++ Rgce 的 ACTUAL_PTG_SIZE 跟实际情况不符合
 
 ## OOXML
 OOXML(Office Open XML File Formats), 简单来说，OOXML 是一个基于 XML 的文档格式标准，最早是微软 Office2007 的产品开发技术规范，先是成为 Ecma(ECMA-376) 的标准，最后改进推广成为了 ISO 和 IEC (as ISO/IEC 29500) 的国际文档格式标准。也就是说，通过 OOXML 标准，我们能够在不依赖 Office 产品的情况下，在任何平台读写Office Word，PPT 和 Excel 文件。
@@ -495,7 +516,7 @@ OOXML
 - Reference
   + https://threatpost.com/hackers-update-age-old-excel-4-0-macro-attack/154898/
   
-据悉，Office 2007 ~ 也会受到影响，待确认：*TODO*。
+据悉，Office 2007 ~ 的 excel 也会受到影响。这种方式只有 excel 会受到影响。
 
 ### 检出
 - hash (忽略大小写、空字符)

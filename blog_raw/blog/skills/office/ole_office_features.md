@@ -1,0 +1,27 @@
+# Office Extractor Features
+- [x] 解析所有 ms-office 格式(ole、ooxml)中的 vba
+- [x] 解析 xls 中的 macro(包含处理常见的引用、反混淆)
+  - [ ] lbl ：parsed，will be used in the future
+    - defined name: A word or string of characters in a formula that represents a cell, range of cells, formula, or constant value.
+- [x] 以 sheet、stream 为处理纬度的删除、改写
+- [x] OPENFILE 解密算法支持(ecma376 std/agile、xor、rc4、rc4 capi)
+  - [ ] doc : xor\rc4\rc4 capi
+  - [ ] ppt : rc4 capi
+  - [ ] xls : xor 待测试
+  - [ ] ecma agile: verify data integrity
+- [ ] 解析 ole 内嵌的 embedded ole
+- cell reference
+  - [x] binary
+    - [ ] cell 是否相对位置，有些表现与文档说明不一致，需进一步确认
+  - [ ] ooxml
+- [ ] doc macro(word7)、NORMAL.DOT模板
+- [x] ppt macro : ignore
+  - varFormula （TimeAnimationValueListEntry）An optional TimeVariantString record that specifies a formula to be used to specify a complex animation for an object
+- [ ] zip repair
+- [ ] linkshell
+- [ ] 取消读写保护、以方便人工查看
+- [ ] rtf、cad
+- [x] wps
+  - 可以有 js宏、vba宏 ˙两种，期中 vba 宏仅在WPS+企业付费套餐（商业版/高级商业版）中支持
+- [ ] 整理项目文档，开发
+- [ ] mac 中大小端问题确认

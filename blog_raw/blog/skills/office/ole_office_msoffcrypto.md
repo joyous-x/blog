@@ -84,7 +84,9 @@ IRMDS 可以被应用于以下两种类型的文档:
      - Method 2 指明了应用于 Word Binary File Format (.doc) 的 structures 和 procedures
 2. 40-bit RC4 Encryption
   - Office Binary Document：[MS-XLS] and [MS-DOC]
+  - Let H() be the MD5 hashing algorithm
   - 针对 Office binary 文档的 RC4 encryption 不会修改使用的 storages 和 streams。如果一个 stream 是被加密的，那它一定是就地加密。
+  - Unless otherwise specified, the maximum password length MUST be 255 Unicode characters.
 3. RC4 CryptoAPI Encryption
   - Office Binary Document：[MS-XLS], [MS-DOC], and [MS-PPT]
   - The documents will contain a new stream (1) to contain encrypted information but can also encrypt other streams (1) in place. 
@@ -220,11 +222,9 @@ ObjectPool storage 必定不会出现。如果文件包含有 OLE objects 的话
 
 所有其他的 streams 和 storages 必须不能(MUST NOT)被加密。
 
+## ppt 
+只支持 RC4 CryptoAPI 加密方式。
 
-
-
-
-### ppt 
 ### Encryption
 ppt 文档中有一个名字必定为 "EncryptedSummary" 的可选流，它只在被加密的文档中存在。当这个流存在时，也必定存在一个名为 "\0x05DocumentSummaryInformation" 的流，而名为 "\0x05SummaryInformation" 则必定不能存在。
 
