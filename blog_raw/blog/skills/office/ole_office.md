@@ -27,27 +27,31 @@ permalink:
 - ppsx
   - 是 2007 的 PPT 的一种格式，打开就是幻灯片播放模式
 
-## 宏病毒
-随着 ms-office 的应用越来越广泛，催生出了一系列针对这些文档的病毒，常见的有两种：宏病毒 和 漏洞利用。
+## 一、Malware
+由于 ms-office 文件的广泛使用，恶意软件作者对其进行了充分的挖掘、利用，催生出了一系列针对这些文档的病毒，期中常常被用于恶意目的的组件或者方式有：宏病毒、漏洞利用、嵌入文件
 
-### 1. 漏洞
-漏洞利用是指软件自身缺陷被攻击者利用来执行高危动作，如：
+### 1.1 漏洞
+漏洞利用是指软件自身缺陷被攻击者利用来执行高危动作，如利用 ole 的特点调用第三方组件并执行；栈溢出造成的任意代码执行漏洞(CVE-2017-11882) 等等，常见的漏洞有：
+- [CVE-2017-11882]()
 - [CVE-2018-0802](https://www.secpulse.com/archives/67027.html)
 - [CVE-2019-0801](https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2019-0801)
 - [CVE-2021-40444](https://bbs.pediy.com/thread-269266.htm)
 
-### 2. 宏
+### 1.2 宏病毒
 宏（Macro）是 ms-office 提供的一种利用一系列独立的 office 命令来实现任务执行的自动化，以简化日常工作的工具。当前的 ms-office 是使用 Visual Basic for Applications（VBA）编写的，它是 Microsoft 的 Visual Basic 编程语言专门为 Office 服务的一种变体。VBA 可在大多数 Office 程序中使用，例如 Access，Excel，Outlook，PowerPoint，Project，Publisher，Visio 和 Word 等等。
 
 宏病毒主要是利用 宏 来进行感染和传播。它利用宏语言的功能寄存在文档或模板中，一旦带有宏病毒的文档被打开，宏就可能会执行，而宏病毒就会被激活。
 
 它的主要感染路径大致如下：```单个Office文档 => Office文档模板 => 多个Office文档```。
 
-常见的宏主要存在于以下两种形式：
+常见的宏主要存在于以下两种形式(vba && xlm)：
 <center class="half">
     <img src="./rsc/sample_vba_a.png" width="300"/>
     <img src="./rsc/sample_vba_b.png" width="460">
 </center>
+
+此外，还有一种攻击方式被称为「模板注入」，实际上还是上述两种 macros 的利用，不过内容可能会随时发生变化
+- ![office2007_template_inject](./rsc/office2007_template_inject.png)
 
 此外，宏病毒常常用以下方式保护、隐藏自己：
 1. 禁止提示信息
@@ -66,9 +70,21 @@ permalink:
   - 在“自动宏”中，不包括任何感染或破坏的代码，但包含了创建、执行和删除新宏（实际进行感染和破坏的宏）的代码；将宏代码字体颜色设置成与背景一样的白色等
   - “自动宏” 是指利用 AutoExec、AutoNew、AutoOpen、AutoClose、AutoExit 自动触发执行的宏
 4. 文档密码保护
-  - 打开文档时需要密码或利用默认密码机制自动执行
+  - 打开文档时需要密码 或者 查看vba脚本时需要密码
 
-## MS-CFB
+另外，病毒作者常用**密码逃逸**手段以增加检测难度，事实上也很有效。这种方法的全称是：```VelvetSweatshop Default Password Ploy```。
+- 对象：Excel 4.0 xls 97 ~ files with a compromised macro
+- 表现：XLS files appear password protected but aren’t, opening automatically to install malware from compromised macros.
+- 原因：Excel 会首先尝试使用默认密码 'VelvetSweatshop' 以 read-only 模式打开文件，如果失败时，再向用户要求输入密码。(This read-only technique has been known about for over 10 years.)
+- Reference
+  + https://threatpost.com/hackers-update-age-old-excel-4-0-macro-attack/154898/
+
+### 1.3 Embedded
+利用复合文档可以内嵌其它文档的特性，可以嵌套如：
+- images、video、audio
+- other streams, eg. rtf、pdf、docx ... (rtf、docx等复合文档又可以继续嵌套... MY GOD ~)
+
+## 二、MS-CFB
 经常被称为 OLE(Object Linking and Embedded)，实际上 OLE (是一种面向对象的技术)包含的内容更多，是 COM 技术的基础，而 CFB 只是 OLE 中关于文件格式的一种描述。
 
 复合文档的物理结构比较简单：
@@ -345,33 +361,6 @@ OOXML
 富文本格式（Rtf，rich text tormat）是微软的文本和图像信息交换指定的格式。Rtf文件可以划分为文件头和文档区两个部分组成。文件头和文档区由文本、控制字和控制符组成，同时利用{…}来表明层级关系。
 
 > TODO:
-
-## Malware
-由于 Office 文件的广泛使用，恶意软件作者对其进行了充分的挖掘、利用，期中常常被用于恶意目的的组件或者方式有：
-
-1. 宏
-   - vba project macros
-   - excel4.0 macros
-   - 模板注入
-     - 实际上还是上述两种 macros 的利用，不过内容可能会随时发生变化
-     - ![office2007_template_inject](./rsc/office2007_template_inject.png)
-2. embedded
-   - ole
-   - images
-   - video、audio
-   - other streams, eg. rtf、pdf、docx ... (rtf、docx等复合文档又可以继续嵌套... MY GOD ~)
-3. 漏洞利用
-  - eg. 利用 ole 的特点调用第三方组件并执行；栈溢出造成的任意代码执行漏洞 CVE-2017-11882 ...
-
-另外，病毒作者常用**密码逃逸**手段以增加检测难度，事实上也很有效。这种方法的全称是：```VelvetSweatshop Default Password Ploy```。
-
-- 对象：Excel 4.0 xls 97-2003 files with a compromised macro
-- 表现：XLS files appear password protected but aren’t, opening automatically to install malware from compromised macros.
-- 原因：Excel 会首先尝试使用默认密码 'VelvetSweatshop' 以 read-only 模式打开文件，如果失败时，再向用户要求输入密码。(This read-only technique has been known about for over 10 years.)
-- Reference
-  + https://threatpost.com/hackers-update-age-old-excel-4-0-macro-attack/154898/
-  
-据悉，Office 2007 ~ 的 excel 也会受到影响。这种方式只有 excel 会受到影响。
 
 ### 检出
 - hash (忽略大小写、空字符)
