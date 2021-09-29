@@ -266,6 +266,7 @@ dir Stream 中的 records 包含了 VBA project 对外部资源引用的信息�
 #### 3. project items
 VBA project 包含一系列用于嵌入 macros 的 project items。而 project item 是由多个 records 组合定义。主要有以下 5 种 project item(详见 MS-OVBA 文档): ```project package, document modules, procedural modules, class modules``` 和 ```designer modules```。
 
+
 ### Microsoft Office Excel 4.0
 Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中。此 stream 以 BIFF8(Binary Interchange File Format) 格式组织各个细节。
 
@@ -310,6 +311,25 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 			}
       ```
 + Rgce 的 ACTUAL_PTG_SIZE 跟实际情况不符合
+
+
+
+
+### PPT
+按照 [MS-PPT] - v20210817 ：pageno 28 中 Part 1 ~ 11 的描述，即可解出完整的 ppt 文档内容。
+
+注意：the UserEditAtom record closest to the end of the PointPower Document stream 
+
+安全相关需要关注：
+- ExternalObjectStorage 0x1011
+- DocumentContainer 0x03E8
+  + DocInfoListContainer 0x07D0 
+		+ VBAInfoContainer 0x03FF
+			+ VBAInfoAtom  0x0400
+	+ ExObjListContainer 0x0409
+		+ storage for compressed/uncompressed OLE/VBA/ActiveX control data
+	+ SoundCollectionContainer
+	+ DrawingGroupContainer
 
 ## OOXML
 OOXML(Office Open XML File Formats), 简单来说，OOXML 是一个基于 XML 的文档格式标准，最早是微软 Office2007 的产品开发技术规范，先是成为 Ecma(ECMA-376) 的标准，最后改进推广成为了 ISO 和 IEC (as ISO/IEC 29500) 的国际文档格式标准。也就是说，通过 OOXML 标准，我们能够在不依赖 Office 产品的情况下，在任何平台读写Office Word，PPT 和 Excel 文件。
@@ -387,6 +407,7 @@ OOXML
     - 病毒感染时是有机会操作原有的正常 vba 脚本的，比如，加密（目前还没见到此类样本）。
 
 ## Reference
+- [MS-Office-Extensions](https://docs.microsoft.com/zh-cn/deployoffice/compat/office-file-format-reference)
 - [MS-Office File Formats](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
 - [[MS-OVBA] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-ovba/575462ba-bf67-4190-9fac-c275523c75fc)
 - [[MS-OFFCRYPTO] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/3c34d72a-1a61-4b52-a893-196f9157f083)

@@ -159,6 +159,7 @@ ECMA-376 文档的 write protection 在 [ECMA-376] 文档的 Part 4 中的 Secti
 二进制类型 office 文档的基于 password 的 Write Protection 根据文件格式的不同具有不同的细节, 大致如下：
 - .xls
   + 密码被转换成了一个 16-bit 的 password verifier, 并将其依 [MS-XLS] 文档进行存储, 同时，文档会被加密。如果用户未提供加密密码，会使用一个固定密码。
+    - 默认密码是：```\x56\x65\x6C\x76\x65\x74\x53\x77\x65\x61\x74\x73\x68\x6F\x70```(也可以表示为：```VelvetSweatshop```)
   + 使用 Write Protection 的同时，依然可以按照 Encryption 的描述进行加密
   + 详细内容参考 [MS-XLS] section 2.2.9
 - .doc
@@ -166,7 +167,7 @@ ECMA-376 文档的 write protection 在 [ECMA-376] 文档的 Part 4 中的 Secti
   + 详细内容参考 [MS-DOC] section 2.9.276
 - .ppt
   + 密码以明文形式存储，并且文档可以被加密。如果文档被加密，但用户未提供加密密码时，会使用一个固定密码。
-    - 默认密码一定是：``` \x2f\x30\x31\x48\x61\x6e\x6e\x65\x73\x20\x52\x75\x65\x73\x63\x68\x65\x72\x2f\x30\x31```
+    - 默认密码是：```\x2f\x30\x31\x48\x61\x6e\x6e\x65\x73\x20\x52\x75\x65\x73\x63\x68\x65\x72\x2f\x30\x31```(也可以表示为：```/01Hannes Ruescher/01```)
   + 使用 Write Protection 的同时，不应该(SHOULD NOT)再按照 Encryption 中描述的算法进行加密
   + 详细内容参考 [MS-PPT] section 2.4.7
 
@@ -225,6 +226,13 @@ Password record 为 sheet or workbook 指定了 password verifier。如果 recor
 
 在使用 RC4、RC4 CAPI 算法加密时，需要以 1024-byte 的块来进行。从每个 BIFF record stream 的第一个字节开始，block number 置为 0，后续每 1024-byte 增加 1。
 
+### 2.3 XorArrayIndex
+当使用了 XOR 算法时，XorArrayIndex 的值的计算方法：```XorArrayIndex = (WorkbookStreamOffset + Data.Length) % 16```
+
+上文中的变量 WorkbookStreamOffset 是在 record 中的每个字节在 Workbook stream 中的偏移。在写入过程中此变量会每字节递增，所以计算出首字节的 XorArrayIndex 后，即可通过递增得到后续字节的 index 值。
+
+*Reference : [XLS XOR Data Transformation Method 1](https://social.msdn.microsoft.com/Forums/en-US/3dadbed3-0e68-4f11-8b43-3a2328d9ebd5/xls-xor-data-transformation-method-1?forum=os_binaryfile)*
+
 ## 三、DOC
 ### 3.1 Encryption and Obfuscation (Password to Open)
 二进制格式的 word 文件可以通过以下三种方式进行密码保护：XOR obfuscation、 RC4 encryption 以及  RC4 CryptoAPI encryption。
@@ -274,10 +282,51 @@ Table stream 的头部 FibBase.lKey 个字节中以未加密未混淆的方式�
 ## 四、PPT
 只支持 RC4 CryptoAPI 加密方式。
 
+对于加密的 ppt 文档，必定满足以下条件：
+- Current User Stream 
+  + 必定不能被加密
+  + CurrentUserAtom record 的 headerToken 字段应该为 0xF3D1C4DF
+    - 注意 PowerPoint 2002 会使用 0xE391C05F 来标记是否加密 
+    - 无论如何，当文档被加密时，UserEditAtom.encryptSessionPersistIdRef 一定存在并且不为 0 (PersistIdRef 为 0 时表示空引用)
+- PowerPoint Document Stream
+  + UserEditAtom record 和 PersistDirectoryAtom record 必定不能被加密
+  + CryptSession10Container record 的 rh 字段必定不能被加密
+  + CryptSession10Container record 的其他字段被按照 [MSOFFCRYPTO] section 2.3.5.1 进行了解释
+  + stream 的其它部分必定被加密
+  + stream 必定有且只有一个 UserEditAtom record
+  + UserEditAtom record 的 encryptSessionPersistIdRef 字段必定存在，它指向一个含有 CryptSession10Container record 的 persist object.
+- Pictures Stream
+  + 如果存在的话，必定被加密
+- Summary Info Stream 和 Document Summary Info Stream
+  + CryptSession10Container.data.EncryptionHeader.Flags 的 fDocProps == 0：
+    - Summary Info Stream (名为 "\005SummaryInformation")必定不存在
+    - Encrypted Summary Info Stream (名为 "EncryptedSummary")必定存在
+    - Document Summary Info Stream (名为 "\005DocumentSummaryInformation")应该存在，但是空的
+  + CryptSession10Container.data.EncryptionHeader.Flags 的 fDocProps == 1：
+    - Summary Info Stream 和 Document Summary Info Stream 必定没被加密
+
+解密 encrypted document 的被解密部分，需要依照下面的规则：
+- For each block number the derived encryption key MUST be generated from the password hash and the block number as specified in [MS-OFFCRYPTO] section 2.3.5.2.
+
+PowerPoint Document Stream 中的 persist object 依照下述规则被加密：
+- 对于一个 persist object, 用于 derived encryption key 的 block number 就是 persist object 的 identifier
+- 用于 persist object 的 derived encryption key 必须通过 password hash 和 persist object 的 identifier 生成
+- 对于一个 persist object, 必须使用 derived encryption key 进行解密的字节由下述指定：
+  + 在 PowerPoint Document Stream section 中描述的 persist object 的文件偏移
+  + length in bytes == 8 + (文件偏移处的) RecordHeader 的 recLen 字段
+- 解密后，字节长度范围符合 [MS-OFFCRYPTO] 文档规定
+
+Pictures Stream 中的 picture (也就是说，OfficeArtBStoreContainerFileBlock record 的每个字段)依照下述规则解密: 
+- derived encryption key 必须通过 password hash 和 block number 为 0 产生
+- 字段的长度必须通过 derived encryption key 进行解密
+
 ### Encryption
 ppt 文档中可能有一个名字为 "EncryptedSummary" 的可选流，它只在被加密的文档中存在。当这个流存在时，也必定存在一个名为 "\0x05DocumentSummaryInformation" 的流，而名为 "\0x05SummaryInformation" 则必定不能存在。
 
 关于 "EncryptedSummary" 这个 Encrypted Summary Stream 的详细描述见 [MS-OFFCRYPTO] section 2.3.5.4。
+
+PowerPoint 97 and PowerPoint 2000 will omit the field UserEditAtom.encryptSessionPersistIdRef because they do not support opening or creating encrypted documents.
+
 
 ## Reference
 - [[MS-Office File Formats]](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)
