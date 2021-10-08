@@ -304,6 +304,25 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 + Rgce 的 ACTUAL_PTG_SIZE 跟实际情况不符合
 
 ### DOC
+一个 doc 文档应当由以下几个部分组成：
+1. WordDocument stream
+2. Table stream
+   + 1Table 或者 0Table 流必定存在
+3. Data stream 
+   + 没有预定义的结构，也不是必定存在。它包含的是 FIB 或 文件的其它部分的引用数据，也就是说如果没有引用数据的话，这个流没有存在的必要
+4. ObjectPool storage
+5. Summary Information
+   + Summary Information stream
+   + Document Summary Information stream
+6. Encrypt stream
+   + 名为 encryption 的流，只有当以下两个条件同时满足才会出现：文档被 RC4 CryptoAPI 加密， 并且，EncryptionHeader.Flags 的 fDocProps 标记被置位 
+7. Macros stream
+   + vba project 
+8. Signature
+   + 参考 [MS-OFFCRYPTO](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/2770c801-5f0f-4326-89e8-d6ef15b68ef1) 中的说明。
+9.  Protected Content
+   + 由 IRMDS 描述的方式进行保护的内容, 在 [MS-OFFCRYPTO](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/278b0e42-9080-48fc-806f-7d4f6b264fb0) 有描述。
+
 2.1.4.1 ObjInfo Stream
 Each storage within the ObjectPool storage contains a stream whose name is "\003ObjInfo" where
 \003 is the character with value 0x0003, not the string literal "\003". This stream contains an ODT

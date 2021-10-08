@@ -78,6 +78,14 @@ IRMDS 可以被应用于以下两种类型的文档:
 
 上文中涉及到的 End-User License Stream，其中包含了缓存的 licenses 信息。这些 end-user license stream 的命名必须以 "EUL-" 为前缀，为：``` "EUL-" + "一个 base-32-encoded 的GUID" ```。
 
+  
+### Protected Content Stream
+protected content stream 必须是在 root storage 中。如果原始文档是 ECMA-376 时，流的名字必定是 "EncryptedPackage"；原始文档是任意其他格式时, 流的名字一定是 "\0x09DRMContent"。
+
+而这个受保护的流由: ``` Length(8 bytes) + Contents(variable)``` 组成。
+
+其中 ```Contents``` 是使用对称密钥，AES-128 算法, 16-byte block size, electronic codebook (ECB) mode 以及 全 0 的初始向量进行加解密的。
+
 ### Encryption and Obfuscation
 应用于 ms-office 的加密和混淆的共有四种不同的技术：
 1. XOR Obfuscation
