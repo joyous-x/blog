@@ -245,6 +245,8 @@ Password record 为 sheet or workbook 指定了 password verifier。如果 recor
 - 当 Fib.base.fWhichTblStm == 1 时，为 1Table stream
 - 当 Fib.base.fWhichTblStm == 0 时，为 0Table stream
 
+另外，如果文档使用了 obfuscation 或 encryption 时, ObjectPool storage, Macros storage, Custom XML Data storage, XML Signatures storage, 和 Signatures stream 必定不能被加密或混淆。
+
 #### XOR Obfuscation
 文档的 WordDocument stream、Table stream 以及 Data stream 必须使用 [MS-OFFCRYPTO] 中的 XOR Data Transformation Method 2 进行混淆，所有其他的 streams 和 storages 必须不能(MUST NOT)被混淆。
 
@@ -280,7 +282,7 @@ Table stream 的头部 FibBase.lKey 个字节中以未加密未混淆的方式�
     2. EncryptionHeader.Flags 中的 fDocProps 被置位
 
 ## 四、PPT
-只支持 RC4 CryptoAPI 加密方式。
+只支持 RC4 CryptoAPI 加密方式。PPT 的加密信息存储在 CryptSession10Container record 中
 
 对于加密的 ppt 文档，必定满足以下条件：
 - Current User Stream 
@@ -295,6 +297,7 @@ Table stream 的头部 FibBase.lKey 个字节中以未加密未混淆的方式�
   + stream 的其它部分必定被加密
   + stream 必定有且只有一个 UserEditAtom record
   + UserEditAtom record 的 encryptSessionPersistIdRef 字段必定存在，它指向一个含有 CryptSession10Container record 的 persist object.
+    - PowerPoint 97 and PowerPoint 2000 会忽略 UserEditAtom.encryptSessionPersistIdRef 字段，因为他们不支持文档的 opening 或 creating 加密
 - Pictures Stream
   + 如果存在的话，必定被加密
 - Summary Info Stream 和 Document Summary Info Stream
@@ -324,9 +327,6 @@ Pictures Stream 中的 picture (也就是说，OfficeArtBStoreContainerFileBlock
 ppt 文档中可能有一个名字为 "EncryptedSummary" 的可选流，它只在被加密的文档中存在。当这个流存在时，也必定存在一个名为 "\0x05DocumentSummaryInformation" 的流，而名为 "\0x05SummaryInformation" 则必定不能存在。
 
 关于 "EncryptedSummary" 这个 Encrypted Summary Stream 的详细描述见 [MS-OFFCRYPTO] section 2.3.5.4。
-
-PowerPoint 97 and PowerPoint 2000 will omit the field UserEditAtom.encryptSessionPersistIdRef because they do not support opening or creating encrypted documents.
-
 
 ## Reference
 - [[MS-Office File Formats]](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offfflp/8aea05e3-8c1e-4a9a-9614-31f71e679456)

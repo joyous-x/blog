@@ -191,18 +191,9 @@ OLE文件中包含的常见内容主要有：
 office 可以在以下两个纬度上增加密码：
 + 对象
   - WordDocument stream
-    - 特点：MUST have an FIB at offset 0. 用 FibBase.fEncrypted and FibBase.fObfuscation 进行标记。
-    - 注意：The WordDocument stream, the Table stream, and the Data stream MUST be obfuscated using XOR Data Transformation Method 2 as specified in [MS-OFFCRYPTO] section 2.3.7.6. All other streams and storages MUST NOT be obfuscated
       - When XOR obfuscation is used, data can be easily extracted and the document password might be retrievable.
-      - When obfuscation or encryption is used, the ObjectPool storage, Macros storage, Custom XML Data storage, XML Signatures storage, and Signatures stream are not obfuscated or encrypted.
       - When XOR obfuscation or Office binary document RC4 encryption is used or when Office binary document RC4 CryptoAPI encryption is used with fDocProps set to false in EncryptionHeader.Flags, the Document Summary Information stream and the Summary Information stream are not obfuscated or encrypted.
       - When Office binary document RC4 encryption or Office binary document RC4 CryptoAPI encryption is used, the same block numbers are reused in the WordDocument stream, the Table stream, and the entire Data stream. This reuse can occur potentially with known cleartext, implying that certain portions of encrypted data can be directly extracted or easily retrieved.
-  - ppt
-    - CryptSession10Container
-      - information about how to encrypt and decrypt encrypted documents
-      - PowerPoint 2002 uses the headerToken 0xE391C05F for encrypted documents.
-    - Encrypted Summary Information Stream
-      - An optional stream whose name MUST be "EncryptedSummary". This stream exists only in an encrypted document.
   - vba project
     - 可以对期中的 stream 设置独立的密码 (未确认)
       - VBA uses a reversible encryption algorithm for selected data.
@@ -312,8 +303,11 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
       ```
 + Rgce 的 ACTUAL_PTG_SIZE 跟实际情况不符合
 
-
-
+### DOC
+2.1.4.1 ObjInfo Stream
+Each storage within the ObjectPool storage contains a stream whose name is "\003ObjInfo" where
+\003 is the character with value 0x0003, not the string literal "\003". This stream contains an ODT
+structure which specifies information about that embedded OLE object.
 
 ### PPT
 按照 [MS-PPT] - v20210817 ：pageno 28 中 Part 1 ~ 11 的描述，即可解出完整的 ppt 文档内容。
