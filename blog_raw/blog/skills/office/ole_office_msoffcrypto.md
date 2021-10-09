@@ -93,7 +93,6 @@ protected content stream 必须是在 root storage 中。如果原始文档是 E
 - 方法：对 Office Binary Document 的部分(storage 或 stream)执行就地混淆
 - 细节：包含两种方法：Method 1 和 Method 2
   + Method 1 应用于 Excel Binary File Format (.xls) 的 structures 和 procedures
-    - *文档中用于加解密的 XorArrayIndex 字段没找到来源~~~*
   + Method 2 应用于 Word Binary File Format (.doc) 的 structures 和 procedures
 
 2. 40-bit RC4 Encryption
@@ -241,6 +240,8 @@ Password record 为 sheet or workbook 指定了 password verifier。如果 recor
 
 *Reference : [XLS XOR Data Transformation Method 1](https://social.msdn.microsoft.com/Forums/en-US/3dadbed3-0e68-4f11-8b43-3a2328d9ebd5/xls-xor-data-transformation-method-1?forum=os_binaryfile)*
 
+此外，用于 XOR 算法的密码长度不能超过15个字符。
+
 ## 三、DOC
 ### 3.1 Encryption and Obfuscation (Password to Open)
 二进制格式的 word 文件可以通过以下三种方式进行密码保护：XOR obfuscation、 RC4 encryption 以及  RC4 CryptoAPI encryption。
@@ -256,9 +257,15 @@ Password record 为 sheet or workbook 指定了 password verifier。如果 recor
 另外，如果文档使用了 obfuscation 或 encryption 时, ObjectPool storage, Macros storage, Custom XML Data storage, XML Signatures storage, 和 Signatures stream 必定不能被加密或混淆。
 
 #### XOR Obfuscation
-文档的 WordDocument stream、Table stream 以及 Data stream 必须使用 [MS-OFFCRYPTO] 中的 XOR Data Transformation Method 2 进行混淆，所有其他的 streams 和 storages 必须不能(MUST NOT)被混淆。
+文档的 WordDocument stream、Table stream 以及 Data stream 必须使用 [MS-OFFCRYPTO] 中的 XOR Data Transformation Method 2 进行混淆，所有其他的 streams 和 storages 必须不能(MUST NOT)被混淆。另外，用于密码验证的 password verifier 必定存储在 FibBase.lKey 中。
 
 根据 [[MS-DOC] 2.2.6.1 XOR Obfuscation] 的说明，对 WordDocument stream 转换必须从流的第一个字节开始进行，但最初的 68 bytes 必须用原始的未转换的值。
+
+此外，用于 XOR 算法的密码长度不能超过15个字符。所以，需要将 unicode 的密码转换成 single-byte 字符，这里有以下两种方式：
+- 使用 language code identifier (LCID) 将 unicode 转换为 ANSI 并截断
+- 对每个 unicode 字符，如果低字节为 0x00，则拷贝高字节到 single-byte; 否则，拷贝低字节到 single-byte。对结果进行截断，只保留 15 个字符
+
+对于写操作来说，应该使用第二种方式。不过，如果是读文件的话，应当尝试以上两种方式，任意一种能够匹配即可认为密码正确。
 
 #### Office Binary Document RC4 Encryption
 Table stream 的头部 FibBase.lKey 个字节中以未加密未混淆的方式存储了 EncryptionHeader 结构。Table stream 的剩余部分, WordDocument stream 的超出最初的 68 bytes 的部分, 以及 Data stream 的全部，必须被加密。所有其他的 streams 和 storages 必须不能(MUST NOT)被加密。

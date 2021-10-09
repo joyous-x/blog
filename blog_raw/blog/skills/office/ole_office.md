@@ -306,27 +306,26 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 ### DOC
 一个 doc 文档应当由以下几个部分组成：
 1. WordDocument stream
+   + 有一个 FIB structure 在流的起始位置 
 2. Table stream
-   + 1Table 或者 0Table 流必定存在
+   + 1Table 或者 0Table 流必定存在。当二者同时存在时，base.fWhichTblStm 指定的为有效流，忽略其他即可。
+   + 如果文档被加密的话，会有一个 EncryptionHeader 结构在流的起始位置。反之，如果文档没有加密，则此流没有预定义的结构。
 3. Data stream 
    + 没有预定义的结构，也不是必定存在。它包含的是 FIB 或 文件的其它部分的引用数据，也就是说如果没有引用数据的话，这个流没有存在的必要
 4. ObjectPool storage
+   + Object Pool storage 包含一些用于持久化 embedded OLE objects 的 storages。如果文档没有 embedded OLE objects 时，是不会出现此 storage 的。
+   + 每一个位于 ObjectPool storage 中的 storage 都有一个 ObjInfo Stream (名为 "\003ObjInfo")，这个流里存放着用于描述 embedded OLE object 信息的 ODT structure。
 5. Summary Information
    + Summary Information stream
    + Document Summary Information stream
-6. Encrypt stream
-   + 名为 encryption 的流，只有当以下两个条件同时满足才会出现：文档被 RC4 CryptoAPI 加密， 并且，EncryptionHeader.Flags 的 fDocProps 标记被置位 
-7. Macros stream
+   + Encrypt stream
+     - 名为 encryption 的流，只有当以下两个条件同时满足才会出现：文档被 RC4 CryptoAPI 加密， 并且，EncryptionHeader.Flags 的 fDocProps 标记被置位 
+6. Macros stream
    + vba project 
-8. Signature
+7. Signature
    + 参考 [MS-OFFCRYPTO](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/2770c801-5f0f-4326-89e8-d6ef15b68ef1) 中的说明。
-9.  Protected Content
+8.  Protected Content
    + 由 IRMDS 描述的方式进行保护的内容, 在 [MS-OFFCRYPTO](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/278b0e42-9080-48fc-806f-7d4f6b264fb0) 有描述。
-
-2.1.4.1 ObjInfo Stream
-Each storage within the ObjectPool storage contains a stream whose name is "\003ObjInfo" where
-\003 is the character with value 0x0003, not the string literal "\003". This stream contains an ODT
-structure which specifies information about that embedded OLE object.
 
 ### PPT
 按照 [MS-PPT] - v20210817 ：pageno 28 中 Part 1 ~ 11 的描述，即可解出完整的 ppt 文档内容。

@@ -6,7 +6,6 @@
     - defined name: A word or string of characters in a formula that represents a cell, range of cells, formula, or constant value.
 - [x] 以 sheet、stream 为处理纬度的删除、改写
 - [x] OPENFILE 解密算法支持(ecma376 std/agile、xor、rc4、rc4 capi)
-  - [ ] doc : xor\rc4\rc4 capi
   - [ ] ecma agile: verify data integrity
 - cell reference
   - [x] binary
