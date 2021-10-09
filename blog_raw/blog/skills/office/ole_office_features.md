@@ -11,12 +11,13 @@
   - [x] binary
     - [ ] cell 是否相对位置，有些表现与文档说明不一致，需进一步确认
   - [ ] ooxml
-- [ ] doc macro(word7)、NORMAL.DOT模板
-- [ ] linkshell
-- [ ] 取消读写保护、以方便人工查看
+- 待处理(不紧急)
+  - [ ] doc macro(word7)、NORMAL.DOT模板
+  - [ ] linkshell
+  - [ ] 取消读写保护、以方便人工查看
+  - [ ] cad、pptm\ppsm、Word/PowerPoint 2007+ XML (aka Flat OPC)、Word 2003 XML (.xml)、Word/Excel Single File Web Page / MHTML (.mht)、SYLK/SLK files (.slk)
 - [ ] rtf : rtfobj.py
 - [ ] xlsb 
-- [ ] cad、pptm\ppsm、Word/PowerPoint 2007+ XML (aka Flat OPC)、Word 2003 XML (.xml)、Word/Excel Single File Web Page / MHTML (.mht)、SYLK/SLK files (.slk)
 - [x] wps
   - 可以有 js宏、vba宏 ˙两种，期中 vba 宏仅在WPS+企业付费套餐（商业版/高级商业版）中支持
 - [ ] 整理项目文档，开发
