@@ -18,14 +18,24 @@ permalink:
 而 OOXML 又是以 XML 文件为基础的，所以，概括的说，Office文档主要基于 ole、xml、ooxml 这三种文件格式构建起来的。
 
 常见的文件扩展名以及用途如下：
-- doc、xls、ppt 
-  - 属于 97-2003 版 Office
-- docx、xlsx、pptx 
-  - 属于 2007 ~ 版 Office 文档，但没有启用宏
-- docm、xlsm、pptm 
-  - 属于启用了宏的 2007 ~ 版 Office 文档，可以存储 Visual Basic Applications（VBA）宏代码
-- ppsx
-  - 是 2007 的 PPT 的一种格式，打开就是幻灯片播放模式
+| Extensions | Usage | Remark |
+| :--- | --- | --- |
+| doc、xls、ppt | 属于 97-2003 版 Office | |
+| docx、xlsx、pptx  | 属于 2007 ~ 版 Office 文档，但没有启用宏 | |
+| docm、xlsm、pptm  | 属于启用了宏的 2007 ~ 版 Office 文档，可以存储 Visual Basic Applications（VBA）宏代码 | |
+| ppsx | 是 2007 的 PPT 的一种格式，打开就是幻灯片播放模式 | |
+
+按照我们常规的认知，一个文档应当包含以下几个部分：
+1. 文档内容
+   + 可能涉及对 embedded objects 或 external objects 的引用
+   + 文档的展示相关：字体、页面大小、打印方式等等
+2. 文档工具
+   + 为了更好、更方便的操作文档内容进行编辑、展示、提示以及其他功能，而提供的一些跟文档相关的组件，如 vba、formula、animation 等等
+3. 文档属性
+   + 如，创作时间、作者、最后修改时间等等
+4. 保护措施
+   + 签名
+   + 读(打开)、写 保护
 
 ## 一、Malware
 由于 ms-office 文件的广泛使用，恶意软件作者对其进行了充分的挖掘、利用，催生出了一系列针对这些文档的病毒，期中常常被用于恶意目的的组件或者方式有：宏病毒、漏洞利用、嵌入文件
@@ -188,20 +198,17 @@ OLE文件中包含的常见内容主要有：
   - *TODO*
 
 #### 4. encryption and obfuscation
-office 可以在以下两个纬度上增加密码：
-+ 对象
-  - WordDocument stream
-      - When XOR obfuscation is used, data can be easily extracted and the document password might be retrievable.
-      - When XOR obfuscation or Office binary document RC4 encryption is used or when Office binary document RC4 CryptoAPI encryption is used with fDocProps set to false in EncryptionHeader.Flags, the Document Summary Information stream and the Summary Information stream are not obfuscated or encrypted.
-      - When Office binary document RC4 encryption or Office binary document RC4 CryptoAPI encryption is used, the same block numbers are reused in the WordDocument stream, the Table stream, and the entire Data stream. This reuse can occur potentially with known cleartext, implying that certain portions of encrypted data can be directly extracted or easily retrieved.
-  - vba project
-    - 可以对期中的 stream 设置独立的密码 (未确认)
-      - VBA uses a reversible encryption algorithm for selected data.
-    - PROJECT Stream: ProjectProtectionState
-      - ProjectProtectionState: "CMG="0705D8E3D8EDDBF1DBF1DBF1DBF1"" specifies no sources are restricted access to the VBA project. The value is obfuscated by Data Encryption (section 2.4.3).
-      - ProjectPassword (section 2.3.1.16): "DPB="0E0CD1ECDFF4E7F5E7F5E7"" specifies the VBA project has no password. The value is obfuscated by Data Encryption (section 2.4.3). 
-      - ProjectVisibilityState (section 2.3.1.17): "GC="1517CAF1D6F9D7F9D706"" specifies the VBA project is visible. The value is obfuscated by Data Encryption (section 2.4.3).
-      - LibName: "VBE" specifies a built in name for the VBA Automation type library.
+详见 [Office 格式简析 - Crypto](./ole_office_msoffcrypto.md)
+
+这里需要注意的是 vba project 的保护(待确认)：
+- vba project
+  - 可以对期中的 stream 设置独立的密码 (未确认)
+    - VBA uses a reversible encryption algorithm for selected data.
+  - PROJECT Stream: ProjectProtectionState
+    - ProjectProtectionState: "CMG="0705D8E3D8EDDBF1DBF1DBF1DBF1"" specifies no sources are restricted access to the VBA project. The value is obfuscated by Data Encryption (section 2.4.3).
+    - ProjectPassword (section 2.3.1.16): "DPB="0E0CD1ECDFF4E7F5E7F5E7"" specifies the VBA project has no password. The value is obfuscated by Data Encryption (section 2.4.3). 
+    - ProjectVisibilityState (section 2.3.1.17): "GC="1517CAF1D6F9D7F9D706"" specifies the VBA project is visible. The value is obfuscated by Data Encryption (section 2.4.3).
+    - LibName: "VBE" specifies a built in name for the VBA Automation type library.
 
 ### VBA Project 格式
 VBA project 是由一系列 records 组成的结构。其中每个 record 都定义了 project 的三要素之一的部分内容。
