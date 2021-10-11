@@ -16,6 +16,7 @@
   - [ ] linkshell
   - [ ] 取消读写保护、以方便人工查看
   - [ ] cad、pptm\ppsm、Word/PowerPoint 2007+ XML (aka Flat OPC)、Word 2003 XML (.xml)、Word/Excel Single File Web Page / MHTML (.mht)、SYLK/SLK files (.slk)
+  - [ ] activemime: https://github.com/idiom/activemime-format
 - [ ] rtf : rtfobj.py
 - [ ] xlsb 
 - [x] wps
@@ -26,4 +27,4 @@
 - [ ] msodde.py : detect and extract DDE links
 - [ ] oleform.py : parse [VBA forms](https://msdn.microsoft.com/en-us/library/office/cc313125%28v=office.12%29.aspx?f=255&MSPPError=-2147217396) in Microsoft Office files. 
 - [ ] SummaryInformation、creation and modification times of all streams and storages
-- [ ] pyxswf.py ：extract and analyze Flash objects (SWF) that may be embedded in  MS Office documents (e.g. Word, Excel)
+<!-- - [ ] pyxswf.py ：extract and analyze Flash objects (SWF) that may be embedded in  MS Office documents (e.g. Word, Excel) -->
