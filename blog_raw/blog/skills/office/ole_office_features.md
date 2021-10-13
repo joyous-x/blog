@@ -15,7 +15,7 @@
   - [ ] doc macro(word7)、NORMAL.DOT模板
   - [ ] linkshell
   - [ ] 取消读写保护、以方便人工查看
-  - office 转换而成的 xml、mhtml、html
+  - office 转换而成的 xml、mhtml、html （这些文档被加密后是一个 ole 文件）
     - [ ] xml
     - [ ] html
     - [ ] mht、mhtml
