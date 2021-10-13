@@ -17,6 +17,8 @@
   - [ ] 取消读写保护、以方便人工查看
   - office 转换而成的 xml、mhtml、html （这些文档被加密后是一个 ole 文件）
     - [ ] xml
+      - 实际上，xml 的结构跟 binary 形式的 office 文件一致，并且一一对应
+      - 需要解出 contentType 为 "application/vnd.ms-office.vbaProject" 的 binaryData 数据
     - [ ] html
     - [ ] mht、mhtml
       + MIME Types: text/html
