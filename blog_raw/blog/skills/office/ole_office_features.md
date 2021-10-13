@@ -15,8 +15,20 @@
   - [ ] doc macro(word7)、NORMAL.DOT模板
   - [ ] linkshell
   - [ ] 取消读写保护、以方便人工查看
-  - [ ] cad、pptm\ppsm、Word/PowerPoint 2007+ XML (aka Flat OPC)、Word 2003 XML (.xml)、Word/Excel Single File Web Page / MHTML (.mht)、SYLK/SLK files (.slk)
-  - [ ] activemime: https://github.com/idiom/activemime-format
+  - office 转换而成的 xml、mhtml、html
+    - [ ] xml
+    - [ ] html
+    - [ ] mht、mhtml
+      + MIME Types: text/html
+    - [ ] ActiveMime
+      + MIME Types: application/x-mso
+      + Filename pattern: *.mso
+      + 格式未公开：参考 https://github.com/idiom/activemime-format
+        + MSO文件是将Microsoft Office文档保存为网页时创建的宏引用文件。它包含有关原始文件中包含的宏和OLE（对象链接和嵌入）对象的信息，并且可以被创建的网页作为样式表引用。MSO文件可以用文本编辑器查看，但由于内容是编码的，因此无法读取。大多数用户只会将MSO文件作为电子邮件的附件。
+        + 其他MSO格式：在使用outlook HTML发送邮件的时候，添加了office 系列的文件作为附件，如，ppt，doc，xls等，如果邮件没有正确发出，那么就会产生，邮件名.Oledata.mso文件，其中包含了大量的原始邮件中的附件信息
+该Oledata.mso文件将显示为一个单独的连接的计算机上没有安装Microsoft Outlook 2000或更高版本。
+
+  - [ ] cad、pptm\ppsm、Word/PowerPoint 2007+ XML (aka Flat OPC)、Word 2003 XML (.xml)、SYLK/SLK files (.slk)
 - [ ] rtf : rtfobj.py
 - [ ] xlsb 
 - [x] wps

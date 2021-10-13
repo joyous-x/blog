@@ -160,19 +160,27 @@ OLE 文件的 Property Sets 通过以下两个 stream 存储:
 这两个 stream 都以 PropertySetStream 结构(见 [MS-OSHARED]() 的 section3.2.1 )开头。
 
 OLE文件中包含的常见内容主要有：
-#### 1. linked object or embedded object 
+#### 1. linked or embedded object 
+包含嵌入、链接对象的容器文档的逻辑布局如下图：
+<center class="half">
+    <img src="./rsc/ole_embedded_object.jpg" width="460"/>
+    <img src="./rsc/ole_linked_object.jpg" width="300">
+</center>
+
 + OLEStream
-    - linked object or embedded object 的结构描述信息
-    - OLE2.0 中，由复合文档的以 "\1Ole" 为名的 stream object 包含。OLEStream structure 表述了存储对象是用于 linked object 还是 embedded object。当此结构是为 linked object 指定 storage object 时，它还指定了对此链接对象的引用。
+  - OLE2.0 中，由复合文档的以 "\1Ole" 为名的 stream object 包含。OLEStream structure 表述了存储对象是用于 linked object 还是 embedded object。当此结构是为 linked object 指定 storage object 时，它还指定了对此链接对象的引用。
++ CompObjStream
+  - OLE2.0 中，名为 "\1CompObj" 的流，主要用于描述 Clipboard Format、用于显示的linked object 或 embedded object 的名字。
 + Embedded Object Native Data
-    - OLE1.0 中，其由 EmbeddedObject structure 的 NativeData field 指定。
-    - OLE2.0 中，Native Data 的指定方式有以下两种，可以互换使用：
-        + 由复合文档的以 "\1Ole10Native" 为名的 stream object 包含。如 OLENativeStream structure 的 NativeData field 所指定。
-        + 由 creating application 创建的 stream objects 可以包含 native data。此类流对象是 creating application 的私有对象，未在文档中说明。
-            - creating application: An application whose data is stored in or referenced by documents from other applications.
+  - OLE1.0 中，其由 EmbeddedObject structure 的 NativeData field 指定。
+  - OLE2.0 中，Native Data 的指定方式有以下两种，可以互换使用：
+    + 由复合文档的以 "\1Ole10Native" 为名的 stream object 包含。如 OLENativeStream structure 的 NativeData field 所指定。
+    + 由 creating application 创建的 stream objects 可以包含 native data。此类流对象是 creating application 的私有对象，未在文档中说明。
+      - creating application: An application whose data is stored in or referenced by documents from other applications.
 + Embedded Object Presentation Data
-    - OLE1.0 中，其由 EmbeddedObject structure 的 Presentation field 指定
-    - OLE2.0 中，由复合文档的以 "\2OlePres" 为前缀的 stream objects 指定。每一个 stream 都包含一个 OLEPresentationStream structure。
+  - 用于指定如何在 container application 中显示 linked or embedded object 对象
+  - OLE1.0 中，其由 EmbeddedObject structure 的 Presentation field 指定
+  - OLE2.0 中，由复合文档的以 "\2OlePres" 为前缀(后跟着3个十进制数字，并且最多只能有999个Presentations)的 stream objects 指定。每一个 stream 都包含一个 OLEPresentationStream structure。
 
 #### 2. 宏
 常见的 宏 有两种：vba 和 ms-excel4.0, 它们出现的主要位置有：
@@ -350,6 +358,28 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 	+ SoundCollectionContainer
 	+ DrawingGroupContainer
 
+#### External Objects
+Slides 可以包含连接到外部的 objects。播放 ppt 的人可以在幻灯片放映期间激活链接对象以访问外部资源。External Objects 的例子有 embedded and linked audio, linked video, embedded and linked OLE objects, 以及 hyperlinks。
+
+也就是说 Embedded or Linked Object 在 ppt 中的存在形式就是 External Objects。
+
+有关有 External Objects 的记录，请参阅 [[MS-PPT] External Object Types (section 2.10)]() 相关内容。
+
+### XLS
+一个 xls 文件最多只能一个 Component Object Stream。
+一个 xls 文件最多只能一个 OLE Stream。
+一个 xls 文件最多只能一个 Control Stream。
+
+#### Embedded or Linked Object
+一个 Embedding Storage 用于表示基于 storage-based 持久化的 embedded OLE object 或 ActiveX control 对象。它的名字必定是由："MBD" + 8个十六进制数字 标识。
+
+持久化在 Embedding Storage 的对象必定有一个相关联的 Obj record 在 worksheet substream、macro sheet substream 或 dialog sheet substream 中，并且 cmo.ot == 8，pictFlags.fPrstm == pictFlags.fDde == 0。
+
+一个 Link Storage 指定一个  linked OLE object 和任意其他的默认数据或表示为其建立的缓存。它的名字必定是由："LNK" + 8个十六进制数字 标识。
+
+持久化在 Link Storage 的对象必定有一个相关联的 Obj record 在 worksheet substream、macro sheet substream 或 dialog sheet substream 中，并且 cmo.ot == 8，pictFlags.fPrstm == pictFlags.fDde == 0。
+
+
 ## OOXML
 OOXML(Office Open XML File Formats), 简单来说，OOXML 是一个基于 XML 的文档格式标准，最早是微软 Office2007 的产品开发技术规范，先是成为 Ecma(ECMA-376) 的标准，最后改进推广成为了 ISO 和 IEC (as ISO/IEC 29500) 的国际文档格式标准。也就是说，通过 OOXML 标准，我们能够在不依赖 Office 产品的情况下，在任何平台读写Office Word，PPT 和 Excel 文件。
 
@@ -433,15 +463,21 @@ OOXML
 - [[MS-XLS] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-xls/cd03cb5f-ca02-4934-a391-bb674cb8aa06)
 - [[MS-DOC] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-doc/ccd7b486-7881-484c-a137-51170af7cc22)
 - [[MS-PPT] - v20210817](https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-ppt/6be79dde-33c1-4c1b-8ccc-4b2301c08662)
+- [[MS-OLEDS] - v20210625](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/85583d21-c1cf-4afe-a35f-d6701c5fbb6f)
 - [Introducing the Office (2007) Open XML File Formats](https://docs.microsoft.com/zh-cn/previous-versions/office/developer/office-2007/aa338205(v=office.12))
 - [Microsoft Office Excel 97 - 2007 Binary File Format (.xls) Specification](http://download.microsoft.com/download/5/0/1/501ED102-E53F-4CE0-AA6B-B0F93629DDC6/Office/Excel97-2007BinaryFileFormat(xls)Specification.pdf)
 - [OLE1.0 and OLE2.0 Formats](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-oleds/fdc5e702-d09e-4344-a77f-eb079d41f23f)
+
+- [Microsoft Office Word 2003]()
+  + [Microsoft Office Word 2003 Preview](https://docs.microsoft.com/en-us/previous-versions/office/aa203677(v=office.11)?redirectedfrom=MSDN)
+  + [The XML Files: XML in Microsoft Office Word 2003](https://docs.microsoft.com/en-us/archive/msdn-magazine/2003/november/the-xml-files-xml-in-microsoft-office-word-2003)
 
 - [[翻译]攻击互通性-以OLE为例](https://bbs.pediy.com/thread-218941.htm)
   - [Attacking Interoperability: An OLE Edition](https://www.blackhat.com/docs/us-15/materials/us-15-Li-Attacking-Interoperability-An-OLE-Edition.pdf)
 - [宏病毒常用的一些trick](https://bbs.ichunqiu.com/thread-35164-1-1.html)
 - [Old school: evil Excel 4.0 macros (XLM)](https://outflank.nl/blog/2018/10/06/old-school-evil-excel-4-0-macros-xlm/)
 
+- [oletools](https://github.com/decalage2/oletools/tree/master/oletools)
 - DidierStevens
   + [oledump-py](https://blog.didierstevens.com/programs/oledump-py/)
   + [oledump.py](https://github.com/DidierStevens/DidierStevensSuite/blob/master/oledump.py)
