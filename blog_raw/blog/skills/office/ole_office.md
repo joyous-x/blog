@@ -330,6 +330,7 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 4. ObjectPool storage
    + Object Pool storage 包含一些用于持久化 embedded OLE objects 的 storages。如果文档没有 embedded OLE objects 时，是不会出现此 storage 的。
    + 每一个位于 ObjectPool storage 中的 storage 都有一个 ObjInfo Stream (名为 "\003ObjInfo")，这个流里存放着用于描述 embedded OLE object 信息的 ODT structure。
+     - embedded OLE object 相关的其他流的描述可以参考 [Embedded Object Native Data]() 相关内容
 5. Summary Information
    + Summary Information stream
    + Document Summary Information stream
@@ -348,8 +349,8 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 注意：the UserEditAtom record closest to the end of the PointPower Document stream 
 
 安全相关需要关注：
-- ExternalObjectStorage 0x1011
-- DocumentContainer 0x03E8
+- ExternalObjectStorage 0x1011 , 用于对象存储(如果有n个则会有n个此类型的 record) 
+- DocumentContainer 0x03E8 , 用于描述文档对象
   + DocInfoListContainer 0x07D0 
 		+ VBAInfoContainer 0x03FF
 			+ VBAInfoAtom  0x0400
