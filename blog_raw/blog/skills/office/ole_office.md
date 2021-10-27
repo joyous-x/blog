@@ -195,8 +195,7 @@ OLE文件中包含的常见内容主要有：
 - macro template
   - office2007 ~ : /[xx]/_rels/settings.xml.rels 中引用外部(远程)模板文件
 - VbaProjectStg
-  - office97 ~ 2003: 'powerpoint document' stream
-  - 注：此内容待继续了解详情
+  - binary powerpoint document 中用于指定一个用于 VBA project 的结构化存储
 
 #### 3. officeart
 - office97 ~ 2003:
@@ -210,7 +209,7 @@ OLE文件中包含的常见内容主要有：
 
 这里需要注意的是 vba project 的保护(待确认)：
 - vba project
-  - 可以对期中的 stream 设置独立的密码 (未确认)
+  - 可以对其中的 stream 设置独立的密码 (未确认)
     - VBA uses a reversible encryption algorithm for selected data.
   - PROJECT Stream: ProjectProtectionState
     - ProjectProtectionState: "CMG="0705D8E3D8EDDBF1DBF1DBF1DBF1"" specifies no sources are restricted access to the VBA project. The value is obfuscated by Data Encryption (section 2.4.3).
@@ -219,9 +218,7 @@ OLE文件中包含的常见内容主要有：
     - LibName: "VBE" specifies a built in name for the VBA Automation type library.
 
 ### VBA Project 格式
-VBA project 是由一系列 records 组成的结构。其中每个 record 都定义了 project 的三要素之一的部分内容。
-
-每个 record 都是以结构开头：```ID(2 bytes) + Size(4 bytes) + ...```
+VBA project 是由一系列 records 组成的结构。其中每个 record 都定义了 project 的三要素之一的部分内容。每个 record 都是以结构开头：```ID(2 bytes) + Size(4 bytes) + ...```
 
 project 的三要素有：project information, project references, and project items.
 
@@ -233,13 +230,10 @@ ole 中 VBA 存储(storage)结构如下：
 其中 Project Root Storage 是一个独立的 storage。例如，OLE 文件中的 Macros storage。
 
 - VBA Storage
-    + MUST
-    + description
-        - 。而 SRP Streams 则是 
     + sub-structure
         + _VBA_PROJECT Stream
             + MUST
-            + provides basic information about the VBA project, including the version information required to load the remainder of the structure
+            + 包含了 VBA project 的基础信息，如，版本号(用于加载此结构的剩余内容) 等
         + dir Stream
             + MUST
             + 指明 VBA project properties, project references, 和 module properties
@@ -255,10 +249,10 @@ ole 中 VBA 存储(storage)结构如下：
     + Project Properties, VBA project 的附加信息，如：ProjectPassword、ProjectVisibilityState 等
 - PROJECTwm Stream
     + Optional
-    + contains information for mapping module names between multibyte character set (MBCS) and UTF-16.
+    + 包含了用于 module name 在 multibyte character set (MBCS) 和 UTF-16 之间互相映射的信息
 - PROJECTlk Stream
     + Optional
-    + license information for ActiveX controls used in the VBA project.
+    + 包含了 VBA project 中的 ActiveX controls 的 license 信息
 -  Designer Storages
     + Optional
     + sub-structure
@@ -325,11 +319,15 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 2. Table stream
    + 1Table 或者 0Table 流必定存在。当二者同时存在时，base.fWhichTblStm 指定的为有效流，忽略其他即可。
    + 如果文档被加密的话，会有一个 EncryptionHeader 结构在流的起始位置。反之，如果文档没有加密，则此流没有预定义的结构。
+   + 存储了文档的文本信息
 3. Data stream 
    + 没有预定义的结构，也不是必定存在。它包含的是 FIB 或 文件的其它部分的引用数据，也就是说如果没有引用数据的话，这个流没有存在的必要
 4. ObjectPool storage
    + Object Pool storage 包含一些用于持久化 embedded OLE objects 的 storages。如果文档没有 embedded OLE objects 时，是不会出现此 storage 的。
    + 每一个位于 ObjectPool storage 中的 storage 都有一个 ObjInfo Stream (名为 "\003ObjInfo")，这个流里存放着用于描述 embedded OLE object 信息的 ODT structure。
+     - embedded OLE object 相关的其他流的描述可以参考 [Embedded Object Native Data]() 相关内容
+   + 每个 sub-storage 都存储了一个用户嵌入(embedded)的文件。并且，每个 sub-storage 都是以: 下划线"_" + 10个digits 组成，如 _1557814583
+     - 关联引用的关键词：sprmCFOle2、sprmCPicLocation
 5. Summary Information
    + Summary Information stream
    + Document Summary Information stream
@@ -347,9 +345,16 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 
 注意：the UserEditAtom record closest to the end of the PointPower Document stream 
 
-安全相关需要关注：
-- ExternalObjectStorage 0x1011
-- DocumentContainer 0x03E8
+其中，所有用于 presentation 的文本都存储在 "PowerPoint Document" stream 中；所有用于 presentation 的 images 都存储在Pictures stream 中；不过，Embedded files 没有存储在独立的 storages，而是被融合到 "PowerPoint Document" stream 中，此外，这些 embedded files 在存储时，有些会被压缩有些却不会。
+
+#### External Objects
+Slides 可以包含连接到外部的 objects。播放 ppt 的人可以在幻灯片放映期间激活链接对象以访问外部资源。External Objects 的例子有 embedded and linked audio, linked video, embedded and linked OLE objects, 以及 hyperlinks。
+
+也就是说 Embedded or Linked Object 在 ppt 中的存在形式就是 External Objects。
+
+有关有 External Objects 的记录，请参阅 [[MS-PPT] External Object Types (section 2.10)]() 相关内容。简单的说，为了解析出 External Objects，我们需要关注：
+- ExternalObjectStorage 0x1011 , 用于对象存储(如果有n个则会有n个此类型的 record) 
+- DocumentContainer 0x03E8 , 用于描述文档对象
   + DocInfoListContainer 0x07D0 
 		+ VBAInfoContainer 0x03FF
 			+ VBAInfoAtom  0x0400
@@ -358,27 +363,27 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 	+ SoundCollectionContainer
 	+ DrawingGroupContainer
 
-#### External Objects
-Slides 可以包含连接到外部的 objects。播放 ppt 的人可以在幻灯片放映期间激活链接对象以访问外部资源。External Objects 的例子有 embedded and linked audio, linked video, embedded and linked OLE objects, 以及 hyperlinks。
+关于鉴别 embedded OLE object 对象的具体步骤可以参考 [[MS-PPT] 2.1.2 PowerPoint Document Stream  part 9]() 相关内容
 
-也就是说 Embedded or Linked Object 在 ppt 中的存在形式就是 External Objects。
-
-有关有 External Objects 的记录，请参阅 [[MS-PPT] External Object Types (section 2.10)]() 相关内容。
+关于鉴别 linked OLE object 对象的具体步骤可以参考 [[MS-PPT] 2.1.2 PowerPoint Document Stream  part 10]() 相关内容
 
 ### XLS
 一个 xls 文件最多只能一个 Component Object Stream。
 一个 xls 文件最多只能一个 OLE Stream。
 一个 xls 文件最多只能一个 Control Stream。
 
+WorkBook stream 中存储了 excel 中所有的 text 和 formulas。
+
 #### Embedded or Linked Object
-一个 Embedding Storage 用于表示基于 storage-based 持久化的 embedded OLE object 或 ActiveX control 对象。它的名字必定是由："MBD" + 8个十六进制数字 标识。
+在 Excel 的 workbook 中嵌入一个文件的话，这些文件会被存储在名为 "MBD + 随机的8个十六进制数字" 的 Embedding Storages 中。
 
-持久化在 Embedding Storage 的对象必定有一个相关联的 Obj record 在 worksheet substream、macro sheet substream 或 dialog sheet substream 中，并且 cmo.ot == 8，pictFlags.fPrstm == pictFlags.fDde == 0。
+每个 Embedding Storage 都表示了一个基于 storage-based 持久化的 embedded OLE object 或 ActiveX control 对象。同时，持久化在 Embedding Storage 的对象必定有一个相关联的 Obj record 在 worksheet substream、macro sheet substream 或 dialog sheet substream 中，并且 cmo.ot == 8，pictFlags.fPrstm == pictFlags.fDde == 0。
 
-一个 Link Storage 指定一个  linked OLE object 和任意其他的默认数据或表示为其建立的缓存。它的名字必定是由："LNK" + 8个十六进制数字 标识。
+不过不同类型的文件在 Embedding Storage 中的形式有些不一样，如：
+1. 如果 embedded file 是另外一个 binary Office document, 那么这个 embedded file 中的 storages 和 streams 会被当成对应的节点原样存储在 MDB storage 中
+2. 如果 embedded file 是一个 Open XML document, 那么这个 embedded file 会被完整存储在名为 "Package" 的 stream 中
 
-持久化在 Link Storage 的对象必定有一个相关联的 Obj record 在 worksheet substream、macro sheet substream 或 dialog sheet substream 中，并且 cmo.ot == 8，pictFlags.fPrstm == pictFlags.fDde == 0。
-
+一个 Link Storage 指定一个 linked OLE object 和任意其他的默认数据或表示为其建立的缓存。它的名字必定是由："LNK" + 8个十六进制数字 标识。持久化在 Link Storage 的对象必定有一个相关联的 Obj record (Obj.pictFmla.lPosInCtlStm)在 worksheet substream、macro sheet substream 或 dialog sheet substream 中，并且 cmo.ot == 8，pictFlags.fPrstm == pictFlags.fDde == 0。
 
 ## OOXML
 OOXML(Office Open XML File Formats), 简单来说，OOXML 是一个基于 XML 的文档格式标准，最早是微软 Office2007 的产品开发技术规范，先是成为 Ecma(ECMA-376) 的标准，最后改进推广成为了 ISO 和 IEC (as ISO/IEC 29500) 的国际文档格式标准。也就是说，通过 OOXML 标准，我们能够在不依赖 Office 产品的情况下，在任何平台读写Office Word，PPT 和 Excel 文件。
@@ -408,9 +413,13 @@ OOXML
     │      └── sheet1.xml
     |
     |── presentation.xml // ppt
+    |
+    |── embeddings       //all, optional, 存放 embedded files
+    |     ├── a
+    |     └── b
     │
-    |── vbaData.xml     //all, vba属性，是否auoopen，是否加密
-    |── vbaProject.bin  //all, 记录 vba project 信息, ole 格式
+    |── vbaData.xml      //all, vba属性，是否auoopen，是否加密
+    |── vbaProject.bin   //all, 记录 vba project 信息, ole 格式
     |
     ├─ theme             //all, 记录样式，颜色编号，字体大小等等
     │    └── theme1.xml
