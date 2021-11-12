@@ -1,0 +1,697 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: http://www.godevtool.com/Other/pdb.htm
+Subject: The RSDS pdb format
+Date: Tue, 9 Nov 2021 02:22:03 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my----"
+
+
+------MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my----
+Content-Type: text/html
+Content-ID: <frame-D45975DB12A4E4DC3682CB13A6F0237B@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.godevtool.com/Other/pdb.htm
+
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en"><html><head><=
+meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dwindows-12=
+52"><link rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-76b794cb-2ff=
+4-4010-bae4-3aa3539a2c7c@mhtml.blink" />
+  =20
+   <meta name=3D"Generator" content=3D"Paws">
+   <meta name=3D"keywords" content=3D"pdb, RSDS, format, program database">
+   <title>The RSDS pdb format</title>
+   <!--Copyright Jeremy Gordon 2004-->
+  =20
+</head>
+<body>
+
+<a name=3D"top"></a>
+<center><table width=3D"93%" cellpadding=3D"4">
+<tbody><tr><td>
+<a href=3D"http://www.godevtool.com/"><img src=3D"http://www.godevtool.com/=
+GoLogo50.gif" border=3D"0" height=3D"22" width=3D"50">The "Go" tools</a>
+<p><b><font face=3D"Century Gothic"><font size=3D"+3"><font color=3D"#FF000=
+0">
+The RSDS pdb format</font></font></font></b>
+</p><p><b><font size=3D"+1">by Jeremy Gordon - </font></b>
+<img src=3D"http://www.godevtool.com/mail6sblue.gif" height=3D"13" width=3D=
+"93" align=3D"top" vspace=3D"6">
+</p><p><i>This file describes the format of the pdb (Program Database) file=
+s=20
+of the "RSDS" or "DS" type which are emitted by Miscrosoft's link.exe=20
+from version 7 and above.</i>
+</p><p>For a description of the earlier "JG" format see Sven B. Schreiber's
+excellent book:
+<br><a href=3D"http://www.orgon.com/">Undocumented Windows 2000 Secrets</a>=
+.
+</p><p>If anyone wishes to add to or correct the information in this file
+let me know and I'll include your contribution with an appropriate
+acknowledgement.
+
+
+</p><h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"=
+http://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25">=
+</a>
+<font color=3D"#000099">What are PDB files?</font></h3>
+The latest Microsoft linkers create a Program Database (pdb) file=20
+when linking if the /DEBUG option, or /DEBUG:FULL option is chosen.  The=20
+pdb file contains information about the creation of the executable, and=20
+also contains the symbol information in the latest CodeView format.   The=
+=20
+executable contains a path and filename for the pdb file on the local=20
+machine, together with an identification code, so that the correct pdb=20
+file can be located.   Neither the format of the pdb file itself nor the=20
+latest CodeView format are documented.  To my knowledge, the format has
+changed twice already and it is likely to change again.  Microsoft provide =
+APIs
+to analyse and report the contents of the pdb files in its Debug Informatio=
+n
+Access (DIA) SDK, but unfortunately this is available only if you
+subscribe to the Enterprise edition of MSDN or purchase Visual Studio
+.NET.
+
+<h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"http=
+://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25"></a>
+<font color=3D"#000099">PDB file information in the executable</font></h3>
+The linker puts the filename of the pdb file made at link-time, and
+its path on the local machine, in the "CODEVIEW" debug directory in the=20
+executable.  If this is missing, it's most likely because a dbg file was=20
+made instead.  This might occur for example if the REBASE program was=20
+run after linking.  In that case the path and filename of the pdb file=20
+will be contained in the dbg file.  The filename of the dbg file will=20
+then appear in the "MISC" debug directory of the executable.
+<p>Where the "CODEVIEW" debug directory does contain the pdb file
+information it will be in the following format:-
+</p><pre>+0h   dword        "RSDS" signature
++4h   GUID         16-byte Globally Unique Identifier
++14h  dword        "age"
++18h  byte string  zero terminated UTF8 path and file name
+</pre>
+Here RSDS signature identifies the format.  The Globally Unique Identifier =
+is a=20
+machine specific unique value.  It is written here into the executable=20
+and also into the pdb file so that the two can be identified as matched.=20
+The "age" is a value which is incremented each time the executable and=20
+its associated pdb file is remade by the linker.=20
+
+<h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"http=
+://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25"></a>
+<font color=3D"#000099">Viewing the "CODEVIEW" debug directory</font></h3>
+One of the easiest ways to do this is to use a tool which is capable of=20
+displaying the contents of the executable visually.  One such tool is
+Wayne J. Radburn's <a href=3D"http://wjradburn.com/software/">PEview</a>.=
+=20
+<br>With this tool, open the executable and open IMAGE_NT_HEADERS on the le=
+ft
+pane. Click on IMAGE_OPTIONAL_HEADER and scroll down until you reach the
+DEBUG directory entry.  This gives the RVA (Relative Virtual Address) of
+the information you are interested in.  Make sure the toolbar is switched
+to RVA values so that you can proceed (RVA is an address which would=20
+apply if the executable was loaded into memory ready to run).  You are
+looking for the DEBUG directory in the executable and it will most likely
+be buried inside the data of one of the sections.  The most likely is the "=
+rdata"
+section.  Click on that in the left hand pane and check that the DEBUG dire=
+ctory
+now appears.  If not, try the other sections looking for the RVA given
+in the IMAGE_OPTIONAL_HEADER.  The DEBUG directory contains pointers
+to the debug information.  If there is a "CODEVIEW" debug directory
+in the file it will appear in the DEBUG directory, and it will also=20
+appear in PEview's left pane.  Click on this in the left pane to view
+its contents.
+<br>Here is a typical example of the contents of the "CODEVIEW" debug=20
+directory:-
+<p><img src=3D"http://www.godevtool.com/Other/cvview.gif" border=3D"0" heig=
+ht=3D"209" width=3D"733" align=3D"center">
+
+<br>Here the GUID is "B2DB2291-8FE8-4502-A20556A28496D442". "Age" is 7. =20
+Then the path and filename of the pdb file follows.  Note that this is
+supposedly in the UTF-8 format, which means that filenames in non-Roman
+characters can be used.
+
+</p><h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"=
+http://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25">=
+</a>
+<font color=3D"#000099">Viewing the PDB file</font></h3>
+Since the PDB format keeps changing, you can't expect visual tools to
+keep up with the changes and the files are best viewed using a hex editor
+such as <a href=3D"http://www.godevtool.com/">Paws</a>, or dumped to
+a file or printed using a hex filedump program such as Borland's tdump.
+
+<h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"http=
+://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25"></a>
+<font color=3D"#000099">Nature of the PDB file</font></h3>
+As Sven B. Schreiber worked out, the pdb file format is=20
+similar to that used by a disk file system.  A disk file system would be=20
+divided into blocks of data called "sectors" of a fixed size.  The data=20
+from a file is contained in those sectors identified as spare=20
+when the file is written to disk, but they are not necessarily=20
+contiguous on the disk.  A file directory keeps track of where the data=20
+is on the disk.  In pdb files, it might be more appropriate to call the=20
+blocks of data "pages", the data from a file a "stream" and=20
+the file directory the "stream directory".
+
+<h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"http=
+://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25"></a>
+<font color=3D"#000099">Inside the PDB file - header</font></h3>
+At the top of the pdb file is the header which appears in this dump:-=20
+<font color=3D"#000066">
+<pre>Turbo Dump  Version 4.2.16.1 Copyright (c) 1988, 1996 Borland Internat=
+ional
+                   Display of File TESTGOBUG.PDB
+
+000000: 4D 69 63 72 6F 73 6F 66  74 20 43 2F 43 2B 2B 20 Microsoft C/C++=20
+000010: 4D 53 46 20 37 2E 30 30  0D 0A 1A 44 53 00 00 00 MSF 7.00...DS...
+000020: 00 04 00 00 02 00 00 00  E3 00 00 00 B4 04 00 00 ................
+000030: 00 00 00 00 E1 00 00 00  00 00 00 00 00 00 00 00 ................
+000040: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 ................
+</pre>
+</font>
+The character to look for here
+is 1Ah which (in ascii terms) is an "end-of-file" character. =20
+In this case appears (coincidentally) at offset +1Ah in the file and=20
+marks the end of the string "Microsoft C/C++ MSF 7.00".  It should
+be noted that the length of this string does differ between different
+pdb versions.  The end-of-file character is immediately followed by the
+signature which in this case is "DS", then a null-terminator and then=20
+sufficient padding to bring the header to the next dword, which in this=20
+case is at +20h.
+
+<p>At <b>+20h</b> we find the dword value 400h.  This is the size of each
+block of data which we might call the "page size".  In other words the
+pdb file is divided into blocks of 400h bytes (1,024 bytes in decimal).
+<br>At <b>+24h</b> there is the value 2h.  I am not yet sure what
+this represents.
+<br>At <b>+28h</b> there is the value 0E3h. This indicates how many pages t=
+here
+are in the whole file.  If this is multiplied by the page size of 400h
+it produces 38C00h or 232,448 which is the size of the pdb file in bytes.
+<br>At <b>+2Ch</b> there is the value 4B4h (1,204 decimal).  This is the to=
+tal=20
+size of the stream directory in bytes.  Since each page is 1,024 bytes
+we now know that the stream directory cover a complete page plus 180
+bytes.  This is important because the stream directory is not necessarily
+contiguous in the file either as we shall see.
+<br>At <b>+30h</b> there is the value zero. I have not yet discovered what
+this represents.
+<br>At <b>+34h</b> is the value 0E1h.  This is a pointer to the stream dire=
+ctory
+pointers.  Multiplied by the page size of 400h the value 0E1h becomes=20
+38400h.  So at 38400h in the file we would expect to find the stream
+directory pointers.
+
+</p><h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"=
+http://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25">=
+</a>
+<font color=3D"#000099">Inside the PDB file - stream directory pointers</fo=
+nt></h3>
+Here is a dump of the file at 38400h holding the stream directory pointers:=
+-=20
+<font color=3D"#000066">
+<pre>038400: DF 00 00 00 E0 00 00 00  00 00 00 00 00 00 00 00 .............=
+...
+038410: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 ................
+038420: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 ................
+</pre>
+</font>
+The stream directory pointers are in a very simple structure.  We know=20
+from the pdb header that the stream directory is in two pages so we would=
+=20
+expect two pointers.  And we can see that the pointers are 0DFh and 0E0h. =
+=20
+Pointers are needed because the stream directory is not necessarily=20
+contiguous in the file.  To get the correct address each pointer needs=20
+to be multiplied by the page size of 400h.  So we can see that the first=20
+page of the stream directory is at 0DFh * 400h =3D 37C00h, and then it=20
+continues at 0E0h * 400h =3D 38000h.
+
+<h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"http=
+://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25"></a>
+<font color=3D"#000099">Inside the PDB file - stream directory</font></h3>
+The stream directory is a structure in the following form:-
+<pre><b>+0h</b> dword  number of streams
+<b>+4h</b> a dword for each stream giving the size in bytes of the stream
+     0=3Dno stream
+    -1=3Dno stream
+<b>+?h</b> array of pointers to the streams
+</pre>
+Here is a dump of the file at 37C00h:-=20
+
+<pre><font color=3D"#000000">037C00:</font> <font color=3D"#990000"><b>15 0=
+0 00 00</b> </font><font color=3D"#000066">48 03 00 00  59 00 00 00 98 F2 0=
+2 00 ....H...Y.......
+<font color=3D"#000000">037C10:</font> D7 07 00 00 00 00 00 00  D0 0A 00 00=
+ 6C 03 00 00 ............l...
+<font color=3D"#000000">037C20:</font> 18 11 00 00 AA 14 00 00  FF FF FF FF=
+ 19 00 00 00 ................
+<font color=3D"#000000">037C30:</font> 70 00 00 00 B4 05 00 00  68 01 00 00=
+ 1C 00 00 00 p.......h.......
+<font color=3D"#000000">037C40:</font> FF FF FF FF FF FF FF FF  FF FF FF FF=
+ FF FF FF FF ................
+<font color=3D"#000000">037C50:</font> FF FF FF FF C8 00 00 00  </font><fon=
+t color=3D"#990000"><b>D9 00 00 00</b> DE 00 00 00 ................
+<font color=3D"#000000">037C60:</font> DC 00 00 00 18 00 00 00  19 00 00 00=
+ 1A 00 00 00 ................
+<font color=3D"#000000">037C70:</font> 1B 00 00 00 1C 00 00 00  1D 00 00 00=
+ 1E 00 00 00 ................
+<font color=3D"#000000">037C80:</font> 1F 00 00 00 20 00 00 00  21 00 00 00=
+ 22 00 00 00 .... ...!..."...
+<font color=3D"#000000">037C90:</font> 23 00 00 00 24 00 00 00  25 00 00 00=
+ 26 00 00 00 #...$...%...&amp;...
+<font color=3D"#000000">037CA0:</font> 27 00 00 00 28 00 00 00  29 00 00 00=
+ 2A 00 00 00 '...(...)...*...
+<font color=3D"#000000">037CB0:</font> 2B 00 00 00 2C 00 00 00  2D 00 00 00=
+ 2E 00 00 00 +...,...-.......
+<font color=3D"#000000">037CC0:</font> 2F 00 00 00 30 00 00 00  31 00 00 00=
+ 32 00 00 00 /...0...1...2...
+<font color=3D"#000000">037CD0:</font> 33 00 00 00 34 00 00 00  35 00 00 00=
+ 36 00 00 00 3...4...5...6...
+<font color=3D"#000000">037CE0:</font> 37 00 00 00 38 00 00 00  39 00 00 00=
+ 3A 00 00 00 7...8...9...:...
+</font></pre><font color=3D"#990000">
+</font>
+The first dword contains the value 15h.  This indicates that there are
+21 streams of data in the file.  It also means that there are 21 dwords
+following (giving stream sizes).  Page pointers therefore start at
++58h which is at 37C58h in the file.
+<br>The stream sizes indicate how many page pointers there are for each
+stream.  This is the same system as is used to indicate how many pointers
+there are to the stream directory itself.
+<p>So for example, we can see that stream 1 is 348h bytes long.  This
+can be fitted into one page, so we would expect to find only one pointer
+to stream 1.  This pointer (at 37C58h) is 0D9h, which multiplied by the
+page size of 400h is 36400h.
+<br>Stream 2 is 59h bytes long and its pointer is 0DEh * 400h =3D 37800h.
+<br>Stream 3 is 2F298h bytes (193,176 decimal) long.  It therefore covers=
+=20
+189 pages and has 189 pointers starting at 37C5Ch.  Its first page is
+at 0DEh (37800h) its second page is at 0DCh (37000h), its third page is=20
+at 18h (6000h) and so on.
+</p><p>Some stream sizes are either zero or -1 and these can be ignored.
+There will be no page pointer at all for these streams.
+
+</p><h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"=
+http://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25">=
+</a>
+<font color=3D"#000099">The streams</font></h3>
+I have not tried very hard to identify the contents of the streams
+since it is reasonably easy to find the main one of interest (symbols).
+Like in the "JG" type pdb files, the symbols stream is either the eighth
+or the ninth stream.  Streams 1 to 4 always seem to contain the same=20
+type of information.  Above stream 4 the contents of the streams tend to=20
+vary.  Sometimes streams are missing altogether or other streams are
+added.  So far I have not found an index indicating what the streams
+contain. =20
+The ones I have identified so far are:-
+<ul>
+<li>Stream 1 - (possibly) previous stream directory.
+</li><li>Stream 2 - pdb file authenticity.
+</li><li>Stream 3 - material from the .debug$S and .debug$T sections
+               in the object file.  This can be voluminous, since
+               it will contain a lot of unused material, for example=20
+               structures and structure members from include files=20
+               referred to in the source script.
+</li><li>Stream 4 - files used in the build process.
+</li><li>Stream 8 or 9 - symbols.
+</li><li>Above stream 8 you will find section data, other debug symbols,=20
+            linker own file information and linked import information.
+</li></ul>
+
+<h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"http=
+://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25"></a>
+<font color=3D"#000099">Stream 2 - pdb file authenticity</font></h3>
+This field in important because it allows a check to be made to ensure=20
+that the pdb file matches the executable concerned. =20
+Here is a dump of the file at 37800h holding the pdb file authenticity:-=20
+<font color=3D"#000066">
+<pre>037800: 94 2E 31 01 25 55 1A 40  <u>07 00 00 00</u> <b>91 22 DB B2</b>=
+ ..1.%U.@....."..
+037810: <b>E8 8F 02 45 A2 05 56 A2  84 96 D4 42 </b>11 00 00 00 ...E..V....=
+B....
+037820: 2F 4C 69 6E 6B 49 6E 66  6F 00 2F 6E 61 6D 65 73 /LinkInfo./names
+037830: 00 02 00 00 00 04 00 00  00 01 00 00 00 06 00 00 ................
+037840: 00 00 00 00 00 0A 00 00  00 0A 00 00 00 00 00 00 ................
+037850: 00 04 00 00 00 00 00 00  00 00 00 00 00 00 00 00 ................
+</pre>
+</font>
+If you compare this with the "age" and GUID in the "CODEVIEW" debug=20
+directory which we saw in the executable, you can see that there is
+an exact match.  Here the age is at +8h, and the GUID is at +0Ch.
+There is also a timedate here at +4h, but this will not necessarily
+match that in the executable.
+
+<h3><a href=3D"http://www.godevtool.com/Other/pdb.htm#top"><img src=3D"http=
+://www.godevtool.com/back.gif" border=3D"0" height=3D"11" width=3D"25"></a>
+<font color=3D"#000099">Symbol stream</font></h3>
+In "DS" files each symbol is in the following structure which is similar
+to that found in the earlier "JG" files, except that the symbol type=20
+numbers have changed and the string containing the symbol name is no
+longer preceded by a size byte (ie. it's no longer a pascal string):-
+<pre><b>+0h</b> word - size of structure not including this word but
+                  including the padding after the string
+<b>+2h</b> word - type of symbol.  So far the following are known:-
+           1108h =3D data type (from h or inc file)
+           110Ch =3D symbol marked as "static" in the object file
+           110Eh =3D global data variables, function names, imported functi=
+ons
+                   local variables
+           1125h =3D function prototype
+<b>+4h</b> dword - reserved
+<b>+8h</b> dword - offset value
+<b>+0Ch</b> word - section number
+<b>+0Eh</b> bytes - null terminated string containing symbol name
+<b>+?h</b> bytes - padding to next dword
+</pre>
+
+<p></p><hr>
+<center><p>Copyright =A9 Jeremy Gordon 2004
+<br><a href=3D"http://www.godevtool.com/Other/pdb.htm#top">Back to top</a><=
+/p></center>
+</td></tr>
+
+</tbody></table></center>
+
+
+</body></html>
+------MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-76b794cb-2ff4-4010-bae4-3aa3539a2c7c@mhtml.blink
+
+@charset "windows-1252";
+
+a { color: rgb(0, 0, 255); font: bold 10pt times; }
+
+a:visited { color: rgb(51, 51, 153); }
+
+a:hover { color: rgb(0, 153, 0); }
+------MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my----
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.godevtool.com/GoLogo50.gif
+
+R0lGODlhMgAWAPcAABgYGCAgICgoKDAwMDg4OEBAQEhISP///3BoaCggIDgoKFA4ODAgIEgwMCAQ
+ECAICBgAAEAwKDgoIBgIAHhwaGBYULCooDgwKDAoICggGCAYEJCIeFhQQEA4KDgwIEhAKDgwGJiY
+kFhYUMDAuIiIeHh4aKCgkJiYgCgoIFBQQHBwWEBAMOjo4Dg4KFBQODAwIEhIMODg0PDw6EBAKDg4
+IEhIKFhYMCAgEDAwGEBAIPDw4MDAeFhYKFBQIPDw0P//2P//4P//6P//8JigWMjYUHB4OFhgKGBo
+KFBYIKCwOEhQGODoqGhwQFBYKEBIGHiIKDhAEJCgSJiwMNjwcLC4kFhgOFBYMEhQKEBIIHiIOKC4
+SHCAMJiwQGh4KIigMJCoMLjQWMDYYJCoQKjAWOD/cICIaJCYeHiAYGhwUEhQMEBIKICQUDhAIDA4
+GGBwMCgwEHiQMMjoaNDwcGBwOFhoMEhYIIioOLDQYMDgcMjoeJCwSJi4UGiAMICgOHCQKNj/eKiw
+mFhgSEBIMJCgcHiIWDhAKHCAUGh4SDA4INjgyFBgMEhYKEBQIGB4MICgQJjASKjQULjgYNj/iICo
+OJiwcGiAQGB4OFhwMHCQOFBoKKjIcIiYcJiogKCwiEBQKICgUMjYsNDguGCAMHigOIi4QKDIYFh4
+KCg4EODwyHCIUFBoMLjQmICoSEhgKHigQGiQMGiYKGiIQFh4MHCYQGiQOGCIMFiAKIiQgHB4aGBo
+WLjAsICQcJCggKi4mCgwIIigcLDAoEhYOMDQsDhIKDBAIEhgMKDAgOjw4FBwMGCIOJDAYEhoKFiA
+MFB4KCA4CPD/4FCIIIiocFBwOEhoMEBgKEhwKGCYOLjQqDhQKDBIIFiIOEBwIEiAKKCwmHiYaGCQ
+SDhYKDBQIODw2ChIGPD/6FB4QDhgKEB4KChgEGiAYDhoKBBAACBQGBBYCIiYiICYgHCQcABoAABw
+AAB4AACAAACIAACYAACoAAC4AADIAADQAAD/APD/8CAgKBgYIDAgKCH5BAEAAAcALAAAAAAyABYA
+AAj/AA8IHEiwIL+CAqkU2UKJBcKHEA8ImUiR4sAYhrYcscTp4IEYTOrU4dFDEKCBvVJVWsNJiMCK
+MGNaPJDokJM2jJA4gWIkFTAXbRC9eIGIBhtAnZhAUaLzVBMz5CTKnCrwR5U3OWa0KKRGQQ4nmdig
+CCBAQIAAbLA4oaFATSGuWN4Qcil16kSBz4AQibLin4B/V45c+VDjwwwAAwoUGODvxQfCNXgU+veP
+QYsscY7RtSvR2CQ5eP7oydTHkZ0vihR0MOwvsQECjTsoiEAnSZ8scFqNAS1HGaiXMQ/o+AaN1KM8
+U/yMqganWZdFVjzVUBOg34ABAgDMuKLGypUuzJq///IjKQ+kSdCiAbd4rBw6a8wmhSGzB4wdKV+e
+8GnUqhB3X2ehMAMMhSwiCh9PeOHFKGCMMUUksGhjDTrerCdRIOOcw80syWihCSas3CFFH6Zc0so0
+F6gBQxospgEDgaq00kUjXHABhh6Y4CHGLLNws80ptwB3AAKnYKPOJcvUEgs4jsiyhx/JVLOMJ8Vc
+UEMNL6Cg5YAtFOPJMtVg8kopzLgSjCO2TCOLOuHgYIFUvQTDhiettMBHNeaIokgfldiCDDWtqLFI
+IWmMdV12M6gRaCvLIGPKJ3zMcQk4zLgxwzLDEIOILhORU4EHyGDAhCrD0AKOOVUUkskybnHVwmGu
+Ef8QAAqeeFLIDF9mIggf2CyTTDaWWEGDNBLkIo4QLFDgwCAtoLFJAuUoMgw1F4CjBjYtXDDUBbAq
+BpsvarDhwQWFYOMJNhdQU8gcVlwQDQwppPNACDKEsIIwKtgQigIwlMGAJR204AkbGGRwAyO/UMDG
+C2QJ0E8ANJxhSBsaoPBCIZ5c4IkiDMCDAQeggPCOOyh045APbvyAQAbANODCLgm8kAE2lVCyShAH
+sEADDC1o+YIaNJxwACqDENIEMRi0wMAvEojgzgMmhIIEOcck4tJEI0zQiwkQXMNBDzaogkpBMeDw
+ohoqwkADCQVd08YVIJTACwQj4OKADJrV5VIZnByAoIIZQAyxxF11fQQCFvHUU48843jA9kzPPLPD
+GkEEUsIBaISgN+EvIQTTRzjEY08++dwzzykbbD4QXTp0btfrFsXgDD347LNPPvWskzrsvPd+Vwxv
+yHOPPvrgQ48zu/uuPFUxgMDOPPbYQ087IDy+/PUVGb5AAxFE0MACEVh/fUAAOw==
+
+------MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my----
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.godevtool.com/mail6sblue.gif
+
+R0lGODlhXQANAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wAzAAAzMwAzZgAzmQAzzAAz/wBmAABmMwBm
+ZgBmmQBmzABm/wCZAACZMwCZZgCZmQCZzACZ/wDMAADMMwDMZgDMmQDMzADM/wD/AAD/MwD/ZgD/
+mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMzADMzMzMzZjMzmTMzzDMz/zNmADNmMzNmZjNmmTNm
+zDNm/zOZADOZMzOZZjOZmTOZzDOZ/zPMADPMMzPMZjPMmTPMzDPM/zP/ADP/MzP/ZjP/mTP/zDP/
+/2YAAGYAM2YAZmYAmWYAzGYA/2YzAGYzM2YzZmYzmWYzzGYz/2ZmAGZmM2ZmZmZmmWZmzGZm/2aZ
+AGaZM2aZZmaZmWaZzGaZ/2bMAGbMM2bMZmbMmWbMzGbM/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkA
+M5kAZpkAmZkAzJkA/5kzAJkzM5kzZpkzmZkzzJkz/5lmAJlmM5lmZplmmZlmzJlm/5mZAJmZM5mZ
+ZpmZmZmZzJmZ/5nMAJnMM5nMZpnMmZnMzJnM/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswA
+mcwAzMwA/8wzAMwzM8wzZswzmcwzzMwz/8xmAMxmM8xmZsxmmcxmzMxm/8yZAMyZM8yZZsyZmcyZ
+zMyZ/8zMAMzMM8zMZszMmczMzMzM/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A
+//8zAP8zM/8zZv8zmf8zzP8z//9mAP9mM/9mZv9mmf9mzP9m//+ZAP+ZM/+ZZv+Zmf+ZzP+Z///M
+AP/MM//MZv/Mmf/MzP/M////AP//M///Zv//mf//zP///////wAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAANgALAAAAABdAA0A
+AAjTAAsUwEawYEGBBhMqXMiwocOHEBdeQ7iQYkOBGCNq3Hhto0dsFisaDPmxJMGOJgkixLgyI8uD
+CgeCfDmTIkuZL2nWpIgyo0qfOYP+nEmUaMuVRVsOtTmQ6VKcMjsqdTrVJVSjV7OCTNo0q9ehWMFK
+lQm26k6uYY0m3Ur1a9q2YouW7YpVaViqd9HCfeuWp1y9dIXe1ToV8NPDhgfzHWy3MdCfPndCZQqU
+rM6bM8darpzWJNmLn0eG3ug3pem/bK9WHO3QKTaUp01jhswaLOnIsE0GBAA7
+
+------MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my----
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.godevtool.com/back.gif
+
+R0lGODlhGQAMALP/AAAzMwBmZgCZmQDMzDOZmTPMzGbMzJnMzMz//////wAAAAAAAAAAAAAAAAAA
+AAAAACH5BAEAABkALAAAAAAZAAwAQARDMMlJkzk163RMEaAQANi2HUcxlqbZBWyboZ8IGDLVqUHv
+37kZLqhBdAwBBLHSGYgEy0kzFIAuO4SQqEo8jL4AsLUSAQA7
+
+------MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my----
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.godevtool.com/Other/cvview.gif
+
+R0lGODlh3QLRAPcAAAAAAAgICBAQEBgYGCAgICgoKDAwMDMzMzg4OEBAQEhISFBQUFhYWGhoaHBw
+cHh4eICAgIiIiJCQkJiYmKCgoKioqLCwsLi4uMDAwMjIyNDQ0NjY2ODg4Ojo6PDw8P///zMAADMz
+AP//gP//iP//qP//4DNmAKDYcIDISJDQYGjAKKjYiIDIUJDQaLDgkHDIOGjAMGC4KGDAILjgoIjQ
+YGDAKFi4IKjYkGjAOHDIQFC4GDOZAFC4IEiwGLjgqKDYiEi4GGDAQDiwEDi4EIDQaFjAODigGDCg
+EDC4CEC4ICiwCJDYgEjAMLjosCCwCBiYABiwACCwEBCIAAhoAAhwABCwAFDASEDIODC4KCCgGBCY
+CAiAAAiQAAiYAAioAAi4AIjAiDNmMzOZMxi4GAigCAAzAABYAABgAABmAABoAACAAACQAACZAACg
+AACoAACwAADMAAD/AAD/MwDMMwCZMwD/ZjOZZgBmMwDMZgD/mQCZZgDMmQD/zDNmZjOZmQAzMwBm
+ZgCZmQDMzAD//wDM/wCZzDOZzABmmQCQ8ACZ/wCA4Big/+Do8DNmmdDg8AAzZgBmzABw2KDQ/8Dg
+/+Dw/wBo2HCYyICo2ABYwABg0KjQ/wBQuABYyLjY/8jg/5C48ABIsLDQ/9jo/4Cg0Iio2AhIsABA
+qABIuABm/8DY/3CIsABAsHCIuICYyNjg8DNmzAAzmdDg/+jw/xhIsAAwmAAwoAAomHCAsICQwAAz
+zDNm/2BwqAAz/2hwoGBooFhgmGhwqFBYkMDI/+Dg6NDQ4Ojo8GhooMDA2FhYkGBgoLCw0NjY6KCg
+yJCQwMjI4ICAuHBwsFhYoGBgqLi42Kio0JiYyIiIwGhosHh4uFhYqDMzZlBQoICAwJCQyKCg0LCw
+2MDA4NDQ6ODg8EhImEhIoEBAmDg4kDg4mDAwkDMzmSgoiCgokDMzzCAgiBgYgBgYiBAQgAgIeAgI
+gAAAMwAAZgAAeAAAmQAAzAAA/zMz//Dw/zMA/zMAzDMAmTMAZjMAMyH5BAAAAAAALAAAAADdAtEA
+AAj/AD8IHEiwoMGDCBMqXFiwXr14CaspY0ixosWLGDNq3Mixo8ePIBmSExeyYLMP8aS5i/bBHEZn
+xJbFW1cQ2gds9cbBc/gMHTp47RyWK1eyqNGjSJMqXcq0aUVl5lxSdDgN4jF0BNU51Oqwq7t2BaUt
+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
+ykB4QxV7dcmrGjhraWMrW5kGBAA7
+
+------MultipartBoundary--VdG0llE0Z1LGaQg9yb5DRTl93dghoCUK4jxHVt06my------

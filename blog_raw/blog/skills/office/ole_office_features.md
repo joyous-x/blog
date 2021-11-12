@@ -1,6 +1,6 @@
 # Office Extractor Features
 - [x] 解析所有 ms-office 格式(ole、ooxml)中的 vba
-  - [ ] ppt 中的 VbaProjectStg 
+  - [x] ppt 中的 VbaProjectStg 
 - [x] 解析 xls 中的 macro(包含处理常见的引用、反混淆)
   - [ ] lbl ：parsed，will be used in the future
     - defined name: A word or string of characters in a formula that represents a cell, range of cells, formula, or constant value.
