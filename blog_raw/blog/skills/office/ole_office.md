@@ -246,7 +246,7 @@ ole 中 VBA 存储(storage)结构如下：
             + 指定 特定实现和版本相关 的性能缓存的流。必须是读取时忽略。写入时不得出现。
 - PROJECT Stream
     + MUST
-    + Project Properties, VBA project 的附加信息，如：ProjectPassword、ProjectVisibilityState 等
+    + VBA Project Properties, 如 工程的目录结构、脚本类型、module的可编辑窗口的信息等等, 以及一些 VBA project 的附加信息，如：ProjectPassword、ProjectVisibilityState 等 ![sample_vba_project](./rsc/sample_vba_project.png) 注：[[MS-OVBA] - v20200219 的 2.3.1.3 ProjectModule]() 有脚本类型的相关说明
 - PROJECTwm Stream
     + Optional
     + 包含了用于 module name 在 multibyte character set (MBCS) 和 UTF-16 之间互相映射的信息
@@ -255,10 +255,10 @@ ole 中 VBA 存储(storage)结构如下：
     + 包含了 VBA project 中的 ActiveX controls 的 license 信息
 -  Designer Storages
     + Optional
-    + sub-structure
-        + VBFrame Stream
-            + designer module properties
-            + 此 stream 的名字必须是以 UTF-16 character 0x0003 开头紧接着是  UTF-16 的 "VBFrame"。
+    + 每个 vba project 中的 designer module 都必定有一个与之对应的 designer storage ，此 storage 的名字由 dir stream 中相关 module 中的 MODULESTREAMNAME record 指定。
+    + 每个 designer storage 必定有一个 VBFrame Stream
+      + VBFrame Stream，用于描述 designer module 的属性信息，此 stream 的名字必须是以 UTF-16 character 0x0003 开头紧接着是  UTF-16 的 "VBFrame"。
+    + 如果此 designer 是一个 Office Form ActiveX control, 那么此 storage 必定包含 ```[MS-OFORMS] section 2```中描述的必须 storages 和 streams。
 
 #### 2. project references
 dir Stream 中的 records 包含了 VBA project 对外部资源引用的信息。主要有三类：REFERENCECONTROL、REFERENCEREGISTERED、REFERENCEPROJECT。
@@ -460,6 +460,7 @@ OOXML
   - stream : 
     - 将 stream 的 size 置 0，同时抹除第一个扇区内容，断开内容扇区链
     - 一般来说，只修改 size 就可以让 office 软件无法读取相关内容。但其他杀软可能会继续报毒，毕竟 stream 的其他信息依然有效，可以在容错情况下还原出来 malicious 内容。 
+    - 注意：其它部分对 macro 的引用，如 doc 中 fcCmds 会通过 macro names 引用对应的宏
 - 还原
   - 还原被加密破坏的文件内容
     - 病毒感染时是有机会操作原有的正常 vba 脚本的，比如，加密（目前还没见到此类样本）。
