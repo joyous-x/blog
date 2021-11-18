@@ -20,3 +20,10 @@ permalink:
     + snapmod: 带外框的截屏的app
 
 - [幼儿英语启蒙卡片](http://www.kizclub.com/whatsnew.htm)
+
+- [本地密码管理软件 KeePassX](https://github.com/keepassx/keepassx)
+- OBS Studio https://obsproject.com/
+- Shotcut https://shotcut.org/
+- Apache Superset https://github.com/apache/superset
+  - Apache Superset是一个现代的、轻量级可视化BI分析工具。Apache Superset在可视化、易用性和交互性上非常有特色，用户可以轻松对数据进行可视化分析。而且Apache Superset 已经达到企业级商业软件的水平。
+- 
