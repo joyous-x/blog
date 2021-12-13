@@ -359,7 +359,7 @@ Slides 可以包含连接到外部的 objects。播放 ppt 的人可以在幻灯
 		+ VBAInfoContainer 0x03FF
 			+ VBAInfoAtom  0x0400
 	+ ExObjListContainer 0x0409
-		+ storage for compressed/uncompressed OLE/VBA/ActiveX control data
+		+ storage for compressed/uncompressed OLE/VBA/ActiveX control data, 如 VbaProjectStg
 	+ SoundCollectionContainer
 	+ DrawingGroupContainer
 
@@ -393,7 +393,7 @@ OOXML 的主要目录结构如下所示：
 OOXML
 ├── [Content_Types].xml // 描述文档各个部分的ContentType，协助解析文档
 │           
-├─ docProps
+├─ docProps        // ms-office 需要此内容以打开文件，而 wps 不需要
 │   ├── app.xml    //程序级别的文档属性，如：页数、文本行数、程序版本等
 │   └── core.xml   //用户填写的文档属性，如：标题、主题、作者等
 │
@@ -435,6 +435,19 @@ OOXML
     └─ styles.xml       //all
 ```
 
+
+## MS-Office 的其他形式
+使用 MS-Office 软件可以将 office 文件通过"另存为"保存为 xml、mhtml、html 等格式的文本文件，并且，可以再次通过 MS-Office 软件打开、编辑。
+
+另外，这些转换而成的文本类型的文档，被加密后，是一个 ole 文件。
+
+被转换而成的 xml 文件，在结构上保持了跟 binary 形式的 office 文件一致，并且一一对应。如，contentType 为 "application/vnd.ms-office.vbaProject" 的 binaryData 数据, 就是二进制形式的 vbaProject 内容 base64 后的结果。
+
+这里要注意的是，在解析 binData 类型的数据时，可能会遇到 mso(ActiveMine) 文件。这是一种文件名为 *.mso 同时 MIME Types 为 application/x-mso 的结构未公开的文件格式(参考 [activemime-format](https://github.com/idiom/activemime-format))。
+
+MSO文件是将Microsoft Office文档保存为网页时创建的宏引用文件。它包含有关原始文件中包含的宏和OLE（对象链接和嵌入）对象的信息，并且可以被创建的网页作为样式表引用。MSO文件可以用文本编辑器查看，但由于内容是编码的，因此无法读取。大多数用户只会将MSO文件作为电子邮件的附件。
+
+
 ## RTF
 富文本格式（Rtf，rich text tormat）是微软的文本和图像信息交换指定的格式。Rtf文件可以划分为文件头和文档区两个部分组成。文件头和文档区由文本、控制字和控制符组成，同时利用{…}来表明层级关系。
 
@@ -460,7 +473,10 @@ OOXML
   - stream : 
     - 将 stream 的 size 置 0，同时抹除第一个扇区内容，断开内容扇区链
     - 一般来说，只修改 size 就可以让 office 软件无法读取相关内容。但其他杀软可能会继续报毒，毕竟 stream 的其他信息依然有效，可以在容错情况下还原出来 malicious 内容。 
-    - 注意：其它部分对 macro 的引用，如 doc 中 fcCmds 会通过 macro names 引用对应的宏
+    - 注意：其它部分对 macro 的引用，如：
+      + doc 中 fcCmds 会通过 macro names 引用对应的宏，所以
+        1. 根据需要将 document 流中的 fcCmds 和 lcbCmds 所引用的数据
+        2. 粗暴的将 document 流中的 fcCmds 和 lcbCmds 都置空
 - 还原
   - 还原被加密破坏的文件内容
     - 病毒感染时是有机会操作原有的正常 vba 脚本的，比如，加密（目前还没见到此类样本）。
