@@ -270,6 +270,15 @@ VBA project 包含一系列用于嵌入 macros 的 project items。而 project i
 ### Microsoft Office Excel 4.0
 Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中。此 stream 以 BIFF8(Binary Interchange File Format) 格式组织各个细节。
 
+Stream 由以下几部分组成：
+- Globals Substream
+  + 描述 workbook 中的全局属性和数据
+    - 注意 Lbl、ShrFmla 数据
+- Chart Sheet Substream
+- Dialog Sheet Substream
+- Macro Sheet Substream
+- Worksheet Substream
+
 使用 Excel 4 Macros 的一些细节：
 - 使用 relative named range 时，函数主体和结果之间的单元格距离必须都相同，否则可能会计算出错误的结果。
 - Office 2007 ~ 中，任何带有 Excel 4 Macro 的文件都必须另存为启用宏的工作簿 (.xlsm)，尝试另存为标准 Excel 文件将触发以下错误消息:
@@ -290,7 +299,7 @@ Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中�
 + external references：
   - Supporting Link 包含了 Self-Referencing、Same-Sheet Referencing、External Workbook Referencing 等等类型。
 + name manager:
-  + LblRecord : TODO (关联 name 和 sheet)
+  + LblRecord : (关联 name 和 sheet)
     - 内置名字的索引，可能由 1 或 2 字节表示
     - NameParsedFormula 可能出现 ptgRef3d 的 ixti == 0xFFFF，此时，此时的结构未被文档记录：
       - we can reproduce it: make a macro sheet in ooxml and export it to xls. 
@@ -353,15 +362,32 @@ Slides 可以包含连接到外部的 objects。播放 ppt 的人可以在幻灯
 也就是说 Embedded or Linked Object 在 ppt 中的存在形式就是 External Objects。
 
 有关有 External Objects 的记录，请参阅 [[MS-PPT] External Object Types (section 2.10)]() 相关内容。简单的说，为了解析出 External Objects，我们需要关注：
-- ExternalObjectStorage 0x1011 , 用于对象存储(如果有n个则会有n个此类型的 record) 
+- ExternalOleObjectStg 0x1011 , 用于对象存储(如果有n个则会有n个此类型的 record) 
 - DocumentContainer 0x03E8 , 用于描述文档对象
   + DocInfoListContainer 0x07D0 
-		+ VBAInfoContainer 0x03FF
-			+ VBAInfoAtom  0x0400
-	+ ExObjListContainer 0x0409
-		+ storage for compressed/uncompressed OLE/VBA/ActiveX control data, 如 VbaProjectStg
-	+ SoundCollectionContainer
-	+ DrawingGroupContainer
+  	+ VBAInfoContainer 0x03FF
+  		+ VBAInfoAtom  0x0400
+  + ExObjListContainer 0x0409
+  	+ storage for compressed/uncompressed OLE/VBA/ActiveX control data, 如 VbaProjectStg
+  + SoundCollectionContainer
+  + DrawingGroupContainer
+
+也就是说要首先找到 DocumentContainer：
+```
+1. 构造 PersistDirectory
+  Current User Stream
+    CurrentUserAtom Record
+      offsetToCurrentEdit field
+  |-->PowerPoint Document Stream
+  |		UserEditAtom
+  |			offsetPersistDirectory field
+  |		PersistDirectoryAtom
+  UserEditAtom.offsetLastEdit (Repeat until offsetLastEdit is 0x000000)
+
+2. 定位 DocumentContainer
+  UserEditAtom.docPersistIdRef
+    DocumentContainer Record
+```
 
 关于鉴别 embedded OLE object 对象的具体步骤可以参考 [[MS-PPT] 2.1.2 PowerPoint Document Stream  part 9]() 相关内容
 
@@ -443,15 +469,14 @@ OOXML
 
 被转换而成的 xml 文件，在结构上保持了跟 binary 形式的 office 文件一致，并且一一对应。如，contentType 为 "application/vnd.ms-office.vbaProject" 的 binaryData 数据, 就是二进制形式的 vbaProject 内容 base64 后的结果。
 
-这里要注意的是，在解析 binData 类型的数据时，可能会遇到 mso(ActiveMine) 文件。这是一种文件名为 *.mso 同时 MIME Types 为 application/x-mso 的结构未公开的文件格式(参考 [activemime-format](https://github.com/idiom/activemime-format))。
+这里要注意的是，在解析 binData 类型的数据时，可能会遇到 mso(ActiveMine) 文件。这是一种文件名为 *.mso 同时 MIME Types 为 application/x-mso 的结构未公开的文件格式(参考 
+ [activemime-format](https://github.com/idiom/activemime-format) )。
 
 MSO文件是将Microsoft Office文档保存为网页时创建的宏引用文件。它包含有关原始文件中包含的宏和OLE（对象链接和嵌入）对象的信息，并且可以被创建的网页作为样式表引用。MSO文件可以用文本编辑器查看，但由于内容是编码的，因此无法读取。大多数用户只会将MSO文件作为电子邮件的附件。
 
 
 ## RTF
 富文本格式（Rtf，rich text tormat）是微软的文本和图像信息交换指定的格式。Rtf文件可以划分为文件头和文档区两个部分组成。文件头和文档区由文本、控制字和控制符组成，同时利用{…}来表明层级关系。
-
-> TODO:
 
 ### 检出
 - hash (忽略大小写、空字符)

@@ -30,6 +30,8 @@ IRMDS 可以被应用于以下两种类型的文档:
 - Office binary documents
 - ECMA-376 documents
 
+![IRMDS](./rsc/IRMDS.png)
+
 *ECMA, European Computer Manufacturers Association；*
 *ECMA376 协议代指 Office Open XML 格式*
 
@@ -59,7 +61,6 @@ IRMDS 可以被应用于以下两种类型的文档:
 1. Office binary document
 - 必须包含一个名为 "\009DRMTransform" 的 storage，其下必须包含一个名为 "\006Primary" 的 stream (完整路径为："0x09DRMTransform\0x06Primary")。
   + 此 stream 必定包含 IRMDSTransformInfo 结构，其内容如下：
-    - TransformInfoHeader.TransformType MUST be 0x00000001
     - TransformInfoHeader.TransformID MUST be "{C73DFACD-061F-43B0-8B64-0C620D2A8B50}"
     - TransformInfoHeader.TransformName MUST be "Microsoft.Metadata.DRMTransform"
   + "\009DRMTransform" storage 同时必须包含一个或多个 end-user license streams
@@ -71,7 +72,6 @@ IRMDS 可以被应用于以下两种类型的文档:
 2. ECMA-376 document
 - 必须包含一个名为 "DRMEncryptedTransform" 的 storage，此 storage 下必须包含一个名为 "\006Primary" 的 stream
   + 此 stream 必定包含 IRMDSTransformInfo 结构，其内容如下：
-    - TransformInfoHeader.TransformType MUST be 0x00000001
     - TransformInfoHeader.TransformID MUST be ""{C73DFACD-061F-43B0-8B64-0C620D2A8B50}"
     - TransformInfoHeader.TransformName MUST be "Microsoft.Metadata.DRMTransform"
   + "DRMEncryptedTransform" storage 同时必须包含一个或多个 end-user license streams
