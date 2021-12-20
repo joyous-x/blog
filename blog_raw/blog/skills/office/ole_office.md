@@ -286,7 +286,29 @@ Stream 由以下几部分组成：
 - 任何包含数组的函数，例如 GET.WORKSPACE(37) 或 NAMES() 都应该包含在 INDEX 函数中: 如，=INDEX(GET.WORKSPACE(37),!A1)，在这个例子中，A1 包含应该检索的数组中的数字，例如如果 A1 包含值 2，它将返回 GET.WORKSPACE(37) 数组中的第二项。
 - 使用 Macro Worksheet 时，工作表设置为显示公式，而不是公式的结果。可以使用 ```Ctrl + |``` 在公式视图和结果视图之间切换。
 
-解析过程中遇到的问题：
+
+#### PtgExp、ShrFmla、Array
+PtgExp 一般会出现在 formula 的第一个 rgce 元素。此时，它表示当前单元格是 array formula 或 shared formula 的一部分。
+
+PtgExp.row 和 PtgExp.col 指定了一个在当前 sheet 中的 cell
+- 这个 cell 也是 array formula 或 shared formula 的一部分
+  + 也就是说必定有一个 formula record 的 row == PtgExp.row && col == PtgExp.col
+    - 紧跟着这个 formula record 的必定是一个 ShrFmla record 或者 Array record
+    - 也就是说这个 PtgExp 指向了使用此 array formula 或 shared formula 的区域中的 the first cell
+      + 隐含：拥有 PtgExp 的 formula record 满足：record.row == PtgExp.row && record.col == PtgExp.col 时，它后边一定跟着 ShrFmla record 或 Array record
+  + 这个 formula record 定义了区域中使用 array formula 或 shared formula 的 the first cell
+
+ShrFmla(shared formula record)
+- 此 record 前必定有一个 formula record，这个 formula record 指定了使用此 shared formula 的区域中的 the first cell
+- 其它使用了此 shared formula 的 formula records 后续会出现，但不一定是连续的
+- 使用了此 shared formula 的 formula records 会有 Formula.fShrFmla bit 被置位，同时 Formula.cell 必定位于 ShrFmla.ref 指定的区域内
+
+Array(array formula record)
+- 此 record 前必定有一个 Formula record，这个 formula record 指定了使用此 array formula 的区域中的 the first cell
+- 其它使用了此 array formula 的 formula records 后续会出现，但不一定是连续的
+- 使用了此 array formula 的 formula records 必定有 Formula.cell 位于 Array.ref 指定的区域内，同时这些使用 array formula 的 formula 的 rgce 必定以 PtgExp 开头。
+
+#### 解析过程中遇到的问题
 + RgceLoc 可以按照 RgceLocRel 来解析，以简化解析流程。
 + 解析 formula 的过程中，会遇到 "is part of a revision or not" 的分支流程，这里涉及以下三个概念：
   - UserBView Record:
@@ -453,14 +475,77 @@ OOXML
     ├─ _rels             //all, relationships
     |    ├── settings.xml.rels   // 指定 模板 引用
     │    ├── document.xml.rels   // 使用 ID 和 URL 来定义文档各零件
+    |    ├── workbook.xml.rels   // 使用 ID 和 URL 来定义文档各零件
     │    └── vbaProject.bin.rels // vba
     │ 
     ├── printerSettings //all, Reference to Printer Settings Data
-    │      └── printerSettings1.bin
-    │ 
+    │....└── printerSettings1.bin
+    │
     └─ styles.xml       //all
 ```
 
+### 1. Name Representation
+无论是 definedNames 中定义的，还是表格显示的名字，这些需要展示的名字都应当在 ```docProps\app.xml``` 中作为 Application-Defined File Properties 部分被定义，如下：
+```
+<TitlesOfParts>
+ <vt:vector size="[0-9]+" baseType="lpstr">
+  <vt:lpstr>Sheet1</vt:lpstr>
+  <vt:lpstr>Sheet2</vt:lpstr>
+  <vt:lpstr>Sheet3</vt:lpstr>
+  <vt:lpstr>value1</vt:lpstr>
+  <vt:lpstr>value2</vt:lpstr>
+ </vt:vector>
+</TitlesOfParts>
+```
+
+### 2. Cell References & Name
+excel中可以给 函数、cell、sheet、甚至任意一段文本或图形等定义名字(也被称为 bookmark)，并通过名字来引用对应的内容，引用方式参考 
+- [ECMA-376-Fifth-Edition-Part-1 --- 18.17.2.3 Cell References]()
+- [ECMA-376-Fifth-Edition-Part-1 --- 18.17.2.5 Names ]()
+
+name 的组成形式：
+```
+name = [ workbook-name, "!" ], [letter | "_" | "\"], [ letter | decimal-digit | "_" | "." ] ;
+```
+其中 name 不能包含以下几种格形式：
+- TRUE or FALSE
+- user-defined-function-name
+- cell-reference
+
+function-name 的组成形式：
+```
+function-name= prefixed-function-name | predefined-function-name | user-defined-function-name ;
+
+predefined-function-name= "ABS" | "ACOS" | "ACOSH" | ( any of the other functions defined in §18.17.7) ;
+prefixed-function-name= "ISO.", predefined-function-name | "ECMA.", predefined-function-name ; 
+user-defined-function-name= letter, [ letter | decimal-digit | "." ] ;
+```
+其中 function-name 不能包含以下几种格形式：
+- TRUE or FALSE
+- name
+- cell-reference
+
+Cell Reference 的形式有两种：R1C1-Style 和 A1-Style
+
+operator 有以下几种格式：
+```
+":" | comma | space | "^" | "*" | "/" | "+" | "-" | "&" | "=" | "<>" | "<" | "<=" | ">" | ">=" | "%" ;
+```
+
+### 3. Formulas and expressions
+- [ECMA-376-Fifth-Edition-Part-1 --- 17.16.3 Formulas and expressions]()
+
+A field instruction can involve a calculation via a formula, which is simply an expression that is an arbitrary complex arithmetic expression，如：
+```
+<sheetData>
+		<row r="2" spans="4:4" x14ac:dyDescent="0.25">
+			<c r="D2" s="1" t="b">
+				<f>FORMULA()=FORMULA()=FORMULA('Buk1'!E11,'Buk2'!B12)=FORMULA('Buk2'!H5,'Buk3'!H3)=FORMULA('Buk3'!C9,'Buk4'!C2)=FORMULA('Buk4'!I8,'Buk5'!F2)=FORMULA('Buk5'!B12,'Buk6'!B10)=FORMULA('Buk6'!G3,'Buk7'!I2)=FORMULA('Buk7'!D13,'Buk1'!A3)=FORMULA('Buk3'!H3&amp;'Ss1'!O6&amp;'Ss1'!D16&amp;'Ss1'!K13&amp;'Ss1'!R12&amp;'Ss1'!R14,D3)=FORMULA('Buk3'!H3&amp;'Buk7'!I2&amp;'Buk4'!C2&amp;'Buk5'!F2&amp;'Buk5'!F2&amp;Ss1br2!B3&amp;'Buk1'!A3&amp;Ss1br2!D5&amp;'Buk6'!B10&amp;Ss1br2!G3&amp;'Buk7'!I2&amp;'Buk7'!I2&amp;Ss1br2!B9,D17)</f>
+				<v>1</v>
+			</c>
+		</row>
+	</sheetData>
+```
 
 ## MS-Office 的其他形式
 使用 MS-Office 软件可以将 office 文件通过"另存为"保存为 xml、mhtml、html 等格式的文本文件，并且，可以再次通过 MS-Office 软件打开、编辑。
