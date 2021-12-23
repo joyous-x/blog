@@ -45,6 +45,8 @@ permalink:
   + 模版实例化、偏特化、偏特化(与函数的柯里化不同)...
   + 可变模版参数（variadic templates）: C++11新增的最强大的特性之一
   + 元编程
+  + 类型萃取
+    - 依赖模板的特化来实现
 - 特性
   + 右值引用
     + std::move、std::forward
@@ -57,9 +59,30 @@ permalink:
     + 对象
       - 该对象的任何非const成员函数都不能被调用，因为任何非const成员函数会有修改成员变量的企图
     + *const_cast<type_id> (expression)*
+    + attribute
+      ```
+        #if defined(__GCC__)
+        /*
+        * __attribute__ 是 GCC 编译器特有的机制
+        * 如，__attribute__((packed)) 和 __attribute__(aligned(4))
+        * 
+        * 使用：
+        *   typedef struct {
+        *   } __attribute__((packed)) position_t;
+        * 
+        *   struct test {
+        *   } __attribute__((packed));
+        */
+        #endif
+
+        对齐方式还有：
+        #if ( _MSC_VER >= 800 && !defined(_M_I86)) || defined(_PUSHPOP_SUPPORTED)
+          #pragma pack(push,1)
+        #else
+          #pragma pack(1)
+        #endif
+      ```
 - 异常处理
-
-
 - 内存调优
 - 性能调优
 - heap && stack
