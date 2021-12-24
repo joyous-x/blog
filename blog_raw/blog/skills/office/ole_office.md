@@ -266,6 +266,28 @@ dir Stream 中的 records 包含了 VBA project 对外部资源引用的信息�
 #### 3. project items
 VBA project 包含一系列用于嵌入 macros 的 project items。而 project item 是由多个 records 组合定义。主要有以下 5 种 project item(详见 MS-OVBA 文档): ```project package, document modules, procedural modules, class modules``` 和 ```designer modules```。
 
+#### 4. pcode
+它并不广为人知，一般来说 VBA 编写的宏以三种不同的可执行形式存在，每种形式都可以是在运行时实际执行的内容，具体取决于具体情况. 它们是：
+- source code
+  + 这是最为我们熟知的形式。但大多数情况下，office 会完全忽略源代码。
+  + 事实上，删除源代码是可能的，但宏仍然可以毫无问题地执行(从 pcode)
+    - 这种威胁利用技术被称为 VBA Stomping
+- p-code
+  + 当每行 vba 脚本被输入到 vba 编辑器中时，它会立即被编译成 pcode 并存储到模块流中。 pcode 正是大部分时间被执行的代码。
+  + 事实上，即使在 vba 编辑器中打开宏模块的源码，显示的也不是解压后的源码，而是反编译成源码的 pcode。
+  + 只有在使用与创建文档时使用的 vba 版本不同的 office 版本下打开文档时，才会将存储的压缩源代码重新编译为 pcode，然后执行该 pcode
+  + 这使得可以在支持 vba 的任何版本的 office 上打开包含 vba 的文档，并使内部的宏保持可执行，尽管不同版本的 vba 使用不同(不兼容)的 pcode 指令。
+- dxecodes
+  + 当 pcode 至少被执行过一次后，它会以进一步标记化形式存储在文档的其他地方(在流中，其名称以 __SRP_ 开头，后跟一个数字)。从那里它可以执行得更快。
+  + 但是 execode 的格式极其复杂，并且特定于创建它们的特定 Office 版本(不是 VBA 版本)。这使得它们的通用性很差。
+  + 此外，它们的存在不是必需的 --- 它们可以被删除并且宏将运行得很好(从 pcode)
+
+综上，我们可以知道：
+- source 的通用性最好，但只有在 pcode 不能使用时，才会被使用
+- execodes 的通用性最差，但执行得最快
+- p-code 则是执行速度和通用性的折中，也是用的比较广泛的形式
+
+因此，我们有必要解析 pcode，具体可以参考：[github.com/bontchev/pcodedmp](https://github.com/bontchev/pcodedmp)
 
 ### Microsoft Office Excel 4.0
 Microsoft Office Excel 4.0, 主要存在于 MS-XLS 的 book\workbook stream 中。此 stream 以 BIFF8(Binary Interchange File Format) 格式组织各个细节。
