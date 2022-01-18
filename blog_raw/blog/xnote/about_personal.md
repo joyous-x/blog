@@ -104,7 +104,7 @@ graph LR
         + ?
 
 #### 5 兴趣
-![](../rsc/rnote_interest_pyramid.png)
+![](./rsc/rnote_interest_pyramid.png)
 目标：有能力促使兴趣和擅长的发展，并使他们逐渐重合。
 
 ### 外势

@@ -1,11 +1,11 @@
 ---
-title: interesting xxx
+title: Interesting Xxx
 date: 2021-06-03
-description: 有趣的项目
+description: 有趣的内容
 permalink:
 ---
 
-# 有趣的项目
+# Interesting Xxx
 > JustDoIt
 
 - [凤凰架构：构建可靠的大型分布式系统](https://icyfenix.cn/exploration/guide/quick-start.html)

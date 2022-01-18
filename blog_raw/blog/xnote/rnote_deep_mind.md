@@ -6,7 +6,7 @@ permalink:
 ---
 
 **深度思维**是数据(表象)转化为**认知**的有效工具
-![数据-认知-智慧](../rsc/dmind_data_info.jpeg)
+![数据-认知-智慧](./rsc/dmind_data_info.jpeg)
 
 # 深度思维
 特点：
@@ -34,7 +34,7 @@ permalink:
 《深度思维》一书无法概括深度思维的全部(实际上任何人都无法穷尽所有的思维方法)，有很多思维方法并没有被纳入到本书中来。
 
 ## 第一章 思维逻辑链
-![dmind_mind_chain](../rsc/dmind_5why_5so.jpg)
+![dmind_mind_chain](./rsc/dmind_5why_5so.jpg)
 
 - 5Why
   + 诞生自丰田汽车
@@ -56,9 +56,9 @@ permalink:
 ## 第三章 可视化思维
 矩阵分析法
 - 艾森豪威尔矩阵
-    ![](../rsc/dmind_matrix_eisenhower.jpg)
+    ![](./rsc/dmind_matrix_eisenhower.jpg)
 - 安索夫矩阵
-    ![](../rsc/dmind_matrix_ansoff.jpg)
+    ![](./rsc/dmind_matrix_ansoff.jpg)
 - 创造自己的矩阵类思维工具
 
 工作仪表盘

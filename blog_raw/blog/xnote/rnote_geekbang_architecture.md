@@ -338,7 +338,7 @@ permalink:
         - 常见的方案质量属性点有：性能、可用性、硬件成本、项目投入、复杂度、安全性、可扩展性等。
 - 案例: 业务消息的可靠传输
     + 方案环评
-        ![360环评](../rsc/arch_compare_360_degrees.png)
+        ![360环评](./rsc/arch_compare_360_degrees.png)
     + 结论：最终选择备选方案 2，原因有：
         排除备选方案 1 的主要原因是可运维性; 并且 Kafka 的主要设计目标是高性能日志传输，而我们的消息队列设计的主要目标是业务消息的可靠传输。
         排除备选方案 3 的主要原因是复杂度，目前团队技术实力和人员人员规模（总共 6 人，还有其他中间件系统需要开发和维护）
@@ -633,7 +633,7 @@ permalink:
     + 假设我们设计一个最简单的用户管理系统，包含登录和注册两个两个功能，其初始架构是：
         - MySQL 负责存储，Memcache（以下简称 MC）负责缓存，Server 负责业务处理。
     + FMEA 分析后，能够有什么样的发现，下表是分析的样例
-        ![FMEA 分析实践](../rsc/arch_FEMA_analyze_sample.png)
+        ![FMEA 分析实践](./rsc/arch_FEMA_analyze_sample.png)
     + 经过上表的 FMEA 分析，将“后续规划”列的内容汇总一下，我们最终得到了下面几条需要改进的措施：
         - MySQL 增加备机。MC 从单机扩展为集群。MySQL 双网卡连接。
 - 思考题
@@ -776,7 +776,7 @@ permalink:
     + 分层架构之所以能够较好地支撑系统扩展，本质在于隔离关注点（separation of concerns），即每个层中的组件只会处理本层的逻辑。
     + 分层时要保证层与层之间的依赖是稳定的，才能真正支撑快速扩展
 - SOA(Service Oriented Architecture)
-    ![SOA架构](../rsc/arch_SOA_architecture.png)
+    ![SOA架构](./rsc/arch_SOA_architecture.png)
     + 三要素：服务、ESB(Enterprise Service Bus)、松耦合
     + SOA 使用 ESB 来屏蔽异构系统对外提供各种不同的接口方式，以此来达到服务间高效的互联互通。
     + SOA 更多是在传统企业（例如，制造业、金融业等）落地和推广，在互联网行业并没有大规模地实践和推广。
@@ -818,7 +818,7 @@ permalink:
         - 能够降低高可用成本
     + 基于性能拆分
 - 基础设施
-    ![微服务基础设施](../rsc/arch_meshsrv_ infrastructure.png)
+    ![微服务基础设施](./rsc/arch_meshsrv_ infrastructure.png)
 - 思考题
     + 参考文章中提到的方法，思考一下你所在的业务微服务架构是否还有可以改进和提升的空间？
 
@@ -893,13 +893,13 @@ permalink:
             + 服务化: 目的在于解决“系统交互”的问题，常见的做法是通过消息队列来完成系统间的异步通知，通过服务框架来完成系统间同步调用
     + 成熟期。 
         - 技术上能做的大动作其实也不多了，更多的是进行优化。
-![互联网技术演进的模式](../rsc/arch_internet_company_envolution.png)
+![互联网技术演进的模式](./rsc/arch_internet_company_envolution.png)
 
 <h1 id="40" ></h1>
 
 [_页首_](#h)
 ## 40 | 互联网架构模板：“存储层”技术
-![互联网标准架构图](../rsc/arch_internet_arch_sample.png)
+![互联网标准架构图](./rsc/arch_internet_arch_sample.png)
 - 互联网架构模板中的存储层技术
     + SQL
         - 单表 
@@ -925,7 +925,7 @@ permalink:
         - 包含业务上的大数据(youtube的视频内容等)、海量的日志数据
             + 说到大文件，特别要提到 Google 和 Yahoo，Google 的 3 篇大数据论文（Bigtable/Map- Reduce/GFS）开启了一个大数据的时代，而Yahoo 开源的 Hadoop 系列（HDFS、HBase 等），基本上垄断了开源界的大数据处理
 
-    ![淘宝TFS架构](../rsc/arch_taobao_TFS_architecture.png)
+    ![淘宝TFS架构](./rsc/arch_taobao_TFS_architecture.png)
 - 思考题
     + 既然存储技术发展到最后都是存储平台，为何没有出现存储平台的开源方案，但云计算却都提供了存储平台方案？
         - 代价、价值
@@ -949,9 +949,9 @@ permalink:
         - 常用“系统标识 + host + port”来标识唯一运行实例
     + 服务中心
         - 两种实现方式：服务名字系统（Service Name System） 和 服务总线系统（Service Bus System）
-            ![服务名字系统](../rsc/arch_srvcenter_namesystem.png)
-            ![服务总线系统](../rsc/arch_srvcenter_bussystem.png)
-            ![服务总线、名字系统对比](../rsc/arch_srvcenter_name_bus_compare.png)
+            ![服务名字系统](./rsc/arch_srvcenter_namesystem.png)
+            ![服务总线系统](./rsc/arch_srvcenter_bussystem.png)
+            ![服务总线、名字系统对比](./rsc/arch_srvcenter_name_bus_compare.png)
     + 消息队列
 - 思考题
     + 使用统一的开发框架和开发语言可以让团队开发效率更高，但这样做会带来什么问题？如何解决？
@@ -1008,7 +1008,7 @@ permalink:
     + 核心设计要素：标准化、平台化、自动化、可视化
 - 测试平台
     + 测试平台的核心目的是提升测试效率，从而提升产品质量，其设计关键就是自动化
-    ![测试平台基本架构](../rsc/arch_test_platform_sample.png)
+    ![测试平台基本架构](./rsc/arch_test_platform_sample.png)
     + 用例管理
         - 为了能够重复执行测试用例，测试平台需要将用例管理起来，管理的维度包括业务、系统、测试类型、用例代码。例如，网购业务的订单系统的接口测试用例。
     + 资源管理
