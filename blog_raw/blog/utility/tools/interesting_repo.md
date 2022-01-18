@@ -8,6 +8,8 @@ permalink:
 # 有趣的项目
 > JustDoIt
 
+- [凤凰架构：构建可靠的大型分布式系统](https://icyfenix.cn/exploration/guide/quick-start.html)
+
 ## Interesting Repositories
 - https://github.com/moyada/stealer
     + 抖音、快手、火山、皮皮虾，视频去水印程序
