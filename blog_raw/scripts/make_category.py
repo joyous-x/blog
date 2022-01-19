@@ -189,7 +189,7 @@ class BlogCategory(object):
         return self._make_category(self.root_dir, None, fn_filter=fn_filter)
 
     def _make_category(self, root_dir, cur_node, fn_filter=None):
-        message("ready to make category: {}".format(cur_node.data.path if cur_node else ""))
+        message("===> ready to make category: {}".format(cur_node.data.path if cur_node else ""))
         metapath_getter = lambda x: x if os.path.isfile(x) else os.path.join(x, ".blog_category")
         cur_path = os.path.join(root_dir, cur_node.data.path if cur_node else "")
         metas = BlogCategory.extract_md_metas(metapath_getter(cur_path))
@@ -214,7 +214,7 @@ class BlogCategory(object):
     def extract_md_metas(filepath, delimiter="---"):
         if not os.path.isfile(filepath):
             return DictObject({})
-        message("---> ready to extract_md_metas {}".format(filepath))
+        message("===> ready to extract_md_metas {}".format(filepath))
         lines = []
         with open(filepath, "r", encoding="utf-8") as f:
             start = False
@@ -231,7 +231,7 @@ class BlogCategory(object):
 
 
 if __name__ == "__main__":
-    blogCategory = BlogCategory(os.path.dirname(os.path.abspath(__file__) + "/blog")
+    blogCategory = BlogCategory(os.path.dirname(os.path.abspath(__file__)) + "/../blog")
     result = blogCategory.generate()
     result = blogCategory.write()
     message("node count: {}".format(result))
