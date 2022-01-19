@@ -21,3 +21,5 @@ urls.txt
 .DS_Store
 
 blog_raw/scripts/.idea
+blog_raw/blog/README.md
+blog_raw/blog/*/README.md
