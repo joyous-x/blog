@@ -2,30 +2,29 @@
     "name": "jiao-blog",
     "version": "1.0.0",
     "scripts": {
-        "dev": "rm -rf docs/blog/ && cp -rf blog_raw/blog docs/blog && vuepress dev docs",
-        "build": "rm -rf docs/blog/ && cp -rf blog_raw/blog docs/blog && vuepress build docs",
+        "dev": "rm -rf docs/blog/ && cp -rf ../blog_raw/blog docs/blog && vuepress dev docs",
+        "build": "rm -rf docs/blog/ && cp -rf ../blog_raw/blog docs/blog && vuepress build docs",
         "deploy": "bash deploy.sh",
-        "publish": "cd theme-vdoing && npm publish && cd ../ && npm run updateTheme",
-        "updateTheme": "npm uninstall vuepress-theme-vdoing && rm -rf node_modules && npm i && npm i vuepress-theme-vdoing -D"
+        "publish": "cd ./vdoing && npm publish && cd .. && yarn updateTheme",
+        "updateTheme": "yarn remove vuepress-theme-vdoing && rm -rf node_modules && yarn && yarn add vuepress-theme-vdoing -D"
     },
     "license": "MIT",
     "devDependencies": {
         "dayjs": "^1.9.7",
-        "inquirer": "7.1.0",
+        "inquirer": "^7.1.0",
         "json2yaml": "^1.1.0",
-        "markdown-it-katex": "^2.0.3",
-        "vuepress": "1.5.2",
+        "vuepress": "1.9.5",
         "vuepress-plugin-baidu-autopush": "^1.0.1",
         "vuepress-plugin-baidu-tongji": "^1.0.1",
+        "vuepress-plugin-comment": "^0.7.3",
         "vuepress-plugin-demo-block": "^0.7.2",
+        "vuepress-plugin-fulltext-search": "^2.2.1",
         "vuepress-plugin-one-click-copy": "^1.0.2",
         "vuepress-plugin-thirdparty-search": "^1.0.2",
         "vuepress-plugin-zooming": "^1.1.7",
-        "vuepress-theme-vdoing": "^1.7.2",
+        "vuepress-theme-vdoing": "^1.9.4",
+        "yamljs": "^0.3.0",
         "vuepress-plugin-mermaidjs": "^1.8.1",
-        "yamljs": "^0.3.0"
-    },
-    "dependencies": {
-        "vuepress-plugin-comment": "^0.7.3"
+        "markdown-it-katex": "^2.0.3"
     }
 }

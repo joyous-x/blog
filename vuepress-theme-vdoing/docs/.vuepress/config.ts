@@ -9,46 +9,14 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
     theme: 'vdoing', // 使用依赖包主题
     // theme: require.resolve('../../theme-vdoing'), // 使用本地主题
 
-    locales: {
-        '/': {
-            lang: 'zh-CN',
-            title: "Jiao's Blog",
-            description: '知行合一 --- 技术博客，代码中的点点滴滴',
-        }
-    },
     base: '/', // 默认'/'。如果你想将你的网站部署到如 https://foo.github.io/bar/，那么 base 应该被设置成 "/bar/",（否则页面将失去样式等文件）
-    
+
     markdown: {
         lineNumbers: true, // 代码行号
         extendMarkdown: md => {
             md.use(require('markdown-it-katex')); // 引入 katex，需要在 head 中注入 katex.min.css、github-markdown.css
         }
     },
-
-    head: [
-        // 注入到页面<head> 中的标签，格式[tagName, { attrName: attrValue }, innerHTML?]
-        ['link', { rel: 'icon', href: '/img/favicon.ico' }],
-        // katex : start
-        ['link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css' }],
-        ['link', { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/github-markdown-css/2.2.1/github-markdown.css' }],
-        // katex : end
-        [
-            'meta',
-            {
-                name: 'keywords',
-                content: '博客,全栈,技术文档,学习,面试,Go,C/C++,Python,Markdown',
-            },
-        ],
-        ['meta', { name: 'theme-color', content: '#11a8cd' }], // 移动浏览器主题颜色
-        [
-            'script',
-            {
-                'data-ad-client': 'ca-pub-782833372599355',
-                async: 'async',
-                src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
-            },
-        ], // 网站关联Google AdSense 与 html格式广告支持
-    ],
 
     themeConfig: {
         nav: nav,
@@ -105,7 +73,18 @@ export default defineConfig4CustomTheme<VdoingThemeConfig>({
         },
         htmlModules // 插入hmtl(广告)模块
     },
-    
+
+    head: [
+        // 注入到页面<head> 中的标签，格式[tagName, { attrName: attrValue }, innerHTML?]
+        ['link', { rel: 'icon', href: '/img/favicon.ico' }],
+        // katex : start
+        ['link', { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css' }],
+        ['link', { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/github-markdown-css/2.2.1/github-markdown.css' }],
+        // katex : end
+        ['meta', { name: 'keywords', content: '博客,全栈,技术文档,学习,面试,Go,C/C++,Python,Markdown' }],
+        ['meta', { name: 'theme-color', content: '#11a8cd' }], // 移动浏览器主题颜色
+    ],
+
     plugins: {
         // 导入本地插件（供学习参考）
         // [resolve(__dirname, './plugins/love-me')]: { // 鼠标点击爱心特效

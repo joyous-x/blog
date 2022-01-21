@@ -1,24 +1,20 @@
 ---
 home: true
-# heroImage: /img/web.png
 heroText: Jiao's blog
 tagline: 知行合一 --- 技术博客，代码中的点点滴滴
-# actionText: 立刻进入 →
-# actionLink: /web/
-# bannerBg: auto # auto => 网格纹背景(有bodyBgImg时无背景)，默认 | none => 无 | '大图地址' | background: 自定义背景样式       提示：如发现文本颜色不适应你的背景时可以到palette.styl修改$bannerTextColor变量
 
-features: # 可选的
+features:
   - title: 语言
     details: Python、C/C++、Go 等语言
-    link: /blog/lang/ # 可选
-    imgUrl: /img/icon_lang.png # 可选
+    link: /blog/lang/
+    imgUrl: /img/icon_lang.png
   - title: 前沿
     details: AI、图像处理等相关技术
     link: /blog/skills/
     imgUrl: /img/icon_ai.png
   - title: 其他
     details: 文档、技巧、总结等文章
-    link: /blog/utility/
+    link: /blog/xnote/
     imgUrl: /img/icon_write.png
 
 postList: simple # 文章列表显示方式: detailed 默认，显示详细版文章列表（包括作者、分类、标签、摘要、分页等）| simple => 显示简约版文章列表（仅标题和日期）| none 不显示文章列表
