@@ -10,9 +10,9 @@ tags:
 permalink:
 ---
 # 字符集 & 编码
-![charscter_and_coding](./rsc/charscter_and_coding.png)
+![character_and_coding](./rsc/character_and_coding.png)
 
-![charscter_and_coding_model](./rsc/charscter_and_coding_model.png)
+![character_and_coding_model](./rsc/character_and_coding_model.png)
 
 ## ASCII
 
