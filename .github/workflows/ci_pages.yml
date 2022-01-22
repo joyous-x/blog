@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ '16' ]
+        node: [ '14', '16' ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -25,13 +25,13 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js ${{ matrix.node }}
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
 
       - name: Deploy # 只提交到github
-        uses: JamesIves/github-pages-deploy-action@releases/v2
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
         env: 
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BASE_BRANCH: main # 要部署的文件夹所在的分支.
