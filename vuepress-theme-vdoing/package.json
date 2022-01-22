@@ -4,6 +4,7 @@
     "scripts": {
         "dev": "rm -rf docs/blog/ && cp -rf ../blog_raw/blog docs/blog && vuepress dev docs",
         "build": "rm -rf docs/blog/ && cp -rf ../blog_raw/blog docs/blog && vuepress build docs",
+        "build_base_blog": "rm -rf docs/blog/ && cp -rf ../blog_raw/blog docs/blog && cp -f docs/.vuepress/config.base_blog.ts docs/.vuepress/config.ts && vuepress build docs",
         "deploy": "bash deploy.sh",
         "publish": "cd ./vdoing && npm publish && cd .. && yarn updateTheme",
         "updateTheme": "yarn remove vuepress-theme-vdoing && rm -rf node_modules && yarn && yarn add vuepress-theme-vdoing -D"

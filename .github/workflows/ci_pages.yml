@@ -39,4 +39,4 @@ jobs:
           FOLDER: vuepress-theme-vdoing/docs/.vuepress/dist # 要部署的文件夹.
           ## 部署前要执行的命令，CNAME 可以将其绑定到一个域名（记得cd进入某个目录后，后面要cd -退回开始的目录）
           # BUILD_SCRIPT: npm install && npm run build && cd docs/.vuepress/dist && echo 'https://joyous-x.github.io/blog/' > CNAME && cd -
-          BUILD_SCRIPT: cd vuepress-theme-vdoing && mv -f docs/.vuepress/config.base_blog.ts docs/.vuepress/config.ts && npm install && npm run build && cd -
+          BUILD_SCRIPT: cd vuepress-theme-vdoing && npm install && npm run build_base_blog && cd ..
