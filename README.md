@@ -26,4 +26,4 @@ The little things in my program life
 - vuepress-theme-vdoing 1.9.* 需要 nodejs 14.12 以上的支持
 
 ### Theme
-forked from [vuepress-theme-vdoing](https://github.com/xugaoyi/vuepress-theme-vdoing)
+[vuepress-theme-vdoing v1.9.4](https://github.com/xugaoyi/vuepress-theme-vdoing)
