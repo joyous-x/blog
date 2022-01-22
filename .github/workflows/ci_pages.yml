@@ -32,7 +32,7 @@ jobs:
 
       - name: Make Category
         run: | 
-          pip install yaml 
+          pip install pyyaml 
           cd blog_raw && python scripts/make_category.py && cd ..
 
       - name: Setup Node.js ${{ matrix.node }}
