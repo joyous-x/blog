@@ -32,7 +32,10 @@ jobs:
 
       - name: Make Category
         run: | 
-          cd blog_raw && python scripts/make_category.py && cd ..
+          cd blog_raw 
+          pip install -r yaml 
+          python scripts/make_category.py
+          cd ..
 
       - name: Setup Node.js ${{ matrix.node }}
         uses: actions/setup-node@v2
