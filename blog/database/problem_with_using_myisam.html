@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>批量写入造成mysql访问慢问题</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/img/favicon.ico">
+    <meta name="description" content="批量写入造成mysql访问慢问题">
+    <meta name="keywords" content="博客,全栈,技术文档,学习,面试,Go,C/C++,Python,Markdown">
+    <meta name="theme-color" content="#11a8cd">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.ab18f209.css" as="style"><link rel="preload" href="/blog/assets/js/app.76e61623.js" as="script"><link rel="preload" href="/blog/assets/js/2.76622ffb.js" as="script"><link rel="preload" href="/blog/assets/js/33.802a0296.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.75d7f325.js"><link rel="prefetch" href="/blog/assets/js/11.9a2d0582.js"><link rel="prefetch" href="/blog/assets/js/12.7909b37a.js"><link rel="prefetch" href="/blog/assets/js/13.59a5dd8d.js"><link rel="prefetch" href="/blog/assets/js/14.a8018f31.js"><link rel="prefetch" href="/blog/assets/js/15.e0ae3b5f.js"><link rel="prefetch" href="/blog/assets/js/16.ffd548fb.js"><link rel="prefetch" href="/blog/assets/js/17.109220a6.js"><link rel="prefetch" href="/blog/assets/js/18.c3adf26a.js"><link rel="prefetch" href="/blog/assets/js/19.f52bbe53.js"><link rel="prefetch" href="/blog/assets/js/20.66d48fdd.js"><link rel="prefetch" href="/blog/assets/js/21.5d1f5085.js"><link rel="prefetch" href="/blog/assets/js/22.87f7d11f.js"><link rel="prefetch" href="/blog/assets/js/23.7c3e4c34.js"><link rel="prefetch" href="/blog/assets/js/24.4677ccb4.js"><link rel="prefetch" href="/blog/assets/js/25.ce71bb7b.js"><link rel="prefetch" href="/blog/assets/js/26.9053cf2d.js"><link rel="prefetch" href="/blog/assets/js/27.006ed2ac.js"><link rel="prefetch" href="/blog/assets/js/28.0d0e78ed.js"><link rel="prefetch" href="/blog/assets/js/29.dfecf525.js"><link rel="prefetch" href="/blog/assets/js/3.241056ce.js"><link rel="prefetch" href="/blog/assets/js/30.b4b93215.js"><link rel="prefetch" href="/blog/assets/js/31.0fae4cd3.js"><link rel="prefetch" href="/blog/assets/js/32.f389182c.js"><link rel="prefetch" href="/blog/assets/js/34.ff0b8a06.js"><link rel="prefetch" href="/blog/assets/js/35.e40ed0fa.js"><link rel="prefetch" href="/blog/assets/js/36.ca7757ae.js"><link rel="prefetch" href="/blog/assets/js/37.395fb6bd.js"><link rel="prefetch" href="/blog/assets/js/38.27f445d0.js"><link rel="prefetch" href="/blog/assets/js/39.f78d56b5.js"><link rel="prefetch" href="/blog/assets/js/4.ba3fd9e7.js"><link rel="prefetch" href="/blog/assets/js/40.f8c3ae1d.js"><link rel="prefetch" href="/blog/assets/js/41.6284d4f1.js"><link rel="prefetch" href="/blog/assets/js/42.fc71a50c.js"><link rel="prefetch" href="/blog/assets/js/43.4bafede3.js"><link rel="prefetch" href="/blog/assets/js/44.fb84df9a.js"><link rel="prefetch" href="/blog/assets/js/45.e15ff02f.js"><link rel="prefetch" href="/blog/assets/js/46.6d1b4184.js"><link rel="prefetch" href="/blog/assets/js/47.72123a6b.js"><link rel="prefetch" href="/blog/assets/js/48.9302eb30.js"><link rel="prefetch" href="/blog/assets/js/49.6c38f32d.js"><link rel="prefetch" href="/blog/assets/js/5.90987b07.js"><link rel="prefetch" href="/blog/assets/js/50.a048887d.js"><link rel="prefetch" href="/blog/assets/js/51.ddaad0b4.js"><link rel="prefetch" href="/blog/assets/js/52.618d3413.js"><link rel="prefetch" href="/blog/assets/js/53.77639deb.js"><link rel="prefetch" href="/blog/assets/js/54.690ce3cb.js"><link rel="prefetch" href="/blog/assets/js/55.055ab3a9.js"><link rel="prefetch" href="/blog/assets/js/56.b872061b.js"><link rel="prefetch" href="/blog/assets/js/57.4bfafbb5.js"><link rel="prefetch" href="/blog/assets/js/58.4f3377d8.js"><link rel="prefetch" href="/blog/assets/js/59.b4ee4da2.js"><link rel="prefetch" href="/blog/assets/js/6.c02e018c.js"><link rel="prefetch" href="/blog/assets/js/60.3908f0bc.js"><link rel="prefetch" href="/blog/assets/js/61.37519a29.js"><link rel="prefetch" href="/blog/assets/js/62.b257111e.js"><link rel="prefetch" href="/blog/assets/js/63.fdfacb89.js"><link rel="prefetch" href="/blog/assets/js/64.a52f4ed6.js"><link rel="prefetch" href="/blog/assets/js/65.a268f40a.js"><link rel="prefetch" href="/blog/assets/js/66.5b2652f6.js"><link rel="prefetch" href="/blog/assets/js/67.ec960cfe.js"><link rel="prefetch" href="/blog/assets/js/68.d1f32d47.js"><link rel="prefetch" href="/blog/assets/js/69.1f138767.js"><link rel="prefetch" href="/blog/assets/js/7.d86c0c0c.js"><link rel="prefetch" href="/blog/assets/js/70.edd573c9.js"><link rel="prefetch" href="/blog/assets/js/71.843578b5.js"><link rel="prefetch" href="/blog/assets/js/72.0617fdfe.js"><link rel="prefetch" href="/blog/assets/js/73.f04d0f68.js"><link rel="prefetch" href="/blog/assets/js/74.4b7b20ef.js"><link rel="prefetch" href="/blog/assets/js/75.e1c70e3b.js"><link rel="prefetch" href="/blog/assets/js/76.f0530144.js"><link rel="prefetch" href="/blog/assets/js/77.2fdab5bb.js"><link rel="prefetch" href="/blog/assets/js/78.07d57bc8.js"><link rel="prefetch" href="/blog/assets/js/79.dfe91028.js"><link rel="prefetch" href="/blog/assets/js/8.2202a71a.js"><link rel="prefetch" href="/blog/assets/js/80.7fcc6f11.js"><link rel="prefetch" href="/blog/assets/js/81.14f3b5d4.js"><link rel="prefetch" href="/blog/assets/js/82.83fe24e8.js"><link rel="prefetch" href="/blog/assets/js/83.6f81368c.js"><link rel="prefetch" href="/blog/assets/js/84.3f3bed06.js"><link rel="prefetch" href="/blog/assets/js/85.05324d0f.js"><link rel="prefetch" href="/blog/assets/js/86.81795414.js"><link rel="prefetch" href="/blog/assets/js/87.09176e00.js"><link rel="prefetch" href="/blog/assets/js/88.1c719a03.js"><link rel="prefetch" href="/blog/assets/js/89.8bbdbf67.js"><link rel="prefetch" href="/blog/assets/js/9.5185adce.js"><link rel="prefetch" href="/blog/assets/js/90.b27d627b.js"><link rel="prefetch" href="/blog/assets/js/91.f8a19ed4.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.ab18f209.css">
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true"><div class="theme-container sidebar-open no-sidebar have-rightmenu"><header class="navbar blur"><div title="目录" class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/img/web_logo.png" alt="" class="logo"> <!----></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link router-link-active">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar-hover-trigger"></div> <aside class="sidebar" style="display:none;"><div class="blogger"><img src="/img/avatar.png"> <div class="blogger-info"><h3>Jiao</h3> <span>知行合一</span></div></div> <nav class="nav-links"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link router-link-active">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> <div class="sidebar-slot sidebar-slot-bottom"><!-- 正方形 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="3508773082"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div></aside> <div><main class="page"><div class="theme-vdoing-wrapper "><div class="articleInfo-wrap" data-v-0c557b5e><div class="articleInfo" data-v-0c557b5e><ul class="breadcrumbs" data-v-0c557b5e><li data-v-0c557b5e><a href="/blog/" title="首页" class="iconfont icon-home router-link-active" data-v-0c557b5e></a></li> <li data-v-0c557b5e><a href="/blog/categories/?category=blog" title="分类" data-v-0c557b5e>blog</a></li><li data-v-0c557b5e><a href="/blog/categories/?category=database" title="分类" data-v-0c557b5e>database</a></li></ul> <div class="info" data-v-0c557b5e><div title="作者" class="author iconfont icon-touxiang" data-v-0c557b5e><a href="https://github.com/joyous-x" target="_blank" title="作者" class="beLink" data-v-0c557b5e>Jiao</a></div> <div title="创建时间" class="date iconfont icon-riqi" data-v-0c557b5e><a href="javascript:;" data-v-0c557b5e>2020-04-14</a></div> <!----></div></div></div> <!----> <div class="content-wrapper"><div class="right-menu-wrapper"><div class="right-menu-margin"><div class="right-menu-content"></div></div></div> <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABH1JREFUSA3tVl1oHFUUPmdmd2ltklqbpJDiNnXFmgbFktho7YMPNiJSSZM0+CAYSkUELVhM6YuwIPpgoOKDqOBDC0XE2CQoNtQXBUFTTcCi+Wlh1V2TQExsUzcltd3M9Tt3ZjZzZ2fT+OJTL8yeM+eee757fmeJbq//KQL8X3DUSFOcfr7cRsRtxNQMWueeVzOkaITIGqQHNg5y8+jNW9ldM7A6nTpAjuolUikAwq7CE3WcM2RRDz+XGVgN3FptU/aUSlvq9Pa3iZ1+sgAqJyyAFqkipd9dqiwHF3P65YycLWc/6sqGrvoEoIp6DOFaX5h6+dnfjkWprwqsPk0dUGq5vySwDImC10KxFHgGL1SWoc92O3eVht09qdXNH11I2SsTsJYqMWzihqGMi+A+Garf3BAuuLI5oGlULyNfyB/HYNujwktOfRrMr5t77NmevqaUopx0grnKAyvVpmwUDB4x6FPXuGvYLTDwWsejwgtgkYKPqRJg8SV6xaiZ3ZTppGneS4yfH5/66fZSDHv+QZci/+h5c5UHtpy67JUqGppM0sh0Nc1dW6/N1W5Yoqat8/TU/VnadmdeW2PLLSyh0cvxBs3KbqTmwYPpxN4do/mzE8nEpvX/UMu2Wbp74zUAK5q6WkHns7V0eWkdPbPzd3rxkTGybadYySumVzhcaJFbs5UrEkQ/+CK8gF5dnh/6ciIZ73gwQ927L1IitoxKLXYP3SjYdOrHHfTZhRRlFyrorafPk20B3HPD1y2G3qKZME5Jcf3t/HUC13/8tSd++vqFveMUTwAUxSUFI1QekR1+bIze3D9MF2aq6cPvG72CgnldWCFqyRw3lwH8ZMerjTD9ElRO7Gv44wNpC90aASqGfVlz/Rx17srQ57/UU26hkhQqUB7dBR71WmzQhHUnblGmVOEw0jhbV1n9OlXUDCIRGaNV5Jp43N516fN7JmnTHdfp7Hgy0luO4aMhtkLL8Bi3bUWYvzh5Mn1dTxrL6QmGuRhGL/TiTTxRoEdTszSaq9GR0NGA3KdkOz3hqSV3MIDhQ5IVX/Ivx3umBti2es2h4eZby7x8br1rkf7Mo90AqC8aQ3sJeNzqFRu+vSANAQe3PL7l0HGOAdwDCeZYvNKeoZp1Qfs6Aipndh86HmFRi0LAnEO47wsqM6cdfjh3jBPUzhZy7nvlUfFsamED1VQt6aISHVymXZ/B2aCtIG8AI8xfobj2d3en1wWVhOeHELKmLQ1s211s88comkv4UCwWyF787mJdYXtNfhKAXVqnKTq8QZvGAGGOfaTo5pGZ/PwbUCr5+DPr/1J92JNHr9aOl/F3iI5+O1nfybsGxoimvZ3ViWSluDITw3P37mypheDIPY0tw7+O/5ApbkYw+zpfaUVu32Pi98+defdUhEpZkRFq0aqyNh9FuL9hpYbEm6iwi0z2REd09ZmyENEbuhjDWzKvZXTqKYaBIr3tt5kuPtQBZFvEUwHt60vfCNu41XsksH9Ij1BMMz1Y0OOunHNShFIP5868g5zeXmuLwL9T4b6Q2+KejgAAAABJRU5ErkJggg==">批量写入造成mysql访问慢问题<!----></h1> <div class="page-slot page-slot-top"><!-- 固定100% * 90px可显示，max-height:90px未见显示-->
+     <ins class="adsbygoogle"
+          style="display:inline-block;width:100%;max-height:90px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6625304284"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="theme-vdoing-content content__default"><h1 id="批量写入造成mysql访问慢问题"><a href="#批量写入造成mysql访问慢问题" class="header-anchor">#</a> 批量写入造成mysql访问慢问题</h1> <h2 id="现象"><a href="#现象" class="header-anchor">#</a> 现象</h2> <p>2020.03的某天下午，突然收到同事反馈，产品的某个页面出现'服务无响应'问题</p> <h2 id="跟进"><a href="#跟进" class="header-anchor">#</a> 跟进</h2> <ul><li>由于服务器是分线路访问，可以通过 ping 指令，找到具体的服务器ip，然后本地绑定域名，进行模拟请求，确认问题并查看日志。</li> <li>发现是mysql数据库响应慢，造成接口响应速度下降 20+ 倍</li> <li>进行以下操作：
+<ol><li><div class="language- line-numbers-mode"><pre class="language-text"><code>// 查看
+show variables like 'slow_query%';
+show variables like 'long_query_time';
+// 设置
+set global [variablesName]=[Value]
+// 日志输出方式：TABLE,FILE
+show variables like '%log_output%'
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>// 查看
+show variables like 'slow_query%';
+show variables like 'long_query_time';
+// 设置
+set global [variablesName]=[Value]
+// 日志输出方式：TABLE,FILE
+show variables like '%log_output%'
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div>通过以下指令打开、设置并查看慢查询日志<div class="language- line-numbers-mode"><pre class="language-text"><code>// 查看
+show variables like 'slow_query%';
+show variables like 'long_query_time';
+// 设置
+set global [variablesName]=[Value]
+// 日志输出方式：TABLE,FILE
+show variables like '%log_output%'
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div></li> <li><div class="language- line-numbers-mode"><pre class="language-text"><code>// 如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。
+show full processlist;
+// 状态
+show status [like '%variables%'];
+// 参数
+show variables [like '%variables%']
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>// 如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。
+show full processlist;
+// 状态
+show status [like '%variables%'];
+// 参数
+show variables [like '%variables%']
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div>查看mysql的连接数等状态<div class="language- line-numbers-mode"><pre class="language-text"><code>// 如果是root帐号，你能看到所有用户的当前连接。如果是其它普通帐号，只能看到自己占用的连接。
+show full processlist;
+// 状态
+show status [like '%variables%'];
+// 参数
+show variables [like '%variables%']
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div></li> <li>查看mysql使用的内存、cpu、磁盘、网络状况</li></ol></li> <li>分析
+<ol><li>数据库连接数已满(max=1000)</li> <li>磁盘、网络、cpu、内存 都不高，特别是内存低的很奇怪，只占总内存的 8% 左右，不能有效利用机器性能</li> <li>慢查询日志：发现发生慢查询的语句，都是使用到了索引、并且索引有效的查询语句</li></ol></li> <li>猜测是：服务器配置 + 用户流量激增造成
+<ol><li>看域名流量，没有异常</li> <li>mysql配置有异常：key_buffer_size 设置的很小。调整后，问题没有好转</li></ol></li> <li>查看锁状况
+<ol><li>由于相关表使用的是MyISAM引擎，所以通过 <code>show status like 'table%'</code> 查看锁状态，发现：Table_locks_immediate / Table_locks_waited ~= 2</li> <li>因为这个库只能通过主从同步进行修改，这时想起相关的运营组最近在进行自动入库操作。</li> <li>停止后，问题缓解</li></ol></li></ul> <h2 id="总结"><a href="#总结" class="header-anchor">#</a> 总结</h2> <ul><li>问题复盘
+<ol><li>这个数据库采用主从结构(一主多从)，异步同步，落盘策略为：sync_binlog=0</li> <li>自动入库：最近才开始，采用 <code>while do { 写入数据(标记无效),校验文件md5,修改标记(有效) }</code> <ul><li>问题：相关人员说，前两天同样的操作没有出问题啊</li> <li>确认：当天加上了文件md5校验</li> <li>猜测：文件校验操作，造成mysql数据被分隔成更多次数刷新到磁盘并触发主从同步动作，造成更加密集的MyISAM表锁。由于，写锁优先级高，造成客户端请求近乎饿死，进而造成连接数打满。</li></ul></li> <li>处理
+<ul><li>考虑到这是个多年轻的项目，这次需要切换 MyISAM 到 innodb</li> <li>调整Mysql相关参数，尽可能的发挥机器性能</li></ul></li></ol></li></ul> <hr> <h2 id="mysql-知识"><a href="#mysql-知识" class="header-anchor">#</a> MYSQL 知识</h2> <h4 id="_1-相关命令、参数"><a href="#_1-相关命令、参数" class="header-anchor">#</a> 1. 相关命令、参数</h4> <ul><li>落盘策略: <code>innodb_flush_log_at_trx_commit 和 sync_binlog</code></li> <li><div class="language- line-numbers-mode"><pre class="language-text"><code>show slave status
+show master status
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>show slave status
+show master status
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div>查看主从同步状态：<div class="language- line-numbers-mode"><pre class="language-text"><code>show slave status
+show master status
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div></li></ul> <h4 id="_2-mysql-的-sql-mode"><a href="#_2-mysql-的-sql-mode" class="header-anchor">#</a> 2. mysql 的 sql_mode:</h4> <ul><li><div class="language- line-numbers-mode"><pre class="language-text"><code>SELECT @@GLOBAL.sql_mode;
+SELECT @@SESSION.sql_mode;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>SELECT @@GLOBAL.sql_mode;
+SELECT @@SESSION.sql_mode;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div>查看当前sql-mode<div class="language- line-numbers-mode"><pre class="language-text"><code>SELECT @@GLOBAL.sql_mode;
+SELECT @@SESSION.sql_mode;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div></li> <li><div class="language- line-numbers-mode"><pre class="language-text"><code>// 命令
+SET GLOBAL sql_mode = 'modes...';
+SET SESSION sql_mode = 'modes...';
+// my.cnf中配置sql-mode
+[mysqld]
+#set the SQL mode to strict
+#sql-mode=&quot;modes...&quot; 
+sql-mode = &quot;STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&quot;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>// 命令
+SET GLOBAL sql_mode = 'modes...';
+SET SESSION sql_mode = 'modes...';
+// my.cnf中配置sql-mode
+[mysqld]
+#set the SQL mode to strict
+#sql-mode=&quot;modes...&quot; 
+sql-mode = &quot;STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&quot;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div>设置当前sql-mode<div class="language- line-numbers-mode"><pre class="language-text"><code>// 命令
+SET GLOBAL sql_mode = 'modes...';
+SET SESSION sql_mode = 'modes...';
+// my.cnf中配置sql-mode
+[mysqld]
+#set the SQL mode to strict
+#sql-mode=&quot;modes...&quot; 
+sql-mode = &quot;STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&quot;
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div></li></ul> <h4 id="_3-查看引擎的锁定状态"><a href="#_3-查看引擎的锁定状态" class="header-anchor">#</a> 3. 查看引擎的锁定状态</h4> <ul><li>Myisam : <code>show status like 'table%'</code> <ul><li>通过检查 table_locks_waited 和 table_locks_immediate 状态变量分析系统上表锁争夺情况</li> <li><div class="language- line-numbers-mode"><pre class="language-text"><code></code></pre> <div class="line-numbers-wrapper"></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code></code></pre> <div class="line-numbers-wrapper"></div></div>表级锁是MyISAM不适合含有大量更新操作和查询操作应用的原因。</li> <div class="language- line-numbers-mode"><pre class="language-text"><code>•Table_locks_immediate 
+    The number of times that a request for a table lock could be granted immediately. 
+•Table_locks_waited 
+    The number of times that a request for a table lock could not be granted immediately and a wait was needed. If this is high and you have performance problems, you should first optimize your queries, and then either split your table or tables or use replication. 
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>•Table_locks_immediate 
+    The number of times that a request for a table lock could be granted immediately. 
+•Table_locks_waited 
+    The number of times that a request for a table lock could not be granted immediately and a wait was needed. If this is high and you have performance problems, you should first optimize your queries, and then either split your table or tables or use replication. 
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div></li> <li>Innodb : <code>show status like 'innodb_row_lock%'</code> <ul><li><div class="language- line-numbers-mode"><pre class="language-text"><code></code></pre> <div class="line-numbers-wrapper"></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code></code></pre> <div class="line-numbers-wrapper"></div></div>查看InnoDB行锁争用情况</li></ul></li> <div class="language- line-numbers-mode"><pre class="language-text"><code>在学习锁的过程中，常用：set autocommit = 0; 来关闭自动提交，进而观察的状态。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>在学习锁的过程中，常用：set autocommit = 0; 来关闭自动提交，进而观察的状态。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h4 id="_4-myisam-innodb"><a href="#_4-myisam-innodb" class="header-anchor">#</a> 4. MyISAM &amp; InnoDB</h4> <table><thead><tr><th>引擎</th> <th>事务</th> <th>锁机制</th> <th>外键</th> <th>并发性能</th> <th>缓存</th> <th>备份</th> <th>系统表是否使用</th> <th>引入GTID后的影响</th></tr></thead> <tbody><tr><td>MyISAM</td> <td>不支持</td> <td>表锁</td> <td>不支持</td> <td>低</td> <td>索引</td> <td>为了保持数据一致性，必须对表加读锁，影响业务写</td> <td>使用</td> <td>有问题(一个事务中同时使用事务引擎和非事务引擎)</td></tr> <tr><td>InnoDB</td> <td>支持</td> <td>行锁</td> <td>支持</td> <td>高</td> <td>索引和数据</td> <td>不需要锁表，不影响业务读写</td> <td>使用</td> <td>无问题</td></tr></tbody></table> <div class="language- line-numbers-mode"><pre class="language-text"><code>从MySQL5.5开始，默认存储引擎变为了InnoDB，在此之前默认引擎使用的是MyISAM.
+从MySQL8.0开始，系统表也将采用InnoDB，完全放弃MyISAM。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><ul><li><p>MyISAM</p> <ul><li>MyISAM面临的主要问题
+<ul><li>问题1：主从复制中断、主从数据不一致 ：由于MyISAM不支持事务，导致特别容易出现主备复制异常、主备数据不一致的情况</li> <li>问题2: 进行备份时，无论是采用mysqldump进行的逻辑备份还是使用extrabackup进行的物理备份，为了保证MyISAM表的数据一致性，必须对表进行加锁，导致阻塞写入。这对于重建主从是经常出现的问题。</li></ul></li> <li>MyISAM表级锁:
+<ul><li>模式：表共享读锁(Table Read Lock)、表独占写锁(Table Write Lock)</li> <li>默认情况下，写锁比读锁具有更高的优先级，这正是 MyISAM 表不太适合于有大量更新操作和查询操作应用的原因。因为，大量的更新操作会造成查询操作很难获得读锁，从而可能永远阻塞。</li> <li>在自动加锁的情况下，MyISAM 总是一次获得 SQL 语句所需要的全部锁，所以 MyISAM 表不会出现死锁。</li></ul></li></ul></li> <li><p>InnoDB</p> <ul><li>与 MyISAM 最大不同有两点：
+<ol><li>支持事务</li> <li>采用行级锁</li></ol></li></ul></li> <li><p>索引</p> <ul><li>MyISAM
+<ul><li>MyISAM索引实现：MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址.</li> <li>在MyISAM中，主索引和辅助索引辅助索引(Secondary Index, 即非主键索引)在结构上没有任何区别，只是主索引要求key是唯一的，而辅助索引的key可以重复。</li></ul></li> <li>InnoDB
+<ul><li>InnoDB 表是基于聚簇索引建立的。因此InnoDB 的索引能提供一种非常快速的主键查找性能。InnoDB 不会压缩索引。
+<ul><li>聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。</li> <li>因为所有辅助索引都引用主索引(即，辅助索引也会包含主键列)，如果主键定义的比较大，其他索引也将很大，所以不建议使用过长的字段作为主键。另外，如果想在表上定义很多索引，则争取尽量把主键定义得小一些。</li></ul></li> <li>行锁
+<ul><li>InnoDB的行锁是针对索引加的锁，不是针对记录加的锁。
+<ul><li>这一点MySQL与Oracle不同，它们是通过在数据块中，对相应数据行加锁来实现的</li></ul></li> <li>InnoDB这种行锁实现特点意味着：只有通过索引条件检索数据，innoDB才使用行级锁，否则InnoDB将使用表锁。</li></ul></li> <li>主键
+<ul><li>用非单调的字段作为主键在InnoDB中不是个好主意，因为InnoDB数据文件本身是一颗B+Tree，非单调的主键会造成在插入新记录时数据文件为了维持B+Tree的特性而频繁的分裂调整，十分低效，而使用自增字段作为主键则是一个很好的选择。</li></ul></li></ul></li></ul></li></ul> <h4 id="mysql-内存优化"><a href="#mysql-内存优化" class="header-anchor">#</a> Mysql 内存优化</h4> <p><em>注意：以下都是在MySQL目录下的my.ini文件中改写</em></p> <ul><li>InnoDB内存优化
+<ul><li>InnoDB用一块内存区域做I/O缓存池，该缓存池不仅用来缓存InnoDB的索引块，而且也用来缓存InnoDB的数据块。</li></ul> <ol><li>innodb_log_buffer_size
+<ul><li>决定了InnoDB重做日志缓存的大小，可以避免InnoDB在事务提交前就执行不必要的日志写入磁盘操作。</li></ul></li> <li>Innodb_buffer_pool_size
+<ul><li>决定了InnoDB存储引擎表数据和索引数据的最大缓存区大小。</li></ul></li></ol></li> <li>MyISAM内存优化
+<ul><li>MyISAM存储引擎使用key_buffer缓存索引模块，加速索引的读写速度。对于MyISAM表的数据块，mysql没有特别的缓存机制，完全依赖于操作系统的IO缓存。</li></ul> <ol><li>read_rnd_buffer_size
+<ul><li>对于需要做排序的MyISAM表查询，如带有order by子句的sql，适当增加read_rnd_buffer_size的值，可以改善此类的sql性能。但需要注意的是read_rnd_buffer_size独占的，如果默认设置值太大，就会造成内存浪费。</li></ul></li> <li>key_buffer_size
+<ul><li>key_buffer_size决定MyISAM索引块缓存分区的大小。直接影响到MyISAM表的存取效率。对于一般MyISAM数据库，建议1/4可用内存分配给key_buffer_size:</li></ul></li> <li>read_buffer_size
+<ul><li>如果需要经常顺序扫描MyISAM表，可以通过增大read_buffer_size的值来改善性能。但需要注意的是read_buffer_size是每个seesion独占的，如果默认值设置太大，就会造成内存浪费。</li></ul></li></ol></li> <li>调整MySQL参数并发相关的参数
+<ol><li>调整max_connections: 提高并发连接</li> <li>调整thread_cache_size
+<ul><li>加快连接数据库的速度，MySQL会缓存一定数量的客户服务线程以备重用，通过参数thread_cache_size可控制mysql缓存客户端线程的数量。</li></ul></li> <li>innodb_lock_wait_timeout
+<ul><li>控制InnoDB事务等待行锁的时间，对于快速处理的SQL语句，可以将行锁等待超时时间调大，以避免发生大的回滚操作。（技术文）</li></ul></li></ol></li></ul></div></div> <div class="page-slot page-slot-bottom"><!-- 横向自适应 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6620245489"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="page-edit"><!----> <!----> <!----></div> <div class="page-nav-wapper"><!----> <!----></div></div> <div class="article-list"><div class="article-title"><a href="/blog/archives/" class="iconfont icon-bi">最近更新</a></div> <div class="article-wrapper"><dl><dd>01</dd> <dt><a href="/blog/blog/xnote/about_acknowledge.html"><div>
+            思考总结
+            <!----></div></a> <span class="date">01-19</span></dt></dl><dl><dd>02</dd> <dt><a href="/blog/blog/xnote/rnote_deep_mind.html"><div>
+            deep mind
+            <!----></div></a> <span class="date">01-17</span></dt></dl><dl><dd>03</dd> <dt><a href="/blog/blog/lang/cxx_array_pointer.html"><div>
+            C++ Array &amp; Pointer
+            <!----></div></a> <span class="date">12-22</span></dt></dl> <dl><dd></dd> <dt><a href="/blog/archives/" class="more">更多文章&gt;</a></dt></dl></div></div></main></div> <div class="footer"><div class="icons"><a href="mailto:929843628@qq.com" title="发邮件" target="_blank" class="iconfont icon-youjian"></a><a href="https://github.com/joyous-x" title="GitHub" target="_blank" class="iconfont icon-github"></a><a href="https://music.163.com" title="听音乐" target="_blank" class="iconfont icon-erji"></a></div> 
+  Theme by
+  <a href="https://github.com/xugaoyi/vuepress-theme-vdoing" target="_blank" title="本站主题">Vdoing</a> 
+    | Copyright © 2020-2022
+    <span>Jiao | <a href="https://github.com/joyous-x/blog/blob/master/LICENSE" target="_blank">MIT License</a></span></div> <div class="buttons"><div title="返回顶部" class="button blur go-to-top iconfont icon-fanhuidingbu" style="display:none;"></div> <div title="去评论" class="button blur go-to-comment iconfont icon-pinglun" style="display:none;"></div> <div title="主题模式" class="button blur theme-mode-but iconfont icon-zhuti"><ul class="select-box" style="display:none;"><li class="iconfont icon-zidong">
+          跟随系统
+        </li><li class="iconfont icon-rijianmoshi">
+          浅色模式
+        </li><li class="iconfont icon-yejianmoshi">
+          深色模式
+        </li><li class="iconfont icon-yuedu">
+          阅读模式
+        </li></ul></div></div> <!----> <!----> <div class="custom-html-window custom-html-window-rb" style="display:;"><div class="custom-wrapper"><span class="close-but">×</span> <div><!-- 固定160*160px -->
+      <ins class="adsbygoogle"
+          style="display:inline-block;max-width:160px;max-height:160px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="8377369658"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      </div></div></div></div><div class="global-ui"><div></div></div></div>
+    <script src="/blog/assets/js/app.76e61623.js" defer></script><script src="/blog/assets/js/2.76622ffb.js" defer></script><script src="/blog/assets/js/33.802a0296.js" defer></script>
+  </body>
+</html>

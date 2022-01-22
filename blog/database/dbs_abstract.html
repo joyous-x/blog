@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>DB 抽象理解</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/img/favicon.ico">
+    <meta name="description" content="常见db的抽象理解">
+    <meta name="keywords" content="博客,全栈,技术文档,学习,面试,Go,C/C++,Python,Markdown">
+    <meta name="theme-color" content="#11a8cd">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.ab18f209.css" as="style"><link rel="preload" href="/blog/assets/js/app.76e61623.js" as="script"><link rel="preload" href="/blog/assets/js/2.76622ffb.js" as="script"><link rel="preload" href="/blog/assets/js/31.0fae4cd3.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.75d7f325.js"><link rel="prefetch" href="/blog/assets/js/11.9a2d0582.js"><link rel="prefetch" href="/blog/assets/js/12.7909b37a.js"><link rel="prefetch" href="/blog/assets/js/13.59a5dd8d.js"><link rel="prefetch" href="/blog/assets/js/14.a8018f31.js"><link rel="prefetch" href="/blog/assets/js/15.e0ae3b5f.js"><link rel="prefetch" href="/blog/assets/js/16.ffd548fb.js"><link rel="prefetch" href="/blog/assets/js/17.109220a6.js"><link rel="prefetch" href="/blog/assets/js/18.c3adf26a.js"><link rel="prefetch" href="/blog/assets/js/19.f52bbe53.js"><link rel="prefetch" href="/blog/assets/js/20.66d48fdd.js"><link rel="prefetch" href="/blog/assets/js/21.5d1f5085.js"><link rel="prefetch" href="/blog/assets/js/22.87f7d11f.js"><link rel="prefetch" href="/blog/assets/js/23.7c3e4c34.js"><link rel="prefetch" href="/blog/assets/js/24.4677ccb4.js"><link rel="prefetch" href="/blog/assets/js/25.ce71bb7b.js"><link rel="prefetch" href="/blog/assets/js/26.9053cf2d.js"><link rel="prefetch" href="/blog/assets/js/27.006ed2ac.js"><link rel="prefetch" href="/blog/assets/js/28.0d0e78ed.js"><link rel="prefetch" href="/blog/assets/js/29.dfecf525.js"><link rel="prefetch" href="/blog/assets/js/3.241056ce.js"><link rel="prefetch" href="/blog/assets/js/30.b4b93215.js"><link rel="prefetch" href="/blog/assets/js/32.f389182c.js"><link rel="prefetch" href="/blog/assets/js/33.802a0296.js"><link rel="prefetch" href="/blog/assets/js/34.ff0b8a06.js"><link rel="prefetch" href="/blog/assets/js/35.e40ed0fa.js"><link rel="prefetch" href="/blog/assets/js/36.ca7757ae.js"><link rel="prefetch" href="/blog/assets/js/37.395fb6bd.js"><link rel="prefetch" href="/blog/assets/js/38.27f445d0.js"><link rel="prefetch" href="/blog/assets/js/39.f78d56b5.js"><link rel="prefetch" href="/blog/assets/js/4.ba3fd9e7.js"><link rel="prefetch" href="/blog/assets/js/40.f8c3ae1d.js"><link rel="prefetch" href="/blog/assets/js/41.6284d4f1.js"><link rel="prefetch" href="/blog/assets/js/42.fc71a50c.js"><link rel="prefetch" href="/blog/assets/js/43.4bafede3.js"><link rel="prefetch" href="/blog/assets/js/44.fb84df9a.js"><link rel="prefetch" href="/blog/assets/js/45.e15ff02f.js"><link rel="prefetch" href="/blog/assets/js/46.6d1b4184.js"><link rel="prefetch" href="/blog/assets/js/47.72123a6b.js"><link rel="prefetch" href="/blog/assets/js/48.9302eb30.js"><link rel="prefetch" href="/blog/assets/js/49.6c38f32d.js"><link rel="prefetch" href="/blog/assets/js/5.90987b07.js"><link rel="prefetch" href="/blog/assets/js/50.a048887d.js"><link rel="prefetch" href="/blog/assets/js/51.ddaad0b4.js"><link rel="prefetch" href="/blog/assets/js/52.618d3413.js"><link rel="prefetch" href="/blog/assets/js/53.77639deb.js"><link rel="prefetch" href="/blog/assets/js/54.690ce3cb.js"><link rel="prefetch" href="/blog/assets/js/55.055ab3a9.js"><link rel="prefetch" href="/blog/assets/js/56.b872061b.js"><link rel="prefetch" href="/blog/assets/js/57.4bfafbb5.js"><link rel="prefetch" href="/blog/assets/js/58.4f3377d8.js"><link rel="prefetch" href="/blog/assets/js/59.b4ee4da2.js"><link rel="prefetch" href="/blog/assets/js/6.c02e018c.js"><link rel="prefetch" href="/blog/assets/js/60.3908f0bc.js"><link rel="prefetch" href="/blog/assets/js/61.37519a29.js"><link rel="prefetch" href="/blog/assets/js/62.b257111e.js"><link rel="prefetch" href="/blog/assets/js/63.fdfacb89.js"><link rel="prefetch" href="/blog/assets/js/64.a52f4ed6.js"><link rel="prefetch" href="/blog/assets/js/65.a268f40a.js"><link rel="prefetch" href="/blog/assets/js/66.5b2652f6.js"><link rel="prefetch" href="/blog/assets/js/67.ec960cfe.js"><link rel="prefetch" href="/blog/assets/js/68.d1f32d47.js"><link rel="prefetch" href="/blog/assets/js/69.1f138767.js"><link rel="prefetch" href="/blog/assets/js/7.d86c0c0c.js"><link rel="prefetch" href="/blog/assets/js/70.edd573c9.js"><link rel="prefetch" href="/blog/assets/js/71.843578b5.js"><link rel="prefetch" href="/blog/assets/js/72.0617fdfe.js"><link rel="prefetch" href="/blog/assets/js/73.f04d0f68.js"><link rel="prefetch" href="/blog/assets/js/74.4b7b20ef.js"><link rel="prefetch" href="/blog/assets/js/75.e1c70e3b.js"><link rel="prefetch" href="/blog/assets/js/76.f0530144.js"><link rel="prefetch" href="/blog/assets/js/77.2fdab5bb.js"><link rel="prefetch" href="/blog/assets/js/78.07d57bc8.js"><link rel="prefetch" href="/blog/assets/js/79.dfe91028.js"><link rel="prefetch" href="/blog/assets/js/8.2202a71a.js"><link rel="prefetch" href="/blog/assets/js/80.7fcc6f11.js"><link rel="prefetch" href="/blog/assets/js/81.14f3b5d4.js"><link rel="prefetch" href="/blog/assets/js/82.83fe24e8.js"><link rel="prefetch" href="/blog/assets/js/83.6f81368c.js"><link rel="prefetch" href="/blog/assets/js/84.3f3bed06.js"><link rel="prefetch" href="/blog/assets/js/85.05324d0f.js"><link rel="prefetch" href="/blog/assets/js/86.81795414.js"><link rel="prefetch" href="/blog/assets/js/87.09176e00.js"><link rel="prefetch" href="/blog/assets/js/88.1c719a03.js"><link rel="prefetch" href="/blog/assets/js/89.8bbdbf67.js"><link rel="prefetch" href="/blog/assets/js/9.5185adce.js"><link rel="prefetch" href="/blog/assets/js/90.b27d627b.js"><link rel="prefetch" href="/blog/assets/js/91.f8a19ed4.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.ab18f209.css">
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true"><div class="theme-container sidebar-open no-sidebar have-rightmenu"><header class="navbar blur"><div title="目录" class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/img/web_logo.png" alt="" class="logo"> <!----></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link router-link-active">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar-hover-trigger"></div> <aside class="sidebar" style="display:none;"><div class="blogger"><img src="/img/avatar.png"> <div class="blogger-info"><h3>Jiao</h3> <span>知行合一</span></div></div> <nav class="nav-links"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link router-link-active">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> <div class="sidebar-slot sidebar-slot-bottom"><!-- 正方形 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="3508773082"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div></aside> <div><main class="page"><div class="theme-vdoing-wrapper "><div class="articleInfo-wrap" data-v-0c557b5e><div class="articleInfo" data-v-0c557b5e><ul class="breadcrumbs" data-v-0c557b5e><li data-v-0c557b5e><a href="/blog/" title="首页" class="iconfont icon-home router-link-active" data-v-0c557b5e></a></li> <li data-v-0c557b5e><a href="/blog/categories/?category=blog" title="分类" data-v-0c557b5e>blog</a></li><li data-v-0c557b5e><a href="/blog/categories/?category=database" title="分类" data-v-0c557b5e>database</a></li></ul> <div class="info" data-v-0c557b5e><div title="作者" class="author iconfont icon-touxiang" data-v-0c557b5e><a href="https://github.com/joyous-x" target="_blank" title="作者" class="beLink" data-v-0c557b5e>Jiao</a></div> <div title="创建时间" class="date iconfont icon-riqi" data-v-0c557b5e><a href="javascript:;" data-v-0c557b5e>2020-04-21</a></div> <!----></div></div></div> <!----> <div class="content-wrapper"><div class="right-menu-wrapper"><div class="right-menu-margin"><div class="right-menu-content"></div></div></div> <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABH1JREFUSA3tVl1oHFUUPmdmd2ltklqbpJDiNnXFmgbFktho7YMPNiJSSZM0+CAYSkUELVhM6YuwIPpgoOKDqOBDC0XE2CQoNtQXBUFTTcCi+Wlh1V2TQExsUzcltd3M9Tt3ZjZzZ2fT+OJTL8yeM+eee757fmeJbq//KQL8X3DUSFOcfr7cRsRtxNQMWueeVzOkaITIGqQHNg5y8+jNW9ldM7A6nTpAjuolUikAwq7CE3WcM2RRDz+XGVgN3FptU/aUSlvq9Pa3iZ1+sgAqJyyAFqkipd9dqiwHF3P65YycLWc/6sqGrvoEoIp6DOFaX5h6+dnfjkWprwqsPk0dUGq5vySwDImC10KxFHgGL1SWoc92O3eVht09qdXNH11I2SsTsJYqMWzihqGMi+A+Garf3BAuuLI5oGlULyNfyB/HYNujwktOfRrMr5t77NmevqaUopx0grnKAyvVpmwUDB4x6FPXuGvYLTDwWsejwgtgkYKPqRJg8SV6xaiZ3ZTppGneS4yfH5/66fZSDHv+QZci/+h5c5UHtpy67JUqGppM0sh0Nc1dW6/N1W5Yoqat8/TU/VnadmdeW2PLLSyh0cvxBs3KbqTmwYPpxN4do/mzE8nEpvX/UMu2Wbp74zUAK5q6WkHns7V0eWkdPbPzd3rxkTGybadYySumVzhcaJFbs5UrEkQ/+CK8gF5dnh/6ciIZ73gwQ927L1IitoxKLXYP3SjYdOrHHfTZhRRlFyrorafPk20B3HPD1y2G3qKZME5Jcf3t/HUC13/8tSd++vqFveMUTwAUxSUFI1QekR1+bIze3D9MF2aq6cPvG72CgnldWCFqyRw3lwH8ZMerjTD9ElRO7Gv44wNpC90aASqGfVlz/Rx17srQ57/UU26hkhQqUB7dBR71WmzQhHUnblGmVOEw0jhbV1n9OlXUDCIRGaNV5Jp43N516fN7JmnTHdfp7Hgy0luO4aMhtkLL8Bi3bUWYvzh5Mn1dTxrL6QmGuRhGL/TiTTxRoEdTszSaq9GR0NGA3KdkOz3hqSV3MIDhQ5IVX/Ivx3umBti2es2h4eZby7x8br1rkf7Mo90AqC8aQ3sJeNzqFRu+vSANAQe3PL7l0HGOAdwDCeZYvNKeoZp1Qfs6Aipndh86HmFRi0LAnEO47wsqM6cdfjh3jBPUzhZy7nvlUfFsamED1VQt6aISHVymXZ/B2aCtIG8AI8xfobj2d3en1wWVhOeHELKmLQ1s211s88comkv4UCwWyF787mJdYXtNfhKAXVqnKTq8QZvGAGGOfaTo5pGZ/PwbUCr5+DPr/1J92JNHr9aOl/F3iI5+O1nfybsGxoimvZ3ViWSluDITw3P37mypheDIPY0tw7+O/5ApbkYw+zpfaUVu32Pi98+defdUhEpZkRFq0aqyNh9FuL9hpYbEm6iwi0z2REd09ZmyENEbuhjDWzKvZXTqKYaBIr3tt5kuPtQBZFvEUwHt60vfCNu41XsksH9Ij1BMMz1Y0OOunHNShFIP5868g5zeXmuLwL9T4b6Q2+KejgAAAABJRU5ErkJggg==">DB 抽象理解<!----></h1> <div class="page-slot page-slot-top"><!-- 固定100% * 90px可显示，max-height:90px未见显示-->
+     <ins class="adsbygoogle"
+          style="display:inline-block;width:100%;max-height:90px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6625304284"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="theme-vdoing-content content__default"><h2 id="db-详解"><a href="#db-详解" class="header-anchor">#</a> db 详解</h2> <ul><li>持久化
+<ul><li>数据镜像(物理备份) 或 修改记录(逻辑备份)</li> <li>重点
+<ul><li>自动持久化时，其发生的时机: 一般在在db命令之后, 返回调用方之前</li> <li>步骤：buffer ---&gt; 文件 ---&gt; 刷新文件到磁盘
+<ul><li>每个环节都可以有自己的策略选择时机，平衡性能和完整性
+<ul><li>命令执行完成并写入buffer后返回时机的策略控制:
+<ul><li>不保证写入文件</li> <li>保证写入文件</li> <li>保证文件刷入磁盘</li></ul></li> <li>刷盘策略(linux的fsync命令)
+<ul><li>每次修改命令都刷盘</li> <li>每N秒或N个操作刷盘</li> <li>不主动刷盘，依赖操作系统的刷盘策略</li></ul></li></ul></li></ul></li> <li>注意: 持久化时是否会阻塞数据库操作</li></ul></li></ul></li> <li>高可用
+<ul><li>主从结构</li> <li>重点
+<ul><li>作用
+<ul><li>热备</li> <li>读写分离，均衡数据库负载</li></ul></li> <li>媒介
+<ul><li>操作记录落盘后再同步(文件)</li> <li>操作记录不落盘就同步(内存)</li></ul></li> <li>方式(平衡数据一致性和性能)
+<ul><li>异步复制
+<ul><li>主节点用户命令完成时，只保证数据写入媒介</li> <li>高延迟和高性能。需要, 主从通过周期交流复制进度, 来保证主从数据不一致性的幅度</li></ul></li> <li>同步复制
+<ul><li>主节点用户命令完成时，保证数据已经被所有从库同步完成</li></ul></li> <li>半同步复制
+<ul><li>主节点用户命令完成时，保证数据已经被部分从库存储，但不保证从库完成同步</li></ul></li></ul></li> <li>逻辑
+<ul><li>全量同步、增量同步</li></ul></li> <li>主从切换
+<ul><li>手动
+<ul><li>防止脑裂发生、保证新主节点数据最新</li></ul></li> <li>自动
+<ul><li>通过一致性协议进行决策：主节点当前状态、选主结果</li> <li>一般要处理:
+<ul><li>新集群数据最新和一致性保证</li> <li>监控节点了解其它所有节点的存活、监控节点之间信息同步、监控节点获取(所有服务节点的)服务状态</li></ul></li></ul></li></ul></li></ul></li> <li>难点
+<ul><li>主从数据一致性
+<ul><li>网络延迟、主节点高流量、从节点性能不足(可以考虑从库并发应用同步到的数据)等等</li></ul></li></ul></li></ul></li> <li>高性能
+<ul><li>方式
+<ul><li>通过主从结构, 实现读写分离</li> <li>cluster:
+<ul><li>一致性hash 或 划分slot</li> <li>sharding 结合数据和控制分离 形成去中心化集群</li></ul></li></ul></li> <li>问题
+<ul><li>如，redis 集群multi-key操作不支持或者支持不够</li></ul></li> <li>注意
+<ul><li>性能测试(工具)</li> <li>数据库锁的问题
+<ul><li>redis 单线程, 无锁</li> <li>mysql 有读写锁, 又分表锁、行锁</li> <li>mongo 有读写锁, 又分库全局锁、库锁、集合锁</li></ul></li></ul></li></ul></li> <li>缓存
+<ul><li>缓存穿透: 查询一定不存在的数据时, 查询回源db。流量大(大量的不存在数据请求)时db被压垮
+<ul><li>布隆过滤器、缓存空值(生命周期短)</li></ul></li> <li>缓存击穿：缓存一种非常“热点”的数据，在某个时间点过期的时候，恰好在这个时间点对这个Key有大量的并发请求过来，瞬间把后端DB压垮
+<ul><li>互斥锁(mutex key)、不过期(但后台刷新)</li></ul></li> <li>缓存雪崩：设置缓存时采用了相同的过期时间，导致缓存在某一时刻同时失效，请求全部转发到DB，DB瞬时压力过重雪崩
+<ul><li>多副本，并且每个副本设置不同的过期时间(在指定范围内随机)</li></ul></li></ul></li> <li>关系型数据库
+<ul><li>数据库设计三大范式：
+<ul><li>第一范式(1NF)：数据表中的每一列必须是不可拆分的最小单元，也就是确保每一列的原子性</li> <li>第二范式(2NF)：满足1NF后，要求表中的所有列都必须依赖于主键，而不能有任何一列与主键没有关系，也就是说一个表只描述一件事情</li> <li>第三范式(3NF)：必须先满足2NF，要求：表中的每一列只与主键直接相关而不是间接相关，(表中的每一列只能依赖于主键)</li></ul></li> <li>事务(transaction)
+<ul><li>ACID ：保证事务是正确可靠的，所必须具备的四个特性：原子性(atomicity，或称不可分割性)、一致性(consistency)、隔离性(isolation，又称独立性)、持久性(durability)。</li> <li>事务的隔离级别 : <a href="https://draveness.me/mysql-innodb" target="_blank" rel="noopener noreferrer">图解脏读、不可重复读、幻读问题<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a> <ul><li>read uncommitted
+<ul><li>事务A修改数据a, 事务B读取数据a ,,,,,, B 读取到事务 A 已修改但未提交的数据 ,,,,,, 脏读</li></ul></li> <li>read committed
+<ul><li>事务A修改数据a, 事务B在A操作之前之后分别读取数据a ,,,,,, B 读到的两次数据不一致 ,,,,,, 不可重复读</li></ul></li> <li>repeatable read
+<ul><li>事务A插入(或删除)数据a, 事务B在A操作之前之后分别读取数据a ,,,,,, B 会发现数据a忽在忽不在 ,,,,,, 幻读(虚读)</li></ul></li> <li>serializable
+<ul><li>可以避免所有的问题</li></ul></li></ul></li> <li>note
+<ul><li>上述四种隔离级别是由弱到强, 隔离级别越强性能受到的影响越大</li> <li>可以在低隔离级别上，配合锁的使用达到几乎避免幻读的效果</li> <li>一般的DBMS系统，都使用Read-Comitted作为默认隔离级别，如Oracle、SQL Server等，而MySQL却使用Read-Repeatable</li></ul></li></ul></li></ul></li></ul> <h2 id="redis-使用"><a href="#redis-使用" class="header-anchor">#</a> redis 使用</h2> <h4 id="持久化"><a href="#持久化" class="header-anchor">#</a> 持久化</h4> <ul><li>RDB
+<ul><li>一个非常紧凑(compact)的文件，保存了 Redis 在某个时间点上的数据集。</li> <li>父进程在保存RDB时fork一个子进程，然后由子进程来处理接下来的所有保存工作，父进程无须执行任何磁盘 I/O 操作。</li></ul></li> <li>AOF(append-only file)
+<ul><li>AOF 文件的体积通常要大于 RDB 文件的体积</li> <li>写入AOF文件: aof_buf ---&gt; AOF文件 ---&gt; 刷新到磁盘
+<ul><li>推荐的刷盘策略：每秒 fsync 一次：足够快(和使用 RDB 持久化差不多)，并且在故障时只会丢失 1 秒钟的数据。</li></ul></li></ul></li> <li>RDB + AOF
+<ul><li>redis5.0之后新增, 需要开启：aof-use-rdb-preamble</li></ul></li></ul> <h4 id="高可用"><a href="#高可用" class="header-anchor">#</a> 高可用</h4> <ul><li>主从结构(同步使用：slaveof 命令)
+<ul><li>Redis使用默认的异步复制
+<ul><li>是绝大多数 Redis 用例的自然复制模式。</li> <li>包括：全量同步 和 增量同步
+<ul><li>在Slave启动并连接到Master之后，它将主动发送一个SYNC命令，进行全量复制。后续采用增量同步，只复制最新数据。</li></ul></li> <li>注意，从 Redis 2.8 开始，从服务器会以每秒一次的频率向主服务器报告复制流(replication stream)的处理进度。</li></ul></li> <li><div class="language- line-numbers-mode"><pre class="language-text"><code>    有2个参数：
+    min-slaves-to-write 1
+    min-slaves-max-lag 10
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>    有2个参数：
+    min-slaves-to-write 1
+    min-slaves-max-lag 10
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div>解决数据丢失: (异步复制和脑裂导致)<div class="language- line-numbers-mode"><pre class="language-text"><code>    有2个参数：
+    min-slaves-to-write 1
+    min-slaves-max-lag 10
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><ul><li>要求至少有1个slave，数据复制和ACK(同步)的延迟不能超过10秒，如果说一旦所有的slave，数据复制和ACK的延迟都超过了10秒钟，那么master就不会再接收任何请求了，上面两个配置可以减少异步复制和脑裂导致的数据丢失。
+<ul><li>如果主从同步差距过大，则master就停止数据接收，止损</li> <li>如果有master处于脑裂状态，则如果它跟任何一个slave丢了连接，在10秒后发现没有slave给自己ACK，那么就拒绝客户端新的写请求，因此在脑裂场景下，最多丢失10秒的数据。</li></ul></li></ul></li></ul></li> <li>著名实现：sentinel 模式
+<ul><li>实现了自动化的系统监控和故障恢复功能。只能保证redis集群的高可用性, 不会保证数据零丢失。</li> <li>选举领头哨兵的过程使用了 Raft算法</li> <li>和主库的连接建立完成后，哨兵会定时执行下面3个操作。
+<ul><li>每10秒向主库和从库发送info命令；
+<ul><li>以获得当前数据库的相关信息。从而实现新节点(包括从库)的自动发现。</li></ul></li> <li>每2秒向主库和从库的&quot;<strong>sentinel</strong>:hello&quot;频道发送自己的信息
+<ul><li>(就是说哨兵不但订阅了该频道，而且还会向该频道发布信息，以使其他哨兵得到自己的信息)</li></ul></li> <li>每1秒向主库、从库和其他哨兵节点发送ping命令。</li></ul></li></ul></li></ul> <ul><li>注意
+<ul><li>redis 的代码里是: 先执行命令，再aof + sync，然后再返回客户端</li></ul></li></ul> <h4 id="高性能"><a href="#高性能" class="header-anchor">#</a> 高性能</h4> <ul><li>客户端
+<ul><li>单线程，所以重点在 rtt</li> <li>pipeline 和 multi &amp; exec</li></ul></li> <li>服务端
+<ul><li>集群：
+<ul><li>一致性hash</li> <li>一致性hash+代理</li> <li>redis-cluster
+<ul><li>问题：redis-cluster对multi-key操作支持不够，其它方式不支持。</li> <li>redis-cluster 默认并不支持读写分离</li> <li>节点之间通过gossip协议交换状态信息</li> <li>无中心架构, 数据通过异步复制, 不保证数据的强一致性</li></ul></li></ul></li></ul></li> <li>测试工具
+<ul><li>redis-benchmark</li></ul></li></ul> <hr> <hr> <h2 id="mysql"><a href="#mysql" class="header-anchor">#</a> mysql</h2> <h4 id="持久化-2"><a href="#持久化-2" class="header-anchor">#</a> 持久化</h4> <ul><li>mysqldump
+<ul><li>参数: --lock-tables, 锁表</li> <li>注意: 默认情况下，不会阻塞数据库，但是会造成流量突增</li></ul></li></ul> <h4 id="高可用-2"><a href="#高可用-2" class="header-anchor">#</a> 高可用</h4> <ul><li>原则
+<ul><li>我们在考虑MySQL数据库的高可用架构时，主要考虑如下几方面：
+<ul><li>如果数据库发生了宕机或者意外中断等故障，尽可能的减少停机时间，保证业务不会因为数据库的故障而中断。</li> <li>用作备份、只读副本等功能的非主节点的数据应该和主节点的数据实时或者最终保持一致。</li> <li>当业务发生数据库切换时，切换前后的数据库内容应当一致，不会因为数据缺失或者数据不一致而影响业务。</li></ul></li> <li>reference: [https://dbaplus.cn/news-11-1127-1.html]</li></ul></li> <li>数据完整性
+<ul><li>redo log 和 undo log</li></ul></li> <li>主从同步(Master-Slave Replication)
+<ul><li>要求
+<ul><li>主从数据库版本一致</li></ul></li> <li>原理
+<ul><li>主库开启 binlog, 在有数据库修改操作时(只记录更改操作)，更新binlog文件
+<ul><li>写binlog文件：用户commit后同步写入InnoDB Log Buffer ---&gt; binlog文件 ---&gt; 刷新到磁盘</li></ul></li> <li>从库通过start slave开启复制功能：从库异步读取主库的 binlog 写入自己的 relay log, 并另起一线程将其重放到mysql数据库。</li></ul></li> <li>方案
+<ul><li>MySQL Replication
+<ul><li>MySQL官方提出的主从同步方案。异步复制: 保证binlog写入文件, 不保证binlog传输给从库</li> <li>问题
+<ul><li>主库宕机后，数据可能丢失</li> <li>主从复制延迟问题
+<ul><li>一个主库的从库太多、从库硬件比主库差、主从库之间的网络延迟，导致复制延迟。</li> <li>主从复制的设计问题、主库读写压力大 ：主库数据太多,从库只有一个thread来不及复制</li></ul></li></ul></li> <li>方案
+<ul><li>半同步复制 : 解决数据丢失的问题</li> <li>并行复制   : 解决从库复制延迟的问题
+<ul><li>社区版5.6新增。是指从库多线程并行应用库级别binlog，同一个库数据更改还是串行(5.7版并行复制基于事务组)设置。</li></ul></li></ul></li></ul></li> <li>mysql semi-sync(半同步复制)
+<ul><li>google 提出, 5.5集成到mysql, 以插件的形式存在, 需要单独安装</li> <li>确保事务提交后binlog至少传输到一个从库(写入relay log), 但不保证从库应用完这个事务的binlog (应用relay log)</li></ul></li> <li>同步复制
+<ul><li>google 提出。不仅要求所有Slave收到binlog数据, 还要求所有Slave将数据commit到数据库中</li></ul></li></ul></li> <li>主从切换
+<ul><li>MySQL Replication的主从切换需要人工介入判断，同时需要Slave的replaylog提交完毕，故障恢复时间会比较长。</li> <li>MHA(MySQL-master-ha) : 目前广泛使用
+<ul><li>目标
+<ul><li>自动实现主实例宕机后，从机切换为主，并尽量降低切换时延(通常在10-30s内切换完成)。</li></ul></li> <li>特性
+<ul><li>MHA对MySQL的主从复制集群非常友好，没有对集群做任何侵入性的修改。</li> <li>从机切换为主时，由MHA保证在切换过程中的数据一致性。
+<ul><li>在主实例宕机后，MHA可以自动的判断主从复制集群中哪个从实例的relaylog是最新的，并将其差异log&quot;应用&quot;到其余的从实例中，从而保证每个实例的数据一致。</li> <li>通常情况下，MHA需要10s左右检测主实例异常，并将主实例关闭从而避免脑裂。然后再用10s左右将差异的log event同步，并启用新的Master。整个MHA的RTO时间大约在30s。</li></ul></li></ul></li></ul></li> <li>MySQL Cluster : 官方方案
+<ul><li>一个高度可扩展的，兼容ACID事务的实时数据库，基于分布式架构不存在单点故障。支持自动水平扩容，能做自动的读写负载均衡</li> <li>控制面和数据面分离
+<ul><li>application ---&gt; mysql server(存储表结构) ---&gt; NDB Cluster(数据节点, NDB存储服务器, 通过 ndb_mgmd 管理)
+<ul><li>MySQL Cluster的 Cluster 部分(即 NDB Cluster)可独立于MySQL服务器进行配置。</li></ul></li></ul></li></ul></li></ul></li></ul></li></ul> <h4 id="高性能-2"><a href="#高性能-2" class="header-anchor">#</a> 高性能</h4> <ul><li>锁
+<ul><li>读锁、写锁(表锁、行锁)
+<ul><li>只有在使用索引时才会使用行锁，但当符合条件的数据比较多时会使用表锁</li> <li>在select时，都会加上读锁</li></ul></li></ul></li> <li>慢查询
+<ul><li><div class="language- line-numbers-mode"><pre class="language-text"><code>参数：(可以通过配置文件或mysql的全局变量设置)
+  mysql&gt; set global slow_query_log='ON'; # slow_query_log  ：是否开启慢查询日志功能(必填)
+  mysql&gt; set global long_query_time=1;   # long_query_time ：超过设定值将被视作慢查询，并记录至慢查询日志文件中(必填)
+  mysql&gt; set global slow_query_log_file='slow.log'; # log-slow-queries ：慢查询日志文件(不可填)，自动在 /data 创建一个 [hostname]-slow.log 文件
+查看：
+  show variables like 'long%';
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>参数：(可以通过配置文件或mysql的全局变量设置)
+  mysql&gt; set global slow_query_log='ON'; # slow_query_log  ：是否开启慢查询日志功能(必填)
+  mysql&gt; set global long_query_time=1;   # long_query_time ：超过设定值将被视作慢查询，并记录至慢查询日志文件中(必填)
+  mysql&gt; set global slow_query_log_file='slow.log'; # log-slow-queries ：慢查询日志文件(不可填)，自动在 /data 创建一个 [hostname]-slow.log 文件
+查看：
+  show variables like 'long%';
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div>相关参数<div class="language- line-numbers-mode"><pre class="language-text"><code>参数：(可以通过配置文件或mysql的全局变量设置)
+  mysql&gt; set global slow_query_log='ON'; # slow_query_log  ：是否开启慢查询日志功能(必填)
+  mysql&gt; set global long_query_time=1;   # long_query_time ：超过设定值将被视作慢查询，并记录至慢查询日志文件中(必填)
+  mysql&gt; set global slow_query_log_file='slow.log'; # log-slow-queries ：慢查询日志文件(不可填)，自动在 /data 创建一个 [hostname]-slow.log 文件
+查看：
+  show variables like 'long%';
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div></li> <li>指令: EXPLAIN
+<ul><li>在select语句前加上explain，可以了解SQL执行的详细状态</li></ul></li> <li>慢查询日志分析工具
+<ul><li>mysqldumpslow</li> <li>mysqlsla</li></ul></li></ul></li> <li>测试工具
+<ul><li>mysqlslap
+<ul><li>参数：--only-print 打印测试语,不实际执行。</li> <li>注意：使用 -a 自动测试时，会drop schema。</li></ul></li></ul></li> <li>reference
+<ul><li>&lt;高性能MySQL&gt;</li> <li><div class="language- line-numbers-mode"><pre class="language-text"><code>    mysql&gt; set global general_log=on; # 打开general log
+    mysql&gt; show global status;         # 列出MySQL服务器运行各种状态值:
+    mysql&gt; show variables;             # 查询MySQL服务器配置信息语句：
+    mysql&gt; show variables like '%slow%';             # 慢查询情况
+    mysql&gt; show global status like 'table_locks%';   # 表锁情况
+    可以查看设置的最大连接数 和 已经使用的最大连接数, 以调优
+    可以查看参数 table_open_cache, 它控制所有 mysql 执行线程可打开表缓存的数量, 以调优
+    可以查看参数 thread_cache_size, 它控制 mysql 缓存客户端线程的数量, 以调优。可以通过计算线程 cache 的失效率 threads_created / connections 来衡量 thread_cahce_size 的设置是否合适，该值越接近 1，说明线程 cache 命中率越低。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>    mysql&gt; set global general_log=on; # 打开general log
+    mysql&gt; show global status;         # 列出MySQL服务器运行各种状态值:
+    mysql&gt; show variables;             # 查询MySQL服务器配置信息语句：
+    mysql&gt; show variables like '%slow%';             # 慢查询情况
+    mysql&gt; show global status like 'table_locks%';   # 表锁情况
+    可以查看设置的最大连接数 和 已经使用的最大连接数, 以调优
+    可以查看参数 table_open_cache, 它控制所有 mysql 执行线程可打开表缓存的数量, 以调优
+    可以查看参数 thread_cache_size, 它控制 mysql 缓存客户端线程的数量, 以调优。可以通过计算线程 cache 的失效率 threads_created / connections 来衡量 thread_cahce_size 的设置是否合适，该值越接近 1，说明线程 cache 命中率越低。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div>状态查看</li> <div class="language- line-numbers-mode"><pre class="language-text"><code>    mysql&gt; set global general_log=on; # 打开general log
+    mysql&gt; show global status;         # 列出MySQL服务器运行各种状态值:
+    mysql&gt; show variables;             # 查询MySQL服务器配置信息语句：
+    mysql&gt; show variables like '%slow%';             # 慢查询情况
+    mysql&gt; show global status like 'table_locks%';   # 表锁情况
+    可以查看设置的最大连接数 和 已经使用的最大连接数, 以调优
+    可以查看参数 table_open_cache, 它控制所有 mysql 执行线程可打开表缓存的数量, 以调优
+    可以查看参数 thread_cache_size, 它控制 mysql 缓存客户端线程的数量, 以调优。可以通过计算线程 cache 的失效率 threads_created / connections 来衡量 thread_cahce_size 的设置是否合适，该值越接近 1，说明线程 cache 命中率越低。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>    mysql&gt; set global general_log=on; # 打开general log
+    mysql&gt; show global status;         # 列出MySQL服务器运行各种状态值:
+    mysql&gt; show variables;             # 查询MySQL服务器配置信息语句：
+    mysql&gt; show variables like '%slow%';             # 慢查询情况
+    mysql&gt; show global status like 'table_locks%';   # 表锁情况
+    可以查看设置的最大连接数 和 已经使用的最大连接数, 以调优
+    可以查看参数 table_open_cache, 它控制所有 mysql 执行线程可打开表缓存的数量, 以调优
+    可以查看参数 thread_cache_size, 它控制 mysql 缓存客户端线程的数量, 以调优。可以通过计算线程 cache 的失效率 threads_created / connections 来衡量 thread_cahce_size 的设置是否合适，该值越接近 1，说明线程 cache 命中率越低。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><ul><li>mysql表大时，可以进行分表和表分区、以及分库
+<ul><li>分库分表存在以下问题：
+<ul><li>事务问题</li> <li>跨节点Join 和 count,order by,group by以及聚合函数问题</li> <li>数据迁移，容量规划，扩容等问题</li></ul></li></ul></li></ul></li></ul> <hr> <hr> <h2 id="mongo"><a href="#mongo" class="header-anchor">#</a> mongo</h2> <h4 id="持久化-3"><a href="#持久化-3" class="header-anchor">#</a> 持久化</h4> <ul><li>mongodump &amp; mongorestore</li> <li>mongoexport &amp; mongoimport</li></ul> <h4 id="高可用-3"><a href="#高可用-3" class="header-anchor">#</a> 高可用</h4> <ul><li>Replica Set
+<ul><li>是mongod的实例集合, 包含三类角色: Primary、Secondary、Arbiter(仲裁者)</li></ul> <ul><li>主从同步方式
+<ul><li>两个步骤
+<ul><li>intial sync，可以理解为全量同步</li> <li>replication，追同步源的oplog，可以理解为增量同步, 会不断拉取主上新产生的oplog并重放
+<ul><li>三类线程完成replication工作
+<ul><li>producer thread，不断的从同步源上拉取oplog，并加入到一个BlockQueue的队列里。</li> <li>replBatcher thread，负责逐个从producer thread的队列里取出oplog，并放到自己维护的队列里。要保持顺序性。</li> <li>sync线程将replBatcher thread的队列分发到默认16个replWriter线程，由replWriter来最终重放每条oplog。</li></ul></li></ul></li></ul></li></ul></li></ul> <ul><li>注意：mongo的oplog具有幂等性</li></ul></li></ul> <h4 id="高性能-3"><a href="#高性能-3" class="header-anchor">#</a> 高性能</h4> <ul><li>Cluster
+<ul><li>使用Sharding分片技术: client ---&gt; router(mongos) ---&gt; shard(每个shard节点都是一个replica set)</li></ul></li> <li>锁
+<ul><li>在 2.2 版本以前，mongod 只有全局锁；在 2.2 版本开始，库级锁;
+<ul><li>粒度：库 ---&gt; collect ---&gt; document</li> <li>建索引就是一个容易引起长时间写锁的问题。如果集合的数据量很大，建索引通常要花比较长时间，特别容易引起问题。
+<ul><li>MongoDB 提供了两种建索引的访问
+<ul><li>一种是 background 方式:    db.posts.ensureIndex({user_id: 1}, {background: 1})</li> <li>一种是非 background 方式:  db.posts.ensureIndex({user_id: 1})</li></ul></li></ul></li></ul></li></ul></li></ul> <h4 id="utility"><a href="#utility" class="header-anchor">#</a> utility</h4> <ul><li>Schema Explorer
+<ul><li>[https://studio3t.com/knowledge-base/articles/schema-explorer/]</li></ul></li></ul> <hr> <hr> <h2 id="end"><a href="#end" class="header-anchor">#</a> END</h2> <ul><li>sharding
+<ul><li>当数据量比较大的时候，我们需要把数据分片运行在不同的机器中，以降低CPU、内存和IO的压力，Sharding就是数据库分片技术。</li></ul></li> <li>ORM(Object-Relational Mapping)
+<ul><li>mybatis</li></ul></li> <li>MYSQL性能优化的最佳20+条经验]
+<ul><li>https://www.cnblogs.com/zhouyusheng/p/8038224.html
+<ul><li>EXPLAIN、PROCEDURE ANALYSE()</li></ul></li></ul></li> <li>MVCC
+<ul><li>mysql 的 MVCC ：是一种多版本并发控制机制</li></ul></li></ul></div></div> <div class="page-slot page-slot-bottom"><!-- 横向自适应 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6620245489"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="page-edit"><!----> <!----> <!----></div> <div class="page-nav-wapper"><!----> <!----></div></div> <div class="article-list"><div class="article-title"><a href="/blog/archives/" class="iconfont icon-bi">最近更新</a></div> <div class="article-wrapper"><dl><dd>01</dd> <dt><a href="/blog/blog/xnote/about_acknowledge.html"><div>
+            思考总结
+            <!----></div></a> <span class="date">01-19</span></dt></dl><dl><dd>02</dd> <dt><a href="/blog/blog/xnote/rnote_deep_mind.html"><div>
+            deep mind
+            <!----></div></a> <span class="date">01-17</span></dt></dl><dl><dd>03</dd> <dt><a href="/blog/blog/lang/cxx_array_pointer.html"><div>
+            C++ Array &amp; Pointer
+            <!----></div></a> <span class="date">12-22</span></dt></dl> <dl><dd></dd> <dt><a href="/blog/archives/" class="more">更多文章&gt;</a></dt></dl></div></div></main></div> <div class="footer"><div class="icons"><a href="mailto:929843628@qq.com" title="发邮件" target="_blank" class="iconfont icon-youjian"></a><a href="https://github.com/joyous-x" title="GitHub" target="_blank" class="iconfont icon-github"></a><a href="https://music.163.com" title="听音乐" target="_blank" class="iconfont icon-erji"></a></div> 
+  Theme by
+  <a href="https://github.com/xugaoyi/vuepress-theme-vdoing" target="_blank" title="本站主题">Vdoing</a> 
+    | Copyright © 2020-2022
+    <span>Jiao | <a href="https://github.com/joyous-x/blog/blob/master/LICENSE" target="_blank">MIT License</a></span></div> <div class="buttons"><div title="返回顶部" class="button blur go-to-top iconfont icon-fanhuidingbu" style="display:none;"></div> <div title="去评论" class="button blur go-to-comment iconfont icon-pinglun" style="display:none;"></div> <div title="主题模式" class="button blur theme-mode-but iconfont icon-zhuti"><ul class="select-box" style="display:none;"><li class="iconfont icon-zidong">
+          跟随系统
+        </li><li class="iconfont icon-rijianmoshi">
+          浅色模式
+        </li><li class="iconfont icon-yejianmoshi">
+          深色模式
+        </li><li class="iconfont icon-yuedu">
+          阅读模式
+        </li></ul></div></div> <!----> <!----> <div class="custom-html-window custom-html-window-rb" style="display:;"><div class="custom-wrapper"><span class="close-but">×</span> <div><!-- 固定160*160px -->
+      <ins class="adsbygoogle"
+          style="display:inline-block;max-width:160px;max-height:160px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="8377369658"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      </div></div></div></div><div class="global-ui"><div></div></div></div>
+    <script src="/blog/assets/js/app.76e61623.js" defer></script><script src="/blog/assets/js/2.76622ffb.js" defer></script><script src="/blog/assets/js/31.0fae4cd3.js" defer></script>
+  </body>
+</html>

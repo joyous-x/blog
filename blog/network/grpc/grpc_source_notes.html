@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>grpc source notes</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/img/favicon.ico">
+    <meta name="description" content="grpc source notes">
+    <meta name="keywords" content="博客,全栈,技术文档,学习,面试,Go,C/C++,Python,Markdown">
+    <meta name="theme-color" content="#11a8cd">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.ab18f209.css" as="style"><link rel="preload" href="/blog/assets/js/app.76e61623.js" as="script"><link rel="preload" href="/blog/assets/js/2.76622ffb.js" as="script"><link rel="preload" href="/blog/assets/js/53.77639deb.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.75d7f325.js"><link rel="prefetch" href="/blog/assets/js/11.9a2d0582.js"><link rel="prefetch" href="/blog/assets/js/12.7909b37a.js"><link rel="prefetch" href="/blog/assets/js/13.59a5dd8d.js"><link rel="prefetch" href="/blog/assets/js/14.a8018f31.js"><link rel="prefetch" href="/blog/assets/js/15.e0ae3b5f.js"><link rel="prefetch" href="/blog/assets/js/16.ffd548fb.js"><link rel="prefetch" href="/blog/assets/js/17.109220a6.js"><link rel="prefetch" href="/blog/assets/js/18.c3adf26a.js"><link rel="prefetch" href="/blog/assets/js/19.f52bbe53.js"><link rel="prefetch" href="/blog/assets/js/20.66d48fdd.js"><link rel="prefetch" href="/blog/assets/js/21.5d1f5085.js"><link rel="prefetch" href="/blog/assets/js/22.87f7d11f.js"><link rel="prefetch" href="/blog/assets/js/23.7c3e4c34.js"><link rel="prefetch" href="/blog/assets/js/24.4677ccb4.js"><link rel="prefetch" href="/blog/assets/js/25.ce71bb7b.js"><link rel="prefetch" href="/blog/assets/js/26.9053cf2d.js"><link rel="prefetch" href="/blog/assets/js/27.006ed2ac.js"><link rel="prefetch" href="/blog/assets/js/28.0d0e78ed.js"><link rel="prefetch" href="/blog/assets/js/29.dfecf525.js"><link rel="prefetch" href="/blog/assets/js/3.241056ce.js"><link rel="prefetch" href="/blog/assets/js/30.b4b93215.js"><link rel="prefetch" href="/blog/assets/js/31.0fae4cd3.js"><link rel="prefetch" href="/blog/assets/js/32.f389182c.js"><link rel="prefetch" href="/blog/assets/js/33.802a0296.js"><link rel="prefetch" href="/blog/assets/js/34.ff0b8a06.js"><link rel="prefetch" href="/blog/assets/js/35.e40ed0fa.js"><link rel="prefetch" href="/blog/assets/js/36.ca7757ae.js"><link rel="prefetch" href="/blog/assets/js/37.395fb6bd.js"><link rel="prefetch" href="/blog/assets/js/38.27f445d0.js"><link rel="prefetch" href="/blog/assets/js/39.f78d56b5.js"><link rel="prefetch" href="/blog/assets/js/4.ba3fd9e7.js"><link rel="prefetch" href="/blog/assets/js/40.f8c3ae1d.js"><link rel="prefetch" href="/blog/assets/js/41.6284d4f1.js"><link rel="prefetch" href="/blog/assets/js/42.fc71a50c.js"><link rel="prefetch" href="/blog/assets/js/43.4bafede3.js"><link rel="prefetch" href="/blog/assets/js/44.fb84df9a.js"><link rel="prefetch" href="/blog/assets/js/45.e15ff02f.js"><link rel="prefetch" href="/blog/assets/js/46.6d1b4184.js"><link rel="prefetch" href="/blog/assets/js/47.72123a6b.js"><link rel="prefetch" href="/blog/assets/js/48.9302eb30.js"><link rel="prefetch" href="/blog/assets/js/49.6c38f32d.js"><link rel="prefetch" href="/blog/assets/js/5.90987b07.js"><link rel="prefetch" href="/blog/assets/js/50.a048887d.js"><link rel="prefetch" href="/blog/assets/js/51.ddaad0b4.js"><link rel="prefetch" href="/blog/assets/js/52.618d3413.js"><link rel="prefetch" href="/blog/assets/js/54.690ce3cb.js"><link rel="prefetch" href="/blog/assets/js/55.055ab3a9.js"><link rel="prefetch" href="/blog/assets/js/56.b872061b.js"><link rel="prefetch" href="/blog/assets/js/57.4bfafbb5.js"><link rel="prefetch" href="/blog/assets/js/58.4f3377d8.js"><link rel="prefetch" href="/blog/assets/js/59.b4ee4da2.js"><link rel="prefetch" href="/blog/assets/js/6.c02e018c.js"><link rel="prefetch" href="/blog/assets/js/60.3908f0bc.js"><link rel="prefetch" href="/blog/assets/js/61.37519a29.js"><link rel="prefetch" href="/blog/assets/js/62.b257111e.js"><link rel="prefetch" href="/blog/assets/js/63.fdfacb89.js"><link rel="prefetch" href="/blog/assets/js/64.a52f4ed6.js"><link rel="prefetch" href="/blog/assets/js/65.a268f40a.js"><link rel="prefetch" href="/blog/assets/js/66.5b2652f6.js"><link rel="prefetch" href="/blog/assets/js/67.ec960cfe.js"><link rel="prefetch" href="/blog/assets/js/68.d1f32d47.js"><link rel="prefetch" href="/blog/assets/js/69.1f138767.js"><link rel="prefetch" href="/blog/assets/js/7.d86c0c0c.js"><link rel="prefetch" href="/blog/assets/js/70.edd573c9.js"><link rel="prefetch" href="/blog/assets/js/71.843578b5.js"><link rel="prefetch" href="/blog/assets/js/72.0617fdfe.js"><link rel="prefetch" href="/blog/assets/js/73.f04d0f68.js"><link rel="prefetch" href="/blog/assets/js/74.4b7b20ef.js"><link rel="prefetch" href="/blog/assets/js/75.e1c70e3b.js"><link rel="prefetch" href="/blog/assets/js/76.f0530144.js"><link rel="prefetch" href="/blog/assets/js/77.2fdab5bb.js"><link rel="prefetch" href="/blog/assets/js/78.07d57bc8.js"><link rel="prefetch" href="/blog/assets/js/79.dfe91028.js"><link rel="prefetch" href="/blog/assets/js/8.2202a71a.js"><link rel="prefetch" href="/blog/assets/js/80.7fcc6f11.js"><link rel="prefetch" href="/blog/assets/js/81.14f3b5d4.js"><link rel="prefetch" href="/blog/assets/js/82.83fe24e8.js"><link rel="prefetch" href="/blog/assets/js/83.6f81368c.js"><link rel="prefetch" href="/blog/assets/js/84.3f3bed06.js"><link rel="prefetch" href="/blog/assets/js/85.05324d0f.js"><link rel="prefetch" href="/blog/assets/js/86.81795414.js"><link rel="prefetch" href="/blog/assets/js/87.09176e00.js"><link rel="prefetch" href="/blog/assets/js/88.1c719a03.js"><link rel="prefetch" href="/blog/assets/js/89.8bbdbf67.js"><link rel="prefetch" href="/blog/assets/js/9.5185adce.js"><link rel="prefetch" href="/blog/assets/js/90.b27d627b.js"><link rel="prefetch" href="/blog/assets/js/91.f8a19ed4.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.ab18f209.css">
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true"><div class="theme-container sidebar-open no-sidebar"><header class="navbar blur"><div title="目录" class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/img/web_logo.png" alt="" class="logo"> <!----></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link router-link-active">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar-hover-trigger"></div> <aside class="sidebar" style="display:none;"><div class="blogger"><img src="/img/avatar.png"> <div class="blogger-info"><h3>Jiao</h3> <span>知行合一</span></div></div> <nav class="nav-links"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link router-link-active">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> <div class="sidebar-slot sidebar-slot-bottom"><!-- 正方形 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="3508773082"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div></aside> <div><main class="page"><div class="theme-vdoing-wrapper "><div class="articleInfo-wrap" data-v-0c557b5e><div class="articleInfo" data-v-0c557b5e><ul class="breadcrumbs" data-v-0c557b5e><li data-v-0c557b5e><a href="/blog/" title="首页" class="iconfont icon-home router-link-active" data-v-0c557b5e></a></li> <li data-v-0c557b5e><a href="/blog/categories/?category=blog" title="分类" data-v-0c557b5e>blog</a></li><li data-v-0c557b5e><a href="/blog/categories/?category=network" title="分类" data-v-0c557b5e>network</a></li><li data-v-0c557b5e><a href="/blog/categories/?category=grpc" title="分类" data-v-0c557b5e>grpc</a></li></ul> <div class="info" data-v-0c557b5e><div title="作者" class="author iconfont icon-touxiang" data-v-0c557b5e><a href="https://github.com/joyous-x" target="_blank" title="作者" class="beLink" data-v-0c557b5e>Jiao</a></div> <div title="创建时间" class="date iconfont icon-riqi" data-v-0c557b5e><a href="javascript:;" data-v-0c557b5e>2020-04-13</a></div> <!----></div></div></div> <!----> <div class="content-wrapper"><!----> <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABKFJREFUSA3tVl1oFVcQnrMbrak3QUgkya1akpJYcrUtIqW1JvFBE9LiQ5v6JmJpolbMg32rVrhgoYK0QiMY6i9Y6EMaW5D+xFJaTYItIuK2Kr3+BJNwkxBj05sQY3b3nM6cs2dv9t7NT/vQJw/sndk5M/PNzJkzewGerP+pAmy+ON8lLzUJgA8ZYxYIYZmGYRnctDaWvJJAmTtfP1pvXsBCCPP8QFcCaRkZYACgDZFO4stNIcBCajEOlmmC9XpJ9bAGCaPaPmzPl32dvLSVu3BWCTQs0XQQ6g0DYgwLIoAZbBCdW/i+781o1VVlm/410mw4h06Y7bIPHNyWDyL4FHkX03Q8SrzNhZTZriieckWt7cL6MM85YcLpsi/7O9/iXFT6MswI0DmmpkSaJ0qLxFIm3+i1THHB3zmBH3PYx9CcykcLOeQVVa7QtdxTgQgEleX2AjHYfwA+2ddV77ruGoJUbhGDI09YSNXyMpUt5ylOzxgbUmtOp7NmbNt8v3arjTBfYELmLUV+M+nSawNNAUqpT3ClJWg5I3BLT+cGW/DXNGCa6tx1aakCGEigArTn4TDIPdrXXYKCZNrHLMCOEPvHBlLQ99s9eHB7EB6NTki73CVPQ2F5MSx/uRQixfmq7rK0wYD8w8E905bnPDfwoWs/rfv93NWN/ZfvwsLIU7A09gxECyISeGJkHAau98L97tuw7NXnoPyNF8FcYGLGKsOs0mN3OEyec9esGW/ZEl945dTP34wlR2FZVQWU1q0Cw8Tr7p+hgLLNL0FPxx/Q35mA8aEUrH6nCgwEl0tn7wUiZYJnNRh6DK4UH/k0lfyrsBKdPVv/AriGIQcEDQZ65LBAGe2Rzui9Ybjz7XUppz1/uKBbyVPGkN3ZAeC6hr0x7Nr38N5+EqkoOm17xpoqR9ohQF55ERSvr4Dkr3chNfC3DMzGJlNBElW8w9nsGQvhNGIzDkXzCg8cLK951xHsFBlTJspJNi3ZFIMF2AeDV3q8DNOB+YHi6QTrChDIWDBRi5U5f+ZMfJLu3ccrqxtdxk4SKH336LFxSmkqefwU5T8fhdSdQf9IVKD6aNiwI/hnmcAZ91isYMJIaCUCx9W098+LgruikeTqzqqxKPUwqJyCPJiyemVVZBOijDGjD38Os0jOiSPL1z3SPjXNANbiNPXAdzTfukjjuknNBbyz3nwgTd3AVFqUJ5hpHlq9MveLnWwttUfoygBmvVjuikxND3znrhsELnZk7k+OjIGxeNEkomyLVta0xxn+HZhjBc4YZ/AFjHjz9u3xRZl2BN4aq9nFwWh16IrQ1aHHEd3j1+4/dB9OtH4e29A2H1DyHQRmOSfQZ1Fy7MHBTGB6J/Djq6p3OxyO2cB+4Car7v/o3GXgfAkj23+x9ID1Teoamo/SXcbvSf2PX7Vc8DdCmE1vN9di+32P9/5YR3vLnhCVGUWBjEkr3yh4H8v9CzmsbdhzOKzsJKM90iFdaTMjRPhGVsakRvOaRidljo6H6G7j+ctrJpsP+4COhDIl0La2+FS4+5mlocBaXY5QnGZysIBYoeSsl5qQzrSj/cgNrfuEzlWBfwA+EjrZyWUvpAAAAABJRU5ErkJggg==">grpc source notes<!----></h1> <div class="page-slot page-slot-top"><!-- 固定100% * 90px可显示，max-height:90px未见显示-->
+     <ins class="adsbygoogle"
+          style="display:inline-block;width:100%;max-height:90px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6625304284"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="theme-vdoing-content content__default"><h1 id="grpc-source-notes"><a href="#grpc-source-notes" class="header-anchor">#</a> grpc source notes</h1> <div class="language- line-numbers-mode"><pre class="language-text"><code>grpc.Server.Serve(lis net.Listener)  ::: google.golang.org/grpc/server.go : L545 :
+    ....
+    for {
+		rawConn, err := lis.Accept()
+        ...
+        s.serveWG.Add(1)
+		go func() {
+			s.handleRawConn(rawConn)
+			s.serveWG.Done()
+		}()
+    }
+
+grpc.Server.handleRawConn()
+    ...
+    // Finish handshaking (HTTP2)
+	st := s.newHTTP2Transport(conn, authInfo)  //&gt; google.golang.org/grpc/internal/transport/transport.go : L488
+                                               //&gt;   google.golang.org/grpc/internal/transport/http2_server.go : L126 : http2Server : 主要逻辑所在地
+                                               //&gt;   http2Server is an implementation of interface transport.ServerTransport
+                                               //&gt;     go func(){ ... t.loopy.run() ...}() ：L276
+                                               //&gt;     go t.keepalive() : L282
+	                                           //&gt;   http2Server 重要成员：
+	                                           //&gt;     framer
+	                                           //&gt;     	    writer: w : newBufWriter(conn, writeBufferSize),
+	                                           //&gt;     	    fr:     http2.NewFramer(w, r),    w,r都是conn的reader
+	                                           //&gt;     			    golang.org/x/net/http2/frame.go ：L432
+	                                           //&gt;     conn
+	                                           //&gt;     controlBuf : 一个数据list
+	                                           //&gt;     loopy : loopyWriter : google.golang.org/grpc/internal/transport/controlbuf.go : L388
+                                               //&gt;       run() : L420
+                                               //&gt;         注意 processData 时数据超过 16K 时的处理: 两层流控：stream-level 和 connection-level
+	if st == nil {
+		return
+	}
+
+	rawConn.SetDeadline(time.Time{})
+	if !s.addConn(st) {
+		return
+	}
+	go func() {
+		s.serveStreams(st)
+		s.removeConn(st)
+	}()
+
+grpc.Server.serveStreams()
+    func (s *Server) serveStreams(st transport.ServerTransport) {
+        defer st.Close()
+        var wg sync.WaitGroup
+        //&gt; google.golang.org/grpc/internal/transport/http2_server.go : L428 : func (t *http2Server) HandleStreams
+        //&gt;      HandleStreams receives incoming streams using the given handler
+        st.HandleStreams(func(stream *transport.Stream) {
+            wg.Add(1)
+            go func() {
+                defer wg.Done()
+                s.handleStream(st, stream, s.traceInfo(st, stream))
+            }()
+        }, func(ctx context.Context, method string) context.Context {
+            if !EnableTracing {
+                return ctx
+            }
+            tr := trace.New(&quot;grpc.Recv.&quot;+methodFamily(method), method)
+            return trace.NewContext(ctx, tr)
+        })
+        wg.Wait()
+    }
+
+http2Server.HandleStreams(handle func(*Stream), traceCtx func(context.Context, string) context.Context) {
+	defer close(t.readerDone)
+	for {
+		frame, err := t.framer.fr.ReadFrame()
+		atomic.StoreUint32(&amp;t.activity, 1)
+		if err != nil {
+			...
+			t.Close()
+			return
+		}
+		switch frame := frame.(type) {
+		case *http2.MetaHeadersFrame:
+			if t.operateHeaders(frame, handle, traceCtx) {  //&gt; use handle only here
+				t.Close()
+				break
+			}
+		case *http2.DataFrame:
+			t.handleData(frame) //&gt; 数据读取到的数据写入 stream 的 buf 中待处理
+                                //&gt;     检查到 中的 http2.FlagDataEndStream 标记时，写入 io.EOF 到 stream 的 buf，标记流的结束
+                                //&gt;     注意，framer 里的数据到下一次读取时会被重写，所以会以copy的方式到对应的buf 以备后续处理
+                                //&gt; 流控，如果需要进行控制，发送 outgoingWindowUpdate 信息到 http2Server.controlBuf 中
+		case *http2.RSTStreamFrame:
+			t.handleRSTStream(frame)
+		case *http2.SettingsFrame:
+			t.handleSettings(frame)
+		case *http2.PingFrame:
+			t.handlePing(frame)
+		case *http2.WindowUpdateFrame:
+			t.handleWindowUpdate(frame) //&gt; 流控，发送 incomingWindowUpdate 信息到 http2Server.controlBuf 中
+		case *http2.GoAwayFrame:
+			// TODO: Handle GoAway from the client appropriately.
+		default:
+			errorf(&quot;transport: http2Server.HandleStreams found unhandled frame type %v.&quot;, frame)
+		}
+	}
+}
+
+grpc.Server.handleStream  ::: google.golang.org/grpc/server.go : L1248
+    func (s *Server) handleStream(t transport.ServerTransport, stream *transport.Stream, trInfo *traceInfo) {
+        sm := stream.Method()
+        if sm != &quot;&quot; &amp;&amp; sm[0] == '/' {
+            sm = sm[1:]
+        }
+        pos := strings.LastIndex(sm, &quot;/&quot;)
+        if pos == -1 {
+            if trInfo != nil {
+                trInfo.tr.LazyLog(&amp;fmtStringer{&quot;Malformed method name %q&quot;, []interface{}{sm}}, true)
+                trInfo.tr.SetError()
+            }
+            errDesc := fmt.Sprintf(&quot;malformed method name: %q&quot;, stream.Method())
+            if err := t.WriteStatus(stream, status.New(codes.ResourceExhausted, errDesc)); err != nil {
+                if trInfo != nil {
+                    trInfo.tr.LazyLog(&amp;fmtStringer{&quot;%v&quot;, []interface{}{err}}, true)
+                    trInfo.tr.SetError()
+                }
+                grpclog.Warningf(&quot;grpc: Server.handleStream failed to write status: %v&quot;, err)
+            }
+            if trInfo != nil {
+                trInfo.tr.Finish()
+            }
+            return
+        }
+        service := sm[:pos]
+        method := sm[pos+1:]
+
+        srv, knownService := s.m[service]
+        if knownService {
+            if md, ok := srv.md[method]; ok {
+                s.processUnaryRPC(t, stream, srv, md, trInfo)
+                return
+            }
+            if sd, ok := srv.sd[method]; ok {
+                s.processStreamingRPC(t, stream, srv, sd, trInfo)
+                return
+            }
+        }
+        // Unknown service, or known server unknown method.
+        if unknownDesc := s.opts.unknownStreamDesc; unknownDesc != nil {
+            s.processStreamingRPC(t, stream, nil, unknownDesc, trInfo)
+            return
+        }
+        var errDesc string
+        if !knownService {
+            errDesc = fmt.Sprintf(&quot;unknown service %v&quot;, service)
+        } else {
+            errDesc = fmt.Sprintf(&quot;unknown method %v for service %v&quot;, method, service)
+        }
+        if trInfo != nil {
+            trInfo.tr.LazyPrintf(&quot;%s&quot;, errDesc)
+            trInfo.tr.SetError()
+        }
+        if err := t.WriteStatus(stream, status.New(codes.Unimplemented, errDesc)); err != nil {
+            if trInfo != nil {
+                trInfo.tr.LazyLog(&amp;fmtStringer{&quot;%v&quot;, []interface{}{err}}, true)
+                trInfo.tr.SetError()
+            }
+            grpclog.Warningf(&quot;grpc: Server.handleStream failed to write status: %v&quot;, err)
+        }
+        if trInfo != nil {
+            trInfo.tr.Finish()
+        }
+    }
+
+newHTTP2Server : google.golang.org/grpc/internal/transport/http2_server.go : L126
+    func newHTTP2Server(conn net.Conn, config *ServerConfig) (_ ServerTransport, err error) {
+        ... //&gt; 为构造 http2Server 准备参数
+        ctx, cancel := context.WithCancel(context.Background())
+        t := &amp;http2Server{
+            ctx:               ctx,
+            cancel:            cancel,
+            ctxDone:           ctx.Done(),
+            conn:              conn,
+            remoteAddr:        conn.RemoteAddr(),
+            localAddr:         conn.LocalAddr(),
+            authInfo:          config.AuthInfo,
+            framer:            framer,
+            readerDone:        make(chan struct{}),
+            writerDone:        make(chan struct{}),
+            maxStreams:        maxStreams,
+            inTapHandle:       config.InTapHandle,
+            fc:                &amp;trInFlow{limit: uint32(icwz)},
+            state:             reachable,
+            activeStreams:     make(map[uint32]*Stream),
+            stats:             config.StatsHandler,
+            kp:                kp,
+            idle:              time.Now(),
+            kep:               kep,
+            initialWindowSize: iwz,
+            czData:            new(channelzData),
+        }
+        t.controlBuf = newControlBuffer(t.ctxDone)
+        if dynamicWindow {
+            t.bdpEst = &amp;bdpEstimator{
+                bdp:               initialWindowSize,
+                updateFlowControl: t.updateFlowControl,
+            }
+        }
+        ...
+        ...  //&gt; 处理 client preface.
+        go func() {
+            t.loopy = newLoopyWriter(serverSide, t.framer, t.controlBuf, t.bdpEst)
+            t.loopy.ssGoAwayHandler = t.outgoingGoAwayHandler
+            if err := t.loopy.run(); err != nil {
+                errorf(&quot;transport: loopyWriter.run returning. Err: %v&quot;, err)
+            }
+            t.conn.Close()
+            close(t.writerDone)
+        }()
+        go t.keepalive()
+        return t, nil
+    }
+
+//&gt; conn 1---&gt;n streams(以 linked-list 保存) 1---&gt;n frames(以 linked-list 保存)
+type loopyWriter struct{} : google.golang.org/grpc/internal/transport/controlbuf.go : L364
+    activeStreams is a linked-list of all streams that have data to send and some  stream-level flow control quota.
+    Each of these streams internally have a list of data items(and perhaps trailers on the server-side) to be sent out.
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br><span class="line-number">122</span><br><span class="line-number">123</span><br><span class="line-number">124</span><br><span class="line-number">125</span><br><span class="line-number">126</span><br><span class="line-number">127</span><br><span class="line-number">128</span><br><span class="line-number">129</span><br><span class="line-number">130</span><br><span class="line-number">131</span><br><span class="line-number">132</span><br><span class="line-number">133</span><br><span class="line-number">134</span><br><span class="line-number">135</span><br><span class="line-number">136</span><br><span class="line-number">137</span><br><span class="line-number">138</span><br><span class="line-number">139</span><br><span class="line-number">140</span><br><span class="line-number">141</span><br><span class="line-number">142</span><br><span class="line-number">143</span><br><span class="line-number">144</span><br><span class="line-number">145</span><br><span class="line-number">146</span><br><span class="line-number">147</span><br><span class="line-number">148</span><br><span class="line-number">149</span><br><span class="line-number">150</span><br><span class="line-number">151</span><br><span class="line-number">152</span><br><span class="line-number">153</span><br><span class="line-number">154</span><br><span class="line-number">155</span><br><span class="line-number">156</span><br><span class="line-number">157</span><br><span class="line-number">158</span><br><span class="line-number">159</span><br><span class="line-number">160</span><br><span class="line-number">161</span><br><span class="line-number">162</span><br><span class="line-number">163</span><br><span class="line-number">164</span><br><span class="line-number">165</span><br><span class="line-number">166</span><br><span class="line-number">167</span><br><span class="line-number">168</span><br><span class="line-number">169</span><br><span class="line-number">170</span><br><span class="line-number">171</span><br><span class="line-number">172</span><br><span class="line-number">173</span><br><span class="line-number">174</span><br><span class="line-number">175</span><br><span class="line-number">176</span><br><span class="line-number">177</span><br><span class="line-number">178</span><br><span class="line-number">179</span><br><span class="line-number">180</span><br><span class="line-number">181</span><br><span class="line-number">182</span><br><span class="line-number">183</span><br><span class="line-number">184</span><br><span class="line-number">185</span><br><span class="line-number">186</span><br><span class="line-number">187</span><br><span class="line-number">188</span><br><span class="line-number">189</span><br><span class="line-number">190</span><br><span class="line-number">191</span><br><span class="line-number">192</span><br><span class="line-number">193</span><br><span class="line-number">194</span><br><span class="line-number">195</span><br><span class="line-number">196</span><br><span class="line-number">197</span><br><span class="line-number">198</span><br><span class="line-number">199</span><br><span class="line-number">200</span><br><span class="line-number">201</span><br><span class="line-number">202</span><br><span class="line-number">203</span><br><span class="line-number">204</span><br><span class="line-number">205</span><br><span class="line-number">206</span><br><span class="line-number">207</span><br><span class="line-number">208</span><br><span class="line-number">209</span><br><span class="line-number">210</span><br><span class="line-number">211</span><br><span class="line-number">212</span><br><span class="line-number">213</span><br><span class="line-number">214</span><br><span class="line-number">215</span><br><span class="line-number">216</span><br><span class="line-number">217</span><br><span class="line-number">218</span><br><span class="line-number">219</span><br><span class="line-number">220</span><br><span class="line-number">221</span><br><span class="line-number">222</span><br></div></div></div></div> <div class="page-slot page-slot-bottom"><!-- 横向自适应 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6620245489"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="page-edit"><!----> <div class="tags"><a href="/blog/tags/?tag=grpc" title="标签">#grpc</a></div> <!----></div> <div class="page-nav-wapper"><!----> <!----></div></div> <div class="article-list"><div class="article-title"><a href="/blog/archives/" class="iconfont icon-bi">最近更新</a></div> <div class="article-wrapper"><dl><dd>01</dd> <dt><a href="/blog/blog/xnote/about_acknowledge.html"><div>
+            思考总结
+            <!----></div></a> <span class="date">01-19</span></dt></dl><dl><dd>02</dd> <dt><a href="/blog/blog/xnote/rnote_deep_mind.html"><div>
+            deep mind
+            <!----></div></a> <span class="date">01-17</span></dt></dl><dl><dd>03</dd> <dt><a href="/blog/blog/lang/cxx_array_pointer.html"><div>
+            C++ Array &amp; Pointer
+            <!----></div></a> <span class="date">12-22</span></dt></dl> <dl><dd></dd> <dt><a href="/blog/archives/" class="more">更多文章&gt;</a></dt></dl></div></div></main></div> <div class="footer"><div class="icons"><a href="mailto:929843628@qq.com" title="发邮件" target="_blank" class="iconfont icon-youjian"></a><a href="https://github.com/joyous-x" title="GitHub" target="_blank" class="iconfont icon-github"></a><a href="https://music.163.com" title="听音乐" target="_blank" class="iconfont icon-erji"></a></div> 
+  Theme by
+  <a href="https://github.com/xugaoyi/vuepress-theme-vdoing" target="_blank" title="本站主题">Vdoing</a> 
+    | Copyright © 2020-2022
+    <span>Jiao | <a href="https://github.com/joyous-x/blog/blob/master/LICENSE" target="_blank">MIT License</a></span></div> <div class="buttons"><div title="返回顶部" class="button blur go-to-top iconfont icon-fanhuidingbu" style="display:none;"></div> <div title="去评论" class="button blur go-to-comment iconfont icon-pinglun" style="display:none;"></div> <div title="主题模式" class="button blur theme-mode-but iconfont icon-zhuti"><ul class="select-box" style="display:none;"><li class="iconfont icon-zidong">
+          跟随系统
+        </li><li class="iconfont icon-rijianmoshi">
+          浅色模式
+        </li><li class="iconfont icon-yejianmoshi">
+          深色模式
+        </li><li class="iconfont icon-yuedu">
+          阅读模式
+        </li></ul></div></div> <!----> <!----> <div class="custom-html-window custom-html-window-rb" style="display:;"><div class="custom-wrapper"><span class="close-but">×</span> <div><!-- 固定160*160px -->
+      <ins class="adsbygoogle"
+          style="display:inline-block;max-width:160px;max-height:160px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="8377369658"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      </div></div></div></div><div class="global-ui"><div></div></div></div>
+    <script src="/blog/assets/js/app.76e61623.js" defer></script><script src="/blog/assets/js/2.76622ffb.js" defer></script><script src="/blog/assets/js/53.77639deb.js" defer></script>
+  </body>
+</html>
