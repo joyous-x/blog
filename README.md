@@ -22,6 +22,7 @@ The little things in my program life
 ### Note
 - 注意路径的分隔符：``` ![LVS FULLNAT模式](../rsc/ipvs/LVS_DR.png) ```
 - 注意：markdown中 ``` <xxx> ```会解析失败
+- vuepress-theme-vdoing 1.9.* 需要 nodejs 14.12 以上的支持
 
 ### TODO:
 - vuepress-plugin-baidu-tongji

@@ -3,10 +3,10 @@ package-lock.json
 node_modules
 
 # vuepress
-docs/.vuepress/dist
+*/docs/.vuepress/dist
 
 # blog data
-docs/blog
+*/docs/blog
 
 # yarn
 yarn.lock

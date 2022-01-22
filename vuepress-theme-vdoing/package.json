@@ -25,6 +25,6 @@
         "vuepress-theme-vdoing": "^1.9.4",
         "yamljs": "^0.3.0",
         "vuepress-plugin-mermaidjs": "^1.8.1",
-        "markdown-it-katex": "^2.0.3"
+        "@renovamen/vuepress-plugin-katex": "^0.2.0"
     }
 }
