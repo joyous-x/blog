@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [16.x]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -31,18 +31,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Deploy # 只提交到github
-        uses: JamesIves/github-pages-deploy-action@releases/v2 # 作用：将项目构建和部署到github
-        env: # 设置环境变量
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # toKen私密变量
+        uses: JamesIves/github-pages-deploy-action@releases/v2
+        env: 
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BASE_BRANCH: main # 要部署的文件夹所在的分支.
           BRANCH: gh-pages # 部署到的分支
-          FOLDER: docs/.vuepress/dist # 要部署的文件夹.
+          FOLDER: vuepress-theme-vdoing/docs/.vuepress/dist # 要部署的文件夹.
           ## 部署前要执行的命令，CNAME 可以将其绑定到一个域名（记得cd进入某个目录后，后面要cd -退回开始的目录）
           # BUILD_SCRIPT: npm install && npm run build && cd docs/.vuepress/dist && echo 'https://joyous-x.github.io/blog/' > CNAME && cd -
-          BUILD_SCRIPT: mv -f docs/.vuepress/config.base_blog.js docs/.vuepress/config.js && npm install && npm run build # 部署前要执行的命令（记得cd进入某个目录后，后面要cd -退回开始的目录）
-      
-      # - name: Build && Deploy #同时部署到github和coding
-      #   env: # 设置环境变量
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }} # toKen私密变量
-      #     CODING_TOKEN: ${{ secrets.CODING_TOKEN }}
-      #   run: npm install && npm run deploy
+          BUILD_SCRIPT: cd vuepress-theme-vdoing && mv -f docs/.vuepress/config.base_blog.ts docs/.vuepress/config.ts && npm install && npm run build && cd -

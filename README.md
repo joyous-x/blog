@@ -16,6 +16,7 @@ The little things in my program life
 ## 更新日志 (update log)
 - 2021-01-17：initialize
 - 2021-06-01：一、二级分类通过目录区分，更多的分类通过前缀标识
+- 2022-01-22：update vuepress-theme-vdoing to 1.9.4
 - ***To be Continue***
 
 ## 附录 (Appendix)
@@ -24,7 +25,5 @@ The little things in my program life
 - 注意：markdown中 ``` <xxx> ```会解析失败
 - vuepress-theme-vdoing 1.9.* 需要 nodejs 14.12 以上的支持
 
-### TODO:
-- vuepress-plugin-baidu-tongji
 ### Theme
 forked from [vuepress-theme-vdoing](https://github.com/xugaoyi/vuepress-theme-vdoing)
