@@ -25,12 +25,21 @@ jobs:
         with:
           submodules: true
 
+      - name: Install Python3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' 
+
+      - name: Make Category
+        run: | 
+          cd blog_raw && python scripts/make_category.py && cd ..
+
       - name: Setup Node.js ${{ matrix.node }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Build
+      - name: Build vuepress-theme-vdoing
         run: |
           cd vuepress-theme-vdoing 
           npm install && npm run build_base_blog
