@@ -12,13 +12,17 @@ permalink:
 
 # C && C++
 ## 基础
-- c 和 c++ 标准, 定义了语法、语言特性 以及 C++ 内置库(也就是C++标准库)的实现规范, 但不同的编译器对标准库的实现方法各不一致
-- is-a(inheritance) && has-a(Composition)
-- 多态
-- 模版
-- 异常
-- 内存调优
-- 性能调优
+c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++标准库)的实现规范, 但不同的编译器对标准库的实现方法各不一致
+
+| Subject | Content | Status |
+| :--- | :---: | :---: |
+| 语言特性 | C++ 11/14/17 标准、多态、模版 | &#9745; |
+| 异常 | 标准异常、VEH、SEH、TopLevelEH... | &#9744; | 
+| 调优 | 内存、性能 | &#9744; | 
+| 编译运行 | 编译、运行期的 action 和 mechanism | &#9744; |
+| Design | is-a(Inheritance) 和 has-a(Composition) | &#9745; | 
+| 平台特性 | window、linux | &#9744; |
+| 技巧 | Tricks and Traps | &#9744; |
 
 ## 多态
 ### 1. 虚函数表内存模型
@@ -134,6 +138,9 @@ permalink:
 ## 特性
 + 右值引用
   + std::move、std::forward
++ using、typedef、typename
+  - using 可读性更高，并且可以用于模板别名
+  - [The "typename" keyword](https://stackoverflow.com/questions/610245/where-and-why-do-i-have-to-put-the-template-and-typename-keywords/17579889#17579889)
 + const
   + 指针：位于*的左侧 或 右侧
   + 成员变量
@@ -143,7 +150,7 @@ permalink:
   + 对象
     - 该对象的任何非const成员函数都不能被调用，因为任何非const成员函数会有修改成员变量的企图
   + *const_cast<type_id> (expression)*
-  + attribute
++ attribute
     ```
       #if defined(__GCC__)
       /*

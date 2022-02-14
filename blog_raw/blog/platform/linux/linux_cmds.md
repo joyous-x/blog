@@ -12,37 +12,27 @@ permalink:
 ---
 
 ## Common
-- grep的查找，sed的编辑，awk在分析
-    + grep -ar "select" ./conf 
-    + awk '{arr[$3]++}END{for(i in arr) print substr(i,0,length(i)-1)}'
+Category | Command | Function | Example | Note
+:---: | :--- | :--- | :--- | :---
+ x | grep | grep的查找 | ```grep -ar "select" ./conf```
+ x | sed | sed的编辑 | 
+ x | awk | awk再分析 | ```awk '{arr[$3]++}END{for(i in arr) print substr(i,0,length(i)-1)}'```
+ x | xargs | xargs是实现“将标准输入作为命令的参数” | ```ps -ef | pgrep %s | xargs -I {} kill -9 {}``` | 管道是实现“将前面的标准输出作为后面的标准输入”
+ x | lsof | | ```lsof | grep -i delete```
+ x | tcpdump | | ```tcpdump -i any -Xxns0 -c 100 host xx.xx.xx.xx and port xxxx```
+ x | perf | | ```perf top -p {pid}```
+ x | iftop | | 
+ x | dos2unix | | 
+ x | pstree | | ```pstree -c -a > pstree.log```
+ x | nohup | | ```sudo nohup xxx &```
+ x | top | | ```内存排序 : top -a -n 1 -c``` ```CPU排序  : top -n 1 -c ```
+
+
 - truss、strace或ltrace : strace -p 34542 -s 128 -T
-- lsof
-    + lsof | grep -i delete
-- dos2unix
-- tcpdump
-    + tcpdump -i any -Xxns0 -c 100 host xx.xx.xx.xx and port xxxx
-- iftop
-- pstree
-    + pstree -c -a > pstree.log
-- perf
-    + perf top -p {pid}
-- top
-    + 内存排序 : top -a -n 1 -c 
-    + CPU排序  : top -n 1 -c 
-- sudo nohup xxx &
 - pig
     + 本地执行：pig -x local xxx.pig 
-- xargs
-    + 管道是实现“将前面的标准输出作为后面的标准输入”
-    + xargs是实现“将标准输入作为命令的参数”
-    + 可以试试运行：
-        ```
-        echo "--help"|cat
-        echo "--help"|xargs cat
-        ```
-    + 注：参数：-I 必须指定替换字符, -i
     是否指定替换字符-可选
-    + ps -ef | pgrep %s | xargs -I {} kill -9 {}
+    + 
 - ulimit
     + ulimit [type: -H/-S] [cmd: -a/...] [arg: 0/unlimited/...]
 - gdb
