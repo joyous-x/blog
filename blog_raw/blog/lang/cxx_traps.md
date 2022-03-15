@@ -1,5 +1,5 @@
 ---
-title: C++ Array & Pointer
+title: Cxx Traps
 date: 2021-12-22 10:30:00
 lastmod: null
 publish: true
@@ -10,10 +10,45 @@ tags:
 permalink:
 ---
 
-# C++ Array & Pointer
+# Cxx Traps
+c/c++ 源代码一般会通过以下步骤，被编译、链接成可执行文件：
+1. 预处理(Preprocess) : ``` gcc -E test.cpp -o test.i ```
+2. 编译为汇编(Compilation): ``` gcc -S test.i -o test.s ```
+3. 汇编(Assembly): ``` gcc -c test.s -o test.o ```
+4. 连接(Linking): ``` gcc test.o -o test ```
 
-## 问题
-先看一段代码：
+当然，上述步骤可以直接通过 ``` gcc define.cpp test.cpp -o test ``` 一步到位.
+
+
+## 1. Enum
+### 1.1 疑问
+```
+class Test {
+public:
+    enum Result {
+        Result_OK = 0x1000,
+    };
+
+    Test(enum Result emRst) {
+        m_nRst = emRst;
+    }
+
+    static int m_nRst;
+};
+
+int Test::m_nRst = 0; /* OK */
+// Test::m_nRst = 0; /* ERROR, 此声明没有存储类或类型说明符 */
+
+int main() { 
+    Test(Test::Result(Test::Result_OK)); /* OK */
+    // Test(Test::Result_OK); /* ERROR, 当前范围内无法定义 constant "Test::Result_OK" */
+}
+```
+
+**为什么上述代码在去掉注释"//"后，编译器会提示错误？**
+
+## 2. Array & Pointer
+### 2.1 疑问
 ```
 // define.c
 int arr[] = { 1,2,3 };
@@ -33,17 +68,8 @@ void test() {
 
 同我们的认知：**数组可以当成指针使用** 不一样，对吧...
 
-## 方法
-通过以下命令可以观察编译器对源码做了什么：
-1. 预处理 : ``` gcc -E test.cpp -o test.i ```
-2. 编译为汇编(Compilation): ``` gcc -S test.i -o test.s ```
-3. 汇编(Assembly): ``` gcc -c test.s -o test.o ```
-4. 连接(Linking): ``` gcc test.o -o test ```
-
-当然，上述步骤可以直接通过 ``` gcc define.cpp test.cpp -o test ``` 一步到位.
-
-## 原因
-先看汇编后的代码：
+### 2.2 原因
+将上述代码编译成汇编后的代码如下：
 - define.cpp
 ```
         .file   "define.cpp"
@@ -131,3 +157,5 @@ test:
 可以发现：
 1. 数组可以当成指针使用，的原因是：**编译器帮忙做了取地址操作**
 2. 因为 ```extern int* arr``` 在使用时**缺少了**编译器帮忙做*取地址操作*这一动作，直接被把 arr 当成了 指针使用：具体的方式可以参考 arm 的定义：**直接把 arm 的值当成了地址使用**
+
+## 3. TODO
