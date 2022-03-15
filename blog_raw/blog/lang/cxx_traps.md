@@ -41,17 +41,31 @@ int Test::m_nRst = 0; /* OK */
 
 int main() { 
     Test(Test::Result(Test::Result_OK)); /* OK */
+    Test((Test::Result)Test::Result_OK); /* OK */
     // Test(Test::Result_OK); /* ERROR, 当前范围内无法定义 constant "Test::Result_OK" */
 }
 ```
 
-**为什么上述代码在去掉注释"//"后，编译器会提示错误？**
+**为什么上述代码在去掉注释"//"后，vs2019编译器会提示错误？**
 
-### 1.2 解答
+### 1.2 背景
+我们需要明白，enum 关键字会定义一个类型，同时，其内定义的项目会被展开为int型常量到定义 enum 的作用域。
+
+这会造成，在全局位置定义的 enum 类型中的项目名需要是全局唯一的, 如下述定义会编译出错(*error C2365: “a”: 重定义*)：
+```
+enum X { a };
+enum Y { a };
+```
+
+由此，为了解决**作用域 以及 强类型限定**问题，**C++11 中引入了 enum class 或 enum struct**。
+
+### 1.3 解答
 1. 全局位置的 *ERROR, 此声明没有存储类或类型说明符*：
    + c/c++ 没有全局代码块，在全局位置的是 **声明或定义**
 2. 传递枚举值到枚举类型参数时 *ERROR, 当前范围内无法定义 constant*：
    + ？
+   + vs2019 会报错，但，g++ 在 linux 下编译正常
+     - 可能是：强类型限定造成现在拒绝枚举量与int之间的隐式转换
 
 ## 2. Array & Pointer
 ### 2.1 疑问
