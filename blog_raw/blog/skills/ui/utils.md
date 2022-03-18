@@ -258,6 +258,196 @@ Dividers 主要用于管理和分隔列表和页面布局内的内容，以便�
 在同一个列表中，滑动手势操作保持一致。
 
 #### 菜单（Menus）
+![material_design_component_menu](./rsc/material_design_component_menu.png)
+
+注意：菜单到上下留出8dp距离。
+
+#### 进度和动态（Progress & activity）
+线形进度条只出现在纸片的边缘:
+
+![material_design_component_progress_a](./rsc/material_design_component_progress_a.gif)
+
+环形进度条也分时间已知和时间未知两种:
+
+<center class="half">
+<img src="./rsc/material_design_component_progress_b.gif"/>
+<img src="./rsc/material_design_component_progress_c.gif"/>
+</center>
+
+加载详细信息时，也可以使用进度条:
+
+![material_design_component_progress_d](./rsc/material_design_component_progress_d.gif)
+
+#### Snackbars & toasts
+![material_design_component_snackbar_a](./rsc/material_design_component_snackbar_a.png)
+
+Snackbars至多包含一个操作项，不能包含图标。不能出现一个以上的Snackbars。
+
+Snackbars在移动设备上，出现在底部。在PC上，应该悬浮在屏幕左下角。
+
+不一定要用户响应的提示，可以使用Snackbars。非常重要的提示，必须用户来决定的，应该用对话框。
+
+![material_design_component_snackbar_b](./rsc/material_design_component_snackbar_b.png)
+
+Snackbars不能遮挡住悬浮按钮，悬浮按钮要上移让出位置。
+
+![material_design_component_snackbar_c](./rsc/material_design_component_snackbar_c.png)
+
+Snackbars的留白比较大，24dp。
+
+![material_design_component_snackbar_d](./rsc/material_design_component_snackbar_d.png)
+
+toasts和Snackbars类似，样式和位置可以自定义，建议遵循Snackbars的规则设计。
+
+![material_design_component_snackbar_e](./rsc/material_design_component_snackbar_e.png)
+
+#### 副标题（Subheaders）
+![material_design_component_subheader_a](./rsc/material_design_component_subheader_a.png)
+
+小标题是列表或网格中的特殊瓦片，描述列表内容的分类、排序等信息。
+
+![material_design_component_subheader_b](./rsc/material_design_component_subheader_b.png)
+
+滚动时，如果列表较长，小标题会固定在顶部，直到下一个小标题将它顶上去。
+
+![material_design_component_subheader_c](./rsc/material_design_component_subheader_c.png)
+
+存在浮动按钮时，小标题要让出位置，与文字对齐。
+
+![material_design_component_subheader_d](./rsc/material_design_component_subheader_d.png)
+
+#### Tabs
+![material_design_component_tab_a](./rsc/material_design_component_tab_a.png)
+
+在一个 app 中，tabs 使在不同的视图和功能间探索和切换以及浏览不同类别的数据集合起来变得简单。
+
+![material_design_component_tab_b](./rsc/material_design_component_tab_b.png)
+
+tab文字要显示完整，字号保持一致，不能折行，文字与图标不能混用。
+
+![material_design_component_tab_c](./rsc/material_design_component_tab_c.png)
+
+
+#### 文本字段（Text fields）
+文本框可以让用户输入文本。它们可以是单行的，带或不带滚动条，也可以是多行的，并且带有一个图标。点击文本框后显示光标，并自动显示键盘。除了输入，文本框可以进行其他任务操作，如文本选择（剪切，复制，粘贴）以及数据的自动查找功能。
+
+简单一根横线就能代表输入框，可以带图标:
+
+![material_design_component_text_a](./rsc/material_design_component_text_a.png)
+
+激活状态和错误状态，横线的宽度变为2dp，颜色改变:
+
+![material_design_component_text_b](./rsc/material_design_component_text_b.png)
+
+输入框点击区域高度至少48dp，但横线并不在点击区域的底部，还有8dp距离。
+
+![material_design_component_text_c](./rsc/material_design_component_text_c.png)
+
+输入框提示文字，可以在输入内容后，缩小停留在输入框左上角; 整个点击区域增高，提示文字也是点击区域的一部分:
+
+<center class="half">
+<img src="./rsc/material_design_component_text_d.png"/>
+<img src="./rsc/material_design_component_text_e.png"/>
+</center>
+
+通栏输入框是没有横线的，这种情况下通常有分隔线将输入框隔开:
+
+![material_design_component_text_f](./rsc/material_design_component_text_f.png)
+
+右下角可以加入字数统计。字数统计不要默认显示，字数接近上限时再显示出来。
+
+<center class="half">
+<img src="./rsc/material_design_component_text_g.png"/>
+<img src="./rsc/material_design_component_text_h.png"/>
+</center>
+
+通栏输入框也可以有字数统计，单行的字数统计显示在同一行右侧:
+
+![material_design_component_text_i](./rsc/material_design_component_text_i.png)
+
+错误提示显示在输入框的左下方。默认提示文本可以转换为错误提示:
+
+<center class="half">
+<img src="./rsc/material_design_component_text_j.png"/>
+<img src="./rsc/material_design_component_text_k.png"/>
+</center>
+
+字数限制与错误提示都会使点击区域增高:
+
+![material_design_component_text_l](./rsc/material_design_component_text_l.png)
+
+同时有多个输入框错误时，顶部要有一个全局的错误提示:
+
+![material_design_component_text_m](./rsc/material_design_component_text_m.png)
+
+输入框尽量带有自动补全功能:
+
+![material_design_component_text_n](./rsc/material_design_component_text_n.png)
+
+#### 工具提示（Tooltips）
+提示只用在小图标上，文字不需要提示。鼠标悬停、获得焦点、手指长按都可以触发提示。
+
+![material_design_component_tooltip_a](./rsc/material_design_component_tooltip_a.png)
+
+触摸提示（左）和鼠标提示（右）的尺寸是不同的，背景都带有90%的透明度:
+
+<center class="half">
+<img src="./rsc/material_design_component_tooltip_b.png"/>
+<img src="./rsc/material_design_component_tooltip_c.png"/>
+</center>
+
+#### Steppers
+<center class="half">
+<img src="./rsc/material_design_component_steper_a.png"/>
+<img src="./rsc/material_design_component_steper_b.png"/>
+</center>
+
+#### 导航（Navigation）
+Tabs:
+
+![material_design_component_nav_a](./rsc/material_design_component_nav_a.png)
+
+Bottom navigation bar 1:
+
+![material_design_component_nav_b](./rsc/material_design_component_nav_b.png)
+
+Bottom navigation bar 2:
+
+![material_design_component_nav_c](./rsc/material_design_component_nav_c.png)
+
+Navigation drawer:
+
+![material_design_component_nav_d](./rsc/material_design_component_nav_d.png)
+
+#### 导航抽屉（Navigation drawer）
+侧边抽屉从左侧滑出，占据整个屏幕高度，遵循普通列表的布局规则。手机端的侧边抽屉距离屏幕右侧56dp。
+
+![material_design_component_drawer_a](./rsc/material_design_component_drawer_a.png)
+
+侧边抽屉支持滚动。如果内容过长，设置和帮助反馈可以固定在底部；列表较短不需要滚动时，设置和帮助反馈跟随在列表后面；抽屉收起时，会保留之前的滚动位置:
+
+<center class="half">
+<img src="./rsc/material_design_component_drawer_b.png"/>
+<img src="./rsc/material_design_component_drawer_c.png"/>
+</center>
+
+#### 通知（Notifications）
+![material_design_component_notification](./rsc/material_design_component_notification.png)
+
+#### 权限（Permissions）
+![material_design_component_permission](./rsc/material_design_component_permission.png)
+
+#### 设置界面（Settings）
+![material_design_component_setting](./rsc/material_design_component_setting.png)
+
+设置和帮助反馈通常放在侧边抽屉中。如果没有侧边抽屉，则放在Appbar的下拉菜单底部。设置界面只能包含设置项，诸如关于、反馈之类的界面，入口应该放在其他地方。
+
+<center class="half">
+<img src="./rsc/material_design_component_setting_b.png"/>
+<img src="./rsc/material_design_component_setting_c.png"/>
+</center>
+
+
 
 ## 使用 `style` 属性修改文字的背景色
 
