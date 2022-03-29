@@ -13,7 +13,6 @@ permalink:
 # UI 杂项
 
 ## Collection
-1. https://www.cnblogs.com/weekbo/p/9018121.html
 
 ## Android
 ### 屏幕
@@ -447,14 +446,12 @@ Navigation drawer:
 <img src="./rsc/material_design_component_setting_c.png"/>
 </center>
 
+## Reference
+1. https://www.cnblogs.com/weekbo/p/9018121.html
 
-
-## 使用 `style` 属性修改文字的背景色
-
-<font style="background: red"> s </font>
+使用 `style` 属性修改文字的背景色:
+<font style="background: red">红色</font>
 <font style="background: green">绿色</font>
 <font style="background: blue">蓝色</font>
-
-<font style="background: rgb(200,100,100)">使用 rgb 颜色值</font>
-
-<font style="background: #FF00BB">使用十六进制颜色值</font>
+<font style="background: rgb(200,100,100)">颜色值</font>
+<font style="background: #FF00BB">颜色值</font>
