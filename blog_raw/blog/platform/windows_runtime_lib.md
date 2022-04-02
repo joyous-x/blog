@@ -40,12 +40,14 @@ permalink:
 此属性指定用于生成当前配置的工具集。包含了(不限于)需要为 C++ 项目指定的以下内容：
 - 编译器
     + 例如：v142 导致使用 Visual Studio 2019 编译器
-- Visual C ++库
+- Visual C++库
     + 例如：v142 表示您正在使用 Visual Studio 2019 C++ 库，这意味着，您的应用程序在部署期间将需要 Visual Studio 2019 C++ 可再发行组件(MSVCRxxx.dll)
       + 可再发行组件安装到：```C:\\Windows\\``` 或 ```C:\\Windows\\SysWOW64\\```
     +  Visual Studio 的 Redist 位置：
-      + 2019：```C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\```
-      + 2005：```C:\\Program Files (x86)\\Microsoft Visual Studio 8\\VC\\redist\\```
+      + 2015 ~ 2019：```C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\```
+        - all of the CRT headers, sources, and libraries were now distributed as part of a separate Universal CRT SDK. This SDK is included with Visual Studio
+      +  ~ 2005：```C:\\Program Files (x86)\\Microsoft Visual Studio 8\\VC\\redist\\```
+        - all of the CRT headers, sources, and libraries were distributed as part of the Visual C++ SDK, installed in the VC subdirectory of your Visual Studio installation
 - MSVCR
     + MS =微软，V =视觉，C =C++，R =可再发行
     + 应用程序可以通过引用 ```_MSC_VER``` 预处理程序宏来确定使用哪个 C++ 库
@@ -112,9 +114,9 @@ Multi-Threaded DLL Debug | /MDd | Debug版的多线程动态库 | vcruntimed.lib
 3. ```msvcp*.dll```、```ucrtbase.dll``` 和 ```vcruntime*.dll```
     + 它是 ```vs2015 ~ ```使用的 ```CRT``` 库
     + ```vs2015``` 已经没有 ```msvcr140.dll``` 了, 它被拆成了两个文件：
-        - ```ucrtbase.dll``` 包含标准c库的内容
+        - ```ucrtbase.dll``` 包含标准 c 库的内容
           - UCRT(The Universal CRT) contains the functions and globals exported by the standard C99 CRT library.
-        - ```vcruntime140.dll``` 包含 c++ 运行期需要处理的特别功能，如：调试支持、异常处理、以及耦合到相关编译器的功能。
+        - ```vcruntime140.dll``` 包含 c++ 运行期需要处理的特别功能，如：调试支持、异常处理、进程启动、以及耦合到相关编译器的功能。
 4. ```api-ms-win-*.dll```
     + ```vs2015``` 以及之后版本的 redist 库还包含 ```Windows API Sets (形如api-ms-win-crt-runtime-l1-1-0.dll)```
     + 所有版本的 Windows 10 共享一个通用的操作系统组件基础，称为```core OS```（在某些情况下，此通用基础也称为 ```OneCore```）。在核心操作系统组件中，```Win32 API``` 被组织成称为 API 集的功能组。

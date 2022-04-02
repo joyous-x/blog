@@ -136,11 +136,6 @@ c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++�
       + 比如 N::C::func 经过名称修饰以后就是 _ZN1N1C4funcE。N::C::func(int) 函数签名经过修饰为 _ZN1N1C4funcEi, 对于int类型来说，就是字母"i"。
 
 ## 特性
-+ 右值引用
-  + std::move、std::forward
-+ using、typedef、typename
-  - using 可读性更高，并且可以用于模板别名
-  - [The "typename" keyword](https://stackoverflow.com/questions/610245/where-and-why-do-i-have-to-put-the-template-and-typename-keywords/17579889#17579889)
 + const
   + 指针：位于*的左侧 或 右侧
   + 成员变量
