@@ -4,7 +4,6 @@ date: 2019-12-18 00:00:00
 lastmod: null
 description: docker 基础知识汇总，以及常见操作
 categories: 
-  - skills
   - devops
 tags: 
   - 

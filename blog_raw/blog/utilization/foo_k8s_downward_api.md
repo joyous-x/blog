@@ -2,6 +2,8 @@
 title: 实践：k8s 之 downward api
 date: 2020-04-13
 description: "k8s 之 downward api"
+categories: 
+  - foo
 permalink:
 ---
 

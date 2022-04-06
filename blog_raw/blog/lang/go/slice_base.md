@@ -7,7 +7,6 @@ taxonomies:
   - slice
 categories: 
   - golang
-  - slice
 keywords: 
   - golang
   - nil

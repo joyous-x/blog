@@ -2,6 +2,8 @@
 title: 实践：批量拉取git项目脚本
 date: 2021-01-21
 description: "实践：批量拉取git项目脚本"
+categories: 
+  - foo
 permalink:
 ---
 # 实践：批量拉取git项目脚本

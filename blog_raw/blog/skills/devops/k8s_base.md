@@ -2,10 +2,7 @@
 title: kubernetes 简述
 date: 2019-12-18 00:00:00
 categories: 
-  - kubernetes
-  - istio
-  - envoy
-  - mesh services
+  - k8s
 keywords: 
   - envoy
   - k8s

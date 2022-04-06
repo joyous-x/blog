@@ -3,8 +3,6 @@ title: 图像处理基础
 date: 2019-12-18 00:00:00
 description: 图像处理基础
 categories: 
-  - blog
-  - skills
   - imgproc
 tags: 
   - 

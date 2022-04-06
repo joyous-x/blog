@@ -2,6 +2,8 @@
 title: 实践：创建redis cluster
 date: 2020-04-13
 description: "实践：创建redis cluster"
+categories: 
+  - foo
 permalink:
 ---
 

@@ -2,7 +2,6 @@
 title: 分布式一致性协议简介
 date: 2021-01-16 23:29:06
 categories:
-  - blog
   - design
   - algorithm
 tags:

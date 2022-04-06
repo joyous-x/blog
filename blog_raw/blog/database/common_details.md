@@ -3,7 +3,6 @@ title: 常见 DB 基础
 date: 2020-04-21 00:00:00
 description: 常见 DB 基础知识
 categories: 
-  - blog
   - database
 tags: 
   - 

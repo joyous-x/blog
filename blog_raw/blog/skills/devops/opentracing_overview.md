@@ -2,6 +2,8 @@
 title: OpenTracing 简介
 date: 2020-04-13
 description: "OpenTracing 简介"
+categories: 
+  - devops
 permalink:
 ---
 

@@ -3,7 +3,6 @@ title: Python 环境问题记录
 date: 2021-01-29
 categories:
   - python
-  - environment
 tags:
   - 
 permalink:

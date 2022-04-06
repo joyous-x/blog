@@ -2,6 +2,8 @@
 title: 实践：DIND
 date: 2021-01-13
 description: "实践：DIND"
+categories: 
+  - foo
 keywords: 
   - dind
   - jenkins

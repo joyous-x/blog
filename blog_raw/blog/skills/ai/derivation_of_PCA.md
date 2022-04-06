@@ -3,8 +3,6 @@ title: PCA原理推导
 date: 2020-04-13 00:00:00
 description: PCA原理推导
 categories: 
-  - blog
-  - skills
   - bigdata
 tags: 
   - 

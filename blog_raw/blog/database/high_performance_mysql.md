@@ -3,7 +3,6 @@ title: High Performance Mysql, 3th Edition 阅读
 date: 2020-04-21 00:00:00
 description: High Performance Mysql, 3th Edition
 categories: 
-  - blog
   - database
 tags: 
   - 

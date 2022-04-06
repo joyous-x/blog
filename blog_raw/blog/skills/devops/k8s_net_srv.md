@@ -3,8 +3,7 @@ title: K8S网络之service间的通信
 date: 2021-01-05 21:36:12
 description: K8S网络之service间的通信
 categories: 
-  - skills
-  - devops
+  - k8s
 tags: 
   - 
 permalink:

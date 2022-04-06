@@ -3,8 +3,7 @@ title: K8S网络之集群外访问service的方式
 date: 2019-12-18 00:00:00
 description: K8S网络之集群外访问service的方式
 categories: 
-  - skills
-  - devops
+  - k8s
 tags: 
   - 
 permalink:

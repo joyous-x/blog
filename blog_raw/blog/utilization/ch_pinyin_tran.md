@@ -2,6 +2,8 @@
 title: 汉字字符编码及转换
 date: 2020-04-13
 description: "中文字符编码实现方案"
+categories: 
+  - foo
 permalink:
 ---
 # 汉字字符编码及转换

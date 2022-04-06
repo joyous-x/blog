@@ -3,7 +3,6 @@ title: k8s-ipvs连接保持
 date: 2019-10-15 00:00:00
 description: k8s ipvs recorder
 categories: 
-  - skills
   - devops
 tags: 
   -

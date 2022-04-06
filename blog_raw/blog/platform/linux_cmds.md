@@ -3,9 +3,7 @@ title: linux cmds
 date: 2019-12-23 00:00:00
 description: linux 常用命令集锦
 categories: 
-  - blog
   - platform
-  - linux
 tags: 
   - null
 permalink:

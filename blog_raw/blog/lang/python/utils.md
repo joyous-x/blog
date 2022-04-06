@@ -2,8 +2,6 @@
 title: Python 基础
 date: 2021-03-30 23:29:06
 categories:
-  - blog
-  - lang
   - python
 tags:
   - 

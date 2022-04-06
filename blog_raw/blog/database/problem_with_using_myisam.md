@@ -3,7 +3,6 @@ title: 批量写入造成mysql访问慢问题
 date: 2020-04-14 00:00:00
 description: 批量写入造成mysql访问慢问题
 categories: 
-  - blog
   - database
 tags: 
   - 

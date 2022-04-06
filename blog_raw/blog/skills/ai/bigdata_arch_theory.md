@@ -3,8 +3,6 @@ title: 大数据架构理论
 date: 2020-04-13 00:00:00
 description: 大数据架构理论
 categories: 
-  - blog
-  - skills
   - bigdata
 tags: 
   - 

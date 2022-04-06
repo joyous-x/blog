@@ -2,7 +2,6 @@
 title: 常见算法集
 date: 2021-01-16 23:29:06
 categories:
-  - blog
   - design
   - algorithm
 tags:

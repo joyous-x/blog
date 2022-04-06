@@ -3,7 +3,7 @@ title: 反编译apk
 date: 2020-06-23 00:00:00
 description: 反编译apk
 categories: 
-  - blog
+  - platform
 tags: 
   - null
 permalink:

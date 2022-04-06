@@ -3,7 +3,6 @@ title: Redis 手册
 date: 2020-04-21 00:00:00
 description: Redis 基础
 categories: 
-  - blog
   - database
 tags: 
   - 

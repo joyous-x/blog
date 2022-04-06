@@ -2,6 +2,8 @@
 title: 实践：consul 部署
 date: 2020-04-13
 description: "实践：consul 部署"
+categories: 
+  - foo
 permalink:
 ---
 # 实践：consul 部署

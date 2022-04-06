@@ -3,9 +3,7 @@ title: linux 内存缓慢增长问题
 date: 2019-10-15 00:00:00
 description: linux 内存缓慢增长问题的一种简单处理方式
 categories: 
-  - blog
   - platform
-  - linux
 tags: 
   - null
 permalink:
