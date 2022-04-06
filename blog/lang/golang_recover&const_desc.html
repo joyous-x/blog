@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>recover &amp; const 简述</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/img/favicon.ico">
+    <meta name="description" content="golang 中 recover 的使用，以及 const 类型转换使用过程中遇到的的问题">
+    <meta name="keywords" content="博客,全栈,技术文档,学习,面试,Go,C/C++,Python,Markdown">
+    <meta name="theme-color" content="#11a8cd">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.852bfa04.css" as="style"><link rel="preload" href="/blog/assets/js/app.a3f4fb79.js" as="script"><link rel="preload" href="/blog/assets/js/3.43c8fac8.js" as="script"><link rel="preload" href="/blog/assets/js/51.e13e6318.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.15b1c6a1.js"><link rel="prefetch" href="/blog/assets/js/100.0d652a05.js"><link rel="prefetch" href="/blog/assets/js/101.8bd14646.js"><link rel="prefetch" href="/blog/assets/js/102.c7d069f7.js"><link rel="prefetch" href="/blog/assets/js/103.935632fa.js"><link rel="prefetch" href="/blog/assets/js/104.48c5f7cb.js"><link rel="prefetch" href="/blog/assets/js/105.a0a8d095.js"><link rel="prefetch" href="/blog/assets/js/106.e17a2373.js"><link rel="prefetch" href="/blog/assets/js/107.a5d6c2b8.js"><link rel="prefetch" href="/blog/assets/js/11.8664c945.js"><link rel="prefetch" href="/blog/assets/js/12.ce8f829f.js"><link rel="prefetch" href="/blog/assets/js/13.ec96994d.js"><link rel="prefetch" href="/blog/assets/js/14.8a40b7ae.js"><link rel="prefetch" href="/blog/assets/js/15.14324128.js"><link rel="prefetch" href="/blog/assets/js/16.ffe9b698.js"><link rel="prefetch" href="/blog/assets/js/17.d3e801ea.js"><link rel="prefetch" href="/blog/assets/js/18.27a776d1.js"><link rel="prefetch" href="/blog/assets/js/19.c794e60e.js"><link rel="prefetch" href="/blog/assets/js/2.9d17c378.js"><link rel="prefetch" href="/blog/assets/js/20.55ee63e2.js"><link rel="prefetch" href="/blog/assets/js/21.3cb77b6e.js"><link rel="prefetch" href="/blog/assets/js/22.8add7339.js"><link rel="prefetch" href="/blog/assets/js/23.4e3ee1b3.js"><link rel="prefetch" href="/blog/assets/js/24.15cdaf17.js"><link rel="prefetch" href="/blog/assets/js/25.fff1e3d7.js"><link rel="prefetch" href="/blog/assets/js/26.a68fecdd.js"><link rel="prefetch" href="/blog/assets/js/27.71115304.js"><link rel="prefetch" href="/blog/assets/js/28.67bc83bf.js"><link rel="prefetch" href="/blog/assets/js/29.ee6fa1e0.js"><link rel="prefetch" href="/blog/assets/js/30.26552b07.js"><link rel="prefetch" href="/blog/assets/js/31.eb3fce00.js"><link rel="prefetch" href="/blog/assets/js/32.cbec33c6.js"><link rel="prefetch" href="/blog/assets/js/33.29e8369b.js"><link rel="prefetch" href="/blog/assets/js/34.2b3a2cc6.js"><link rel="prefetch" href="/blog/assets/js/35.fbbcd62d.js"><link rel="prefetch" href="/blog/assets/js/36.375ab7ea.js"><link rel="prefetch" href="/blog/assets/js/37.f18da370.js"><link rel="prefetch" href="/blog/assets/js/38.93cdea6a.js"><link rel="prefetch" href="/blog/assets/js/39.3f618929.js"><link rel="prefetch" href="/blog/assets/js/4.27174d7e.js"><link rel="prefetch" href="/blog/assets/js/40.68d5acb3.js"><link rel="prefetch" href="/blog/assets/js/41.735a32f6.js"><link rel="prefetch" href="/blog/assets/js/42.2dcfb427.js"><link rel="prefetch" href="/blog/assets/js/43.4076a469.js"><link rel="prefetch" href="/blog/assets/js/44.477f0d75.js"><link rel="prefetch" href="/blog/assets/js/45.53f271d0.js"><link rel="prefetch" href="/blog/assets/js/46.b94bea94.js"><link rel="prefetch" href="/blog/assets/js/47.633fed06.js"><link rel="prefetch" href="/blog/assets/js/48.ca846c64.js"><link rel="prefetch" href="/blog/assets/js/49.fc38f4cf.js"><link rel="prefetch" href="/blog/assets/js/5.1be6cc54.js"><link rel="prefetch" href="/blog/assets/js/50.71634729.js"><link rel="prefetch" href="/blog/assets/js/52.9f9da127.js"><link rel="prefetch" href="/blog/assets/js/53.fd90eaf9.js"><link rel="prefetch" href="/blog/assets/js/54.f5805575.js"><link rel="prefetch" href="/blog/assets/js/55.5f9d6238.js"><link rel="prefetch" href="/blog/assets/js/56.7c668336.js"><link rel="prefetch" href="/blog/assets/js/57.e5f6bdfa.js"><link rel="prefetch" href="/blog/assets/js/58.c395a744.js"><link rel="prefetch" href="/blog/assets/js/59.bc47d200.js"><link rel="prefetch" href="/blog/assets/js/6.873d8e8a.js"><link rel="prefetch" href="/blog/assets/js/60.c95d2560.js"><link rel="prefetch" href="/blog/assets/js/61.2162cd41.js"><link rel="prefetch" href="/blog/assets/js/62.0ce22f2f.js"><link rel="prefetch" href="/blog/assets/js/63.f0843647.js"><link rel="prefetch" href="/blog/assets/js/64.f8d17608.js"><link rel="prefetch" href="/blog/assets/js/65.57772a37.js"><link rel="prefetch" href="/blog/assets/js/66.708f9109.js"><link rel="prefetch" href="/blog/assets/js/67.730125ac.js"><link rel="prefetch" href="/blog/assets/js/68.cd821796.js"><link rel="prefetch" href="/blog/assets/js/69.4b22642c.js"><link rel="prefetch" href="/blog/assets/js/7.802f6651.js"><link rel="prefetch" href="/blog/assets/js/70.ab34d6b2.js"><link rel="prefetch" href="/blog/assets/js/71.1025c944.js"><link rel="prefetch" href="/blog/assets/js/72.84aa066c.js"><link rel="prefetch" href="/blog/assets/js/73.11f8e1ad.js"><link rel="prefetch" href="/blog/assets/js/74.6b487d0a.js"><link rel="prefetch" href="/blog/assets/js/75.c895d996.js"><link rel="prefetch" href="/blog/assets/js/76.1ff568a7.js"><link rel="prefetch" href="/blog/assets/js/77.84c6d379.js"><link rel="prefetch" href="/blog/assets/js/78.a6da4b4b.js"><link rel="prefetch" href="/blog/assets/js/79.9d45ca76.js"><link rel="prefetch" href="/blog/assets/js/8.3784e140.js"><link rel="prefetch" href="/blog/assets/js/80.a2e5077a.js"><link rel="prefetch" href="/blog/assets/js/81.0ef059d5.js"><link rel="prefetch" href="/blog/assets/js/82.c338d27e.js"><link rel="prefetch" href="/blog/assets/js/83.db892f3a.js"><link rel="prefetch" href="/blog/assets/js/84.d3d65364.js"><link rel="prefetch" href="/blog/assets/js/85.f2d7994c.js"><link rel="prefetch" href="/blog/assets/js/86.b4f175cc.js"><link rel="prefetch" href="/blog/assets/js/87.efe9bd77.js"><link rel="prefetch" href="/blog/assets/js/88.e6a181a0.js"><link rel="prefetch" href="/blog/assets/js/89.c2b350ed.js"><link rel="prefetch" href="/blog/assets/js/9.d63a5449.js"><link rel="prefetch" href="/blog/assets/js/90.aca6ae33.js"><link rel="prefetch" href="/blog/assets/js/91.851541fc.js"><link rel="prefetch" href="/blog/assets/js/92.ba46d071.js"><link rel="prefetch" href="/blog/assets/js/93.dfb608ce.js"><link rel="prefetch" href="/blog/assets/js/94.99c44a9d.js"><link rel="prefetch" href="/blog/assets/js/95.ff8d595e.js"><link rel="prefetch" href="/blog/assets/js/96.6bfcd613.js"><link rel="prefetch" href="/blog/assets/js/97.0f10eff2.js"><link rel="prefetch" href="/blog/assets/js/98.35acd6a9.js"><link rel="prefetch" href="/blog/assets/js/99.a2602645.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.852bfa04.css">
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true"><div class="theme-container sidebar-open no-sidebar have-rightmenu"><header class="navbar blur"><div title="目录" class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/img/web_logo.png" alt="" class="logo"> <!----></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link router-link-active">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar-hover-trigger"></div> <aside class="sidebar" style="display:none;"><div class="blogger"><img src="/img/avatar.png"> <div class="blogger-info"><h3>Jiao</h3> <span>知行合一</span></div></div> <nav class="nav-links"><div class="nav-item"><a href="/blog/" class="nav-link">首页</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Blog" class="dropdown-title"><a href="/blog/blog/" class="link-title router-link-active">Blog</a> <span class="title" style="display:none;">Blog</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>语言</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/lang/" class="nav-link router-link-active">Language</a></li></ul></li><li class="dropdown-item"><h4>设计</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/design/" class="nav-link">Design</a></li></ul></li><li class="dropdown-item"><h4>网络</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/network/" class="nav-link">Network</a></li></ul></li><li class="dropdown-item"><h4>数据库</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/database/" class="nav-link">Database</a></li></ul></li><li class="dropdown-item"><h4>平台</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/platform/" class="nav-link">Platform</a></li></ul></li><li class="dropdown-item"><h4>技能</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/skills/##Devops" class="nav-link">Devops</a></li><li class="dropdown-subitem"><a href="/blog/blog/skills/##Ai" class="nav-link">AI</a></li></ul></li><li class="dropdown-item"><h4>应用</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utilization/" class="nav-link">Utilization</a></li></ul></li><li class="dropdown-item"><h4>杂项</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/blog/utility/##Rnote" class="nav-link">ReadNote</a></li><li class="dropdown-subitem"><a href="/blog/blog/utility/##Tools" class="nav-link">Tools</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="更多" class="dropdown-title"><a href="/blog/more/" class="link-title">更多</a> <span class="title" style="display:none;">更多</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/more/about/" class="nav-link">关于</a></li><li class="dropdown-item"><!----> <a href="/blog/more/friends/" class="nav-link">友情链接</a></li><li class="dropdown-item"><h4>收藏</h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/blog/more/favorites/" class="nav-link">favorites</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="索引" class="dropdown-title"><a href="/blog/index/" class="link-title">索引</a> <span class="title" style="display:none;">索引</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/blog/index/categories/" class="nav-link">分类</a></li><li class="dropdown-item"><!----> <a href="/blog/index/tags/" class="nav-link">标签</a></li><li class="dropdown-item"><!----> <a href="/blog/index/archives/" class="nav-link">归档</a></li></ul></div></div> <a href="https://github.com/joyous-x/blog" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <!----> <div class="sidebar-slot sidebar-slot-bottom"><!-- 正方形 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="3508773082"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div></aside> <div><main class="page"><div class="theme-vdoing-wrapper "><div class="articleInfo-wrap" data-v-0c557b5e><div class="articleInfo" data-v-0c557b5e><ul class="breadcrumbs" data-v-0c557b5e><li data-v-0c557b5e><a href="/blog/" title="首页" class="iconfont icon-home router-link-active" data-v-0c557b5e></a></li> <li data-v-0c557b5e><a href="/blog/categories/?category=blog" title="分类" data-v-0c557b5e>blog</a></li><li data-v-0c557b5e><a href="/blog/categories/?category=lang" title="分类" data-v-0c557b5e>lang</a></li></ul> <div class="info" data-v-0c557b5e><div title="作者" class="author iconfont icon-touxiang" data-v-0c557b5e><a href="https://github.com/joyous-x" target="_blank" title="作者" class="beLink" data-v-0c557b5e>Jiao</a></div> <div title="创建时间" class="date iconfont icon-riqi" data-v-0c557b5e><a href="javascript:;" data-v-0c557b5e>2019-12-23</a></div> <!----></div></div></div> <!----> <div class="content-wrapper"><div class="right-menu-wrapper"><div class="right-menu-margin"><div class="right-menu-title">目录</div> <div class="right-menu-content"></div></div></div> <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABGpJREFUSA3tVVtoXFUU3fvOI53UlmCaKIFmwEhsE7QK0ipFEdHEKpXaZGrp15SINsXUWvBDpBgQRKi0+KKoFeJHfZA+ED9KKoIU2gYD9UejTW4rVIzm0VSTziPzuNu1z507dibTTjL4U/DAzLn3nL3X2o91ziX6f9wMFdh6Jvbm9nNSV0msViVO6tN1Rm7NMu2OpeJ9lWBUTDxrJbYTS0hInuwciu9eLHlFxCLCZEk3MegsJmZ5K/JD6t7FkFdEvGUo1g7qJoG3MHImqRIn8/nzY1K9UPKKiJmtnUqHVE3Gbuay6vJE/N2FEmuxFjW2nUuE0yQXRRxLiTUAzs36zhZvOXJPdX850EVnnLZkB8prodQoM5JGj7Xk2mvC7JB8tG04Ef5PiXtG0UtxupRQSfTnBoCy554x18yJHI6I+G5Eru4LHmPJZEQsrvPUbMiA8G/WgMK7w7I+ez7++o2ANfbrjvaOl1tFMs+htG3IrZH9/hDX1Pr8Tc0UvH8tcX29KzAgIGcEkINyW5BF9x891hw6VYqgJHEk0huccS7vh3C6gTiODL+26huuBtbct8eZnqLML8PkxGYpuPZBqtqwkSjgc4mB5gbgig5i+y0UDK35LMxXisn9xQtK+nd26gTIHsHe/oblK/b29fUmN/8Y+9jAQrnBp56m1LcDlDp9irKTExSKduXJVWSqdBMA08pEJnEIOB3FPPMybu/oeV8zFeYN3xx576Q6RH+VmplE4ncQV5v+5rzSoyOU7PuEAg8g803PwBJ0CExno/jcMbN8tONYeOmHiuUNryvm3fRUy4tMPVLdAGkUhNWuggGrJcXPv+ouCjz0MKUHz1J2/E8IC9nqTabcxgaBYM0hPhD5Y65FsbxRQKxCQrDjDctW7PUM3HuZunFyifSAqEfuzCp48Il24luWUWZoyJCaPR82jE0+kFA643wRFVni4RYSq3ohJO2pZ7B5dO4xkDWbEpossJPLSrPjYID8rS2UHTlvyNxqIGsg674XJJ7vnh5L7PNwC4hh2sjCI96mzszOTpxLF0T7l88Yz7lAuK6OnL8gXLOnTvpzSb22YG8W7us3jSebFHeeqnXRG1vt+MoUM84LQIBmMsCTAcOauTh0T0l0neQK7m2bLMt2mGxU3HYssS0J2cdv5wljlPsrIuZLAG/2DOZIXgCYT8uMGZN+e2kSirfxZOPCsC0f24nTZzspnVn9VePS1Z5vubmAGGXG8ZFno9Hel0yfA5ZPhF7Dh972BQJ2qCpgH67lmWtBYbvk6sz02wjky2vXyz0XErP/kFB619js1BtwfOV4OPRqOQBjy3Qbk18vigUPPSD5ceHnwck7W9bhAqZdd7SuG7w4/P2F/GaJh8c7e9qgow+Q7cGBo+98WsLkuktFqiZabtXuQTu/Y5ETbR0v7tNSFnvrmu6pjdoan2KjMu8q/Hmj1EfCO2ZGfEIbIXKUlw8qaX9/b2oeSJmFksSeT/Fn0V3nSypChh4Gjh74ybO9aeZ/AN2dwciu2/MhAAAAAElFTkSuQmCC">recover &amp; const 简述<!----></h1> <div class="page-slot page-slot-top"><!-- 固定100% * 90px可显示，max-height:90px未见显示-->
+     <ins class="adsbygoogle"
+          style="display:inline-block;width:100%;max-height:90px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6625304284"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="theme-vdoing-content content__default"><h1 id="recover-const-简述"><a href="#recover-const-简述" class="header-anchor">#</a> recover &amp; const 简述</h1> <h2 id="const类型转换"><a href="#const类型转换" class="header-anchor">#</a> const类型转换</h2> <ul><li>问题<div class="language- line-numbers-mode"><pre class="language-text"><code>	package main
+	import (
+		&quot;fmt&quot;
+		&quot;reflect&quot;
+		&quot;time&quot;
+	)
+	const a = 1
+	func test(a time.Duration) {
+		fmt.Printf(&quot;%v \n&quot;, a)
+	}
+	func main() {
+		b := a + 1
+		fmt.Printf(&quot;---- a = %v \n&quot;, reflect.TypeOf(a))
+		test(a)
+		fmt.Printf(&quot;---- b = %v \n&quot;, reflect.TypeOf(b))
+		// test(b)  //&gt; 打开注释后, 会编译不通过
+	}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div></li> <li>原因<div class="language- line-numbers-mode"><pre class="language-text"><code>Assignability
+	A value x is assignable to a variable of type T (&quot;x is assignable to T&quot;) if one of the following conditions applies:
+		- x's type is identical to T.
+		- x's type V and T have identical underlying types and at least one of V or T is not a defined type.
+		- T is an interface type and x implements T.
+		- x is a bidirectional channel value, T is a channel type, x's type V and T have identical element types, and at least one of V or T is not a defined type.
+		- x is the predeclared identifier nil and T is a pointer, function, slice, map, channel, or interface type.
+		- x is an untyped constant representable by a value of type T.	
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><ul><li>const 修饰的变量如果没有明确指明类型时，会根据需要做类型转换; 而非 const 修饰的变量不会。</li> <li>reference: <a href="https://golang.org/ref/spec#Constants" target="_blank" rel="noopener noreferrer">https://golang.org/ref/spec#Constants<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></li></ul> <h2 id="defer-panic-recover"><a href="#defer-panic-recover" class="header-anchor">#</a> defer &amp; panic &amp; recover</h2> <ul><li>详述
+<ul><li>defer
+<ul><li>工作方式：先进后出</li> <li>执行时机：
+<ul><li>先说 return语句的处理过程
+<ul><li>return xxx 语句并不是一条原子指令，在执行时会分解成： a、返回变量=xxx b、执行return</li></ul></li> <li>defer语句是在函数关闭时调用，确切的说是紧贴在执行return语句之前调用。
+<ul><li>注意，是return 不是return xxx，就是说 defer 发生在上述流程的 a 和 b 之间。</li></ul></li></ul></li></ul></li> <li>panic
+<ul><li>执行过程：
+<ul><li>当执行一个函数 F 的时候，如果显式地调用 panic 函数或者一个 run-time panics 发生时，F 会结束运行，所有 F 中 defer 的函数会按照 FILO 的规则被执行。</li> <li>之后，F 函数的调用者中 defer 的函数再被执行，如此一直到最外层代码或者有效的 recover 调用。</li></ul></li> <li>panic 函数的参数是空接口类型，所以可以接受任何类型的对象</li></ul></li> <li>recover
+<ul><li>目的：
+<ul><li>当一个 goroutine 发生 panic 时，不影响其他的 goroutines 的执行</li></ul></li> <li>执行时机：
+<ul><li>recover 函数用来获取 panic 函数的参数信息，只能在延时调用 defer 语句调用的函数中<strong>直接调用</strong>才能生效</li> <li>如果在 defer 语句中也调用 panic 函数，则只有最后一个被调用的 panic 函数的参数会被 recover 函数获取到。</li> <li>如果 goroutine 没有 panic，那调用 recover 函数会返回 nil。</li></ul></li></ul></li></ul></li></ul> <blockquote><p>sample code</p></blockquote> <div class="language- line-numbers-mode"><pre class="language-text"><code>package main
+
+import (
+	&quot;fmt&quot;
+	&quot;runtime&quot;
+	&quot;sync&quot;
+	&quot;time&quot;
+)
+
+/**
+*
+
+预期：
+   我们预期，定时器不停的工作，但当 goroutine 发生 panic 时，虽然不会影响其他 goroutine 但会造成定时器退出，不再继续工作
+伪码：
+   go func() {
+       defer func() {
+           if err := recover(); err != nil {
+               stackData := make([]byte, 1&lt;&lt;16)
+               runtime.Stack(stackData, false)
+               fmt.Printf(&quot;%v \n&quot;, string(stackData))
+           }
+       }
+       ticker := time.NewTicker(1 * time.Second)
+       for range ticker.C {
+           var wg sync.WaitGroup
+           go func() {
+               //&gt; do somethings
+           }
+           for i := 0; i &lt; 100; i++ {
+               wg.Add(1)
+               go func() {
+                   defer wg.Done()
+                   //&gt; do somethings
+               }
+           }
+           wg.Wait()
+       }
+   }
+
+*/
+
+func recovery(source string) {
+	if err := recover(); err != nil { // recover只在defer的函数中有效
+		fmt.Printf(&quot;-- %v \n&quot;, err)
+		stackData := make([]byte, 1&lt;&lt;16)
+		runtime.Stack(stackData, false)
+		fmt.Printf(&quot;src=%s: %v \n&quot;, source, string(stackData))
+	} else {
+		fmt.Printf(&quot;i am recovery: no : src=%s\n&quot;, source)
+	}
+}
+
+func firstCrash() {
+	defer func() {
+		fmt.Printf(&quot;i am firstCrash: defer \n&quot;)
+		//&gt; 这里的 recover 生效
+		if err := recover(); err != nil {
+			fmt.Printf(&quot;i am firstCrash: recovery \n&quot;)
+		}
+	}()
+	panic(&quot;~~ panic ~~&quot;)
+}
+
+func nextCrash() {
+	defer func() {
+		fmt.Printf(&quot;i am nextCrash: defer \n&quot;)
+		recovery(&quot;nextCrash&quot;) //&gt; 这里的 recovery 里的 recover 不生效: recover 只在 defer 函数里才生效
+	}()
+	panic(&quot;~~ panic ~~&quot;)
+}
+
+func next(w *sync.WaitGroup) {
+	defer w.Done()
+	fmt.Printf(&quot;-- next: body \n&quot;)
+	nextCrash()
+}
+
+func first(w *sync.WaitGroup) {
+	w.Add(1)
+	go func() {
+		defer recovery(&quot;first&quot;)
+		time.Sleep(1 * time.Second)
+		firstCrash()
+		fmt.Printf(&quot;i am first: b \n&quot;)
+		next(w)
+	}()
+}
+
+func main() {
+	defer recovery(&quot;main&quot;)
+	var wg sync.WaitGroup
+	first(&amp;wg)
+	fmt.Printf(&quot;i am wait \n&quot;)
+	wg.Wait()
+	time.Sleep(2 * time.Second)
+	fmt.Printf(&quot;i am ending \n&quot;)
+}
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br></div></div></div></div> <div class="page-slot page-slot-bottom"><!-- 横向自适应 -->
+      <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="6620245489"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script></div> <div class="page-edit"><!----> <!----> <!----></div> <div class="page-nav-wapper"><!----> <!----></div></div> <div class="article-list"><div class="article-title"><a href="/blog/archives/" class="iconfont icon-bi">最近更新</a></div> <div class="article-wrapper"><dl><dd>01</dd> <dt><a href="/blog/blog/lang/cxx_static_analyze.html"><div>
+            Cxx Static Analyze
+            <!----></div></a> <span class="date">04-06</span></dt></dl><dl><dd>02</dd> <dt><a href="/blog/blog/lang/cxx_features.html"><div>
+            CXX features
+            <!----></div></a> <span class="date">04-02</span></dt></dl><dl><dd>03</dd> <dt><a href="/blog/blog/xnote/about_heart_and_mind.html"><div>
+            关于心学
+            <!----></div></a> <span class="date">03-28</span></dt></dl> <dl><dd></dd> <dt><a href="/blog/archives/" class="more">更多文章&gt;</a></dt></dl></div></div></main></div> <div class="footer"><div class="icons"><a href="mailto:929843628@qq.com" title="发邮件" target="_blank" class="iconfont icon-youjian"></a><a href="https://github.com/joyous-x" title="GitHub" target="_blank" class="iconfont icon-github"></a><a href="https://music.163.com" title="听音乐" target="_blank" class="iconfont icon-erji"></a></div> 
+  Theme by
+  <a href="https://github.com/xugaoyi/vuepress-theme-vdoing" target="_blank" title="本站主题">Vdoing</a> 
+    | Copyright © 2020-2022
+    <span>Jiao | <a href="https://github.com/joyous-x/blog/blob/master/LICENSE" target="_blank">MIT License</a></span></div> <div class="buttons"><div title="返回顶部" class="button blur go-to-top iconfont icon-fanhuidingbu" style="display:none;"></div> <div title="去评论" class="button blur go-to-comment iconfont icon-pinglun" style="display:none;"></div> <div title="主题模式" class="button blur theme-mode-but iconfont icon-zhuti"><ul class="select-box" style="display:none;"><li class="iconfont icon-zidong">
+          跟随系统
+        </li><li class="iconfont icon-rijianmoshi">
+          浅色模式
+        </li><li class="iconfont icon-yejianmoshi">
+          深色模式
+        </li><li class="iconfont icon-yuedu">
+          阅读模式
+        </li></ul></div></div> <!----> <!----> <div class="custom-html-window custom-html-window-rb" style="display:;"><div class="custom-wrapper"><span class="close-but">×</span> <div><!-- 固定160*160px -->
+      <ins class="adsbygoogle"
+          style="display:inline-block;max-width:160px;max-height:160px"
+          data-ad-client="ca-pub-7828333725993554"
+          data-ad-slot="8377369658"></ins>
+      <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      </div></div></div></div><div class="global-ui"><div></div></div></div>
+    <script src="/blog/assets/js/app.a3f4fb79.js" defer></script><script src="/blog/assets/js/3.43c8fac8.js" defer></script><script src="/blog/assets/js/51.e13e6318.js" defer></script>
+  </body>
+</html>
