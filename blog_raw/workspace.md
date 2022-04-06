@@ -28,4 +28,6 @@ permalink:
 - Shotcut https://shotcut.org/
 - Apache Superset https://github.com/apache/superset
   - Apache Superset是一个现代的、轻量级可视化BI分析工具。Apache Superset在可视化、易用性和交互性上非常有特色，用户可以轻松对数据进行可视化分析。而且Apache Superset 已经达到企业级商业软件的水平。
-- 
+
+
+- [将变音带向新层次](https://www.bianyindashi.com)

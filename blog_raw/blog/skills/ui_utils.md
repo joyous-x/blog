@@ -25,7 +25,6 @@ xxhdpi | 1080 * 1920 | 480 | 144 * 144 | 72 * 72
 
 ### 颜色
 在 Android 中 0x00 表示完全透明，0xFF 表示完全不透明，比较适中的透明度是 0x1E
-le="background: #303F9F"> aaaaaaaaaaaaaaaaaaa </font>
 
 ### Material Design
 [Material Design](https://www.google.com/design/spec/material-design/)，质感设计，由 Google 推出的设计语言，旨在为手机、平板、电脑等平台提供一致、更广泛的『外观和感觉』。

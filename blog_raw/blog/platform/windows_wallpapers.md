@@ -2,9 +2,10 @@
 title: Windows Wallpapers
 date: 2022-03-10 00:00:00
 lastmod: null
-publish: true
 categories: 
+  - platform
 keywords: 
+  - wallpapers
 description:
 tags: 
 permalink:
