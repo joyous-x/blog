@@ -4,7 +4,7 @@ date: 2021-11-11 19:32:00
 lastmod: null
 description: MS Shell Link 格式解析
 categories: 
-  - skills
+  - office
 tags: 
   - ole
   - ms shell link

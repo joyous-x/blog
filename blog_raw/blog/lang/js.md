@@ -4,12 +4,10 @@ date: 2020-04-14 00:00:00
 lastmod: null
 publish: true
 categories: 
-  - js
+  - JS
 keywords: 
-  - js
 description: js 基础知识汇总
 tags: 
-  - 
 permalink:
 ---
 

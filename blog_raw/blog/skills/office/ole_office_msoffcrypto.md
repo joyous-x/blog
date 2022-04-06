@@ -4,11 +4,10 @@ date: 2021-06-18 13:50:00
 lastmod: null
 description: Office 格式简析，查找 宏 以进行病毒检测
 categories: 
-  - skills
+  - office
 tags: 
   - ole
   - ms-cfb
-  - office
 permalink:
 ---
 

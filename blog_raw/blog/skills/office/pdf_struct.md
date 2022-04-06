@@ -4,10 +4,9 @@ date: 2021-06-18 13:50:00
 lastmod: null
 description: PDF格式解析，深入PDF内部结构
 categories: 
-  - skills
-  - devops
+  - office
 tags: 
-  - 
+  - pdf
 permalink:
 ---
 
