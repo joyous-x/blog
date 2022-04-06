@@ -32,7 +32,7 @@ windows 平台下的 PE签名 大致可以分为```embedded、catalog```两种�
 
 ### 查看签名
 嵌入式签名内容如下：
-![signature_pe](../rsc/sign_pe_sample.png)
+![signature_pe](./rsc/sign_pe_sample.png)
 
 签名中包含的主要信息有：
 - 签名者(signer)
@@ -82,7 +82,7 @@ windows 平台下的 PE签名 大致可以分为```embedded、catalog```两种�
 
 ### PE文件中签名结构
 嵌入式签名结构如下：
-![microsoft_section_certificate](../rsc/microsoft_section_certificate.png)
+![microsoft_section_certificate](./rsc/microsoft_section_certificate.png)
 
 ## 签名验证
 ### 证书生成
@@ -119,7 +119,7 @@ windows 平台下的 PE签名 大致可以分为```embedded、catalog```两种�
 3. 当然，此时这种证书是不被系统所信任的，需要手动把生成的证书导入到系统：
     - 在 Windows 系统的**运行**中输入```certmgr.msc```
     - 找到 "受信任的根证书颁发机构"，右键 -> 所有任务 -> 导入
-        ![cert_window_import](../rsc/cert_window_import.png)
+        ![cert_window_import](./rsc/cert_window_import.png)
 4. 此时，就可以使用微软的 ```signtool``` 工具对PE文件进行嵌入式签名了
 
 ### 编录式
