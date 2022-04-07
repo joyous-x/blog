@@ -14,8 +14,9 @@ permalink:
 # C++ features
 Version | Name | Sample | Note
 --- | --- | --- | --- 
-C++ | 右值引用 | ```int &&ref_a_left = 6; ``` | 右值引用和移动语义
-C++11 | move semantics | ```std::move、std::forward``` | move and move contructor
+C++ | rvalue reference | ```int &&ref_a_left = 6; ``` | 右值引用 和 移动语义
+C++11 | move semantics | ```std::move``` | move and move contructor
+C++11 | perfect forwarding | ```std::forward``` | 移动语义 和 完美转发
 C++11 | auto | ```auto a = 4 + 6;``` | 
 C++14 | "auto" return type deduction | ```template <typename A, typename B>```<br>```auto do_something(const A& a, const B& b)```<br>```{ return a.do_something(b); }``` | 
 C++11 | lambda | ```auto aLambda = [](auto a, auto b) { return a < b; };``` | 
