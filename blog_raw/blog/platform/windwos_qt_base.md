@@ -77,3 +77,41 @@ permalink:
 - https://blog.csdn.net/dengjin20104042056/article/details/115304706
 - [Layout Management](https://doc.qt.io/qt-5/layout.html)
 - [The Event System](https://doc.qt.io/qt-5.15/eventsandfilters.html) 
+
+
+所有定义了 signal 和 slot 的类，在类定义的开始处的 Q_OBJECT 宏都是必需的。
+
+
+QDialog : show() 和 exec() : 非模态 和 模态
+
+Qt 窗口
+  - Qt 会对所有的窗口进行跟踪，所以，new 一个 window 后，可以没有主动 delete 
+  - 用户关闭一个主窗口时，默认行为是隐藏它，可以通过 Qt::WA_DeleteOnClose 属性进行修改
+
+QSplashScreen
+  - 通常会将启动画面的代码放在 mian() 函数中，位于 Application::exec() 调用之前
+
+QTableWidget
+  - 与 QTableWidget 不同，QTableWidgetItem 不是一个窗口部件类，而是一个纯粹的数据类
+  - 可以在构造函数中使用 setItemPrototype() 用新数据类替换 QTableWidgetItem
+
+QFile & QDataStream
+
+QApplication::setOverrideCursor(Qt::WaitCursor)
+QApplication::restoreOverrideCursor()
+
+QApplication::clipboard()
+QApplication::beep()
+
+QWidget::update() 和 QWidget::repaint()
+- QWidget::repaint()
+  - 强制产生一个即时的重绘事件
+- QWidget::update():
+  - 只是通知 Qt 下一次处理事件时才简单的调用一个绘制事件
+  - 如果多次调用 update(), Qt 会把连续多次的绘制事件压缩成一个单一的绘制事件，这样可以避免闪烁现象
+如果窗口部件在屏幕上是不可见的，那么这两个函数会什么都不做
+
+
+
+mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
+
