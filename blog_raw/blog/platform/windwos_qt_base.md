@@ -133,3 +133,7 @@ QWidget::update() 和 QWidget::repaint()
 
 mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
 
+
+Qt 实现了类似于 MVC 的项视图类
+
+Qt 的容器都是隐含共享(implicit sharing)的, 这是一个能够把整个容器作为不需要太多运行成本的值来传递的最优化过程。
