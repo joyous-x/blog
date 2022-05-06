@@ -73,10 +73,28 @@ permalink:
 | | ```moveEvent()``` | widget 相对于其父 widget 被移动时被调用 | |
 | | ```closeEvent()``` | 用户关闭 widget 时或者调用 close() 函数时被调用 | |
 
+
+Qt 提供了5个级别的事件处理和事件过滤方法：
+1. 重现实现特殊的事件处理器 
+   - 重新实现像 mousePressEvent()、keyPressEvent() 和 paintEvent() 这样的事件处理器是比较常用的事件处理方式 
+2. 重新实现 QObject::event()
+   - 通过 event() 函数的重新实现，可以在这些事件到达特定的事件处理器之前处理它们
+   - 当重新实现 event() 时，必须对那些没有明确处理的情况调用其基类的 event() 函数
+3. 在 QObject 中安装事件过滤器
+   - 对象一旦使用 installEventFilter() 注册过，用于目标对象的所有事件都会首先发送给这个监听对象的 eventFilter() 函数
+   - 如果同一个对象上安装了多个事件处理器，那么就会按照安装顺序逆序，从最后安装的到最先安装的，依次激活这些事件处理器
+4. 在 QApplication 对象中安装事件过滤器
+   - 一旦在唯一的 QApplication 对象中注册了事件过滤器，那么应用程序中每个对象的每个事件都会在发送到其他事件过滤器之前，先发送给这个 eventFilter() 函数
+   - 这种处理方式对于调试是非常有用的。它也可以用来处理那些发送给失效窗口部件的鼠标事件，因为 QApplication 通常都会忽略这些事件
+5. 子类化 QApplication 并重新实现 notify()
+   - Qt 调用 QApplication::notify() 来发送一个事件。重新实现这个函数是在事件过滤器得到所有事件之前获得它们的唯一方式
+   - 事件过滤器通常更有用，因为可以同时有多个事件过滤器，而 notify() 函数却只能有一个
+
 ## 五、Reference
 - https://blog.csdn.net/dengjin20104042056/article/details/115304706
 - [Layout Management](https://doc.qt.io/qt-5/layout.html)
 - [The Event System](https://doc.qt.io/qt-5.15/eventsandfilters.html) 
+
 
 
 所有定义了 signal 和 slot 的类，在类定义的开始处的 Q_OBJECT 宏都是必需的。
