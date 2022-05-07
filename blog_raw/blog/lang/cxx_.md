@@ -1,5 +1,5 @@
 ---
-title: CXX
+title: cxx features
 date: 2021-11-24 11:50:00
 lastmod: null
 publish: true
@@ -12,7 +12,7 @@ permalink:
 ---
 
 # C && C++
-## 基础
+## 一、基础
 c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++标准库)的实现规范, 但不同的编译器对标准库的实现方法各不一致
 
 | Subject | Content | Status |
@@ -25,7 +25,47 @@ c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++�
 | 平台特性 | window、linux | &#9744; |
 | 技巧 | Tricks and Traps | &#9744; |
 
-## 多态
+## 二、Feature
+Version | Name | Sample | Note
+--- | --- | --- | --- 
+C++11 | rvalue reference | ```int &&ref_a_left = 6; ``` | 右值引用 和 移动语义
+C++11 | move semantics | ```std::move``` | move and move contructor
+C++11 | perfect forwarding | ```std::forward``` | 移动语义 和 完美转发
+C++11 | decltype | ```int n = 3; decltype(n) t = n + 4;``` | 类型推导, 以普通表达式作为参数返回该表达式的类型, 注意，decltype 不会对表达式进行求值
+C++11 | auto | ```auto a = 4 + 6;``` | 类型推导, 从变量声明的初始化表达式获得变量的类型
+C++14 | "auto" return type deduction | ```template <typename A, typename B>```<br>```auto do_something(const A& a, const B& b)```<br>```{ return a.do_something(b); }``` | 
+C++11 | trailing-return type | ```auto foo(int p) -> int { return p * 42; }``` | auto, decltype, trailing-return type
+C++11 | lambda | ```auto aLambda = [](auto a, auto b) { return a < b; };``` | 
+C++11 | constexpr | ```constexpr int x = 5;``` | 
+C++11 | strongly typed enums | ```enum class : char { };``` | 
+C++11 | static assert | ```static_assert(sizeof(int) == 4);``` | 编译期的断言
+C++11 | range based for | ```for (auto x : vec)  { /* TODO */ }``` |
+C++11 | type alias | ```using func = void (*) (int, int);``` | using、typedef、typename<br>using 可读性更高，且可以用于模板别名[The "typename" keyword](https://stackoverflow.com/questions/610245/where-and-why-do-i-have-to-put-the-template-and-typename-keywords/17579889#17579889)
+C++11 | unicode strings | ```const char16_t* utf16 = u"foo";```<br>```const char32_t* utf32 = U"foo";``` | 
+C++11 | override | ```struct A { virtual void foo() {}; };```<br>```struct B : public A { void foo() override {}; };``` | 
+C++17 | constexpr if | ```if constexpr (sizeof(int) == 1) return 0;``` | 
+C++17 | template auto | ```template <auto Value>```<br>```struct constant { static constexpr auto value = Value;};``` | type and non-type template parameters
+C++17 | nested namespace definition | ```namespace A::B::C { class X {}; }``` | 
+C++17 | inline variable | ```class X { static inline int field = 2; };``` |
+C++17 | structured binding  | ```int arr[3] = {3,4,5};```<br>```auto [a, b, c] = arr;```<br>```auto [x, y, z] = std::make_tuple("str", 0.4, 1);``` |
+C++20 | designated initializer | ```struct A { int x; int y; int z; };```<br>```A a { .x = 1, .z = 2 };``` | 
+C++20 | modules | ```export module A; import A; import std.core;``` | 
+C++20 | consteval | ```static consteval int square(int n) { return n * n; }``` | 
+C++20 | constinit | ```constinit auto sqrOf5 = square(5);``` | 
+C++20 | concept | ```template<typename T>```<br>```concept Integral = std::is_integral<T>::value;``` | 
+C++11 | attribute specifier sequence | ```[[gnu::const]] [[nodiscard]]```<br>```inline int f(); ``` | 
+C++ | enumerators with attributes | ```enum class myEnum{ value1 [[anAttribute]], }; ``` | ??
+
+### 一、Thriving in a Crowded and Changing World: C++ 2006–2020
+这是 C++ 之父 Bjarne Stroustrup 的 [HOPL4](https://www.stroustrup.com/hopl20main-p5-p-bfc9cd4--final.pdf) 论文的标题。
+
+HOPL（History of Programming Languages，编程语言历史）ACM（Association of Computing Machines，国际计算机协会）旗下的一个会议，约每十五年举办一次。
+
+Bjarne 的这篇论文是他为 2021 年 HOPL IV 会议准备的论文，它涵盖了 C++98 之后的所有 C++ 版本，从 C++11 直到 C++20。
+
+鉴于这篇论文可以帮助 C++ 从业者对 C++ 的设计原则和历史有一个系统的了解，全球 C++ 及系统软件技术大会的主办方 Boolan 组织了一群译者，把这篇重要论文翻译成了中文: [在拥挤和变化的世界中茁壮成长：C++ 2006–2020](https://github.com/Cpp-Club/Cxx_HOPL4_zh)
+
+## 三、多态
 ### 1. 虚函数表内存模型
 ### 2. 方法派发(dispatch)流程(选择正确方法调用的过程) 
 + 派发机制按照选择正确方法的时期(编译期和运行期)，可以分为: static dispatch 和 dynamic dispatch
@@ -50,7 +90,7 @@ c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++�
       - 在组件对象模型编程中,使用late binding的最大优势在于,不要求编译器在编译期间去引用包含对象的库.这使得编译过程可以更有效的去避免类的虚函数表突然更改带来的冲突.
       - 大部分的动态类型语言都可以在运行时去修改对象的方法列表, 因此他们就需要late binding.
 
-## 模版
+## 四、模版
 + C++ 模板是图灵完备的
   - 具备以下能力：编译期数值计算、类型计算、代码计算（如循环展开）
 + 模版实例化、偏特化、偏特化(与函数的柯里化不同)...
@@ -59,7 +99,7 @@ c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++�
 + 类型萃取
   - 依赖模板的特化来实现
 
-## 导入(import)导出(export) 
+## 五、导入(import)导出(export) 
 ### 1. 对象
 - 函数、接口、类、成员函数、成员变量
 ### 2. 使用
@@ -168,32 +208,6 @@ c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++�
         #pragma pack(1)
       #endif
     ```
-+ HeapOnly 和 StackOnly
-  ```
-      #include <iostream>
-      class HeapOnly {
-      public:  
-          HeapOnly() { }
-          void destroy() const { delete this; }
-      private:  
-          ~HeapOnly() { }
-      };
-      class StackOnly {
-      public:
-          StackOnly() { }
-          ~StackOnly() { }
-      private:
-          void* operator new(size_t);
-      };
-      int main() {  
-          StackOnly s; // ok
-          StackOnly *p = new StackOnly; // wrong
-          HeapOnly *p = new HeapOnly; // ok
-          p->destroy();
-          HeapOnly h;  // wrong
-          return 0;
-      }
-  ```
 
 ## 对象模型
 1. 单一继承( class D : public B {} )：
@@ -214,7 +228,7 @@ c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++�
   - https://godbolt.org/
   - https://cppinsights.io/
 
-### Reference
+## Reference
 - 《深度探索C++对象模型》
 - 《Effective C++》
 - 《More Effecitve C++》
