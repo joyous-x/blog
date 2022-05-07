@@ -31,3 +31,7 @@ permalink:
 
 
 - [将变音带向新层次](https://www.bianyindashi.com)
+
+## Blog
+- https://github.com/jekyll/jekyll
+- https://www.netlify.com/
