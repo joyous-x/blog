@@ -108,7 +108,19 @@ Category | Command | Function | Example | Note
     - git tag -a v0.0.1 -m 'tag message to describe this version'
     - git push origin v0.0.1
 + submodule
-  - git submodule update --init --recursive 或 (git submodule init; git submodule update) 
+  - git submodule update --init [--recursive / submodule_xxx] 或 (git submodule init; git submodule update) 
+  - git submodule deinit submodule_xxx : 
+    - 将子模块取消注册(unregister)
+      - 即删除该子模块相关的配置(git config, 但 .gitmodules 和 .git/modules/xxx 中的配置会保留), 子模块对应的目录也会被清空(子模块目录本身会保留)
+    - 再运行 git submodule status 查看子模块则会输出：```-70c316ecb7c41a5bdf8a37ff93bf866d3b903388 xxx```
+      - 前缀 - 表示该子模块已经被取消注册，可理解为暂时移除，如果想要恢复刚才删除的子模块，重新执行 git submodule update --init xxx 就能重新初始子模块并拉取文件
+    - 如果想要彻底删除的话，需要继续手动删除其他配置及文件，即：
+      - 删除子模块对应的目录 xxx
+      - 删除 .gitmoduls 中子模块 xxx 对应的区块配置
+      - 删除 .git/modules/ 目录下的子模块目录 xxx
+      - 删除缓存：git rm --cached xxx
+  - git submodule update --remote --rebase : 从子模块的上游获取最新更新，并重新绑定它们，同时检查子模块的最新版本
+  - git submodule foreach 'git checkout -b new'
 
 ## Problems
 1. 在 ubuntu 中移动 50000 张图片的图片的时候遇到如下问题：*-bash: /bin/mv: Argument list too long*
