@@ -107,6 +107,8 @@ Category | Command | Function | Example | Note
 + tag
     - git tag -a v0.0.1 -m 'tag message to describe this version'
     - git push origin v0.0.1
++ submodule
+  - git submodule update --init --recursive 或 (git submodule init; git submodule update) 
 
 ## Problems
 1. 在 ubuntu 中移动 50000 张图片的图片的时候遇到如下问题：*-bash: /bin/mv: Argument list too long*
