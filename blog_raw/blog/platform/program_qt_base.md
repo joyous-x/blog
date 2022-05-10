@@ -1,7 +1,7 @@
 ---
-title: Qt 基础汇总
+title: Qt 要点概览
 date: 2022-04-18 13:50:00
-description: Qt 基础汇总
+description: Qt 要点概览
 categories: 
   - platform
 tags: 
@@ -10,9 +10,77 @@ tags:
 permalink:
 ---
 
-# Qt 基础汇总
+- [Qt 要点概览](#qt-要点概览)
+  - [一、Qt是什么](#一qt是什么)
+    - [基本对象](#基本对象)
+  - [二、信号(signals)、槽(slots)](#二信号signals槽slots)
+  - [三、布局(layout)](#三布局layout)
+    - [Size](#size)
+    - [思考](#思考)
+  - [四、样式(style)](#四样式style)
+    - [样式表选择器](#样式表选择器)
+    - [最常见的自定义辅助控制器](#最常见的自定义辅助控制器)
+    - [常见的窗口部件中可以访问样式表的状态](#常见的窗口部件中可以访问样式表的状态)
+  - [五、事件(event)](#五事件event)
+    - [常见事件](#常见事件)
+  - [六、扩展插件(plugin)](#六扩展插件plugin)
+  - [Reference](#reference)
 
-## 一、Style 
+# Qt 要点概览
+
+## 一、Qt是什么
+### 基本对象
+```mermaid
+graph RL;
+  QApplication --> QCoreApplication
+  QCoreApplication --> R(QObject); 
+  QWidget --> R;
+  QLayout --> R;
+```
+
+Qt 实现了类似于 MVC 的项视图类
+
+Qt 的容器都是隐含共享(implicit sharing)的, 这是一个能够把整个容器作为不需要太多运行成本的值来传递的最优化过程。
+
+mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
+
+
+QDialog : show() 和 exec() : 非模态 和 模态
+
+Qt 窗口
+  - Qt 会对所有的窗口进行跟踪，所以，new 一个 window 后，可以没有主动 delete 
+  - 用户关闭一个主窗口时，默认行为是隐藏它，可以通过 Qt::WA_DeleteOnClose 属性进行修改
+
+QSplashScreen
+  - 通常会将启动画面的代码放在 mian() 函数中，位于 Application::exec() 调用之前
+
+QTableWidget
+  - 与 QTableWidget 不同，QTableWidgetItem 不是一个窗口部件类，而是一个纯粹的数据类
+  - 可以在构造函数中使用 setItemPrototype() 用新数据类替换 QTableWidgetItem
+
+QFile & QDataStream
+
+QApplication::setOverrideCursor(Qt::WaitCursor)
+QApplication::restoreOverrideCursor()
+
+QApplication::clipboard()
+QApplication::beep()
+
+QWidget::update() 和 QWidget::repaint()
+- QWidget::repaint()
+  - 强制产生一个即时的重绘事件
+- QWidget::update():
+  - 只是通知 Qt 下一次处理事件时才简单的调用一个绘制事件
+  - 如果多次调用 update(), Qt 会把连续多次的绘制事件压缩成一个单一的绘制事件，这样可以避免闪烁现象
+如果窗口部件在屏幕上是不可见的，那么这两个函数会什么都不做
+
+
+
+
+## 二、信号(signals)、槽(slots)
+所有定义了 signal 和 slot 的类，在类定义的开始处的 Q_OBJECT 宏都是必需的。
+
+## 三、布局(layout)
 如果一个 widget 没有被嵌入到另外一个 widget 中，那么这个 widget 就叫做 window，即一个独立的窗口。
 
 一个 widget 的构造函数可以接受一个或者两个标准参数:
@@ -25,13 +93,13 @@ permalink:
 
 此外，widget 可以通过 setAttribute() 函数设置属性，如，setAttribute(Qt::WA_StyledBackground) 不使用从父对象继承来的 QSS 样式(如，背景、边框、字体等)。
 
-## 二、Layout Management
+
 - Layout Management
   - size policy使得layout management system（布局管理系统）拥有良好的默认大小变化管理依据
   - 默认的size policy表示widget的大小可以自由变化，一般倾向于采用sizeHint()返回的大小，这对大多数的widget来说已经足够好了。
   - 提示：顶层widget的大小一般约束为桌面大小长度和宽度的的2/3，但我们也可以通过resize()函数来手动改变大小。
 
-## 三、Size
+### Size
 | 类别 | 函数名 | 效果 | 作用 | 注意事项 |
 | --- | --- | --- | --- | --- |
 | | ```setMinimumSize(w,h)```<br>```setMaximumSize(w,h)``` | | | 优先级最高
@@ -64,33 +132,9 @@ permalink:
   }
   ```
 
-## 四、Event
-| 类别 | 方法 | 说明 |  注意事项 |
-| --- | --- | --- | --- |
-| | ```mouseReleaseEvent()``` | 收到鼠标按下事件的 widget，也将接收鼠标释放事件 | 如果用户在某 widget 上按下鼠标，然后松开鼠标前拖动鼠标到别的地方，那么此 widget 也将接收到释放事件。<br>有一个例外：如果在按住鼠标按钮的同时出现弹出菜单，则该弹出窗口会立即窃取鼠标事件。|
-| | ```enterEvent()``` | 鼠标进入该 widget 所在屏幕区域时被调用 | 该 widget 的屏幕区域不包括其子 widget 的屏幕区域 |
-| | ```leaveEvent()``` | 鼠标离开widget所在屏幕区域时被调用，但是如果鼠标进入了子widget屏幕区域时该函数不会被调用 | |
-| | ```moveEvent()``` | widget 相对于其父 widget 被移动时被调用 | |
-| | ```closeEvent()``` | 用户关闭 widget 时或者调用 close() 函数时被调用 | |
 
+## 四、样式(style)
 
-Qt 提供了5个级别的事件处理和事件过滤方法：
-1. 重现实现特殊的事件处理器 
-   - 重新实现像 mousePressEvent()、keyPressEvent() 和 paintEvent() 这样的事件处理器是比较常用的事件处理方式 
-2. 重新实现 QObject::event()
-   - 通过 event() 函数的重新实现，可以在这些事件到达特定的事件处理器之前处理它们
-   - 当重新实现 event() 时，必须对那些没有明确处理的情况调用其基类的 event() 函数
-3. 在 QObject 中安装事件过滤器
-   - 对象一旦使用 installEventFilter() 注册过，用于目标对象的所有事件都会首先发送给这个监听对象的 eventFilter() 函数
-   - 如果同一个对象上安装了多个事件处理器，那么就会按照安装顺序逆序，从最后安装的到最先安装的，依次激活这些事件处理器
-4. 在 QApplication 对象中安装事件过滤器
-   - 一旦在唯一的 QApplication 对象中注册了事件过滤器，那么应用程序中每个对象的每个事件都会在发送到其他事件过滤器之前，先发送给这个 eventFilter() 函数
-   - 这种处理方式对于调试是非常有用的。它也可以用来处理那些发送给失效窗口部件的鼠标事件，因为 QApplication 通常都会忽略这些事件
-5. 子类化 QApplication 并重新实现 notify()
-   - Qt 调用 QApplication::notify() 来发送一个事件。重新实现这个函数是在事件过滤器得到所有事件之前获得它们的唯一方式
-   - 事件过滤器通常更有用，因为可以同时有多个事件过滤器，而 notify() 函数却只能有一个
-
-## 五、Style
 可以使用三种方式来重新定义 Qt 内置窗口部件的外观：
 1. 子类化个别的窗口部件类，并且重新实现它的绘制和鼠标事件处理器
 2. 子类化 QStyle 或者一个预定义的风格，例如 QWindowStyle。Qt 本身就是基于这种方法为它所支持的不同平台提供基于平台的外观的
@@ -142,50 +186,44 @@ Qt 属性 | ```QDial[ y="0"``` ] | 为某些**属性**赋值的窗口部件
 :on | 窗口部件的状态是"on"
 :off | 窗口部件的状态是"off"
 
-## 五、Reference
+
+## 五、事件(event)
+Qt 提供了5个级别的事件处理和事件过滤方法：
+1. 重现实现特殊的事件处理器 
+   - 重新实现像 mousePressEvent()、keyPressEvent() 和 paintEvent() 这样的事件处理器是比较常用的事件处理方式 
+2. 重新实现 QObject::event()
+   - 通过 event() 函数的重新实现，可以在这些事件到达特定的事件处理器之前处理它们
+   - 当重新实现 event() 时，必须对那些没有明确处理的情况调用其基类的 event() 函数
+3. 在 QObject 中安装事件过滤器
+   - 对象一旦使用 installEventFilter() 注册过，用于目标对象的所有事件都会首先发送给这个监听对象的 eventFilter() 函数
+   - 如果同一个对象上安装了多个事件处理器，那么就会按照安装顺序逆序，从最后安装的到最先安装的，依次激活这些事件处理器
+4. 在 QApplication 对象中安装事件过滤器
+   - 一旦在唯一的 QApplication 对象中注册了事件过滤器，那么应用程序中每个对象的每个事件都会在发送到其他事件过滤器之前，先发送给这个 eventFilter() 函数
+   - 这种处理方式对于调试是非常有用的。它也可以用来处理那些发送给失效窗口部件的鼠标事件，因为 QApplication 通常都会忽略这些事件
+5. 子类化 QApplication 并重新实现 notify()
+   - Qt 调用 QApplication::notify() 来发送一个事件。重新实现这个函数是在事件过滤器得到所有事件之前获得它们的唯一方式
+   - 事件过滤器通常更有用，因为可以同时有多个事件过滤器，而 notify() 函数却只能有一个
+
+### 常见事件
+| 类别 | 方法 | 说明 |  注意事项 |
+| --- | --- | --- | --- |
+| | ```mouseReleaseEvent()``` | 收到鼠标按下事件的 widget，也将接收鼠标释放事件 | 如果用户在某 widget 上按下鼠标，然后松开鼠标前拖动鼠标到别的地方，那么此 widget 也将接收到释放事件。<br>有一个例外：如果在按住鼠标按钮的同时出现弹出菜单，则该弹出窗口会立即窃取鼠标事件。|
+| | ```enterEvent()``` | 鼠标进入该 widget 所在屏幕区域时被调用 | 该 widget 的屏幕区域不包括其子 widget 的屏幕区域 |
+| | ```leaveEvent()``` | 鼠标离开widget所在屏幕区域时被调用，但是如果鼠标进入了子widget屏幕区域时该函数不会被调用 | |
+| | ```moveEvent()``` | widget 相对于其父 widget 被移动时被调用 | |
+| | ```closeEvent()``` | 用户关闭 widget 时或者调用 close() 函数时被调用 | |
+
+
+## 六、扩展插件(plugin)
+可以使用很多插件类型来扩展 Qt，其中最常用的就是数据库驱动、图像格式、风格(style)和文本编码解码器
+
+对于每一个类型的插件，通常至少需要两个类：一个是插件封装类，另外则是一个或多个处理器类
+
+
+## Reference
 - https://blog.csdn.net/dengjin20104042056/article/details/115304706
 - [Layout Management](https://doc.qt.io/qt-5/layout.html)
 - [The Event System](https://doc.qt.io/qt-5.15/eventsandfilters.html) 
 
 
 
-所有定义了 signal 和 slot 的类，在类定义的开始处的 Q_OBJECT 宏都是必需的。
-
-
-QDialog : show() 和 exec() : 非模态 和 模态
-
-Qt 窗口
-  - Qt 会对所有的窗口进行跟踪，所以，new 一个 window 后，可以没有主动 delete 
-  - 用户关闭一个主窗口时，默认行为是隐藏它，可以通过 Qt::WA_DeleteOnClose 属性进行修改
-
-QSplashScreen
-  - 通常会将启动画面的代码放在 mian() 函数中，位于 Application::exec() 调用之前
-
-QTableWidget
-  - 与 QTableWidget 不同，QTableWidgetItem 不是一个窗口部件类，而是一个纯粹的数据类
-  - 可以在构造函数中使用 setItemPrototype() 用新数据类替换 QTableWidgetItem
-
-QFile & QDataStream
-
-QApplication::setOverrideCursor(Qt::WaitCursor)
-QApplication::restoreOverrideCursor()
-
-QApplication::clipboard()
-QApplication::beep()
-
-QWidget::update() 和 QWidget::repaint()
-- QWidget::repaint()
-  - 强制产生一个即时的重绘事件
-- QWidget::update():
-  - 只是通知 Qt 下一次处理事件时才简单的调用一个绘制事件
-  - 如果多次调用 update(), Qt 会把连续多次的绘制事件压缩成一个单一的绘制事件，这样可以避免闪烁现象
-如果窗口部件在屏幕上是不可见的，那么这两个函数会什么都不做
-
-
-
-mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
-
-
-Qt 实现了类似于 MVC 的项视图类
-
-Qt 的容器都是隐含共享(implicit sharing)的, 这是一个能够把整个容器作为不需要太多运行成本的值来传递的最优化过程。

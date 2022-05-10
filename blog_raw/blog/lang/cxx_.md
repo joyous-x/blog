@@ -235,3 +235,4 @@ Bjarne 的这篇论文是他为 2021 年 HOPL IV 会议准备的论文，它涵�
 - 《C专家编程》
 - 《C陷阱与缺陷》
 - 《C++ Templates》
+- [gcc.gnu.org/onlinedocs](https://gcc.gnu.org/onlinedocs/gcc-4.4.7/gcc/)
