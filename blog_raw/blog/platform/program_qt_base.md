@@ -21,6 +21,8 @@ permalink:
       - [第三方编译工具](#第三方编译工具)
       - [IDE](#ide)
     - [基本对象](#基本对象)
+      - [QWidget](#qwidget)
+      - [其他类](#其他类)
   - [二、信号(signals)、槽(slots)](#二信号signals槽slots)
     - [元对象系统](#元对象系统)
   - [三、布局(layout)](#三布局layout)
@@ -158,20 +160,27 @@ graph RL;
   QLayout --> R;
 ```
 
+Qt 会对所有的窗口进行跟踪，所以 new 一个 window 后，可以没有主动 delete。当用户关闭一个主窗口时，默认行为是隐藏它，不过，可以通过 Qt::WA_DeleteOnClose 属性进行修改。
+
+Qt 实现了类似于 MVC 的项视图类。
+
+
+#### QWidget
 一个 widget 的构造函数可以接受一个或者两个标准参数:
 1. QWidget *parent = 0
-   + 如果 parent 为 0（默认值），那么这个新widget就会变成一个独立的window。
-   + 如果 parent 不为0，那么新创建的 widget 是 parent 的一个子窗口，但是此时我们新创建的widget的形状会受其父窗口形状的约束。（除非你指定这个新创建的widget的window flag为Qt::Window）
+   + 如果 parent == 0(默认值)，那么这个新 widget 就成了一个独立的 window
+   + 如果 parent != 0，那么此 widget 是 parent 的一个子窗口。同时此 widget 的形状会受其父窗口形状的约束(除非指定这个新创建的 widget 的 window flag 为 Qt::Window)
 2. Qt::WindowFlags f = 0
-   + 这个参数用来设置新创建的 widget 的 window flags(例如是否有最大化按钮等)。
-   + 默认的参数几乎对所有的widget都是适用的。但如果你需要一个没有边框的widget，那么需要使用特定的flag(如，Qt::FramelessWindowHint)。
+   + 这个参数用来设置新创建的 widget 的 window flags(例如是否有最大化按钮等)
+   + 默认的参数几乎对所有的widget都是适用的。但如果你需要一个没有边框的widget，那么需要使用特定的flag(如，Qt::FramelessWindowHint)
+
+一个 widget 关联父窗口有两种常见方式：
+1. 在 widget 的构造函数中指定 parent
+2. 通过函数调用被添加到父窗口中(此时会建立 widget 间的父子关联)
 
 如果一个 widget 没有被嵌入到另外一个 widget 中，那么这个 widget 就叫做 window，即一个独立的窗口。
 
-Qt 会对所有的窗口进行跟踪，所以 new 一个 window 后，可以没有主动 delete。当用户关闭一个主窗口时，默认行为是隐藏它，不过，可以通过 Qt::WA_DeleteOnClose 属性进行修改。
-
-Qt 实现了类似于 MVC 的项视图类
-
+#### 其他类
 Qt 类 | 函数 | 说明
 --- | --- | ---
 QApplication | beep() | 触发系统提示音
