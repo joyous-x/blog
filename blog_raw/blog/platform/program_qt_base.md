@@ -12,8 +12,16 @@ permalink:
 
 - [Qt 要点概览](#qt-要点概览)
   - [一、Qt是什么](#一qt是什么)
+    - [文件](#文件)
+    - [编译](#编译)
+      - [qmake](#qmake)
+        - [moc](#moc)
+        - [rcc](#rcc)
+        - [uic](#uic)
+      - [IDE](#ide)
     - [基本对象](#基本对象)
   - [二、信号(signals)、槽(slots)](#二信号signals槽slots)
+    - [元对象系统](#元对象系统)
   - [三、布局(layout)](#三布局layout)
     - [Size](#size)
     - [思考](#思考)
@@ -61,6 +69,23 @@ int main(int argc, char* argv[])
 
 #### qmake
 qmake 工具是与 Qt 一起提供的，包含了调用 Qt 内置代码生成工具(moc、uic 和 rcc)的必要的逻辑规则。
+
+Qt 内置代码生成工具 | 原名 | 用途
+--- | --- | --- 
+moc | Qt Meta-Object Compiler | 元对象编译器
+rcc | Qt Resource Compiler | 用于在构建过程中将(```.qrc```中包含的)资源嵌入到 Qt 应用程序中
+uic | Qt User Interface Compiler | 用于对 ```.ui``` 文件生成 ```.h``` 文件
+
+##### moc
+Qt 程序在交由标准编译器编译之前，先要使用 moc 分析 C++ 源文件。如果它发现在一个头文件中包含了宏 Q_OBJECT，则会生成一个以原文件名前面加上 moc_ 命名的 C++ 源文件，并与原文件一起参与后续的编译流程。
+
+注意，moc 的执行是在标准编译器编译之前(包含预处理器)。因为预处理器执行之后，Q_OBJECT 宏就不存在了。
+
+##### rcc
+rcc 通过生成包含在 Qt 资源(.qrc) 文件中指定的数据的 ```.cpp``` 文件(后续流程会将该文件链接到应用程序中)来工作。
+
+##### uic
+uic 读取 Qt Designer 生成的 XML 格式用户界面定义 (.ui) 文件并创建相应的 C++ 头文件。这些生成的 C++ 源文件将会参与后续的编译流程。
 
 #### IDE
 可以使用 Qt 提供的 QCreator，也可以使用 Visual Studio 或 Eclipse 配合相关插件来进行开发编译。
