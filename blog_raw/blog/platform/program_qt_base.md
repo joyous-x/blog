@@ -18,6 +18,7 @@ permalink:
         - [moc](#moc)
         - [rcc](#rcc)
         - [uic](#uic)
+      - [第三方编译工具](#第三方编译工具)
       - [IDE](#ide)
     - [基本对象](#基本对象)
   - [二、信号(signals)、槽(slots)](#二信号signals槽slots)
@@ -68,9 +69,11 @@ int main(int argc, char* argv[])
 3. 使用集成开发环境(IDE)
 
 #### qmake
-qmake 工具是与 Qt 一起提供的，包含了调用 Qt 内置代码生成工具(moc、uic 和 rcc)的必要的逻辑规则。
+qmake 工具是与 Qt 一起提供的，使用 ```.pro``` 文件来描述一个工程的相关依赖、源文件以及配置等等。
 
-Qt 内置代码生成工具 | 原名 | 用途
+qmake 包含了调用 Qt 内置代码生成工具(moc、uic 和 rcc)的必要的逻辑规则。
+
+Qt 内置代码生成工具 | 原名 | 作用
 --- | --- | --- 
 moc | Qt Meta-Object Compiler | 元对象编译器
 rcc | Qt Resource Compiler | 用于在构建过程中将(```.qrc```中包含的)资源嵌入到 Qt 应用程序中
@@ -87,10 +90,50 @@ rcc 通过生成包含在 Qt 资源(.qrc) 文件中指定的数据的 ```.cpp```
 ##### uic
 uic 读取 Qt Designer 生成的 XML 格式用户界面定义 (.ui) 文件并创建相应的 C++ 头文件。这些生成的 C++ 源文件将会参与后续的编译流程。
 
+
+#### 第三方编译工具
+这里仅以 CMake 为例。
+
+CMake 是一个开源的跨平台 makefile 生成器，使用 ```CMakeLists.txt``` 文件来描述一个工程的相关依赖、源文件以及配置等等。
+
+为了使 CMake 增加对 Qt 的支持，也就是，调用 Qt 内置的代码生成工具，需要对相关代码执行以下命令：
+命令 | 作用
+--- | ---
+qt5_wrap_cpp() | 对给定文件执行 moc
+qt5_wrap_ui() | 对给定文件执行 uic<br>注意，此处生成的 .h 文件，需要再次被 qt5_wrap_cpp() 处理
+qt5_add_resources() | 对给定文件执行 rcc
+
+举个栗子：
+```
+project(ss)
+cmake_mininum_required(VERSION 3.6.0)
+find_package(Qt5 REQUIRED)
+include(${QT_USE_FILE})
+
+set(ss_SRCS mydialog.cpp mainwindow.cpp main.cpp)
+set(ss_MOC_SRCS mydialog.h mainwindow.h)
+set(ss_UIS mydialog.ui)
+set(ss_RCCS ss.qrc)
+
+qt5_wrap_cpp(ss_MOCS ${ss_MOC_SRCS})
+qt5_wrap_ui(ss_UIS_H ${ss_UIS})
+qt5_wrap_cpp(ss_MOC_UI ${ss_UIS_H})
+qt5_add_resource(ss_RCC_SRCS ${ss_RCCS})
+
+add_definitions(-DQT_NO_DEBUG)
+add_executable(ss
+  ${ss_SRCS}
+  ${ss_MOCS}
+  ${ss_MOC_UI}
+  ${ss_RCC_SRCS})
+target_link_libraries(ss ${QT_LIBRARIES} pthread)
+```
+
+
 #### IDE
 可以使用 Qt 提供的 QCreator，也可以使用 Visual Studio 或 Eclipse 配合相关插件来进行开发编译。
 
-这里仅简单介绍下 Visual Studio 的配置方法：
+这里仅介绍下 Visual Studio 的配置方法(需要安装 vs 以及 qt)：
 插件配置：
 1. 从 ```VS2019 菜单栏``` => ```Extentions(扩展)``` => ```Manage Extentions(管理扩展)```
 2. 左侧选择：```联机``` => ```Visual Studio Marketplace```, 再通过搜索框，搜索 ```Qt Visual Studio Tools```
@@ -104,6 +147,7 @@ uic 读取 Qt Designer 生成的 XML 格式用户界面定义 (.ui) 文件并创
   - ```Qt Installation```：填入插件配置中指定的一个```Version Name```
   - ```Qt Modules```：当前工程项目使用到的 Qt 组件，如：core;gui;widgets
   - ```Build Config```：编译选项，如：release、debug
+
 
 ### 基本对象
 ```mermaid
@@ -142,6 +186,7 @@ QFile | | 数据处理
 QDataStream | | 数据处理
 Qt 容器类 | | 都是隐含共享(implicit sharing)的, 这是一个能够把整个容器作为不需要太多运行成本的值来传递的最优化过程
 
+
 ## 二、信号(signals)、槽(slots)
 所有定义了 signal 和 slot 的类，在类定义的开始处的 Q_OBJECT 宏都是必需的。
 
@@ -156,6 +201,7 @@ Qt 容器类 | | 都是隐含共享(implicit sharing)的, 这是一个能够把�
   + 可以通过 ```disconnect(lcd, SIGNAL(overflow()), this, SLOT(handler()));``` 主动移除连接。不过较少用到，因为，当删除对象时，Qt 会自动移除和这个对象相关的所有连接。
 
 要想把信号与槽(或信号)成功连接，它们的参数必须具有相同的顺序和类型，如：```connect(ftp, SIGNAL(f(int, const QString&)), this, SLOT(p(int, const QString&)));```
+
 
 ### 元对象系统
 Qt 的主要成就之一就是使用了一种机制对 c++ 进行了扩展，并且使用这种机制创建了独立的软件组件。这些组件可以绑定在一起，但任何一个组件对于它所要连接的组件的情况事先都一无所知。
