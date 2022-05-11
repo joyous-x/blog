@@ -29,6 +29,57 @@ permalink:
 # Qt 要点概览
 
 ## 一、Qt是什么
+Qt 不仅仅是一个图形用户界面开发包，现在它已经逐渐成长为了一个成熟、优秀的应用程序开发框架。
+
+一个简单的 Qt 程序：
+```
+#include <QApplication>
+#include <QLabel>
+
+int main(int argc, char* argv[])
+{
+  QApplication app(argc, argv);
+  QLabel *label = new QLabel("Hello Qt!");
+  label->show();
+  return app.exec();
+}
+```
+
+### 文件
+文件 | 用途
+--- | --- 
+.ui | Qt Designer 文件
+.qss | 样式表文件
+.qrc | 资源列表文件
+.pro | 平台无关的工程文件<br>此文件列举了工程中包含的源文件，qmake 可以使用它来生成 makefile 文件
+
+### 编译
+常见的 Qt 编译方法有以下三种：
+1. 使用 Qt 提供的 qmake 工具
+2. 使用第三方编译工具
+3. 使用集成开发环境(IDE)
+
+#### qmake
+qmake 工具是与 Qt 一起提供的，包含了调用 Qt 内置代码生成工具(moc、uic 和 rcc)的必要的逻辑规则。
+
+#### IDE
+可以使用 Qt 提供的 QCreator，也可以使用 Visual Studio 或 Eclipse 配合相关插件来进行开发编译。
+
+这里仅简单介绍下 Visual Studio 的配置方法：
+插件配置：
+1. 从 ```VS2019 菜单栏``` => ```Extentions(扩展)``` => ```Manage Extentions(管理扩展)```
+2. 左侧选择：```联机``` => ```Visual Studio Marketplace```, 再通过搜索框，搜索 ```Qt Visual Studio Tools```
+3. 安装 ```Qt Visual Studio Tools```，然后根据提示重启 VS2019
+4. 进入配置页面：```VS2019 菜单栏``` => ```Extentions(扩展)``` => ```Qt VS Tools``` => ```Options```
+5. 在配置页面：```Qt``` => ```Versions```, 在打开的窗口中点击 Add 按钮(```add new Qt version```)
+6. 指定 Qt编译器路径(如 C:\Qt\5.12.0\msvc2019)、```Version Name``` (如 x86-msvc2019-5.12.0) 等信息
+
+工程配置：
+- 在 Qt 工程项目的属性中配置：```属性``` => ```Qt Project Settings```
+  - ```Qt Installation```：填入插件配置中指定的一个```Version Name```
+  - ```Qt Modules```：当前工程项目使用到的 Qt 组件，如：core;gui;widgets
+  - ```Build Config```：编译选项，如：release、debug
+
 ### 基本对象
 ```mermaid
 graph RL;
@@ -38,51 +89,6 @@ graph RL;
   QLayout --> R;
 ```
 
-Qt 实现了类似于 MVC 的项视图类
-
-Qt 的容器都是隐含共享(implicit sharing)的, 这是一个能够把整个容器作为不需要太多运行成本的值来传递的最优化过程。
-
-mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
-
-
-QDialog : show() 和 exec() : 非模态 和 模态
-
-Qt 窗口
-  - Qt 会对所有的窗口进行跟踪，所以，new 一个 window 后，可以没有主动 delete 
-  - 用户关闭一个主窗口时，默认行为是隐藏它，可以通过 Qt::WA_DeleteOnClose 属性进行修改
-
-QSplashScreen
-  - 通常会将启动画面的代码放在 mian() 函数中，位于 Application::exec() 调用之前
-
-QTableWidget
-  - 与 QTableWidget 不同，QTableWidgetItem 不是一个窗口部件类，而是一个纯粹的数据类
-  - 可以在构造函数中使用 setItemPrototype() 用新数据类替换 QTableWidgetItem
-
-QFile & QDataStream
-
-QApplication::setOverrideCursor(Qt::WaitCursor)
-QApplication::restoreOverrideCursor()
-
-QApplication::clipboard()
-QApplication::beep()
-
-QWidget::update() 和 QWidget::repaint()
-- QWidget::repaint()
-  - 强制产生一个即时的重绘事件
-- QWidget::update():
-  - 只是通知 Qt 下一次处理事件时才简单的调用一个绘制事件
-  - 如果多次调用 update(), Qt 会把连续多次的绘制事件压缩成一个单一的绘制事件，这样可以避免闪烁现象
-如果窗口部件在屏幕上是不可见的，那么这两个函数会什么都不做
-
-
-
-
-## 二、信号(signals)、槽(slots)
-所有定义了 signal 和 slot 的类，在类定义的开始处的 Q_OBJECT 宏都是必需的。
-
-## 三、布局(layout)
-如果一个 widget 没有被嵌入到另外一个 widget 中，那么这个 widget 就叫做 window，即一个独立的窗口。
-
 一个 widget 的构造函数可以接受一个或者两个标准参数:
 1. QWidget *parent = 0
    + 如果 parent 为 0（默认值），那么这个新widget就会变成一个独立的window。
@@ -91,6 +97,58 @@ QWidget::update() 和 QWidget::repaint()
    + 这个参数用来设置新创建的 widget 的 window flags(例如是否有最大化按钮等)。
    + 默认的参数几乎对所有的widget都是适用的。但如果你需要一个没有边框的widget，那么需要使用特定的flag(如，Qt::FramelessWindowHint)。
 
+如果一个 widget 没有被嵌入到另外一个 widget 中，那么这个 widget 就叫做 window，即一个独立的窗口。
+
+Qt 会对所有的窗口进行跟踪，所以 new 一个 window 后，可以没有主动 delete。当用户关闭一个主窗口时，默认行为是隐藏它，不过，可以通过 Qt::WA_DeleteOnClose 属性进行修改。
+
+Qt 实现了类似于 MVC 的项视图类
+
+Qt 类 | 函数 | 说明
+--- | --- | ---
+QApplication | beep() | 触发系统提示音
+QApplication | clipboard() | 剪切板
+QApplication | restoreOverrideCursor()<br>setOverrideCursor(Qt::WaitCursor) | 
+QSplashScreen | | 启动画面<br>通常会将相关代码放在 mian() 函数中，位于 Application::exec() 调用之前
+QWidget | repaint() | 强制产生一个即时的重绘事件<br>如果窗口部件在屏幕上是不可见的，则什么都不做
+QWidget | update() | 只是通知 Qt 下一次处理事件时才简单的调用一个绘制事件<br>如果多次调用 update(), Qt 会把连续多次的绘制事件压缩成一个单一的绘制事件，这样可以避免闪烁现象<br>如果窗口部件在屏幕上是不可见的，则什么都不做
+QDialog | show()<br>exec() | 非模态<br>模态
+QTableWidget | setItemPrototype() | 可以在构造函数中使用此函数用新数据类替换 QTableWidgetItem<br>QTableWidgetItem 不是一个窗口部件类，而是一个纯粹的数据类
+QFile | | 数据处理
+QDataStream | | 数据处理
+Qt 容器类 | | 都是隐含共享(implicit sharing)的, 这是一个能够把整个容器作为不需要太多运行成本的值来传递的最优化过程
+
+## 二、信号(signals)、槽(slots)
+所有定义了 signal 和 slot 的类，在类定义的开始处的 Q_OBJECT 宏都是必需的。
+
+信号和槽机制是 Qt 编程的基础。它可以把互不了解的对象绑定在一起：当某个信号被发射时，会自动调用与其关联的一个或多个槽。
+
+- 一个信号可以连接多个槽
+  + ```connect(sender, SIGNAL(signal), receiver, SLOT(slot));```
+  + 在信号被发射时，会以不确定的顺序一个接一个的调用这些槽。
+- 多个信号可以连接同一个槽
+- 一个信号可以与另一个信号相连接
+- 连接可以被移除
+  + 可以通过 ```disconnect(lcd, SIGNAL(overflow()), this, SLOT(handler()));``` 主动移除连接。不过较少用到，因为，当删除对象时，Qt 会自动移除和这个对象相关的所有连接。
+
+要想把信号与槽(或信号)成功连接，它们的参数必须具有相同的顺序和类型，如：```connect(ftp, SIGNAL(f(int, const QString&)), this, SLOT(p(int, const QString&)));```
+
+### 元对象系统
+Qt 的主要成就之一就是使用了一种机制对 c++ 进行了扩展，并且使用这种机制创建了独立的软件组件。这些组件可以绑定在一起，但任何一个组件对于它所要连接的组件的情况事先都一无所知。
+
+这种机制称为元对象系统(meta-object system)，它提供了关键的两项技术：信号-槽以及内省(introspection)。
+
+内省功能对于实现信号槽是必需的，并且允许开发人员在运行时获得有关 QObject 子类的"元信息"(meta-information)，包括一个含有对象的类名以及它所支持的信号和槽的列表。这一机制也支持属性(广泛用于 Qt Designer 中)和文本翻译(用于国际化)，并且它也为 QScript 模块奠定了基础。
+
+标准 c++ 没有对 Qt 的元对象系统所需的动态元信息提供支持。**Qt 通过提供一个独立的 moc 工具解决了这个问题，moc 解析 Q_OBJECT 类的定义并且通过 c++ 函数来提供可供使用的信息**。由于 moc 系统使用纯 c++ 来实现它的所有功能，所以 Qt 的元对象系统可以在任意 c++ 编译器上工作。
+
+这一机制是这样工作的：
+- Q_OBJECT 宏声明了在每一个 QObject 子类中必须实现的一些内省函数：metaObject()、tr()、qt_metacall()，以及其他函数
+- Qt 的 moc 工具生成了用于由 Q_OBJECT 声明的所有函数和所有信号的实现
+- 像 connect() 和 disconnect() 这样的 QObject 的成员函数使用这些内省函数来完成它们的工作
+
+由于所有这些工作都是由 ```qmake```、```moc``` 和 ```QObject``` 自动处理的，所以很少需要再去考虑这些事情。如果你对此充满好奇心，可以阅读下有关 QMetaObject 类的文档和由 moc 生成的 c++ 源码。
+
+## 三、布局(layout)
 此外，widget 可以通过 setAttribute() 函数设置属性，如，setAttribute(Qt::WA_StyledBackground) 不使用从父对象继承来的 QSS 样式(如，背景、边框、字体等)。
 
 
@@ -213,6 +271,8 @@ Qt 提供了5个级别的事件处理和事件过滤方法：
 | | ```moveEvent()``` | widget 相对于其父 widget 被移动时被调用 | |
 | | ```closeEvent()``` | 用户关闭 widget 时或者调用 close() 函数时被调用 | |
 
+
+mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
 
 ## 六、扩展插件(plugin)
 可以使用很多插件类型来扩展 Qt，其中最常用的就是数据库驱动、图像格式、风格(style)和文本编码解码器
