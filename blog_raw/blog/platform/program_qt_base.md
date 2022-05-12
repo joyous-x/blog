@@ -26,8 +26,12 @@ permalink:
   - [二、信号(signals)、槽(slots)](#二信号signals槽slots)
     - [元对象系统](#元对象系统)
   - [三、布局(layout)](#三布局layout)
-    - [Size](#size)
-    - [思考](#思考)
+    - [绝对位置法](#绝对位置法)
+    - [人工布局法](#人工布局法)
+    - [布局管理器法](#布局管理器法)
+      - [影响布局方式: QSizePolicy](#影响布局方式-qsizepolicy)
+      - [影响布局方式: Size](#影响布局方式-size)
+      - [影响布局方式: 其它](#影响布局方式-其它)
   - [四、样式(style)](#四样式style)
     - [样式表选择器](#样式表选择器)
     - [最常见的自定义辅助控制器](#最常见的自定义辅助控制器)
@@ -35,6 +39,7 @@ permalink:
   - [五、事件(event)](#五事件event)
     - [常见事件](#常见事件)
   - [六、扩展插件(plugin)](#六扩展插件plugin)
+    - [在 Qt Designer 中集成自定义 widget 组件](#在-qt-designer-中集成自定义-widget-组件)
   - [Reference](#reference)
 
 # Qt 要点概览
@@ -166,6 +171,12 @@ Qt 实现了类似于 MVC 的项视图类。
 
 
 #### QWidget
+如果一个 widget 没有被嵌入到另外一个 widget 中(也就是说，没有父对象)，那么这个 widget 就成了一个独立的窗口。
+
+有两种常见方式，可以使一个 widget 被嵌入到另外一个 widget 中：
+1. 显式关联：在 widget 的构造函数中指定 parent
+2. 隐式关联：通过函数调用被添加到父窗口中(此时会建立 widget 间的父子关联)
+
 一个 widget 的构造函数可以接受一个或者两个标准参数:
 1. QWidget *parent = 0
    + 如果 parent == 0(默认值)，那么这个新 widget 就成了一个独立的 window
@@ -174,11 +185,6 @@ Qt 实现了类似于 MVC 的项视图类。
    + 这个参数用来设置新创建的 widget 的 window flags(例如是否有最大化按钮等)
    + 默认的参数几乎对所有的widget都是适用的。但如果你需要一个没有边框的widget，那么需要使用特定的flag(如，Qt::FramelessWindowHint)
 
-一个 widget 关联父窗口有两种常见方式：
-1. 在 widget 的构造函数中指定 parent
-2. 通过函数调用被添加到父窗口中(此时会建立 widget 间的父子关联)
-
-如果一个 widget 没有被嵌入到另外一个 widget 中，那么这个 widget 就叫做 window，即一个独立的窗口。
 
 #### 其他类
 Qt 类 | 函数 | 说明
@@ -229,15 +235,50 @@ Qt 的主要成就之一就是使用了一种机制对 c++ 进行了扩展，并
 由于所有这些工作都是由 ```qmake```、```moc``` 和 ```QObject``` 自动处理的，所以很少需要再去考虑这些事情。如果你对此充满好奇心，可以阅读下有关 QMetaObject 类的文档和由 moc 生成的 c++ 源码。
 
 ## 三、布局(layout)
-此外，widget 可以通过 setAttribute() 函数设置属性，如，setAttribute(Qt::WA_StyledBackground) 不使用从父对象继承来的 QSS 样式(如，背景、边框、字体等)。
+放置在窗体中的每个窗口部件都必须给定一个合适的大小和位置。Qt 提供了三种基本方法用于管理窗体上子窗口部件的布局：**绝对位置法**、**人工布局法** 和 **布局管理器法**。
 
+### 绝对位置法
+绝对位置法是一种最原始的摆放窗口部件的方法。这可以通过对窗体的各个子窗口部件(使用 setGeometry() 方法)分配固定的大小和位置以及对窗体分配固定的大小来实现。
 
-- Layout Management
-  - size policy使得layout management system（布局管理系统）拥有良好的默认大小变化管理依据
-  - 默认的size policy表示widget的大小可以自由变化，一般倾向于采用sizeHint()返回的大小，这对大多数的widget来说已经足够好了。
-  - 提示：顶层widget的大小一般约束为桌面大小长度和宽度的的2/3，但我们也可以通过resize()函数来手动改变大小。
+这种方法的缺点显而易见：
+- 用户无法改变窗口大小
+- 必须人工计算这些空间的大小和位置
+- 如果受平台的主题、字体、多语言等影响的话，很容易出现显示异常
 
-### Size
+### 人工布局法
+人工布局法虽然还是需要给定窗口部件的绝对位置，但是利用人工布局方法给定的大小尺寸总是可以和窗口的大小成比例。
+
+人工布局法的核心，就是通过重新实现窗体的```resizeEvent()```函数，可以在该函数中设置窗体中的子窗口部件的几何形状，以及主动重新计算各个子窗口部件的新布局位置、大小等。
+
+这种方法也需要开发人员像绝对位置法中那样，进行手动计算各个子窗口部件的位置、大小等繁琐且易错的内容。
+
+### 布局管理器法
+布局管理器(Layout Management)会为每种类型的窗口部件提供一些合理的默认值，并且也会考虑每一个窗口部件的大小提示，这些大小提示通常又会取决于该窗口部件的字体、风格和内容。
+
+布局管理器也会充分考虑其最大和最小尺寸，并且会自动通过调整布局来响应字体的变化、内容的改变、窗口大小的调整以及子窗口部件的隐藏或显现等。
+
+Qt 提供的最为重要的三种布局管理器是：QHBoxLayout、QVBoxLayout、QGridLayout。另外，布局管理器对象有个比较重要的函数```addStretch()```, 它告诉布局管理器，它会占满布局中这一处的全部多余空间。在 Qt Designer 中，可以通过插入一个 spacer(通常会显示为蓝色的弹簧形状) 来达到同样的效果。
+
+#### 影响布局方式: QSizePolicy
+一个窗口部件的 QSizePolicy 使得布局管理系统(layout management system)拥有良好的默认大小变化管理依据, 它会告诉布局系统应该如何对它进行拉伸或者压缩。
+
+Qt 为它所有的内置窗口部件都提供了合理的默认大小策略值，同时，开发人员也可以主动对其进行修改。
+
+默认的 QSizePolicy 表示 widget 的大小可以自由变化，一般倾向于采用sizeHint()返回的大小，这对大多数的 widget 来说已经足够好了。(提示：顶层widget的大小一般约束为桌面大小长度和宽度的的2/3，但也可以通过 resize() 函数来进行调整)
+
+QSizePolicy 具有水平方向和垂直方向两个分量，以下是一些常见的取值：
+QSizePolicy | 作用 | 说明
+--- | --- | ---
+Fixed | widget 不能被拉伸或压缩 | 大小尺寸总是保持为 sizeHint() 的尺寸
+Minimum | sizeHint() 是 widget 的最小尺寸 | 尺寸不能比大小提示更小<br>但如有必要，可以拉伸它来填充尽可能多的空间
+Maximum | sizeHint() 是 widget 的最大尺寸 | 尺寸不能比大小提示更大<br>但可以把它压缩到它的最小大小提示的尺寸
+Preferred | sizeHint() 是 widget 的合适尺寸 | 如有需要，可以对此控件进行拉伸或压缩
+Expanding | widget 可以被拉伸或压缩 | 此控件特别希望能够被拉伸(变长变高)
+
+思考：Preferred 和 Expanding 都可以被拉伸或压缩，那么他们有什么不同之处？
+- 优先级问题。在重新改变一个既包含 Preferred 窗口部件 又包含 Expanding 窗口部件的窗体大小时，多出来的空间，会优先分配给 Expanding 窗口部件，而 Preferred 窗口部件仍然会按照原有大小提示而保持不变
+
+#### 影响布局方式: Size
 | 类别 | 函数名 | 效果 | 作用 | 注意事项 |
 | --- | --- | --- | --- | --- |
 | | ```setMinimumSize(w,h)```<br>```setMaximumSize(w,h)``` | | | 优先级最高
@@ -250,13 +291,12 @@ Qt 的主要成就之一就是使用了一种机制对 c++ 进行了扩展，并
 | | ```size()``` | widget除去边框之外的大小 | 
 | | ```sizeHint()``` | This property holds the recommended size for the widget. | | 如果此小部件没有 layout 时，则 sizeHint() 的默认实现返回一个无效值，否则返回 layout 的首选大小(preferred size)。
 
-另外，如果控件被放进 layout 里以后，大小由 layout 控制，resize 就不起作用了。不过：
+如果控件被放进 layout 里以后，大小由 layout 控制，resize 就不起作用了。不过：
 - 可以通过 setMinimumSize 和 setMaximumSize 控制大小
 - 可以通过 move 移动位置
 
-### 思考
-1. 如下设置 qss 的话，新建名为 SpecialButton 的 MyPushButton 控件，会出现 minimumHeight() > maximumHeight() 的情形，此时，设置 setFixedSize 会生效吗？
-  ```
+思考：如下设置 qss 的话，新建名为 SpecialButton 的 MyPushButton 控件，会出现 minimumHeight() > maximumHeight() 的情形，此时，设置 setFixedSize 会生效吗？不会，为什么？
+```
   /* 按钮 */
   MyPushButton {
       min-height:50px;
@@ -268,10 +308,16 @@ Qt 的主要成就之一就是使用了一种机制对 c++ 进行了扩展，并
     min-width:  50px;
     min-height: 100px;
   }
-  ```
+```
+
+#### 影响布局方式: 其它
+影响布局方式的另外一种方法是：设置它的子窗口部件的最小大小、最大大小或固定大小。当布局管理器在摆放这些窗口部件的时候，会考虑这些约束条件。
+
+此外，还可以对子窗口部件的类进行派生，并重新实现 sizeHint() 函数，由此获得所需的大小提示。
 
 
 ## 四、样式(style)
+此外，widget 可以通过 setAttribute() 函数设置属性，如，setAttribute(Qt::WA_StyledBackground) 不使用从父对象继承来的 QSS 样式(如，背景、边框、字体等)。
 
 可以使用三种方式来重新定义 Qt 内置窗口部件的外观：
 1. 子类化个别的窗口部件类，并且重新实现它的绘制和鼠标事件处理器
@@ -355,6 +401,8 @@ Qt 提供了5个级别的事件处理和事件过滤方法：
 mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
 
 ## 六、扩展插件(plugin)
+### 在 Qt Designer 中集成自定义 widget 组件
+
 可以使用很多插件类型来扩展 Qt，其中最常用的就是数据库驱动、图像格式、风格(style)和文本编码解码器
 
 对于每一个类型的插件，通常至少需要两个类：一个是插件封装类，另外则是一个或多个处理器类
