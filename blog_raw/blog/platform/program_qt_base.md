@@ -141,7 +141,6 @@ add_executable(ss
 target_link_libraries(ss ${QT_LIBRARIES} pthread)
 ```
 
-
 #### IDE
 可以使用 Qt 提供的 QCreator，也可以使用 Visual Studio 或 Eclipse 配合相关插件来进行开发编译。
 
@@ -269,7 +268,7 @@ Qt 提供的最为重要的三种布局管理器是：QHBoxLayout、QVBoxLayout�
 
 Qt 为它所有的内置窗口部件都提供了合理的默认大小策略值，同时，开发人员也可以主动对其进行修改。
 
-默认的 QSizePolicy 表示 widget 的大小可以自由变化，一般倾向于采用sizeHint()返回的大小，这对大多数的 widget 来说已经足够好了。(提示：顶层widget的大小一般约束为桌面大小长度和宽度的的2/3，但也可以通过 resize() 函数来进行调整)
+默认的 QSizePolicy 表示 widget 的大小可以自由变化，一般倾向于采用 sizeHint() 返回的大小，这对大多数的 widget 来说已经足够好了。(提示：顶层widget的大小一般约束为桌面大小长度和宽度的的2/3，但也可以通过 resize() 函数来进行调整)
 
 QSizePolicy 具有水平方向和垂直方向两个分量，以下是一些常见的取值：
 QSizePolicy | 作用 | 说明
@@ -296,7 +295,7 @@ Expanding | widget 可以被拉伸或压缩 | 此控件特别希望能够被拉�
 | | ```size()``` | widget除去边框之外的大小 | 
 | | ```sizeHint()``` | This property holds the recommended size for the widget. | | 如果此小部件没有 layout 时，则 sizeHint() 的默认实现返回一个无效值，否则返回 layout 的首选大小(preferred size)。
 
-如果控件被放进 layout 里以后，大小由 layout 控制，resize 就不起作用了。不过：
+**如果控件被放进 layout 里以后，大小由 layout 控制，resize 就不起作用了**。不过：
 - 可以通过 setMinimumSize 和 setMaximumSize 控制大小
 - 可以通过 move 移动位置
 
