@@ -38,8 +38,13 @@ permalink:
     - [常见的窗口部件中可以访问样式表的状态](#常见的窗口部件中可以访问样式表的状态)
   - [五、事件(event)](#五事件event)
     - [常见事件](#常见事件)
-  - [六、扩展插件(plugin)](#六扩展插件plugin)
-    - [在 Qt Designer 中集成自定义 widget 组件](#在-qt-designer-中集成自定义-widget-组件)
+  - [六、扩展 Qt](#六扩展-qt)
+    - [集成自定义 QWdiget 到 Qt Designer](#集成自定义-qwdiget-到-qt-designer)
+    - [插件(plugin)](#插件plugin)
+      - [实现](#实现)
+      - [加载](#加载)
+      - [插件类: 预定义](#插件类-预定义)
+      - [插件类: 自定义](#插件类-自定义)
   - [Reference](#reference)
 
 # Qt 要点概览
@@ -317,14 +322,14 @@ Expanding | widget 可以被拉伸或压缩 | 此控件特别希望能够被拉�
 
 
 ## 四、样式(style)
-此外，widget 可以通过 setAttribute() 函数设置属性，如，setAttribute(Qt::WA_StyledBackground) 不使用从父对象继承来的 QSS 样式(如，背景、边框、字体等)。
-
-可以使用三种方式来重新定义 Qt 内置窗口部件的外观：
+QWdiget 可以使用三种方式来重新定义 Qt 内置窗口部件的外观：
 1. 子类化个别的窗口部件类，并且重新实现它的绘制和鼠标事件处理器
 2. 子类化 QStyle 或者一个预定义的风格，例如 QWindowStyle。Qt 本身就是基于这种方法为它所支持的不同平台提供基于平台的外观的
 3. 从 Qt4.2 开始，可以使用样式表(stylesheet)
 
 QApplication::setStyleSheet() 为整个应用程序设置一个样式表；QWdiget::setStyleSheet() 设置窗口以及其子窗口部件的样式表
+
+一般情况下，QWdiget 会从父窗口继承 QSS 样式(如，背景、边框、字体等)，不过可以通过 setAttribute(Qt::WA_StyledBackground) 函数设置属性，来指明不使用从父对象继承来的 QSS 样式。
 
 ### 样式表选择器
 选择器 | 实例 | 可以匹配的窗口部件
@@ -337,9 +342,7 @@ Qt 属性 | ```QDial[ y="0"``` ] | 为某些**属性**赋值的窗口部件
 子对象 | ```QFrame > QDial``` | 给定窗口部件的**直接子窗口**部件
 子孙对象 | ```QFrame QDial``` | 给定窗口部件的**子窗口**部件
 
-选择器能以各种方式组合。
-
-从 Qt4.2 开始，可以通过 QObject::setProperty() 动态的设置一个不存在的属性值。
+选择器能以各种方式组合。此外，从 Qt4.2 开始，可以通过 QObject::setProperty() 动态的设置一个不存在的属性值。
 
 ### 最常见的自定义辅助控制器
 辅助控制器 | 说明
@@ -391,6 +394,7 @@ Qt 提供了5个级别的事件处理和事件过滤方法：
 ### 常见事件
 | 类别 | 方法 | 说明 |  注意事项 |
 | --- | --- | --- | --- |
+| | ```mouseMoveEvent()``` | 鼠标移动事件<br>默认状态下，需要鼠标按下才能捕捉到 | 要想鼠标不按下时的移动也能捕捉到，需要 setMouseTracking(true) |
 | | ```mouseReleaseEvent()``` | 收到鼠标按下事件的 widget，也将接收鼠标释放事件 | 如果用户在某 widget 上按下鼠标，然后松开鼠标前拖动鼠标到别的地方，那么此 widget 也将接收到释放事件。<br>有一个例外：如果在按住鼠标按钮的同时出现弹出菜单，则该弹出窗口会立即窃取鼠标事件。|
 | | ```enterEvent()``` | 鼠标进入该 widget 所在屏幕区域时被调用 | 该 widget 的屏幕区域不包括其子 widget 的屏幕区域 |
 | | ```leaveEvent()``` | 鼠标离开widget所在屏幕区域时被调用，但是如果鼠标进入了子widget屏幕区域时该函数不会被调用 | |
@@ -398,14 +402,105 @@ Qt 提供了5个级别的事件处理和事件过滤方法：
 | | ```closeEvent()``` | 用户关闭 widget 时或者调用 close() 函数时被调用 | |
 
 
-mouseMoveEvent ：当用户按下一个键时才产生，setMouseTracking()
+## 六、扩展 Qt
+### 集成自定义 QWdiget 到 Qt Designer
 
-## 六、扩展插件(plugin)
-### 在 Qt Designer 中集成自定义 widget 组件
+### 插件(plugin)
+Qt 的插件就是一个动态库，它为可选的额外功能提供了一个特殊接口。利用插件，通常可以对现存的 GUI 应用程序进程扩展。可以使用很多插件类型来扩展 Qt，其中最常用的就是数据库驱动、图像格式、风格(style)和文本编码解码器。
 
-可以使用很多插件类型来扩展 Qt，其中最常用的就是数据库驱动、图像格式、风格(style)和文本编码解码器
+#### 实现
+对于每一个类型的插件，通常至少需要两个类：一个是 plugin 封装类(实现插件的API接口)，另外则是一个或多个 handler 类(实现一种用于特殊类型插件的API)。
 
-对于每一个类型的插件，通常至少需要两个类：一个是插件封装类，另外则是一个或多个处理器类
+Qt 的插件需要包含：一个 .pro 文件；一个 .h 和 .cpp 问题，由它们提供一个继承了 Q*Plugin 的类对象。在 .cpp 文件的最后，必须添加一个下面这样的宏：```Q_EXPORT_PLUGIN2([目标库名字去除任意扩展符、前缀或者版本号后的基本名], [插件的类名])```
+
+插件的 .pro 文件和应用程序的 .pro 文件不同，样式如下：
+```
+TEMPLATE   = lib                          # 指定为 lib 模板
+CONFIG    += plugin
+HEADERS    = xxx.h
+SOURCES    = xxx.cpp
+RESOURCES  = xxx.qrc
+DESTDIR    = $$[QT_INSTALL_PLUGINS]/xxx   # 指定插件存放目录
+```
+
+#### 加载
+在 Qt Designer 运行时，会自动查找各个插件，并在合适的菜单选项中增加对应选项。
+
+在应用程序中，必须对它们打算使用的 Qt 插件进行配置。Qt 插件必须放在特殊的子目录中(如，plugins/styles 是用于自定义风格的子目录)。Qt 应用程序在可执行文件所在目录的 plugins 目录中查找插件。如果希望把 Qt 插件配置到与此不同的目录中，那么就需要在一开始就调用 QCoreApplication::addLibraryPath() 来扩展插件的搜索路径，或者也可以在启动程序之前设置 QT_PLUGIN_PATH 环境变量。
+
+#### 插件类: 预定义
+插件类 | 处理器类 | 备注
+--- | --- | ---
+QAccessibleBridgePlugin | QAccessibleBridge | 
+QAccessiblePlugin | QAccessible | 
+QFontEnginePlugin | QAbstractFontEngine | 
+QIconEnginePluginV2 | QIconEngineV2 | 
+QImageIOPlugin | QImageIOHandler | 
+QInputContextPlugin | QInputContext | 
+QPictureFormatPlugin | N/A
+QScriptExtensionPlugin | N/A
+QSqlDriverPlugin | QSqlDriver | 
+QStylePlugin | QStyle | 
+QTextCodecPlugin | QTextCodec | 
+QDecorationPlugin | QDecoration | 仅在 linux 下的 Qt/Embedded 中可用
+QScreenDriverPlugin | QScreen | 仅在 linux 下的 Qt/Embedded 中可用
+QKbdDriverPlugin | QWSKeyboardHandler | 仅在 linux 下的 Qt/Embedded 中可用
+QMouseDriverPlugin | QWSMouseHanlder | 仅在 linux 下的 Qt/Embedded 中可用
+
+预定义的插件类，可以很容易被 Qt 的现有机制调用，如，``` QApplication::setStyle("Bronze");``` 就可以很容加载一个自定义 style 插件中提供的一个名为 Bronze 的 style。
+
+#### 插件类: 自定义
+一个应用程序的插件就是实现了一个或多个接口的动态库。接口就是有专有的纯虚函数组成的类。
+
+1. 先定义一个接口：
+```
+class TextArtInterface 
+{
+public:
+  virtual ~TextArtInterface() {};
+  virtual QStringList effects() const = 0;
+  virtual QPixmap applyEffect(int nIndex) const = 0;
+};
+
+Q_DECLARE_INTERFACE(TextArtInterface, "com.xxx.TextArt.TextArtInterface/1.0");
+```
+这里定义了一个接口文件，然后用 Q_DECLARE_INTERFACE 宏将这个接口与一个标识符关联起来。这个标识符通常包含4个部分：
+a. 倒置了的域名。用于说明这个接口的创建者。
+b. 应用程序的名字
+c. 接口名
+d. 版本号。只要这个接口发生改变，就必须要增加版本号，否则，应用程序可能会因为试图访问一个过期的插件而崩溃。
+
+2. 定义插件并实现：
+```
+class BasicEffectsPlugin : public QObject, public TextArtInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(TextArtInterface)
+public:
+  ...
+}
+```
+一个应用程序的插件就是 QObject 和 它想要提供的接口的一个子类。
+
+上述插件实现了一个接口，此外，除了 ```Q_OBJECT``` 外，还必须为继承的每个接口使用 ```Q_INTERFACES()``` 宏，以确保 moc 和 qobject_cast<T>() 可以一起正常工作。
+
+3. 加载插件：
+```
+void TextArtDialog::loadPlugins()
+{
+   QDir pluginDir = directoryOf("plugins");
+   foreach (QString filename, pluginDir.entryList(QDir::Files)) {
+     QPluginLoader loader(pluginDir.absoluteFilePath(filename));
+     if (TextArtInterface* p = qobject_cast<TextArtInterface*>(loader.instance()))
+     {
+        // TODO
+     }
+   }
+}
+```
+
+
+
 
 
 ## Reference
