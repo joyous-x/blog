@@ -40,6 +40,8 @@ permalink:
     - [常见事件](#常见事件)
   - [六、扩展 Qt](#六扩展-qt)
     - [集成自定义 QWdiget 到 Qt Designer](#集成自定义-qwdiget-到-qt-designer)
+      - [改进法(promotion)](#改进法promotion)
+      - [插件法(plugin)](#插件法plugin)
     - [插件(plugin)](#插件plugin)
       - [实现](#实现)
       - [加载](#加载)
@@ -403,6 +405,47 @@ Qt 提供了5个级别的事件处理和事件过滤方法：
 
 ## 六、扩展 Qt
 ### 集成自定义 QWdiget 到 Qt Designer
+在 Qt Designer 中使用自定义窗口部件之前，需要让 Qt Designer 察觉到它们的存在。有两种方法可以完成这一任务：改进法(promotion)和插件法(plugin)
+
+#### 改进法(promotion)
+这里以加入一个自定义的 QSpinBox 的子类 MySpinBox 为例，看看操作步骤：
+1. 从 Qt Designer 的工具栏插入一个 QSpinBox 控件
+2. 右键单击这个微调框，并从上下文菜单中选择"Promote to Custom Widget"(改进成自定义窗口控件)
+3. 在弹出的对话框中填入 "MySpinBox" 作为类名，"myspinbox.h" 为头文件名字
+
+以上即可让 uic 生成 myspinbox 的相关代码而不是 QSpinBox。不过，在 Qt Designer 中无法对自定义窗口部件中的特定属性进行访问，也无法对窗口部件自身进行绘制。
+
+#### 插件法(plugin)
+插件法需要创建一个插件库(关于插件的更多内容见下文)，Qt Designer 可以在运行时加载这个库，并且可以利用该库创建窗口部件的实例。
+
+在对插件法创建的窗体进行编辑或预览时，Qt Designer 会用到这个真正的窗口部件，这要归功于 Qt 的元对象系统，Qt Designer 才能动态获取到它的属性列表。
+
+**注意**，给 Qt Designer 自动加载的插件必须继承自```QDesignerCustomWidgetInterface```
+
+这里给出一个插件示例：
+1. 插件类
+```
+#include <QDesignerCustomWidgetInterface>
+
+class IconEditorPlugin : public QObject, public QDesignerCustomWidgetInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+  ...
+};
+```
+2. 用于编译的 .pro 文件
+```
+TEMPLATE   = lib
+CONFIG    += designer plugin release
+HEADERS    = ../iconeditor/iconeditor.h iconeditorplugin.h 
+SOURCES    = ../iconeditor/iconeditor.cpp iconeditorplugin.cpp
+RESOURCES  = iconeditorplugin.qrc
+DESTDIR    = $$[QT_INSTALL_PLUGINS]/designer
+```
+
+用上述 .pro 文件构建完成后，文件会自动安装到 Qt Designer 的 plugins/designer 目录中。此时，Qt Designer 中就可以像使用其他内置 Qt 控件一样来使用我们自定义的 IconEditor 控件了。
 
 ### 插件(plugin)
 Qt 的插件就是一个动态库，它为可选的额外功能提供了一个特殊接口。利用插件，通常可以对现存的 GUI 应用程序进程扩展。可以使用很多插件类型来扩展 Qt，其中最常用的就是数据库驱动、图像格式、风格(style)和文本编码解码器。
@@ -410,12 +453,33 @@ Qt 的插件就是一个动态库，它为可选的额外功能提供了一个�
 #### 实现
 对于每一个类型的插件，通常至少需要两个类：一个是 plugin 封装类(实现插件的API接口)，另外则是一个或多个 handler 类(实现一种用于特殊类型插件的API)。
 
-Qt 的插件需要包含：一个 .pro 文件；一个 .h 和 .cpp 问题，由它们提供一个继承了 Q*Plugin 的类对象。在 .cpp 文件的最后，必须添加一个下面这样的宏：```Q_EXPORT_PLUGIN2([目标库名字去除任意扩展符、前缀或者版本号后的基本名], [插件的类名])```
+Qt 的插件需要包含：一个 .pro 文件；一个 .h 和 .cpp 文件，由它们提供一个继承了 Q*Plugin 的类对象。在 .cpp 文件的最后，必须添加一个下面这样的宏：```Q_EXPORT_PLUGIN2([目标库名字去除任意扩展符、前缀或者版本号后的基本名], [插件的类名])```
 
-插件的 .pro 文件和应用程序的 .pro 文件不同，样式如下：
+这里给出简单示例：
+1. 插件的 .h 和 .cpp 文件，样式如下：
+``` 
+/* .h */
+
+class XxxPlugin : public QObject, public XxxPluginInterface
+{
+  Q_OBJECT
+  Q_INTERFACES(XxxPluginInterface)
+public:
+  ...
+};
+```
+``` 
+/* .cpp */
+
+...
+
+Q_EXPORT_PLUGIN2([目标库名字去除任意扩展符、前缀或者版本号后的基本名], [插件的类名])
+```
+
+2. 插件的 .pro 文件和应用程序的 .pro 文件不同，样式如下：
 ```
 TEMPLATE   = lib                          # 指定为 lib 模板
-CONFIG    += plugin
+CONFIG    += plugin                       # 还可以增加编译选项的指定
 HEADERS    = xxx.h
 SOURCES    = xxx.cpp
 RESOURCES  = xxx.qrc
@@ -497,9 +561,6 @@ void TextArtDialog::loadPlugins()
    }
 }
 ```
-
-
-
 
 
 ## Reference
