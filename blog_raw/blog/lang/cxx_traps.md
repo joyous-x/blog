@@ -188,4 +188,29 @@ C++中单参数构造函数是可以被隐式调用的，主要有两种情形�
 
 可以通过 explict 关键字避免这种隐式调用。
 
-## 4. TODO
+## 4. HeapOnly & StackOnly
+  ```
+      #include <iostream>
+      class HeapOnly {
+      public:  
+          HeapOnly() { }
+          void destroy() const { delete this; }
+      private:  
+          ~HeapOnly() { }
+      };
+      class StackOnly {
+      public:
+          StackOnly() { }
+          ~StackOnly() { }
+      private:
+          void* operator new(size_t);
+      };
+      int main() {  
+          StackOnly s; // ok
+          StackOnly *p = new StackOnly; // wrong
+          HeapOnly *p = new HeapOnly; // ok
+          p->destroy();
+          HeapOnly h;  // wrong
+          return 0;
+      }
+  ```
