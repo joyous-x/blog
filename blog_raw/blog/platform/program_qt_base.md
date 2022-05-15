@@ -164,11 +164,11 @@ target_link_libraries(ss ${QT_LIBRARIES} pthread)
 
 ### 基本对象
 ```mermaid
-graph RL;
-  QApplication --> QCoreApplication
-  QCoreApplication --> R(QObject); 
-  QWidget --> R;
-  QLayout --> R;
+graph RL
+  QApplication --> QCoreApplication;
+  QCoreApplication --> QObject; 
+  QWidget --> QObject;
+  QLayout --> QObject;
 ```
 
 Qt 会对所有的窗口进行跟踪，所以 new 一个 window 后，可以没有主动 delete。当用户关闭一个主窗口时，默认行为是隐藏它，不过，可以通过 Qt::WA_DeleteOnClose 属性进行修改。
@@ -577,6 +577,3 @@ void TextArtDialog::loadPlugins()
   + [Layout Management](https://doc.qt.io/qt-5/layout.html)
   + [The Event System](https://doc.qt.io/qt-5.15/eventsandfilters.html) 
 - [QWidget类详解(属性篇)](https://blog.csdn.net/dengjin20104042056/article/details/115304706)
-
-
-
