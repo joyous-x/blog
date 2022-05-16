@@ -55,6 +55,10 @@ C++20 | constinit | ```constinit auto sqrOf5 = square(5);``` |
 C++20 | concept | ```template<typename T>```<br>```concept Integral = std::is_integral<T>::value;``` | 
 C++11 | attribute specifier sequence | ```[[gnu::const]] [[nodiscard]]```<br>```inline int f(); ``` | 
 C++ | enumerators with attributes | ```enum class myEnum{ value1 [[anAttribute]], }; ``` | ??
+C++11 | std::integral_constant | | 包装特定类型的静态常量。它是 C++ 类型特征的基类。
+C++11 | constexpr length for const string | ```template<class T>```<br>```constexpr size_t const_str_len(const T* str) { return (*str == 0) ? 0 : const_str_len(str + 1) + 1; }``` |
+C++17 | constexpr length for const string | ```constexpr auto l = std::char_traits<char>::length("123");``` |
+
 
 ### 一、Thriving in a Crowded and Changing World: C++ 2006–2020
 这是 C++ 之父 Bjarne Stroustrup 的 [HOPL4](https://www.stroustrup.com/hopl20main-p5-p-bfc9cd4--final.pdf) 论文的标题。
