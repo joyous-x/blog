@@ -14,5 +14,7 @@ permalink:
 功能 | 语法/标记 | 说明
 --- | :---: | :---
 勾选框 | &#9745; <br> &#9744; |
+一个空格 | ```&emsp;```<br>```&#8194;``` |
+两个空格 | ```&ensp;```<br>```&#8195;``` |
+不换行空格 | ```&nbsp;```<br>```&#160;``` |
 mermaid | graph、subgraph<br>sequenceDiagram<br>gantt<br>flowchat | https://www.cxybb.com/article/Gordo_Li/103268147#21-flow<br>vs code 需要安装 Markdown Preview Enhanced 插件
-
