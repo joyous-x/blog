@@ -73,7 +73,7 @@ enum Y { a };
 ```
 // define.c
 int arr[] = { 1,2,3 };
-int* ard = &arr[0];
+int* arm = &arr[0];
 
 // test.c
 int art[] = { 5,6,7,8,9 };
@@ -81,7 +81,7 @@ extern int* arr;
 
 void test() {
     int* x = arr + 1;
-    int* m = arrx + 1;
+    int* m = art + 1;
 }
 ```
 
