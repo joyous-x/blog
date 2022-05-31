@@ -266,6 +266,17 @@ graph LR
 >> 拓展 - 规模由小到大时, 量变引发质变
 ```
 
+#### 学习新领域的方法
+```mermaid
+%%快速学习法
+graph LR
+  Start(进入新领域)-->Read(泛读, 时间:5)-.-N1(了解基本概念,规则)-->M(遇疑问,可查看 demo)
+  Read --> Model(建立模型, 时间:3) -.- N2(形成基本的全局观)
+  Model --> Expert(请教专家, 时间:2) -.- N3(帮助解答疑难问题)
+  Expert --> Understand(理解复述, 时间:10) -.- N4(方法: 费曼技巧)
+  Understand --> End(闭环学习) -.- Start
+```
+
 ### 2. 做事
 ***极致(ONE MORE STEP)*** 、 ***Plan B***
 
