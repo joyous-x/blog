@@ -654,6 +654,25 @@ Dart 是类型安全的编程语言：Dart 使用静态类型检查和 运行时
 
 [高效 Dart 语言指南](https://dart.cn/guides/language/effective-dart)
 
+
+## 常用组件
+Category | Name | Desc | Usage | More
+--- | --- | --- | --- | --- 
+. | Expand | 占据尽可能多的空间
+. | Container | 适用于有尺寸约束、装饰（颜色、边框、等）、内外边距等需求 | 容器不受约束时，大小将会设置0 |
+. | SizedBox | 具有固定宽高的组件
+. | FractionallySizedBox | 子组件的尺寸是相对父组件尺寸的百分比
+. | LimitedBox | 当不受父组件约束时限制它的尺寸 | 适用于没有父组件约束的情况。<br>如果LimitedBox的父组件受到约束，此时LimitedBox将会不做任何操作，我们可以认为没有这个组件
+. | ConstrainedBox | 约束子组件的最大、最小宽高
+. | AspectRatio | 固定宽高比的组件 
+
+
+一般来说容器都会对子组件约束，但 ListView、Row、Column 等父组件不会约束子组件
+
+## 页面导航
+Navigator.of(context).push(CustomRoute(SecondPage()));
+
+
 ## Reference
 - [dart.cn](https://dart.cn/guides)
 
@@ -662,3 +681,6 @@ widget 递归构建的底层是 RenderObjectwidget，它将在渲染树的底部
 
 
 使用大量 widget 及渲染对象并保持高性能的关键是使用高效的算法。其中最重要的是确定渲染对象几何空间（比如大小和位置）的布局算法的性能。其他一些工具包使用 O(N²) 或更糟糕的布局算法（例如，约束域中的不动点迭代）。 Flutter 的目标在于布局初始化的线性性能，及一般情况下更新现有布局的次线性布局性能。通常情况下，布局所花费的时间应该比对象渲染要多得多。
+
+extension：
+https://zhuanlan.zhihu.com/p/100336757

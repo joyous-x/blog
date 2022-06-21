@@ -35,11 +35,27 @@ Category | Keyword | Desc | Note | More
 类型 | set | | ```let set: Set<Int> = [1,2,3]```<br>```let set: Set = [1,2,3]```<br>```let set = Set(arrayLiteral: 1,2,4)```
 比较 | ```===```<br>```!==``` | 恒等运算符 | 适用于引用类型，判定两个常量或者变量是否引用同一个实例
 别名 | typealias | ```typealias alias = UInt16``` | 可以在任何使用原始名的地方使用类型别名
+. | ```switch case fallthrough``` | case 中默认终止后续 case。<br>如果想让 case 之后的语句按顺序继续运行，则需要使用 fallthrough
 
 值类型：
 - 值类型是这样一种类型，当它被赋值给一个变量、常量或者被传递给一个函数的时候，其值会被拷贝。
 - Swift 中所有的基本类型都是值类型，其底层也是使用结构体实现的。
   + 标准库定义的集合，例如数组，字典和字符串，都对复制进行了优化以降低性能成本。新集合不会立即复制，而是跟原集合共享同一份内存，共享同样的元素。在集合的某个副本要被修改前，才会复制它的元素。
+
+### 类
+Name | Desc | Note | More
+:-- | :-- | --- | ---
+类对象 | ```class x {}``` | 构造函数 ```init()``` | 
+协议 | ```protocol x {}``` |  只能包含计算型变量或方法
+继承 | ```class x : BaseClass, BaseProtocol {}``` |
+扩展 | ```extension x {}```<br>```extension x : BaseClass, BaseProtocol {}``` | 只能包含计算型变量或方法
+
+构造类别 | Desc | Note | More
+:-- | :-- | --- | ---
+normal | ```init()```
+required | ```required init()```
+required | ```required init?()```
+convenience | ```convenience init()```
 
 ### 常见操作
 Name | Desc | Note | More
@@ -66,6 +82,14 @@ range.contains(7)   // false
 range.contains(4)   // true
 range.contains(-1)  // true
 ```
+
+### 常见控件
+Category | Name | Desc | Usage | More
+--- | --- | --- | --- | --- 
+. | UIScrollView | 相当于提供了滚动条功能
+. | UIStackView | 
+. | UITableView | 1. 自带左滑删除条目<br>2. 貌似不能水平滚动
+. | UICollectionView | 
 
 ### closure
 Trailling Closure
@@ -122,3 +146,13 @@ graph LR
   + #selector : https://blog.csdn.net/wangyanchang21/article/details/78928925
 ### Tests
 
+
+protocol CJLStackProtocol {
+    //协议中使用类型的占位符
+    associatedtype Item
+}
+struct CJLStack: CJLStackProtocol{
+    //在使用时，需要指定具体的类型
+    typealias Item = Int
+    private var items = [Item]()
+}
