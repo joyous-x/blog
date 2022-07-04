@@ -17,20 +17,33 @@ https://dartpad.cn/?
 基础知识概览
 Category | Name | Desc | Note | More
 :-- | :-- | --- | --- | --- 
-Object | Object | Everything you can place in a variable is an object, and every object is an instance of a class. | Even numbers, functions, and null are objects. | With the exception of null (if you enable sound null safety), all objects inherit from the Object class.
-Object | Null safety | | Null safety was introduced in Dart 2.12. | [深入理解空安全](https://dart.cn/null-safety/understanding-null-safety)
-. | 默认值 | 未初始化以及可空类型的变量拥有一个默认的初始值 null
-. | 赋值运算符 | ```=```<br>```??=``` | ```// Assign value to b if b is null; otherwise, b stays the same``` <br>```b ??= value;```
-. | 可见性 | 如果一个标识符以下划线 (_) 开头则表示该标识符在库内是私有的 | 
-. | 条件表达式 | ```条件 ? 表达式1 : 表达式2``` | 
-. | 条件表达式 | ```表达式1 ?? 表达式2``` | 如果表达式1 为非 null 则返回其值，否则执行表达式2 并返回其值。
-. | 级联运算符 | ```..```<br>```?..``` | 级联运算符可以让你在同一个对象上连续调用多个对象的变量或方法 | 
+命名 | 
+声明 | 
+变量 | ```Object``` | ```Everything you can place in a variable is an object, and every object is an instance of a class.``` | 1. Even numbers, functions, and null are objects.<br>2. With the exception of null (if you enable sound null safety), all objects inherit from the Object class.
+类型 | ```null``` | 未初始化以及可空类型的变量拥有一个默认的初始值 null |
+类型 | ```null safety``` |  Null safety was introduced in Dart 2.12. | [深入理解空安全](https://dart.cn/null-safety/understanding-null-safety)
+类型 | 
+可见性 | ```_xxx``` | 下划线 (_) 开头的标识符表示该标识符是库内私有的 | 
+赋值运算符 | ```=```<br>```??=``` | ```// Assign value to b if b is null;```<br>```// otherwise, b stays the same``` <br>```b ??= value;```
+级联运算符 | ```..```<br>```?..``` | 级联运算符可以让你在同一个对象上连续调用多个对象的变量或方法 |
+条件表达式 | ```exprA ?? exprB``` | 如果 表达式A 为非 null 则返回其值，否则执行 表达式B 并返回其值
 . | 条件访问成员 | ```?.``` | 与成员访问符类似，但是左边的操作对象能为 null，例如 foo?.bar，如果 foo 为 null 则返回 null ，否则返回 bar
 
 Name | Version | Desc | Note | More
 --- | --- | --- | --- | --- 
 Switch-Case | | fall-through | Dart 支持空的 case 语句，允许其以 fall-through 的形式执行。在非空 case 语句中想要实现 fall-through 的形式，可以使用 continue 语句配合 label 的方式实现: ```continue next_case_label;```
 枚举 | | enumerations 或 enums | 每一个枚举值都有一个名为 index 成员变量的 Getter 方法，该方法将会返回以 0 为基准索引的位置值。想要获得全部的枚举值，使用枚举类的 values 方法获取包含它们的列表. 你可以在 Switch 语句中使用枚举，但是需要注意的是必须处理枚举值的每一种情况，即每一个枚举值都必须成为一个 case 子句，不然会出现警告
+
+
+#### 类型判断运算符
+as、is、is! 运算符是在运行时判断对象类型的运算符。
+
+Operator | Meaning | Note
+--- | --- | ---
+as | 类型转换（也用作指定 类前缀)）| 仅当你确定这个对象是该类型的时候，你才可以使用 as 操作符可以把对象转换为特定的类型, 否则将会抛出异常
+is | 如果对象是指定类型则返回 true | 当且仅当 obj 实现了 T 的接口，obj is T 才是 true。<br>例如 obj is Object 总为 true，因为所有类都是 Object 的子类。
+is! | 如果对象是指定类型则返回 false
+
 
 ### 类型
 类别 | Built-in types | Desc
@@ -49,16 +62,16 @@ Null | | The value null
 
 Set 还是 map? Map 字面量语法相似于 Set 字面量语法。因为先有的 Map 字面量语法，所以 {} 默认是 Map 类型。如果忘记在 {} 上注释类型或赋值到一个未声明类型的变量上，那么 Dart 会创建一个类型为 Map<dynamic, dynamic> 的对象。
 
-#### 默认值
-在 Dart 中，未初始化以及可空类型的变量拥有一个默认的初始值 null。（如果你未迁移至 空安全，所有变量都为可空类型。）即便数字也是如此，因为在 Dart 中一切皆为对象，数字也不例外。
+#### Null-Safety
+如果你未迁移至 空安全，那么所有变量都为可空类型。即便数字也是如此，因为在 Dart 中一切皆为对象，数字也不例外。
 
-If you enable null safety, then you must initialize the values of non-nullable variables before you use them:
+如果启用了空安全，那么，对于 non-nullable variables，必须在使用前初始化。
 
 Top-level and class variables are lazily initialized; the initialization code runs the first time the variable is used.
 
-Often Dart’s control flow analysis can detect when a non-nullable variable is set to a non-null value before it’s used, but sometimes analysis fails. Two common cases are top-level variables and instance variables: Dart often can’t determine whether they’re set, so it doesn’t try.
+一般来说，Dart’s control flow analysis 能检测到非空变量在被使用前赋予了非空值，但也有时候会分析失败。两个常见的 case 是：top-level variables 和 instance variables，Dart 经常不能决定他们是否被正确设置。
 
-f you’re sure that a variable is set before it’s used, but Dart disagrees, you can fix the error by marking the variable as late:
+如果你确信变量在使用前初始化，但 dart 不这么认为时，可以通过标记变量为```late```来解决：
 ```
 late String description;
 
@@ -67,24 +80,14 @@ void main() {
   print(description);
 }
 ```
-Dart 2.12 added the late modifier, which has two use cases:
 
-Declaring a non-nullable variable that’s initialized after its declaration.
-Lazily initializing a variable.
+在 Dart 2.12 中引入的 ```late```, 有两种使用场景:
+- Declaring a non-nullable variable that’s initialized after its declaration.
+- Lazily initializing a variable.
 
 When you mark a variable as late but initialize it at its declaration, then the initializer runs the first time the variable is used. This lazy initialization is handy in a couple of cases:
 - The variable might not be needed, and initializing it is costly.
 - You’re initializing an instance variable, and its initializer needs access to this.
-
-
-#### 类型判断运算符
-as、is、is! 运算符是在运行时判断对象类型的运算符。
-
-Operator | Meaning | Note
---- | --- | ---
-as | 类型转换（也用作指定 类前缀)）| 仅当你确定这个对象是该类型的时候，你才可以使用 as 操作符可以把对象转换为特定的类型, 否则将会抛出异常
-is | 如果对象是指定类型则返回 true | 当且仅当 obj 实现了 T 的接口，obj is T 才是 true。<br>例如 obj is Object 总为 true，因为所有类都是 Object 的子类。
-is! | 如果对象是指定类型则返回 false
 
 
 ### 函数
@@ -669,6 +672,12 @@ Category | Name | Desc | Usage | More
 
 一般来说容器都会对子组件约束，但 ListView、Row、Column 等父组件不会约束子组件
 
+对比 | Column / Row | Listview
+--- | --- | ---
+父组件限制 | 1. 子组件需要设置 height、width<br>2. 可以使用 Spacer、Expanded 组件 | 子组件填满父组件：<br>1. 子组件设置 height、width 无效
+
+
+
 ## 页面导航
 Navigator.of(context).push(CustomRoute(SecondPage()));
 
@@ -684,3 +693,8 @@ widget 递归构建的底层是 RenderObjectwidget，它将在渲染树的底部
 
 extension：
 https://zhuanlan.zhihu.com/p/100336757
+
+row、column、
+https://blog.csdn.net/qq_42031243/article/details/107504491
+
+https://www.yiibai.com/flutter/flutter-appbar.html#article-start

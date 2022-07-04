@@ -13,19 +13,19 @@ permalink:
 
 # Swift
 
-## 基础概览
+## 一、基础概览
 
-### 变量
+### 1. 变量
 Category | Keyword | Desc | Note | More
 :-- | --- | :-- | --- | ---
 命名 | | 1. 包含几乎所有字符，包括 Unicode 字符<br>2. 不能以数字开头<br>3. 不能包含：数学符号、箭头、连线与制表符<br>4. 不能包含：保留或非法 Unicode 码位 | 所以可以看到```#xxx```以及```@xxx``这样的关键字，如 ```#selector```
-声明 | ```let```<br>```var```
-声明 | ```lazy var``` | 延时加载存储属性：第一次被调用时才会计算其初始值 | 只能对 var 关键字使用 | 延时加载存储属性的初始值可能在实例构造完成后才得到, 而常量属性在构造过程完成之前必须要有初始值
-声明 | ```optional``` | ```var x: Int?```<br>```var x: optional Int``` | 可选类型, 表示两种可能：或有值，或为空
+声明 | ```let```<br>```var``` | ```let name = 0```<br>```let name: Int = 0```<br>```var name = 0```<br>```var name: Int = 0```<br>```var name: Int? = nil``` | 类型可以自动推导
 声明 | | ```var num: Int!```<br>```num = 1``` | 隐式解析可选类型 | 相当于告诉编译器：使用 optional 值之前，一定会被初始化并且有值，所以在使用时，编译器帮忙做拆包
-类型 | class | 引用类型
+声明 | ```lazy var``` | 延时加载存储属性：第一次被调用时才会计算其初始值 | 只能对 var 关键字使用 | 延时加载存储属性的初始值可能在实例构造完成后才得到, 而常量属性在构造过程完成之前必须要有初始值
+声明 | ```optional``` | ```var x: Int?```<br>```var x: optional Int``` | 可选类型, 表示可能有值，也可能为空
+类型 | class | 引用类型 | 
 类型 | struct | 值类型 | 
-类型 | enum | 值类型 | ```enum Name {```<br>&ensp;&ensp;```case xxx```<br>```}``` | 具有原始值和关联值
+类型 | enum | 值类型 | ```enum Name : RawType {```<br>&ensp;&ensp;```case xxx```<br>```}``` | 具有原始值和关联值
 基本类型 | integer | 值类型 | 
 基本类型 | floating | 值类型 | 
 基本类型 | boolean | 值类型 | 
@@ -34,30 +34,52 @@ Category | Keyword | Desc | Note | More
 基本类型 | dictionary | 值类型 | ```let dict: [Int:Int] = [:]```<br>```let dict = [Int:Int]()```<br>```let dict = Dictionary<Int,Any>()```
 类型 | set | | ```let set: Set<Int> = [1,2,3]```<br>```let set: Set = [1,2,3]```<br>```let set = Set(arrayLiteral: 1,2,4)```
 比较 | ```===```<br>```!==``` | 恒等运算符 | 适用于引用类型，判定两个常量或者变量是否引用同一个实例
-别名 | typealias | ```typealias alias = UInt16``` | 可以在任何使用原始名的地方使用类型别名
-. | ```switch case fallthrough``` | case 中默认终止后续 case。<br>如果想让 case 之后的语句按顺序继续运行，则需要使用 fallthrough
+别名 | ```typealias``` | ```typealias alias = UInt16``` | 可以在任何使用原始名的地方使用类型别名
+类型占位符 | ```associatedtype``` | ```associatedtype Item``` | 常于协议中使用类型占位符
+. | ```switch```<br>```case```<br>```fallthrough``` | case 中默认终止后续 case | 如果想让 case 之后的语句按顺序继续运行，则需要使用 ```fallthrough```
 
-值类型：
+#### 1.1 值类型：
 - 值类型是这样一种类型，当它被赋值给一个变量、常量或者被传递给一个函数的时候，其值会被拷贝。
 - Swift 中所有的基本类型都是值类型，其底层也是使用结构体实现的。
   + 标准库定义的集合，例如数组，字典和字符串，都对复制进行了优化以降低性能成本。新集合不会立即复制，而是跟原集合共享同一份内存，共享同样的元素。在集合的某个副本要被修改前，才会复制它的元素。
 
-### 类
+#### 1.2 类型占位符
+```
+protocol CJLStackProtocol {
+    //协议中使用类型的占位符
+    associatedtype Item
+}
+struct CJLStack: CJLStackProtocol{
+    //在使用时，需要指定具体的类型
+    typealias Item = Int
+    private var items = [Item]()
+}
+```
+
+### 2. 类
 Name | Desc | Note | More
 :-- | :-- | --- | ---
-类对象 | ```class x {}``` | 构造函数 ```init()``` | 
+类对象 | ```class x {}``` | 类定义的所有存储属性**必须**在调用父类初始化器之前完成初始化 | 构造函数 ```init()```
 协议 | ```protocol x {}``` |  只能包含计算型变量或方法
 继承 | ```class x : BaseClass, BaseProtocol {}``` |
 扩展 | ```extension x {}```<br>```extension x : BaseClass, BaseProtocol {}``` | 只能包含计算型变量或方法
+泛型 | ``` ``` | 
 
-构造类别 | Desc | Note | More
+构造函数类别 | Desc | Note | More
 :-- | :-- | --- | ---
-normal | ```init()```
-required | ```required init()```
-required | ```required init?()```
-convenience | ```convenience init()```
+normal | ```deinit()``` | 反初始化
+normal | ```init()``` | 初始化 | 没有显示声明初始化器时，会生成默认初始化器 ```init() {}```
+optional | ```init?()``` | 可失败初始化器，常见的有：<br>1. 使用 storyboard 构建界面时调用的：```init?(coder aDecoder: NSCoder)```
+required | ```required init()``` | 必要初始化器, 强制子类重写此构造函数
+convenience | ```convenience init()``` | 1. 不能被子类重写或是从子类中以 super 方式被调用<br>2. 内部必须最终调用到指定初始化器 ```self.init()```
 
-### 常见操作
+![swift_init_superclass](./rsc/swift_init_superclass.png)
+
+### 3. 函数
+
+
+
+### 4. 常见操作
 Name | Desc | Note | More
 :-- | :-- | --- | ---
 三元运算符 | ```a ? b : c``` | Ternary Conditional Operator 
@@ -136,6 +158,9 @@ graph LR
     B(UITableView)
     C(UICollectionView)
     D(UIWebView) --> DB(WKWebView)
+    A -.- DescAA[[配合 UIScrollView 可实现水平滑动 ]]
+    B -.- DescBA[[自带滑动删除等动作]]
+    B -.- DescBB[[貌似不支持水平布局]]
   end
 ```
 
@@ -144,15 +169,10 @@ graph LR
 
 - 关键字
   + #selector : https://blog.csdn.net/wangyanchang21/article/details/78928925
+
+### UIKit
+https://www.cnblogs.com/huliangwen/p/5444280.html
+
 ### Tests
 
 
-protocol CJLStackProtocol {
-    //协议中使用类型的占位符
-    associatedtype Item
-}
-struct CJLStack: CJLStackProtocol{
-    //在使用时，需要指定具体的类型
-    typealias Item = Int
-    private var items = [Item]()
-}
