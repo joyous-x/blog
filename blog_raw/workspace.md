@@ -44,8 +44,3 @@ downloader | YouTube等视频下载 | https://youtube.iiilab.com/ |
 ## Blog
 - https://github.com/jekyll/jekyll
 - https://www.netlify.com/
-
-
-jiao_macdev@yeah.net
-1818716905
-Dev_1990
