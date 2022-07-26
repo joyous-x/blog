@@ -17,8 +17,6 @@ https://dartpad.cn/?
 基础知识概览
 Category | Name | Desc | Note | More
 :-- | :-- | --- | --- | --- 
-命名 | 
-声明 | 
 变量 | ```Object``` | ```Everything you can place in a variable is an object, and every object is an instance of a class.``` | 1. Even numbers, functions, and null are objects.<br>2. With the exception of null (if you enable sound null safety), all objects inherit from the Object class.
 类型 | ```null``` | 未初始化以及可空类型的变量拥有一个默认的初始值 null |
 类型 | ```null safety``` |  Null safety was introduced in Dart 2.12. | [深入理解空安全](https://dart.cn/null-safety/understanding-null-safety)
