@@ -142,3 +142,15 @@ Apple Pay and Google Pay 本质上是电子钱包(digital wallet)
 dependencies {
   implementation 'org.conscrypt:conscrypt-android:2.5.2'
 }
+
+
+## Resources
+Group | Name | Usage | Desc
+--- | --- | --- | ---
+. | [flaticon](https://www.flaticon.com/) | |
+Google | [material.io](https://material.io/resources) | | 
+Google | [icons - google](https://fonts.google.com/icons) | | 
+
+Name | Usage | Desc
+--- | --- | ---
+Retrofit | | 基于 OKHttp 的 HTTP 库
