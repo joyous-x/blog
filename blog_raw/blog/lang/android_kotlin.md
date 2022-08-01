@@ -15,7 +15,7 @@ permalink:
 基础知识概览
 Category | Name | Desc | Note | More
 :-- | :-- | --- | --- | --- 
-变量 | | ```In Kotlin, everything is an object.``` |
+变量 | | ```In Kotlin, everything is an object.``` | | **类型后置**
 变量 | | ```val```<br>```var``` | Read-Only <br> Read-And-Write | 
 类型推断 | ```Type Inference``` | | 类型一经确定就不能再改变 
 字串模版 | ```String Template``` | ```"$var ${expression}"```
@@ -45,10 +45,8 @@ Category | Name | Desc | Note | More
 类 | ```Companion Object``` | ```companion object { ... }``` | 存在于类中，等效于 Java 中的 static 关键字 | 在 Kotlin 中没有 static 关键字
 类 | ```Object``` | ```object { ... }``` | 具有 ```Singleton``` 效果的对象
 
-
-
 ### 简写
-當 lambda literal 是函數調用的最後一個參數時，可以放到括號的外面。如果 lambda 是函數的唯一一個參數，甚至可以拿掉括號
+1. 当```lambda literal```是函数调用的最后一个参数时，可以放到括号的外边。如果 lambda 是函数的唯一参数时，甚至可以去掉括号。
 
 ### Scope Function
 Function | identifier | return value
@@ -104,6 +102,160 @@ CoroutineScope(Dispatchers.Main + job + exceptionHandler).launch {
   - 与 Dispatchers.Default 共享线程，但是线程数受 kotlinx.coroutines.io.parallelism 限制，默认为 64 个线程或内核数(的较大者)
 + Dispatchers.Unconfined
   - 不局限於任何特定線程的協程調度程序，默認在當前線程中執行
+
+## ViewModel & DataBinding
+### ViewModel
+说起 ViewModel 必定会提及 LiveData，而要理解 LiveData 就需要知道 Observer Pattern
+
+LiveData 是一个可以被  Observe 的实体，当其发生变化时，所有订阅者都可以收到相关的通知，进而触发 View 或 Model 的更新逻辑
+
+ViewModel 一般是处理业务逻辑的地方，因此通常把 LiveData 放在里边，当 ViewModel 将数据从 Model 层取回时，回放进 LiveData 中，而此时观察者(View)会收到通知，就可以及时更新 UI 了。
+
+LiveData 是 androidx 中的一员，所以需要添加以下依赖到 dependencies 中才能使用：
+```
+    dependencies {
+        ...
+        
+        // LiveData
+        implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+        implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+        implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+        implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0"
+        
+        ...
+    }
+```
+
+### DataBinding
+DataBinding 的功能就是在做 ViewModel 和 View 之间的数据绑定
+
+DataBinding 和 LiveData 整体上看都是为了 ViewModel 和 View 之间的数据绑定，它们之间有什么不同之处呢？
+
+其实最大的区别就在于：
+- LiveData 时在 Activity 或 Fragment 中以函数的形态进行主动绑定：当 View 收到更新通知时，会在函数中进行 Layout 等 UI 组件的更新行为
+- DataBinding 则是直接与 Layout 上的组件做绑定：就是说将 Layout 上的 TextView 和 User 信息做绑定，那么当 ViewModel 收到 User 更新信息时，可以不用透过 Activity 或 Fragment，直接让 TextView 组件显示的内容发生改变
+    + 附带的好处就是可以不用再使用 findViewById() 去查找组件了
+
+## Persistence
+在 Android 中如果需要持久化存储，有三种方法：
+1. SharedPeference
+2. File ：適合儲存複雜的格式，例如圖片、文章等等
+3. SQLite ：相信各位對 SQL 應該多少都有一點了解，那 SQLite 是一種在手機裏面很常見的 SQL ，主打輕量，和一般 SQL 用法大同小異，適合儲存比較複雜的結構化資料，例如部門成員或是圖片的路徑等等
+
+### SharedPeference
+SharedPeference, 适合简单的 key-value 型存储，通常存放于 ```/data/data/[app packageName]/shared_prefs/``` 下
+
+### File
+说到 File，就不得不说一下 Android 的 Storage，在 Android 中 Storage 也有三种，分别是：
+1. Internal Storage
+2. Primary External Storage
+3. Secondary External Storage
+
+Internal Storage 是只要目前 App 能夠存取的區域，其他 App 或是使用者都不能直接接觸到的空間，路徑通常會是 data/data/[app packageName]
+
+裏面會包含像是 App 的 Config 、SharedPreference 、SQLite 等等。因為這個空間每個 App 都會有一個，因此站在 Android OS 的角度，就不會劃分太多的空間給某個 App ，只會是比較重要的檔案才會存在這個空間裏面，其他比較大型的檔案就會希望存在 External Storage
+
+另外因為這個空間只專屬給對應的 App 持有，因此當使用者把 App 刪掉時，這個空間裏面的資料自然就會跟著被回收掉
+
+
+Primary External Storage 是 OS 從裝置的 Storage 劃分出來的一個區塊，專門儲存從 App 中產出的圖片、影片、音檔等等，在這個空間的檔案也是可以提供給其他程式做使用
+
+例如拍照軟體會把照片存到相簿，而修圖軟體可以到相簿中取得照片修圖，修完的圖可以在存回相簿中，讓其他程式去取用
+
+另外需要注意的一點是在 App 要使用 External Storage 的檔案時，需要先取得 External Storage Permission 才能夠存取喔
+
+
+Secondary External Storage
+因為手機以前的儲存空間都不大，因此人手一張 16G 的 SD 卡，才能在上學的時候偷偷聽音樂或看影片，那外接儲存空間都算是 Secondary External Storage， 目前很多手機容量越來越大再加上雲端空間就非常夠用，因此手機中也漸漸拿掉 SD card 插槽了（ 時代的眼淚...
+
+
+
+
+那麼 SQLite 主要的優點就如同以下列出來的
+
+Android 內建支援，不需要安裝
+每個 App 都有自己的 SQLite ，不能互相存取，具有隔離性
+用法上和其他 Relational SQL Service 大同小異
+儲存結構化數據
+但 SQLite 因為追求小而巧，因此有省略掉一些部份，造成令人詬病的問題，例如
+
+使用錯誤的 Column name 編寫了一個 SQL 查詢，但在編譯時無法發現，必須等到 Runtime 才會報錯
+如果 SQLite 的架構做了修改，那就要手動更新受影響的 SQL 資料
+需要使用大量樣板代碼（ Boilerplate Code ）在 SQL 和 POJO 之間進行轉換
+
+因為以上的問題，因此 Google 在 I/O 2018 的時候發表 Andorid Jetpack 時，在 Jetpack 中推出了 Google 官方支援的 SQL ORM - Room ，Room 改正了幾項問題
+
+編譯時會驗證 SQL 是否正確
+Room 將 SQLite 映射到 POJO ，而沒有使用樣板代碼
+Room 支援 SQL Migration
+可以與 LiveData 、RxJava 等等強大的工具一起使用
+
+
+https://developer.android.com/reference/androidx/core/content/FileProvider
+
+### Jetpack
+
+Android Jetpack was inspired by the Support Library, a set of components to make it easy to take advantage of new Android features while maintaining backwards compatibility
+Android Jetpack 是一種 Support Library ，其中包含多種工具（LiveData 、ViewModel、Room ... 等等都是）
+
+
+那他出現的目的是要讓開發者在開發 App 時更簡單，並且能開發出好容易達到 向後兼容（ Maintaining backwards compatibility ）的 App
+
+向後兼容為何那麼重要？ 因為 Android API 實在是太多了，每個版本出來的時候又或多或少會調整，而 Android 使用者的 API 使用範圍又很大（根據 Google 目前的統計，開發者要支援 Android API 21 到 API 30，才能夠支援九成以上的使用者）
+因此開發者有時候必須指定某段 Code 只支援 API 26 以上，而另外一段 Code 是要支援 API 23 以下等等，其實非常麻煩的，畢竟我們都希望同一段 Code 就能支援全部的 API
+
+而 Jetpack 就可以幫助到我們完成這樣的事情，記得在一次 Android 分享會的時候，Google 來的分享者直接帥氣的說只要你依照 Jetpack 的 Best Practice 下去開發 Android 權限，那就不用再擔心版本問題了！
+
+
+
+而因為 Jetpack 裡面有太多太多的工具和 Library ，因此這邊就直接上連結，對某個功能有興趣的朋友可以直接到這邊取用
+
+https://developer.android.com/jetpack
+
+
+
+
+專門處理 SQLite ORM 的小孩 - Room
+再 Highlight 一次 Room 能帶來的優點
+
+編譯時會驗證 SQL 是否正確
+Room 將 SQLite 映射到 POJO ，而沒有使用樣板代碼
+Room 支援 SQL Migration
+可以與 LiveData 、RxJava 等等 Jetpack 的工具一起使用
+
+Room 的架構如圖所示，可以發現主要分3個部份，從小單位到大單位分別是
+
+Entities
+Data Access Objects （ DAOs ）
+Room Database
+
+Entites 是用類別的方式來定義 Database 裏面的 Table 和 Column ，其中會用
+
+@Entity 裝飾詞定義 Table
+@ColumnInfo 裝飾詞定義 Column
+@Ignore 裝飾詞定義 不用存到 Database 的屬性
+
+定義出 Entity 之後就是需要定義 SQL 存取方法來取得 Table 內的資料，而這部份就是交給 DAO 來做處理，其中常見方法的就是 CRUD（ Insert 、Select 、Update 、Delete）
+
+而這些方法也都有各自的裝飾詞來區分行為
+
+@Query(SQL語法) 就是做 Select
+@Insert(Entity) 對應到新增物件到 Database
+@Update(Entity) 對應到更新 Database 中物件的內容
+@Insert(Entity) 對應到刪除 Database 中的物件
+
+
+
+Stetho 是 Facebook 開發的一款調適工具，他最大的特色是可以透過 Chrome DevTools 觀看即時的 App 數據
+
+關於該如何使用可以看一篇我以前曾經寫過的介紹
+
+Stetho - Android 調試與開發必備工具: https://github.com/facebook/stetho
+https://zhuanlan.zhihu.com/p/31057280
+
+
+
+
 
 
 
