@@ -17,6 +17,7 @@ Category | Name | Desc | Note | More
 :-- | :-- | --- | --- | --- 
 变量 | | ```In Kotlin, everything is an object.``` | | **类型后置**
 变量 | | ```val```<br>```var``` | Read-Only <br> Read-And-Write | 
+包 | | ```package```<br>```import``` | 
 类型推断 | ```Type Inference``` | | 类型一经确定就不能再改变 
 字串模版 | ```String Template``` | ```"$var ${expression}"```
 三元运算 | 不支持 | 
@@ -65,11 +66,20 @@ apply | this | this
 4. 可以用```Type aliases```的方式来表达：``` typealias FunName = (Int, Any) -> Unit```
 
 ### Class
-枚舉類別（ Enum Classes ）
-資料類別（ Data Classes ）
-密封類別（ Sealed Classes ）
-巢狀類別（ Nested Classes ）
-內部類別（ Inner Classes ）
+1. Enum Classes
+2. Data Classes
+3. Sealed Classes
+4. Nested Classes
+5. Inner Classes
+
+#### Data classes
+Data classes 是 Kotlin 中存储数据的专用类别，当 Compiler 遇到 Data classes 时会自动生成以下方法：```toString()、equals()、hashCode()、copy()、componentN()```
+
+Data classes 不能被继承，不能是 abstract, open, sealed or inner
+
+普通 Class 和 Data Class 的重要区别，体现在 toString() 的表现上：
+- 普通 Class 输出的是 hashCode
+- Data class 输出的是 Key-value 格式
 
 #### Nested && Inner Classes 
 Nested Classes 和 Inner Classes 都是在 Class 中定义的另一个 Class。但 Nested Class 不能持有外部类的对象；Inner Classes 可以持有外部类的的成员。
@@ -151,98 +161,77 @@ SharedPeference, 适合简单的 key-value 型存储，通常存放于 ```/data/
 2. Primary External Storage
 3. Secondary External Storage
 
-Internal Storage 是只要目前 App 能夠存取的區域，其他 App 或是使用者都不能直接接觸到的空間，路徑通常會是 data/data/[app packageName]
+Internal Storage 是指只有当前 App 可以存取的区域，其它 App 都不能直接接触的空间。路径通常是：```data/data/[app packageName]```。
 
-裏面會包含像是 App 的 Config 、SharedPreference 、SQLite 等等。因為這個空間每個 App 都會有一個，因此站在 Android OS 的角度，就不會劃分太多的空間給某個 App ，只會是比較重要的檔案才會存在這個空間裏面，其他比較大型的檔案就會希望存在 External Storage
+里面包含像 App 的 Config 、SharedPreference 、SQLite 等等数据。因为这个空间对于每个 App 来说都是有且仅有一个，因此站在 Android OS 的角度，是不希望划分太多空间给某个 App 的。因此，一般只有比较重要的数据才会存放于这个空间。
 
-另外因為這個空間只專屬給對應的 App 持有，因此當使用者把 App 刪掉時，這個空間裏面的資料自然就會跟著被回收掉
+此外，因为这个空间是 App 专属空间，因此当 App 被删除时，这个空间包括其中的数据都会被系统释放掉。
 
+Primary External Storage 是 OS 从设备的 Storage 划分出来的一块区域，专门存放由 App 生成的 图片、音视频等等，这个空间的数据是可以被其它 App 访问的。
 
-Primary External Storage 是 OS 從裝置的 Storage 劃分出來的一個區塊，專門儲存從 App 中產出的圖片、影片、音檔等等，在這個空間的檔案也是可以提供給其他程式做使用
+例如，拍照软件会把相片存到相簿中，而修图软件则可以从相簿中获取照片进行编辑，修改完成后的照片还可以继续存回相册，以供他人使用。
 
-例如拍照軟體會把照片存到相簿，而修圖軟體可以到相簿中取得照片修圖，修完的圖可以在存回相簿中，讓其他程式去取用
-
-另外需要注意的一點是在 App 要使用 External Storage 的檔案時，需要先取得 External Storage Permission 才能夠存取喔
-
-
-Secondary External Storage
-因為手機以前的儲存空間都不大，因此人手一張 16G 的 SD 卡，才能在上學的時候偷偷聽音樂或看影片，那外接儲存空間都算是 Secondary External Storage， 目前很多手機容量越來越大再加上雲端空間就非常夠用，因此手機中也漸漸拿掉 SD card 插槽了（ 時代的眼淚...
+需要注意的是，如果 App 需要访问 External Storage 中的数据时，需要首先获取到 External Storage Permission 才能进行访问。
 
 
+Secondary External Storage 就稍微有点年代感了，以前的手机存储空间不大，因此需要 SD 卡加持，才能存放音视频等体积较大的数据，这些外接的存储空间都算是 Secondary External Storage
+
+目前的手机容量越来越大，因此逐渐的拿掉 SD card 插槽了。
+
+> [FileProvider](https://developer.android.com/reference/androidx/core/content/FileProvider)
+
+### SQLite
+Android 中使用 SQLite 的主要优点由：
+- 方便：Android 内部支持，不需要额外安裝
+- 隔离：每个 App 都有自己的 SQLite，不能互相存取
+- 结构化存储
+
+不过由于 SQLite 为了追求小巧，因此有对功能进行部分删减，这也是令人诟病之处，例如
+- 使用错误的 Column name 编写的查询语句，在编译期无法发现，必须到 Runtime 才报错
+- 如果 SQLite 的架构进行调整，那么需要手动更新受影响的数据
+- 需要使用大量的 Boilerplate Code 以在 SQL 和 POJO 之间进行转换
+
+因为以上问题，Google 在 I/O 2018 中发布的 Andorid Jetpack 中，推出了 Google 官方支援的 SQL ORM - Room。
+
+#### Room
+SQL ORM 可以做到：
+- 编译期就会检查 SQL 语句
+- Room 会将 SQLite 映射到 POJO，不需要额外工作
+- Room 支持 SQL Migration
+- 可以与 LiveData 、RxJava 等等 Jetpack 工具一起使用
+
+Room 主要包含三个部分，从小到大分别是：
+- Entities
+- Data Access Objects（ DAOs ）
+- Room Database
+
+Entites 是用类别的方式来定义 Database 中的 Table 和 Column，其中会用到：
+- @Entity 定义 Table
+- @ColumnInfo 定义 Column
+- @Ignore 定义 不用存到 Database 的属性
+
+在确定 Entity 后，就需要确定 SQL 语句以操作 Table 内的数据，而这部分就是由 DAO 来处理，其中常见的方法就是 CRUD（Insert 、Select 、Update 、Delete），而这些方法也都有各自的修饰词来区分：
+- @Query(SQL语句)
+- @Insert(Entity)
+- @Update(Entity)
+- @Delete(Entity)
+
+## Jetpack
+*Android Jetpack was inspired by the Support Library, a set of components to make it easy to take advantage of new Android features while maintaining backwards compatibility*
+
+概括来说，Android Jetpack 是一个 Support Library，其中包含大量工具和 Library（如，LiveData 、ViewModel、Room ... 等等）
+
+Android Jetpack 的主要目的是要让开发者更容易开发 App，並且能很轻松的做到**向后兼容(Maintaining backwards compatibility)**
+
+向后兼容为什么很重要？因为 Android API 实在是太多了，每个版本出来的时候又会有或多或少的调整，而 Android 使用者的 API 使用范围又很广：开发者有时必须指定某段 Code 只支持 API 26 以上，而另外一段 Code 是要支持 API 23 以下等等，非常麻烦，毕竟我们更希望能够尽可能少的考虑 API 版本的兼容性问题。
+
+而 Jetpack 就可以帮助开发者解决这个问题。甚至有人说只要依照 Jetpack 的 Best Practice 去开发 Android 应用，就不用再担心版本问题了！
+
+> [Jetpack](https://developer.android.com/jetpack)
 
 
-那麼 SQLite 主要的優點就如同以下列出來的
-
-Android 內建支援，不需要安裝
-每個 App 都有自己的 SQLite ，不能互相存取，具有隔離性
-用法上和其他 Relational SQL Service 大同小異
-儲存結構化數據
-但 SQLite 因為追求小而巧，因此有省略掉一些部份，造成令人詬病的問題，例如
-
-使用錯誤的 Column name 編寫了一個 SQL 查詢，但在編譯時無法發現，必須等到 Runtime 才會報錯
-如果 SQLite 的架構做了修改，那就要手動更新受影響的 SQL 資料
-需要使用大量樣板代碼（ Boilerplate Code ）在 SQL 和 POJO 之間進行轉換
-
-因為以上的問題，因此 Google 在 I/O 2018 的時候發表 Andorid Jetpack 時，在 Jetpack 中推出了 Google 官方支援的 SQL ORM - Room ，Room 改正了幾項問題
-
-編譯時會驗證 SQL 是否正確
-Room 將 SQLite 映射到 POJO ，而沒有使用樣板代碼
-Room 支援 SQL Migration
-可以與 LiveData 、RxJava 等等強大的工具一起使用
 
 
-https://developer.android.com/reference/androidx/core/content/FileProvider
-
-### Jetpack
-
-Android Jetpack was inspired by the Support Library, a set of components to make it easy to take advantage of new Android features while maintaining backwards compatibility
-Android Jetpack 是一種 Support Library ，其中包含多種工具（LiveData 、ViewModel、Room ... 等等都是）
-
-
-那他出現的目的是要讓開發者在開發 App 時更簡單，並且能開發出好容易達到 向後兼容（ Maintaining backwards compatibility ）的 App
-
-向後兼容為何那麼重要？ 因為 Android API 實在是太多了，每個版本出來的時候又或多或少會調整，而 Android 使用者的 API 使用範圍又很大（根據 Google 目前的統計，開發者要支援 Android API 21 到 API 30，才能夠支援九成以上的使用者）
-因此開發者有時候必須指定某段 Code 只支援 API 26 以上，而另外一段 Code 是要支援 API 23 以下等等，其實非常麻煩的，畢竟我們都希望同一段 Code 就能支援全部的 API
-
-而 Jetpack 就可以幫助到我們完成這樣的事情，記得在一次 Android 分享會的時候，Google 來的分享者直接帥氣的說只要你依照 Jetpack 的 Best Practice 下去開發 Android 權限，那就不用再擔心版本問題了！
-
-
-
-而因為 Jetpack 裡面有太多太多的工具和 Library ，因此這邊就直接上連結，對某個功能有興趣的朋友可以直接到這邊取用
-
-https://developer.android.com/jetpack
-
-
-
-
-專門處理 SQLite ORM 的小孩 - Room
-再 Highlight 一次 Room 能帶來的優點
-
-編譯時會驗證 SQL 是否正確
-Room 將 SQLite 映射到 POJO ，而沒有使用樣板代碼
-Room 支援 SQL Migration
-可以與 LiveData 、RxJava 等等 Jetpack 的工具一起使用
-
-Room 的架構如圖所示，可以發現主要分3個部份，從小單位到大單位分別是
-
-Entities
-Data Access Objects （ DAOs ）
-Room Database
-
-Entites 是用類別的方式來定義 Database 裏面的 Table 和 Column ，其中會用
-
-@Entity 裝飾詞定義 Table
-@ColumnInfo 裝飾詞定義 Column
-@Ignore 裝飾詞定義 不用存到 Database 的屬性
-
-定義出 Entity 之後就是需要定義 SQL 存取方法來取得 Table 內的資料，而這部份就是交給 DAO 來做處理，其中常見方法的就是 CRUD（ Insert 、Select 、Update 、Delete）
-
-而這些方法也都有各自的裝飾詞來區分行為
-
-@Query(SQL語法) 就是做 Select
-@Insert(Entity) 對應到新增物件到 Database
-@Update(Entity) 對應到更新 Database 中物件的內容
-@Insert(Entity) 對應到刪除 Database 中的物件
 
 
 
@@ -260,38 +249,13 @@ https://zhuanlan.zhihu.com/p/31057280
 
 
 
-Data classes 是 Kotlin 中裝載物件資料的類別， 當 Compiler 看到 Data classes 會自動生成
-toString()
-equals()
-hashCode()
-copy()
-componentN() 函式，對應到每個屬性的定義順序
-
-不能繼承，只能實作 Interface
-Data class 不能是 abstract, open, sealed or inner
-
-那用 Class 和 Data Class 寫出來的類別有什麼差別？ 我們可以先用兩種方法實作一樣目的 Class ，那用 toString() 將兩個被實作出來的物件印出來，可以發現
-
-一般的 Class 印出來的是物件的 hashCode
-Data class 印出來的事 Key-value 格式，比較好閱讀
-
-
-
 flow 是 kotlinx-coroutines 支援的異步方法
 implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9'
 
 
-package
-import
-
 suspend
-open
-fun
 interface
 
-
-companion
-object
 
 
 LifecycleObserver
@@ -299,7 +263,3 @@ LifecycleObserver
 ActivityResultContract 和 ActivityResultLauncher
     ConponentActivity 和 Fragment基类实现了 ActivityResultCaller
     ActivityResultRegistry : 在非 Activity/Fragment 中，如果想接收Activity回传的数据，可以直接使用 ActivityResultRegistry 来实现
-
-
-Null safty
-Scope function(let、also、run、apply 等) 、 Extension function 和 Lambda
