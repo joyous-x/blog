@@ -137,11 +137,23 @@ Apple Pay and Google Pay 本质上是电子钱包(digital wallet)
 
 
 
-
-
 dependencies {
   implementation 'org.conscrypt:conscrypt-android:2.5.2'
 }
+
+## Window
+https://blog.csdn.net/weixin_43766753/article/details/108350589
+> 专栏：https://blog.csdn.net/weixin_43766753/category_10258907.html
+
+## Gradle
+https://ljd1996.github.io/2019/08/16/Gradle%E7%AC%94%E8%AE%B0/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E4%BB%B6
+
+## Uid、Pid、User Id
+https://www.jianshu.com/p/b33dd49f2ae6
+
+## Reflection
+https://blog.csdn.net/u011240877/article/details/54604212
+https://www.cnblogs.com/jimuzz/p/14297042.html
 
 
 ## Resources
