@@ -13,13 +13,6 @@ permalink:
 
 # Android
 ## 一、基础
-以"_"为界线, 前一部分是UserId, 后一部分是ApplicationId. 转为int值即为:
-u0_a110 == 0 * 10000 + (10110) == 10110 == uid;
-         (u0)*(十万)   a110
-
-1> u0即表示userId = 0;
-2> a110中的"a"永远翻译为10000(一万)
-2> "userId * 100000 + appId = uid"是代码中写死的规则, 全系统通用.
 
 ### Gradle、Android Gradle Plugin
 Android Studio 构建系统以 Gradle 为基础，并且 Android Gradle 插件添加了几项专用于构建 Android 应用的功能。
@@ -88,58 +81,6 @@ https://ithelp.ithome.com.tw/articles/10233509
 
 
 ## 三、Services
-### Google Sign-In
-#### Docs
-- [Google Sign-In for Android](https://developers.google.com/identity/sign-in/android/start)
-- [使用 OAuth 2.0 访问 Google API](https://developers.google.com/identity/protocols/oauth2)
-
-#### 登陆方式：
-1. requestIdToken
-   1. ```GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken```
-      + 获取到的 id token 会过期
-      + 如果没有处理登出，重新进入 app 时，登录会话保持，此时刷新(```silentSignIn```)获取 id token 即可
-   2. 使用 Google ID 来识识别用户，而不是电子邮件地址
-      + Google 帐户的电子邮件地址可以更改，因此请勿使用它来识别用户
-   3. 实际上，仅通过登录后获得的```GoogleSignInAccount```的即可获得用户的 Google ID(```getId```方法) 等基础信息
-   4. 为了使用 Google 的用户信息在自己的服务器端建立会话或创建新帐户，需要使用 ```ID Token``` 
-      + 仅使用 Google ID 即可标识用户的唯一性，用于创建自己 app 的账号，为什么还要 ID 令牌？
-        - 不安全，修改后的客户端应用程序可以将任意用户 ID 发送到您的服务器以模拟用户
-2. requestServerAuthCode
-   1. ```GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestServerAuthCode```
-      + 重新进入 app 后，触发登陆时，需要重新获取 authCode，不论登录会话是否保持；否则没办法完成账号转换流程
-   2. 如果您希望服务器能够代表用户（可能是在用户离线时）进行Google API调用，则您的服务器需要访问令牌
-      + 可以获取包括 ID 令牌在内的更多信息 
-3.  GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-    1. **不需要服务端参与**即可获取 ```Google user's ID```, ```email address```, 和其它的 ```basic  profile```
-    2. 可以使用 ```GoogleSignIn.hasPermissions``` 判断 ```GoogleSignInAccount``` 是否拥有某个 ```Scope``` 的权限
-
-
-### Google 支付
-https://developers.google.cn/pay/api/android/overview?hl=zh-cn
-
-https://blog.csdn.net/linxinfa/article/details/115916000
-
-https://developers.google.cn/android/reference/com/google/android/gms/common/GoogleApiAvailability?hl=zh-cn#isGooglePlayServicesAvailable(android.content.Context):
-  isGooglePlayServicesAvailable(Context context)
-
-
-### [Google Play 结算系统](https://developer.android.com/google/play/billing?hl=zh-cn)
-gp 外分发的应用是否可以使用 gp 结算系统？可以
-
-### [Google Pay](https://developers.google.cn/pay/api/android/overview?hl=zh-cn) 
-Apple Pay and Google Pay 本质上是电子钱包(digital wallet)
-
-- [stripe(作为gateway) 对接 google play](https://stripe.com/docs/google-pay)
-- https://juejin.cn/post/6922022472611004429
-- [What is a Payment Gateway?](https://www.ecommerceceo.com/learn/payment-gateway/)
-- [What is Google Pay](https://ecommerce-platforms.com/payments/what-is-google-pay)
-- [Google Pay vs. Google Wallet: What’s different?](https://blog.clover.com/google-pay-vs-google-wallet-whats-different/)
-
-
-
-dependencies {
-  implementation 'org.conscrypt:conscrypt-android:2.5.2'
-}
 
 ## Window
 https://blog.csdn.net/weixin_43766753/article/details/108350589
@@ -147,13 +88,6 @@ https://blog.csdn.net/weixin_43766753/article/details/108350589
 
 ## Gradle
 https://ljd1996.github.io/2019/08/16/Gradle%E7%AC%94%E8%AE%B0/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E4%BB%B6
-
-## Uid、Pid、User Id
-https://www.jianshu.com/p/b33dd49f2ae6
-
-## Reflection
-https://blog.csdn.net/u011240877/article/details/54604212
-https://www.cnblogs.com/jimuzz/p/14297042.html
 
 
 ## Resources

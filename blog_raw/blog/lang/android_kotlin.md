@@ -30,7 +30,7 @@ Category | Name | Desc | Note | More
 类型转换 | ```Check``` | ```is``` | 
 类型转换 |  ```Casts``` | ```as``` | 
 类型转换 |  ```Safe Casts``` | ```as?``` | 
-关键词 | ```Scope Function``` | ```let、run、apply、also``` | 目的是为了更好的可读性
+关键词 | ```Scope Function``` | ```let、also、apply、run``` | ```是 Standard.kt 中内置的高阶函数```
 扩展 | ```Extension Function``` |  | 使用要扩展的类型为前缀, 如：```fun Any?.toString(): String { ... }``` | 可以接收```Null```值
 扩展 | ```Extension Properties``` | | 如：```val <T> List<T>.lastIndex: Int```<br>```get() = size - 1``` | 与扩展函数基本类似
 函数 | | ```fun``` | 如：```fun name() { ... }```
@@ -38,18 +38,22 @@ Category | Name | Desc | Note | More
 函数 | | ```Function```是头等公民 | 1. 可以作为函数的参数<br>2. 可以作为函数的返回值<br>3. 可以作为变量<br>4. 支持匿名函数(lambda) | ```Higher-Order Function```
 函数 | ```Function type``` | ```() -> T``` |
 函数 | ```Inline Function``` | ```inline``` | | inline 可以避免每次使用```Higher-Order function```时都会产生 Object 和 Closure 的 Memory、Cpu 消耗
+伴生 | ```Companion Object``` | ```companion object { ... }``` | 存在于类中，等效于 Java 中的 static 关键字 | Kotlin 中没有 static 关键字
 类 | ```Constructor``` | ```Primary Constructor``` |  | 一个 Class 有且仅有一个
 类 | ```Constructor``` | ```Secondary Constructor``` |  | 一个 Class 可以有多个
-类 | ```Initializer Blocks``` |  |  | 一个 Class 可以有多个，跟静态变量一起，按代码顺序执行
-类 | ```Extends```<br>```Interface``` | ```extends```<br>```implements``` | 如：```class A extends B implements C, D { ... }```
+类 | ```Initializer Blocks``` | ```init·{ ... }``` |  | 一个 Class 可以有多个，跟静态变量一起，按代码顺序执行
 类 |  | ```open```<br>```final``` | 在 Kotlin 中会预设 class 和成员函数是 final，因此若要继承 class 的话，必需加上 open 才能被继承或重写
-类 | ```Companion Object``` | ```companion object { ... }``` | 存在于类中，等效于 Java 中的 static 关键字 | 在 Kotlin 中没有 static 关键字
 类 | ```Object``` | ```object { ... }``` | 具有 ```Singleton``` 效果的对象
+接口 | ```Interface``` | ```interface xxx { }``` | 1. 接口中的方法可以有默认实现<br>2. 接口中的属性只能是抽象的，不允许初始化值 | Kotlin 中没有```extends、implements```关键字，而是通过 ```class A : Base { }``` 来完成 Java 中如：```class A extends B implements C, D { ... }``` 等相应功能
+抽象 | ```Abstract``` | ```abstract class xxx{}```<br>```abstract fun xxx() {}``` |
 
-### 简写
+Kotlin中所有类的基类都是Any
+
+
+## 一、简写
 1. 当```lambda literal```是函数调用的最后一个参数时，可以放到括号的外边。如果 lambda 是函数的唯一参数时，甚至可以去掉括号。
 
-### Scope Function
+## 二、Scope Function
 Function | identifier | return value
 --- | --- | ---
 let | it | last line of literal
@@ -84,6 +88,24 @@ Data classes 不能被继承，不能是 abstract, open, sealed or inner
 #### Nested && Inner Classes 
 Nested Classes 和 Inner Classes 都是在 Class 中定义的另一个 Class。但 Nested Class 不能持有外部类的对象；Inner Classes 可以持有外部类的的成员。
 
+## 三、CoRoutine
+涉及的概念有：
+- CoRoutine
+  + CoRoutineContext
+  + CoroutineScope
+    + Job
+  + Dispatcher
+    - Dispatchers.Main
+    - Dispatchers.Default
+    - Dispatchers.IO
+    - Dispatchers.Unconfined
+- Suspend ：keyword
+- async : method
+  + Deferred : object
+    - await : method
+- (CoroutineScope).launch
+- (CoroutineScope).runBlocking
+
 ### Coroutine
 共有三部分组成：```CoroutineScope```、```CoroutineContext```、```Coroutine Body```，形如：
 ```
@@ -93,6 +115,13 @@ CoroutineScope(Dispatchers.Main + job + exceptionHandler).launch {
 ```
 
 其中，Coroutine Body，是指在 CoroutineScope 中执行的代码。
+
+ ？https://medium.com/jastzeonic/kotlin-coroutine-%E9%82%A3%E4%B8%80%E5%85%A9%E4%BB%B6%E4%BA%8B%E6%83%85-685e02761ae0
+
+ ？结构化的并发、
+
+ ？https://github.com/Kotlin/KEEP/blob/master/proposals/coroutines.md#implementation-details
+
 
 #### CoroutineScope
 用于指定  Thread 、Parent job 或 Exception handler
