@@ -275,15 +275,39 @@ class MyIntentHandler {
   + override func handler(for intent: INIntent) -> Any?
 }
 
+class MyLargeHandler {
+  + 筛选可供选择的小组件
+}
+
+class MyCircularHandler {
+  + 筛选可供选择的小组件
+}
+
 class MyLargeConfigurationIntentHandling {
+  + 由系统(根据 MyWidget.intentdefinition 文件)自动生成
   + provideTransparentOptionsCollection
   + provideTypeOptionsCollection
 }
 
 class MyCircularConfigurationIntentHandling {
+  + 由系统(根据 MyWidget.intentdefinition 文件)自动生成
   + provideTypeOptionsCollection
 }
+
+INExtension <|.. MyIntentHandler
+MyIntentHandler *-- MyLargeHandler
+MyIntentHandler *-- MyCircularHandler
+
+MyLargeHandler ..|> MyLargeConfigurationIntentHandling
+MyCircularHandler ..|> MyCircularConfigurationIntentHandling
 ```
+
+注意：
+1. 小组件申请位置权限
+   + 在主工程(the containing app)项目中申请位置权限
+     - 必需在主工程 的 Info.plist 文件中添加相关用途字符串
+   + 将```NSWidgetWantsLocation```键添加到 widget extension 的 Info.plist 文件中
+     - 类型为：Boolean
 
 
 
