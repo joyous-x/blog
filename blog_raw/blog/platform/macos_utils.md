@@ -160,6 +160,131 @@ https://www.codercto.com/a/81235.html
 
 ## ipa 
 
+## Widget
+### extensions
+```mermaid 
+classDiagram
+
+class View {
+  <<protocol, system>>
+  + var body: some View 
+}
+
+class INIntent {
+  <<protocol, system>>
+}
+
+class WidgetBundle {
+  <<protocol, system>>
+}
+
+class WidgetConfiguration {
+  <<protocol, system>>
+}
+
+class Widget {
+  <<protocol, system>>
+  + var body: some WidgetConfiguration
+}
+
+class IntentTimelineProvider {
+  <<protocol, system>>
+  - 真正实现的代理(Provider)
+  + placeholder()
+  + getSnapshot()
+  + getTimeline()
+}
+
+class TimelineEntry {
+  <<protocol, system>>
+}
+
+class Timeline {
+  <<struct, system>>
+}
+
+class IntentConfiguration {
+  <<struct, system>>
+  + supportedFamilies([.accessoryCircular, .systemLarge, .systemSmall ...])
+  + configurationDisplayName(displayName)
+  + description(descriptionToDisplay)
+}
+
+class MyLargeWidget {
+  +
+}
+class MyRectangularWidget {
+  +
+}
+
+class MyLargeIntentTimelineProvider { 
+  +
+}
+class MyRectangularIntentTimelineProvider {
+  +
+}
+
+class MyLargeConfigurationIntent {
+  + 通过配置自动生成
+}
+class MyRectangularConfigurationIntent {
+  + 通过配置自动生成
+}
+class MyWidgetEntryView {
+  + 提供具体的 View
+}
+class MyWidgetEntry {
+  + 提供 snapshot、firstview(添加桌面、锁屏等后)、正式视图
+}
+
+WidgetBundle *-- Widget
+Widget <|.. MyLargeWidget
+Widget <|.. MyRectangularWidget
+MyLargeWidget *-- WidgetConfiguration
+MyRectangularWidget *-- WidgetConfiguration
+WidgetConfiguration <|.. IntentConfiguration
+
+IntentConfiguration *-- INIntent
+IntentConfiguration *-- IntentTimelineProvider
+IntentConfiguration *-- View
+INIntent *-- MyLargeConfigurationIntent
+INIntent *-- MyRectangularConfigurationIntent
+IntentTimelineProvider ..> INIntent : 参数依赖
+
+IntentTimelineProvider ..> Timeline : 参数依赖
+Timeline ..> TimelineEntry
+TimelineEntry <|.. MyWidgetEntry
+
+View <|.. MyWidgetEntryView
+MyWidgetEntryView *-- MyWidgetEntry
+
+IntentTimelineProvider <|.. MyLargeIntentTimelineProvider
+IntentTimelineProvider <|.. MyRectangularIntentTimelineProvider
+```
+
+### handler
+```mermaid 
+classDiagram
+
+class INExtension {
+  <<protocol, system>>
+
+}
+
+class MyIntentHandler {
+  + override func handler(for intent: INIntent) -> Any?
+}
+
+class MyLargeConfigurationIntentHandling {
+  + provideTransparentOptionsCollection
+  + provideTypeOptionsCollection
+}
+
+class MyCircularConfigurationIntentHandling {
+  + provideTypeOptionsCollection
+}
+```
+
 
 
 
