@@ -21,7 +21,7 @@ permalink:
 u0_a110
 
 以"_"为界线, 前一部分是UserId, 后一部分是ApplicationId. 转为int值即为:
-u0_a110 == 0 * 10000 + (10110) == 10110 == uid;
+u0_a110 == 0 * 100000 + (10110) == 10110 == uid;
          (u0)*(十万)   a110
 
 1> u0即表示userId = 0;
@@ -82,18 +82,23 @@ https://www.jianshu.com/p/b33dd49f2ae6
     /storage/emulated/0/Android/data/<package> ： 外部存储私有目录
     /storage/emulated/0/Android/data/<package>以外 ： 外部存储公有目录
 
-Android 10以前
 
-Android 10
+项目 | Android 10以前 | Android 10 | Android 10之后
+:--|--|--|--
+内部存储<br>(只能访问私有目录) | 无权限要求 | 无权限要求 | 无权限要求
+外部存储: Read | READ_EXTERNAL_STORAGE<br>随意读操作外部存储 | - | -
+外部存储: Write | WRITE_EXTERNAL_STORAGE<br>随意写操作外部存储 | - | -
+requestLegacyExternalStorage | - | 有效<br>设置为 true 可停用分区存储 | 无效
+外部存储: 分区存储 | - |  &#9745; |  &#9745;
 
-Android 10之后
+> 在启用分区存储后，亦可以通过直接文件路径访问，但需要 READ_EXTERNAL_STORAGE 权限
 
-
-在Android 10以前，只要程序获得了READ_EXTERNAL_STORAGE权限，就可以随意读取外部存储的公有目录；只要程序获得了WRITE_EXTERNAL_STORAGE权限，就可以随意在外部存储的公有目录上新建文件夹或文件。
-
-于是Google终于开始动手了，在Android 10中提出了分区存储，意在限制程序对外部存储中公有目录的为所欲为。分区存储对 内部存储私有目录 和 外部存储私有目录 都没有影响。
-
-简而言之，在Android 10中，对于私有目录的读写没有变化，仍然可以使用File那一套，且不需要任何权限。而对于公有目录的读写，则必须使用MediaStore提供的API或是SAF（存储访问框架）
+分区存储 | 细分 | 内容 | 访问 | 权限 | 其他应用访问 | 卸载时移除文件
+:--|--|--|--|--|:-|:-:
+专属存储 | - | | getFilesDir()<br>getCacheDir()<br>getExternalFilesDir()<br>getExternalCacheDir() | | &#9744; | &#9745;
+共享存储 | 媒体 | 图片<br>音频<br>视频 | MediaStore API | | &#9745; <br> 但需要权限：<br>android.permission.READ_MEDIA_IMAGES<br>android.permission.READ_MEDIA_VIDEO<br>android.permission.READ_MEDIA_AUDIO  | &#9744;
+共享存储 | 文档、<br>其他文件 | | SAF | | &#9745; <br> 可以通过系统文件选择器访问 | &#9744;
+共享存储 | 数据集 | | BlobStoreManager API | | | &#9745;
 
 ## 3、Reflection
 https://blog.csdn.net/u011240877/article/details/54604212

@@ -33,7 +33,7 @@ Category | Name | Desc | Note | More
 关键词 | ```Scope Function``` | ```let、also、apply、run``` | ```是 Standard.kt 中内置的高阶函数```
 扩展 | ```Extension Function``` |  | 使用要扩展的类型为前缀, 如：```fun Any?.toString(): String { ... }``` | 可以接收```Null```值
 扩展 | ```Extension Properties``` | | 如：```val <T> List<T>.lastIndex: Int```<br>```get() = size - 1``` | 与扩展函数基本类似
-函数 | | ```fun``` | 如：```fun name() { ... }```
+函数 | | ```fun``` | 如：```fun name(): String { ... }```
 函数 | | ```code block``` | 用```{...}```包括起来的部分都可以算是```Function```,<br>在括号中包含两部分: parameters 和 body
 函数 | | ```Function```是头等公民 | 1. 可以作为函数的参数<br>2. 可以作为函数的返回值<br>3. 可以作为变量<br>4. 支持匿名函数(lambda) | ```Higher-Order Function```
 函数 | ```Function type``` | ```() -> T``` |
@@ -259,17 +259,6 @@ Android Jetpack 的主要目的是要让开发者更容易开发 App，並且能
 > [Jetpack](https://developer.android.com/jetpack)
 
 
-
-
-
-
-
-Stetho 是 Facebook 開發的一款調適工具，他最大的特色是可以透過 Chrome DevTools 觀看即時的 App 數據
-
-關於該如何使用可以看一篇我以前曾經寫過的介紹
-
-Stetho - Android 調試與開發必備工具: https://github.com/facebook/stetho
-https://zhuanlan.zhihu.com/p/31057280
 
 
 

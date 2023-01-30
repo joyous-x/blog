@@ -26,6 +26,21 @@ graph LR
   + 主要在 In Review（审核）阶段
   + 这个阶段主要看的是App的元数据，例如APP封面、功能、体验等等，注重用户体验。
 
+## 基础概括
+### 命名
+在开发过程中经常见到一些库的前缀，如，NS 等，了解其含义后可以帮助我们快速掌握其核心：
+- NS
+  + 乔帮主当年被人挤兑出苹果，自立门户的时候做了个公司叫做 NextStep，里面这一整套开发包很是让一些科学家们喜欢，而现在Mac OS用的就是NextStep这一套函数库，里面所有的类都用NextStep的缩写打头命名，也就是 NS**** 
+- CF
+  + Core Foundation
+- CA
+  + Core Animation
+- CG
+  + Core Graphics
+- UI
+  + User Interface
+
+
 ## 过审
 
 ### 马甲包
@@ -105,13 +120,6 @@ Guideline 2.1 | Information Needed | | | 如果确认没问题，可以申诉并
 
 ## 分析
 
-### 代码相似度分析
-- [Standford Moss](http://theory.stanford.edu/~aiken/moss/)
-    + Moss 是斯坦福开发的一个软件抄袭检查工具。这个工具对代码进行语义分析和特征分析，所以对原始代码进行简单的重命名和重构是根本没有用的。经过实验，对所有变量函数重命名、重构之后Moss仍然能发现70%的相似性.
-- [NiCad Clone Detector](http://www.txl.ca/txl-index.html)
-    + gitee 的在线对比工具 https://copycat.gitee.com/
-- [Simian - Similarity Analyser](http://www.harukizaemon.com/simian/index.html)
-
 ### IPA 解析
 我们提交给苹果的是一个 ipa 文件，里面的 bin 文件，都是编译好的二进制可执行文件，苹果生态中叫做 machO 格式。
 
@@ -126,39 +134,15 @@ machO 格式定义了各种分段，比如引用的库列表，定义的类列�
   + 适用于开发人员，逆向工程师和安全研究人员的动态检测工具包
 
 ### 实践
-flutter 包 ：混淆
-
-- 元数据 ：人工
-- 环境：人工
-- 资源：工具
-- 垃圾代码：工具
-- 代码 - 常量、工程名、uuid：工具
-- 代码 - 目录结构：人工
-  + 文件名、类名
-  + 链接
-  + ui布局
-- 相似度：工具
-  + 代码：
-  + ipa、macho 拆包：
-    + 图片、配置文件相似度
-    + 字符串相似度、代码段相似度 ；；可能会被加密
-- 其他：工具
-  + 私有api
-  + 敏感关键字
-
 ipa 拆包：
-- 可以拿到安装包内的图片资源：.png,.jpg，可以在我们仿写app的时候用到。
-- 可以拿到app使用到三方库的.bundle，从而反推断他使用哪些三方工具库。
-- 可以拿到工程中的配置文件，如.json、.plist，.js，有些文件可以反推断他用的什么技术方案。
-- 可以拿到音频文件，例如微信app的消息提醒的声音。
-- 可以拿到布局文件:xx.nib。
-- 可以拿到打包在工程中的字体文件。
+- 可以拿到安装包内的图片资源：.png,.jpg，可以在我们仿写app的时候用到
+- 可以拿到app使用到三方库的.bundle，从而反推断他使用哪些三方工具库
+- 可以拿到工程中的配置文件，如.json、.plist，.js，有些文件可以反推断他用的什么技术方案
+- 可以拿到音频文件，例如微信app的消息提醒的声音
+- 可以拿到布局文件:xx.nib
+- 可以拿到打包在工程中的字体文件
 
 
-https://www.codercto.com/a/81235.html
-
-
-## ipa 
 
 ## Widget
 ### extensions
@@ -214,7 +198,8 @@ class MyLargeWidget {
   +
 }
 class MyRectangularWidget {
-  +
+  + ios16.0 对 accessory 类型的支持不完善，并且会影响锁屏组件
+  + 所以，可以限制只有 ios16.1 及以上才能使用
 }
 
 class MyLargeIntentTimelineProvider { 
@@ -263,6 +248,8 @@ IntentTimelineProvider <|.. MyRectangularIntentTimelineProvider
 ```
 
 ### handler
+用于提供用户选择小组件时的功能支持
+
 ```mermaid 
 classDiagram
 
@@ -302,12 +289,21 @@ MyLargeHandler ..|> MyLargeConfigurationIntentHandling
 MyCircularHandler ..|> MyCircularConfigurationIntentHandling
 ```
 
-注意：
+### 编辑页
+一般来说也会提供小组件编辑页，其中需要实时显示最新的小组件预览图，这就要求：更新配置后，预览图实时更新。这与系统调用小组件更新上，功能有重叠的部分，可以通过：将 自定义的config 和 view 封装成一个 ViewHolder 然后被外部使用。
+
+### 注意
 1. 小组件申请位置权限
    + 在主工程(the containing app)项目中申请位置权限
      - 必需在主工程 的 Info.plist 文件中添加相关用途字符串
    + 将```NSWidgetWantsLocation```键添加到 widget extension 的 Info.plist 文件中
      - 类型为：Boolean
+2. 小组件视图更新
+   + 预览图：小组件视图可以通过 renderToImage 生成预览图
+   + 实时图：更新相关配置后，可以通过系统强刷接口强制刷新
+3. 小组件交互
+   + 通过 小组件View 的 widgetURL 方法指定:
+      - 注意：```Widgets support one widgetURL modifier in their view hierarchy. If multiple views have widgetURL modifiers, the behavior is undefined.```
 
 
 
@@ -327,7 +323,6 @@ MyCircularHandler ..|> MyCircularConfigurationIntentHandling
 - [AppInfoScanner](https://github.com/kelvinBen/AppInfoScanner)
 - [从Mach-O看砸壳及App的安全性原理](https://www.codercto.com/a/81235.html)
 - [iOS App 签名的原理](http://blog.cnbang.net/tech/3386/)
-
 - https://www.jianshu.com/p/4e8ccb02e92d
 - https://juejin.cn/post/6844904014170030087
 - [Flutter 编译产物的理解](https://allenwu.itscoder.com/flutter-compile-product)
