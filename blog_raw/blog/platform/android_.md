@@ -90,6 +90,18 @@ https://blog.csdn.net/weixin_43766753/article/details/108350589
 https://ljd1996.github.io/2019/08/16/Gradle%E7%AC%94%E8%AE%B0/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E4%BB%B6
 
 
+## 常见问题
+### UIAutomatorViewer
+- Broken GUI of UIAutomatorViewer on MacOS Big Sur
+  ```
+  https://github.com/android/android-test/issues/911
+
+    Download the latest swt.jar, from https://download.eclipse.org/eclipse/downloads/index.html, rename downloaded swt.jar to swt2.jar, copy to Android/sdk/tools/lib/x86_64/, NOT REPLACE, NOT DELETE, then, try it~~
+
+    You must use version 4.20:
+      https://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops4/R-4.20-202106111600/swt-4.20-cocoa-macosx-x86_64.zip
+  ```
+
 ## Resources
 Group | Name | Usage | Desc
 --- | --- | --- | ---
