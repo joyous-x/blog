@@ -103,3 +103,64 @@ requestLegacyExternalStorage | - | 有效<br>设置为 true 可停用分区存�
 ## 3、Reflection
 https://blog.csdn.net/u011240877/article/details/54604212
 https://www.cnblogs.com/jimuzz/p/14297042.html
+
+## 4、Splash Screen
+一般 APP 在启动时需要进行一些初始化事务，导致在启动时有一定的空白延迟。之前的一般的做法是通过自定义主题并替换 ```android:windowBackground``` ，使其启动时及时显示一张默认图片来改善启动体验。
+
+在 Android 12 中，官方添加了[SplashScreen API](https://developer.android.google.cn/guide/topics/ui/splash-screen?hl=zh-cn#suspend-drawing)，它可为所有应用提供统一的启动界面，所以不必再自定义```android:windowBackground```了。新启动页面的样式默认是正中显示应用图标，但允许自定义。
+
+此外，官方提供了**Androidx SplashScreen compat**库，能够向后兼容，据称可以在所有 Android 版本上显示外观和风格一致的启动画面。具体使用方式以及细节，可以参考[官方文档](https://developer.android.google.cn/guide/topics/ui/splash-screen?hl=zh-cn)。
+
+需要注意，在 android 低版本中，主题**Theme.SplashScreen**的配置项以及表现，同 Android 12 及以上版本会有差异。
+
+### 低版本 Android 使用 SplashScreen API
+需要升级 compileSdkVersion，并依赖SplashScreen库：
+```
+  android {
+    compileSdkVersion 31
+    ...
+  }
+  dependencies {
+    ...
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha01'
+  }
+```
+
+此外，在 style.xml 中配置主题时，少了些参数同时也多了一个参数：
+```
+<style name="Theme.App.Starting" parent="Theme.SplashScreen">
+    // Set the splash screen background, animated icon, and animation duration.
+    <item name="windowSplashScreenBackground">@android:color/white</item>
+
+    // Use windowSplashScreenAnimatedIcon to add either a drawable or an
+    // animated drawable. One of these is required.
+    <item name="windowSplashScreenAnimatedIcon">@drawable/anim_ai_loading</item>
+    // # Required for animated icons
+    <item name="windowSplashScreenAnimationDuration">1000</item>
+
+    // Set the theme of the Activity that directly follows your splash screen.
+    // # Required.
+    <item name="postSplashScreenTheme">@style/AppTheme</item> 
+</style>
+```
+相比 Android 12 这里有以下变化：
+- 新增 ```postSplashScreenTheme```
+  + 应该设置为 APP 的原主题，这样会将这个主题设置给启动画面之后的 Activity，以保持后续样式不变
+- 减少 ```windowSplashScreenIconBackground```和```windowSplashScreenBrandingImage``
+
+### [启动画面的元素和机制](https://developer.android.google.cn/guide/topics/ui/splash-screen?hl=zh-cn#elements)
+需要注意的是 SplashScreen API 提供的画面有以下几部分：
+- 图标蒙层
+  - 与自适应图标类似
+- 应用图标
+  + 应该是矢量可绘制对象，它可以是静态或动画形式。虽然动画的时长可以不受限制，但我们建议不超过 1000 毫秒。默认情况下，使用启动器图标
+- 图标背景
+  + 可选项
+  + 在图标与窗口背景之间需要更高的对比度时图标背景很有用
+- 窗口背景
+  + 由不透明的单色组成。如果窗口背景已设置且为纯色，则未设置相应的属性时默认使用该背景
+
+简单的说，其提供的图标画面，组成形式同[自适应图标](https://developer.android.google.cn/guide/practices/ui_guidelines/icon_design_adaptive?hl=zh-cn)类似
+
+### 迁移启动画面实现
+可以参考官方文档：[将现有的启动画面实现迁移到 Android 12 及更高版本](https://developer.android.google.cn/guide/topics/ui/splash-screen/migrate?hl=zh-cn)

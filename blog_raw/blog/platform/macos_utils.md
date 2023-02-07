@@ -306,6 +306,23 @@ MyCircularHandler ..|> MyCircularConfigurationIntentHandling
       - 注意：```Widgets support one widgetURL modifier in their view hierarchy. If multiple views have widgetURL modifiers, the behavior is undefined.```
 
 
+### Widget控件尺寸大小
+屏幕尺寸(portrait) | Small widget | Medium widget | Large widget
+:-: | :-: | :-: | :-: | 
+414 x 896 pt | 169 x 169 pt | 360 x 169 pt | 360 x 376 pt
+375 x 812 pt | 155 x 155 pt | 329 x 155 pt | 329 x 345 pt
+414 x 736 pt | 159 x 159 pt | 348 x 159 pt | 348 x 357 pt
+375 x 667 pt | 148 x 148 pt | 322 x 148 pt | 322 x 324 pt
+320 x 568 pt | 141 x 141 pt | 291 x 141 pt | 291 x 299 pt
+
+
+
+## 添加快捷方式
+常见的添加快捷方式功能，将其添加到桌面，点击桌面图标打开app进入对应页面。可以实现图标美化以及快捷访问功能。
+
+### Reference
+- [iOS 添加快捷方式到桌面](https://juejin.cn/post/6847902220080414733)
+
 
 
 
