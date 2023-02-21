@@ -67,7 +67,7 @@ XML 命名空间定义语法为```xmlns:namespace-prefix="namespaceURI"```，一
       android:bottomRightRadius="10dp" />
 
     <!-- 渐变：linear 线性渐变，radial 放射性(中心到边缘)渐变，sweep 扫描式(顺时针方向)渐变 -->
-    <gradient android:useLevel="true"
+    <gradient android:useLevel="false" <!-- 设置为 true 无渐变, false 有渐变色 -->
         android:startColor="@android:color/white"
         android:centerColor="@android:color/black"
         android:endColor="@android:color/black"
@@ -104,6 +104,34 @@ view.setBackgroundDrawable(gd);
 int colors[] = { 0xff255779 , 0xff3e7492, 0xffa6c0cd };//分别为开始颜色，中间夜色，结束颜色
 GradientDrawable gd2 = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, colors);
 view.setBackgroundDrawable(gd2);
+```
+
+## LevelListDrawable
+```LevelListDrawable```用于管理一组 Drawable。可以为里面的 drawable 设置不同的 level。绘制时，系统会根据 level 值来自动匹配对应的图片。
+
+用 xml 表示时，根节点为```level-list```，它并没有可以设置的属性，能做的只是设置每个```<item>``` 的属性
+- android:drawable	引用的位图资源
+- android:minLevel	匹配的最小值
+- android:maxLevel	匹配的最大值
+
+具体来说，在Android开发中，有时候需要对一个ImageView设置很多不同图片以表示某种应用状态，比如，典型的是手机的信号强度从强到弱有多种状态图；wifi有解锁和未解锁状态，解锁和未解锁状态的图标也是很多种等。如果每次都通过 ImageView 设置图片的 src 来达到这一目的，实在是太过于繁琐，且维护和管理起来不便。
+
+因此，引入```ImageView```的```setImageLevel```和```level-list```实现这一目的。比如有5种不同类型的手机信号表示状态图标icon时，配置如下 drawable/phone_state.xml 文件：
+``` 
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/state_1" android:maxLevel="1"/>
+    <item android:drawable="@drawable/state_2" android:maxLevel="2"/>
+    <item android:drawable="@drawable/state_3" android:maxLevel="3"/>
+    <item android:drawable="@drawable/state_4" android:maxLevel="4"/>
+    <item android:drawable="@drawable/state_5" android:maxLevel="5"/>
+</level-list>
+```
+如果，想显示手机信号强度3的图片，可以通过以下代码实现：
+```
+ImageView iv = findViewById(R.id.phone_state)
+iv.setImageResource(R.drawable.phone_state)
+iv.setImageLevel(3)
 ```
 
 ## Selector

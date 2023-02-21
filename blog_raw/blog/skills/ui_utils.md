@@ -14,10 +14,16 @@ permalink:
 
 ## Collection
 
-Category | Link
---- | ---
-配色 | [coolors](https://coolors.co)
-配色 | [colorhunt](https://colorhunt.co)
+Category | Link | Description
+--- | --- | ---
+配色 | [coolors](https://coolors.co) | 
+配色 | [colorhunt](https://colorhunt.co) | 
+配色 | [colorkit](https://colorkit.io/) | 
+渐变 | [Gradienta](https://gradienta.io/) | 1. 可商用，而且下载像素也很高
+渐变 | [Lstore Graphics](https://www.ls.graphics/) | 1. 提供了100种渐变，大部分为不规则路径
+渐变 | [Eggradients](https://www.eggradients.com/) | 1. 用鸡蛋的形状来展示各种渐变的, 有超过200种渐变方案
+渐变 | [Grabient](https://www.grabient.com/) | 1. 可以灵活选择渐变方向
+渐变 | [Gradientsguru](http://gradientsguru.com/) |
 
 ## Android
 ### 屏幕

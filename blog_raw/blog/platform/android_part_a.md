@@ -164,3 +164,100 @@ https://www.cnblogs.com/jimuzz/p/14297042.html
 
 ### 迁移启动画面实现
 可以参考官方文档：[将现有的启动画面实现迁移到 Android 12 及更高版本](https://developer.android.google.cn/guide/topics/ui/splash-screen/migrate?hl=zh-cn)
+
+## 5、Android Widgets
+### 5.1 EditText && TextInputLayout
+```
+java.lang.Object
+   ↳	android.view.View
+ 	   ↳	android.widget.TextView
+ 	 	   ↳	android.widget.EditText
+ 	 	 	   ↳	androidx.appcompat.widget.AppCompatEditText
+ 	 	 	 	   ↳	com.google.android.material.textfield.TextInputEditText
+ 	   ↳	android.view.ViewGroup
+ 	 	   ↳	android.widget.LinearLayout
+ 	 	 	   ↳	com.google.android.material.textfield.TextInputLayout
+
+// TextInputLayout which wraps a TextInputEditText, EditText, or descendant to show a floating label when the hint is hidden while the user inputs text.
+```
+
+## 6、刘海屏适配
+[android_notch](./rsc/android_notch_define.png)
+
+对状态栏的显示，一般有三种情况：
+1. 正常显示
+   + 不用专注于状态栏
+2. 沉浸式状态栏
+   + API Level 19 以上才支持
+   + 也就是状态栏透明，页面的布局延伸进状态栏区域显示，这种情况下状态栏(背景透明)内容依然可见
+   + 需要进行适配：注意页面视图和状态栏的遮挡、重叠
+3. 全屏显示(状态栏不可见)
+   + 页面全屏显示，状态栏不可见，类似应用的闪屏页风格
+   + 在刘海屏时，当应用需要全屏显示时，需要进行适配：否则，顶部状态栏区域显示纯黑色
+
+沉浸式状态栏, 可以通过以下两种方式进行设置：
+1. 为 Activity 使用的 style 添加一个属性：```<item name="android:windowTranslucentStatus">false</item>```
+2. 在 Activity 的 onCreate() 中为 Window 添加 Flag：```getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)```
+
+全屏显示，同样有两种设置方法： 
+1. 为 Activity 使用的 style 添加属性：
+   ```
+    // 全屏，需要通过 android:windowBackground 指定背景
+    <item name="android:windowFullscreen">true</item>
+   ```
+2. 在 Activity 的 onCreate() 中添加代码：
+   ```
+   getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+   ```
+
+### 沉浸式状态栏的适配
+其实沉浸式状态栏带来的遮挡问题与刘海屏无关，本质上是由于设置了透明状态栏导致布局延伸到了状态栏中，就算是不具有刘海屏，一定程度上也会造成布局的遮挡。
+
+总之，就是要让控件或布局避开状态栏显示就可以了，具体的解决方法有三种:
+1. 利用```fitsSystemWindows```属性
+当我们给最外层View设置了```android:fitsSystemWindows="true"```属性后，当设置了透明状态栏或者透明导航栏后，就会自动给 View 添加 paddingTop 或 paddingBottom 属性，这样就在屏幕上预留出了状态栏的高度，我们的布局就不会占用状态栏来显示了。
+
+2. 根据**状态栏高度**手动设置 paddingTop 或 添加一个高度和状态栏相同的透明 view
+```
+    public int getStatusBarHeight(Context context) {
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        return resourceId > 0 ? context.getResources().getDimensionPixelSize(resourceId) : 0;
+    }
+```
+
+### 全屏显示的适配
+Android P 及以上，谷歌官方提供了相关的适配方案; 而 Android P 以下的手机，只能依照各个厂商提供的适配方案来进行适配。
+
+#### Android P 及以上 适配
+谷歌官方从```Android P```开始给开发者提供了刘海屏相关的API，可以通过直接调用 API 来进行刘海屏的适配处理。
+通过 DisplayCutout类 可以获得安全区域的范围以及刘海区域（官方的叫法是缺口）的信息，需要注意只有API Level在28及以上才可以调用。
+
+注意：如果是在 style 中设置了全屏模式，在适配之前，顶部状态栏区域显示一条黑边，这时候调用 getDisplayCutout() 获取 DisplayCutout 对象返回的结果是null。其实这也不难理解，因为这时候是看不出刘海区域的，但是这样会导致在适配之前无法通过 DisplayCutout 判断是否存在刘海屏，只能在适配后才能获取到刘海区域信息，因此只能对于所有设备都添加适配代码。
+
+```
+public class FullScreenActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            // 仅当缺口区域完全包含在状态栏之中时，才允许窗口延伸到刘海区域显示。(只有在全屏显示的情况下该模式才不允许窗口布局延伸到刘海区域)
+            // lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
+            // 永远不允许窗口延伸到刘海区域
+            // lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+            // 始终允许窗口延伸到屏幕短边上的刘海区域
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(lp);
+        }
+    }
+}
+```
+
+### Reference
+[Android刘海屏适配方案总结](https://www.jianshu.com/p/8ead0701d8ef)
+
+## 7、自定义 View
+
+
+
