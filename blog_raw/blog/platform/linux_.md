@@ -1,7 +1,7 @@
 ---
-title: linux cmds
+title: Linux 
 date: 2019-12-23 00:00:00
-description: linux 常用命令集锦
+description: linux 常用知识
 categories: 
   - platform
 tags: 
@@ -9,7 +9,12 @@ tags:
 permalink:
 ---
 
-## Common
+# Linux
+
+## 性能领域工具图谱
+![Linux性能领域大师布伦丹·格雷格的工具图谱](../rsc/linux_perfermance_tools_by_BrendanGregg.png)
+
+## 常用命令
 Category | Command | Function | Example | Note
 :---: | :--- | :--- | :---: | :---
  . | grep | grep 查找 | ```grep -ar "select" ./conf```
@@ -27,6 +32,7 @@ Category | Command | Function | Example | Note
  . | ulimit | | ```ulimit [type: -H/-S] [cmd: -a/...] [arg: 0/unlimited/...]```
  . | strace | | ```strace -p 34542 -s 128 -T``` | truss、strace 以及 ltrace
 
+## 命令集锦
 
 - pig
     + 本地执行：pig -x local xxx.pig 
@@ -131,6 +137,3 @@ Category | Command | Function | Example | Note
 2. 查看产生两个文件：id_rsa、id_rsa.pub (一般在 ~/.ssh/ 目录下)
 3. 重命名 id_rsa.pub 为 authorized_key:  ``` cp ~/.ssh/id_rsa.pub  ~/.ssh/authorized_keys ```
 4. 执行 ```ssh localhost``` 进行验证
-
-## Linux 性能领域大师布伦丹·格雷格的工具图谱
-![Linux工具图谱](../rsc/linux_perfermance_tools_by_BrendanGregg.png)

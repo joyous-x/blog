@@ -87,4 +87,55 @@ XCode -> Build Settings -> Build Option -> Debug Information Format -> DWARF wit
 - [Bugly iOS 符号表配置](https://bugly.qq.com/docs/user-guide/symbol-configuration-ios/?v=1.0.0)
 
 
+## Rending
+![ios-rendering-framework-relationship](rsc/ios-rendering-framework-relationship.png)
+
+- Core Animation
+  + Core Animation 源自于 Layer Kit，动画只是 Core Animation 特性的冰山一角。
+  + Core Animation 是一个复合引擎，其职责是 尽可能快地组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即 CALayer），这些图层会被存储在一个叫做图层树的体系之中。
+  + 从本质上而言，CALayer 是用户所能在屏幕上看见的一切的基础。
+- Core Graphics
+  + Core Graphics 基于 Quartz 高级绘图引擎，主要用于运行时绘制图像。
+  + 开发者可以使用此框架来处理基于路径的绘图，转换，颜色管理，离屏渲染，图案，渐变和阴影，图像数据管理，图像创建和图像遮罩以及 PDF 文档创建，显示和分析。
+- Core Image
+  + 与 Core Graphics 相反，Core Graphics 用于在 运行时创建图像，而 Core Image 是用来处理 运行前创建的图像的。
+  + Core Image 框架拥有一系列现成的图像过滤器，能对已存在的图像进行高效的处理。
+
+### UIView 与 CALayer 的关系
+CALayer 事实上是用户所能在屏幕上看见的一切的基础。而 UIKit 中的视图之所以能够呈现可视化内容，就是因为每个视图控件内部都有一个关联的 CALayer。
+
+由于这种一一对应的关系，视图层级拥有 视图树 的树形结构，对应 CALayer 层级也拥有 图层树 的树形结构。
+
+其中，视图的职责是 创建并管理 图层，以确保当子视图在层级关系中 添加或被移除 时，其关联的图层在图层树中也有相同的操作，即保证视图树和图层树在结构上的一致性。
+
+> 那么为什么 iOS 要基于 UIView 和 CALayer 提供两个平行的层级关系呢？
+
+其原因在于要做 职责分离，这样也能避免很多重复代码。在 iOS 和 Mac OS X 两个平台上，事件和用户交互有很多地方的不同，基于多点触控的用户界面和基于鼠标键盘的交互有着本质的区别，这就是为什么 iOS 有 UIKit 和 UIView，对应 Mac OS X 有 AppKit 和 NSView 的原因。它们在功能上很相似，但是在实现上有着显著的区别。
+
+> 实际上，这里并不是两个层级关系，而是四个。每一个都扮演着不同的角色。除了 **视图树** 和 **图层树**，还有 **呈现树** 和 **渲染树**。
+
+### 图形渲染
+计算机将存储在内存中的形状转换成实际绘制在屏幕上的对应的过程称为**渲染**。渲染过程中最常用的技术就是**光栅化**。一句话总结：光栅化就是将数据转化成可见像素的过程。
+
+#### GPU 图形渲染流水线
+GPU 图形渲染流水线的主要工作可以被划分为两个部分：
+- 把 3D 坐标转换为 2D 坐标
+- 把 2D 坐标转变为实际的有颜色的像素
+
+GPU 图形渲染流水线的具体实现可分为六个阶段，如下图所示。
+1. 顶点着色器（Vertex Shader）
+2. 形状装配（Shape Assembly），又称 图元装配
+3. 几何着色器（Geometry Shader）
+4. 光栅化（Rasterization）
+5. 片段着色器（Fragment Shader）
+6. 测试与混合（Tests and Blending）
+
+![opengl-graphics-pipeline](./rsc/opengl-graphics-pipeline.png)
+
+#### 纹理（Texture）
+纹理（Texture）经常被用来表现细节。纹理是一个 2D 图片（甚至也有 1D 和 3D 的纹理）。纹理一般可以直接作为图形渲染流水线的第五阶段的输入。
+
+## Reverse
+plutil -p 可以查看 Info.plist、lproj目录下的本地化的字符串（.strings）
+
 ## Reference
