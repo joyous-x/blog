@@ -116,3 +116,15 @@ Runner.iap
       2. 如果以静态库形式引入，则主程序中一定会有其痕迹；
 - Assets.car
   + 资源 bundle 文件，可以通过```Asset Catalog Tinkerer```应用查看
+
+
+在 ARM 汇编中，寄存器以 r 开头，如 r0、r1、r2 等。
+在 ARM 汇编中，立即数以 # 开头，如 #10是一个立即数，表示常数10
+
+SUB R0, R1, #4   ; R0 = R1 - 4
+ADD R1, R2, R3  ;将R2和R3的值相加，结果存储在R1中
+ADD R1, R2, #10  ;将R2和10相加，结果存储在R1中
+MOV r1, r0   ; 将寄存器 r0 中的值复制到寄存器 r1
+LDP X0, X1, [SP, #16] ; 将从存储器地址[SP,#16]处加载X0和X1寄存器的值
+ADR R0, mylabel ; 将地址 mylabel 加载到R0寄存器中
+ORR Rd, Rn, Operand2 ; bitwise OR, Rd = Rn | Operand2

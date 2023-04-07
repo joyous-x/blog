@@ -139,3 +139,14 @@ GPU 图形渲染流水线的具体实现可分为六个阶段，如下图所示�
 plutil -p 可以查看 Info.plist、lproj目录下的本地化的字符串（.strings）
 
 ## Reference
+```
+hosts文件被锁死，请在终端中输入下行解锁代码
+  sudo chflags -hv noschg /etc/hosts 
+  sudo chflags -hv nouchg /etc/hosts 
+按回车, 输入电脑密码后即成功
+
+若需要重新锁死hosts文件，请在终端中输入下行锁死代码
+  sudo chflags uchg /etc/hosts
+  sudo chflags schg /etc/hosts
+按回车, 输入密码后即成功
+```

@@ -63,3 +63,39 @@ utf16 和 utf32 则因为 byte-order 问题，必定需要在文档开头通过 
 5. 在某些特殊的传输环境中(比如Email中)，再进一步将字节序列进行适应性编码处理。
 
 这几个方面作为一个整体，构成了现代字符编码模型。现代字符编码模型之所以要分解为这么几个方面，其核心思想是创建一个能够用不同方式来编码的通用字符集。注意这里的关键词：“不同方式”与“通用”。
+
+---
+---
+---
+
+# 字体文件
+常见的字体文件有：ttf、otf 等。常见的字形方式：bitmap、矢量图。其中，矢量图字形可以转化为 bitmap 字形，如 freetype 字体库可以加载 ttf 字体并生成字符位图（bitmap）。
+
+## 一、TTF
+### 1. 简介
+ttf，TrueType Font，渲染较快的矢量字实现方案。一般通过轮廓进行描述：
+![TTF的字形轮廓描述](./rsc/font_ttf_outline_desc.png)
+
+TTF为每个字符保存了一系列的点以及点的连接顺序：
+- on-curve（图中的实心点）
+- off-curve（图中的空心点）
+
+组成TTF字形的两种线型：
+- 线段（on-curve ~ on-curve）
+- 二次贝塞尔曲线（on-curve ~ off-curve ~ on-curve）
+    + 多段的贝塞尔曲线，可以省略掉两个 off-curve 中间的 on-curve，例如右下角的两个off-curve
+
+### 2. 字形光栅化
+矢量字符是通过轮廓进行描述的，自然带来一个问题，如何着色呢？
+![TTF 往哪边着色](./rsc/font_ttf_outline_rendering_desc.png)
+
+#### 非0环绕数法则
+对每个像素的中心计算**非0环绕数**来判断要不要上色：
+- 从点p向外作任意方向的一条射线，多边形的边从左到右经过射线时环数减1，多边形的边从右往左经过射线时环数加1，最后环数不为0，即表示在多边形内部。
+![TTF 非0环绕数法则](./rsc/font_ttf_outline_rendering_method.png)
+
+这种方法的不足之处在于，当字号较小时带来的走样问题：
+![TTF 非0环绕数法则走样问题](./rsc/font_ttf_outline_rendering_question.png)
+
+## 二、Reference
+- [TrueType-Reference-Manual](https://developer.apple.com/fonts/TrueType-Reference-Manual/)
