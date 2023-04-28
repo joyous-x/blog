@@ -12,47 +12,95 @@ permalink:
 ---
 
 # Android
-## 1、Uid、Pid、User Id
-![android_uid_pid](./rsc/android_uid_pid.png)
+## 1、android 基础概念
+### 资源目录 drawable && mipmap
+- ```drawable```是默认的图形资源文件夹，而```drawable-v24```是在**API 24及以上**版本中才能使用的图形资源的文件夹
+  + ```drawable-v24```可以用来存放在API 24及以上版本中才能使用的特定资源，比如动画、矢量图等。在低于API 24的设备上，这些资源将会使用 drawable 文件夹中的资源
 
-### 1.1 查看
-```adb shell ps | grep com.tencent.mm```
+- 最佳实践：```mipmap```下放置应用图标，其他图片资源放在```drawable```中
+  + 在apk安装的时候，```mipmap```的所有分辨率的图片都会保留，而```drawable```只保留适配设备分辨率的图片，其余图片会被丢弃，以减少了APP安装大小
+  + 但，某些应用启动器显示的应用图标会比设备的密度级别所要求的大，所以为了保证效果，需要保留所有分辨率的应用图标
+    - 参考：[将应用图标放在 mipmap 目录中](https://developer.android.com/training/multiscreen/screendensities?hl=zh-cn#mipmap)
 
-u0_a110
+### 引入本地其它目录的 module
+1. 在项目中引用并指定位置
+   + 修改 project 的 settings.gradle，以在include中引入模块，如：```include ':app', ':xxx'```
+   + 修改 project 的 settings.gradle，以指定模块位置(配置在 local.properties 中的 xxx.dir 属性)，如：
+      ``` 
+      /// 注：以下内容参考 flutter 项目对 local.properties 的使用
 
-以"_"为界线, 前一部分是UserId, 后一部分是ApplicationId. 转为int值即为:
-u0_a110 == 0 * 100000 + (10110) == 10110 == uid;
-         (u0)*(十万)   a110
+      def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
+      def properties = new Properties()
 
-1> u0即表示userId = 0;
-2> a110中的"a"永远翻译为10000(一万)
-2> "userId * 100000 + appId = uid"是代码中写死的规则, 全系统通用.
+      assert localPropertiesFile.exists()
+      localPropertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
 
-```adb shell cat proc/[pid]/status```
-查看系统中 进程相关的 Gid、Uid 等信息
+      def XxxPath = properties.getProperty("xxx.dir")
+      project(":xxx").projectDir = file("$XxxPath/xxx")
+      ```
+5. 在模块中引用
+   + 修改 module 的 build.gradle： ```dependencies { implementation project(':xxx') }```
 
-### 1.2 获取
-通过包名获取UID
-```
-    PackageManager mPm = getPackageManager();
-    try {
-        ApplicationInfo applicationInfo = mPm.getApplicationInfo("com.tencent.mm", 0);
-        int uid = applicationInfo.uid;
-        Toast.makeText(MainActivity.this, "" + uid, Toast. LENGTH_SHORT).show();
-    }catch (Exception e){
-        e.printStackTrace();
+## 2、Gradle、Gradle Plugin
+Android Studio 构建系统以 Gradle 为基础，并且 Android Gradle 插件添加了几项专用于构建 Android 应用的功能。
+
+虽然 Android 插件通常会与 Android Studio 的更新步调保持一致，但插件（以及 Gradle 系统的其余部分）可独立于 Android Studio 运行并单独更新。
+
+不过，Gradle 和 Android Gradle Plugin 的版本需要匹配，同时，Android GradlePlugin 和 Android Studio 也有兼容性要求。具体可以[参考文档：gradle-plugin](https://developer.android.google.cn/studio/releases/gradle-plugin?hl=zh-cn)。
+
+修改 Gradle 和 Android Gradle Plugin 版本的方法有：
+1. 在 Android Studio 的 ```File > Project Structure > Project``` 菜单中指定 Gradle、Gradle Plugin 版本
+2. Gradle 版本: 在 ```gradle/wrapper/gradle-wrapper.properties``` 文件中修改 Gradle 分发引用来指定：
+    ```
+    ...
+    distributionUrl = "https\://services.gradle.org/distributions/gradle-7.4.2-bin.zip"
+    ...
+    ```
+3. Gradle Plugin 版本: 在顶级 build.gradle 文件中进行指定，如：
+    ``` Groovy
+    plugins {
+        id 'com.android.application' version '7.2.0' apply false
+        id 'com.android.library' version '7.2.0' apply false
+        id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
     }
-```
+    ```
 
-通过 UID 获取包名
-```
-String packagename = getPackageManager().getNameForUid(uid);
-```
+### 配置参数
+一般情况下有：```buildToolsVersion >= compileSdkVersion >= targetSdkVersion```
 
-### 1.3 系统分配
-https://www.jianshu.com/p/b33dd49f2ae6
+#### android.buildToolsVersion
+build.gradle 中，指定```Android SDK Build-Tools```的版本号，**应保持更新 Build Tools 组件**
 
-## 2、Storage
+```Build-Tools```是构建 Android 应用所需的一个 Android SDK 组件，安装在```<sdk>/build-tools/``` 目录中。
+
+更新```Build-Tools```组件的方式有：
+1. 使用 Android SDK 管理器下载该组件的最新版本
+2. 如果您使用的是[Android Plugin for Gradle 3.0.0](https://developer.android.google.cn/studio/releases/gradle-plugin?hl=zh-cn#3-0-0)或更高版本，那么项目会自动使用该插件指定的默认版本的 Build Tools。
+3. 如需使用其他版本的 Build Tools，请在模块的 build.gradle 中使用 buildToolsVersion 进行指定，如下所示：``` android {  buildToolsVersion "30.0.2"} ```
+
+#### android.compileSdkVersion
+build.gradle 中，指定用于编译 apk 的 Android SDK 版本，**推荐总是使用最新的 sdk 进行编译**
+
+编译 apk 用的 sdk 只在编译期使用，并不会包含到 apk 中。
+
+如果使用了```Support Library```,  需要与 ```compileSdkVersion``` 保持大版本号一致。通常，新版的 ```Support Library``` 随着新的系统版本而发布，它为系统新增加的 API 和 新特性提供兼容性支持。
+
+#### android.defaultConfig.minSdkVersion
+build.gradle 中，指定应用可以运行的最低 sdk 要求
+
+特点如下：
+ 1. minSdkVersion 是各大应用商店用来判断用户设备是否可以安装某个应用的标志之一
+ 2. lint 默认会在项目中运行，它会在使用低于 minSdkVersion 的 API 时发出警告，帮助避免调用不存在的 api。如果只在较高版本的系统上才使用某些 API，通常使用运行时检查系统版本的方式解决
+ 3. 应用依赖的库，如 Google Play services 等，可能有它们自己的 minSdkVersion。那么应用设置的 minSdkVersion 必需大于等于所有库的 minSdkVersion。
+
+#### android.defaultConfig.targetSdkVersion
+build.gradle 中，是 Android 提供向前兼容的主要依据
+
+```targetSdkVersion```指定的值表示应用已在该目标版本上做了充分测试, 系统将会为应用启用一些最新的功能和特征。在应用的```targetSdkVersion```没有更新之前系统不会应用最新的行为变化
+ 
+比如, Android 6.0 系统引用了运行时权限这个功能, 如果你将targetSdkVersion 指定为23或者更高, 那么系统就会为你的程序启动运行时权限。如果你将targetSdkVersion 指定为22, 那么就说明你的程序最高只在Android 5.1系统上做过充分的测试, Android6.0系统中引入的新功能就不会启动了。
+
+## 3、Storage
 [应用数据和文件](https://developer.android.google.cn/guide/topics/data)
 
 内部存储、外部存储(专有、共享)
@@ -99,10 +147,6 @@ requestLegacyExternalStorage | - | 有效<br>设置为 true 可停用分区存�
 共享存储 | 媒体 | 图片<br>音频<br>视频 | MediaStore API | | &#9745; <br> 但需要权限：<br>android.permission.READ_MEDIA_IMAGES<br>android.permission.READ_MEDIA_VIDEO<br>android.permission.READ_MEDIA_AUDIO  | &#9744;
 共享存储 | 文档、<br>其他文件 | | SAF | | &#9745; <br> 可以通过系统文件选择器访问 | &#9744;
 共享存储 | 数据集 | | BlobStoreManager API | | | &#9745;
-
-## 3、Reflection
-https://blog.csdn.net/u011240877/article/details/54604212
-https://www.cnblogs.com/jimuzz/p/14297042.html
 
 ## 4、Splash Screen
 一般 APP 在启动时需要进行一些初始化事务，导致在启动时有一定的空白延迟。之前的一般的做法是通过自定义主题并替换 ```android:windowBackground``` ，使其启动时及时显示一张默认图片来改善启动体验。
@@ -165,23 +209,8 @@ https://www.cnblogs.com/jimuzz/p/14297042.html
 ### 迁移启动画面实现
 可以参考官方文档：[将现有的启动画面实现迁移到 Android 12 及更高版本](https://developer.android.google.cn/guide/topics/ui/splash-screen/migrate?hl=zh-cn)
 
-## 5、Android Widgets
-### 5.1 EditText && TextInputLayout
-```
-java.lang.Object
-   ↳	android.view.View
- 	   ↳	android.widget.TextView
- 	 	   ↳	android.widget.EditText
- 	 	 	   ↳	androidx.appcompat.widget.AppCompatEditText
- 	 	 	 	   ↳	com.google.android.material.textfield.TextInputEditText
- 	   ↳	android.view.ViewGroup
- 	 	   ↳	android.widget.LinearLayout
- 	 	 	   ↳	com.google.android.material.textfield.TextInputLayout
 
-// TextInputLayout which wraps a TextInputEditText, EditText, or descendant to show a floating label when the hint is hidden while the user inputs text.
-```
-
-## 6、刘海屏适配
+## 5、刘海屏适配
 [android_notch](./rsc/android_notch_define.png)
 
 对状态栏的显示，一般有三种情况：
@@ -258,6 +287,22 @@ public class FullScreenActivity extends AppCompatActivity {
 [Android刘海屏适配方案总结](https://www.jianshu.com/p/8ead0701d8ef)
 [支持刘海屏](https://developer.android.com/guide/topics/display-cutout?hl=zh-cn)
 
+## 6、Android Widgets
+### 6.1 EditText && TextInputLayout
+```
+java.lang.Object
+   ↳	android.view.View
+ 	   ↳	android.widget.TextView
+ 	 	   ↳	android.widget.EditText
+ 	 	 	   ↳	androidx.appcompat.widget.AppCompatEditText
+ 	 	 	 	   ↳	com.google.android.material.textfield.TextInputEditText
+ 	   ↳	android.view.ViewGroup
+ 	 	   ↳	android.widget.LinearLayout
+ 	 	 	   ↳	com.google.android.material.textfield.TextInputLayout
+
+// TextInputLayout which wraps a TextInputEditText, EditText, or descendant to show a floating label when the hint is hidden while the user inputs text.
+```
+
 ## 7、自定义 Dialog
 ```
     // 实例化 Dialog 对象，并应用自定义的 NormalDialogStyle 去掉系统样式
@@ -283,75 +328,58 @@ public class FullScreenActivity extends AppCompatActivity {
 
 ## 8、自定义 View
 
-## 9、Gradle、Gradle Plugin
-Android Studio 构建系统以 Gradle 为基础，并且 Android Gradle 插件添加了几项专用于构建 Android 应用的功能。
-
-虽然 Android 插件通常会与 Android Studio 的更新步调保持一致，但插件（以及 Gradle 系统的其余部分）可独立于 Android Studio 运行并单独更新。
-
-不过，Gradle 和 Android Gradle Plugin 的版本需要匹配，同时，Android GradlePlugin 和 Android Studio 也有兼容性要求。具体可以[参考文档：gradle-plugin](https://developer.android.google.cn/studio/releases/gradle-plugin?hl=zh-cn)。
-
-修改 Gradle 和 Android Gradle Plugin 版本的方法有：
-1. 在 Android Studio 的 ```File > Project Structure > Project``` 菜单中指定 Gradle、Gradle Plugin 版本
-2. Gradle 版本: 在 ```gradle/wrapper/gradle-wrapper.properties``` 文件中修改 Gradle 分发引用来指定：
-    ```
-    ...
-    distributionUrl = "https\://services.gradle.org/distributions/gradle-7.4.2-bin.zip"
-    ...
-    ```
-3. Gradle Plugin 版本: 在顶级 build.gradle 文件中进行指定，如：
-    ``` Groovy
-    plugins {
-        id 'com.android.application' version '7.2.0' apply false
-        id 'com.android.library' version '7.2.0' apply false
-        id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
-    }
-    ```
-
-### 配置参数
-一般情况下有：```buildToolsVersion >= compileSdkVersion >= targetSdkVersion```
-
-#### android.buildToolsVersion
-build.gradle 中，指定```Android SDK Build-Tools```的版本号，**应保持更新 Build Tools 组件**
-
-```Build-Tools```是构建 Android 应用所需的一个 Android SDK 组件，安装在```<sdk>/build-tools/``` 目录中。
-
-更新```Build-Tools```组件的方式有：
-1. 使用 Android SDK 管理器下载该组件的最新版本
-2. 如果您使用的是[Android Plugin for Gradle 3.0.0](https://developer.android.google.cn/studio/releases/gradle-plugin?hl=zh-cn#3-0-0)或更高版本，那么项目会自动使用该插件指定的默认版本的 Build Tools。
-3. 如需使用其他版本的 Build Tools，请在模块的 build.gradle 中使用 buildToolsVersion 进行指定，如下所示：``` android {  buildToolsVersion "30.0.2"} ```
-
-#### android.compileSdkVersion
-build.gradle 中，指定用于编译 apk 的 Android SDK 版本，**推荐总是使用最新的 sdk 进行编译**
-
-编译 apk 用的 sdk 只在编译期使用，并不会包含到 apk 中。
-
-如果使用了```Support Library```,  需要与 ```compileSdkVersion``` 保持大版本号一致。通常，新版的 ```Support Library``` 随着新的系统版本而发布，它为系统新增加的 API 和 新特性提供兼容性支持。
-
-#### android.defaultConfig.minSdkVersion
-build.gradle 中，指定应用可以运行的最低 sdk 要求
-
-特点如下：
- 1. minSdkVersion 是各大应用商店用来判断用户设备是否可以安装某个应用的标志之一
- 2. lint 默认会在项目中运行，它会在使用低于 minSdkVersion 的 API 时发出警告，帮助避免调用不存在的 api。如果只在较高版本的系统上才使用某些 API，通常使用运行时检查系统版本的方式解决
- 3. 应用依赖的库，如 Google Play services 等，可能有它们自己的 minSdkVersion。那么应用设置的 minSdkVersion 必需大于等于所有库的 minSdkVersion。
-
-#### android.defaultConfig.targetSdkVersion
-build.gradle 中，是 Android 提供向前兼容的主要依据
-
-```targetSdkVersion```指定的值表示应用已在该目标版本上做了充分测试, 系统将会为应用启用一些最新的功能和特征。在应用的```targetSdkVersion```没有更新之前系统不会应用最新的行为变化
- 
-比如, Android 6.0 系统引用了运行时权限这个功能, 如果你将targetSdkVersion 指定为23或者更高, 那么系统就会为你的程序启动运行时权限。如果你将targetSdkVersion 指定为22, 那么就说明你的程序最高只在Android 5.1系统上做过充分的测试, Android6.0系统中引入的新功能就不会启动了。
-
-
-## 10、Binding
+## 9、Binding
 那么LiveData与ViewModel的组合使用可以说是双剑合璧，而Lifecycles贯穿其中。
 
 https://ithelp.ithome.com.tw/articles/10233509
 
-## 11、Window
+## 10、Uid、Pid、User Id
+![android_uid_pid](./rsc/android_uid_pid.png)
+
+### 1.1 查看
+```adb shell ps | grep com.tencent.mm```
+
+u0_a110
+
+以"_"为界线, 前一部分是UserId, 后一部分是ApplicationId. 转为int值即为:
+u0_a110 == 0 * 100000 + (10110) == 10110 == uid;
+         (u0)*(十万)   a110
+
+1> u0即表示userId = 0;
+2> a110中的"a"永远翻译为10000(一万)
+2> "userId * 100000 + appId = uid"是代码中写死的规则, 全系统通用.
+
+```adb shell cat proc/[pid]/status```
+查看系统中 进程相关的 Gid、Uid 等信息
+
+### 1.2 获取
+通过包名获取UID
+```
+    PackageManager mPm = getPackageManager();
+    try {
+        ApplicationInfo applicationInfo = mPm.getApplicationInfo("com.tencent.mm", 0);
+        int uid = applicationInfo.uid;
+        Toast.makeText(MainActivity.this, "" + uid, Toast. LENGTH_SHORT).show();
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+```
+
+通过 UID 获取包名
+```
+String packagename = getPackageManager().getNameForUid(uid);
+```
+
+### 1.3 系统分配
+https://www.jianshu.com/p/b33dd49f2ae6
+
+## 11、Reflection
+https://blog.csdn.net/u011240877/article/details/54604212
+https://www.cnblogs.com/jimuzz/p/14297042.html
+
+## 12、Window
 https://blog.csdn.net/weixin_43766753/article/details/108350589
 > 专栏：https://blog.csdn.net/weixin_43766753/category_10258907.html
-
 
 
 
