@@ -325,6 +325,37 @@ MyCircularHandler ..|> MyCircularConfigurationIntentHandling
 
 
 
+## 自定义 UIView
+
+```
+//
+// 一般，通过 myView.layer.cornerRadius = 10 来设置圆角
+// 这里描述的是：自定义带圆角的 UIView 
+//
+class MyView: UIView {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    init() {
+        super.init(frame: .zero)
+        // 会造成视图绘制异常
+        // self.roundCorners([.topLeft, .topRight], radius: 10)
+    }
+
+    func buildView(tabs: [String], curTabIndex: Int = 0) {
+        // 会造成视图绘制异常
+        // self.roundCorners([.topLeft, .topRight], radius: 10)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // 不在此时机设置圆角(如：在 init 中，或，init 后独立调用 buildView 中...)，会造成视图绘制异常
+        self.roundCorners([.topLeft, .topRight], radius: 10)
+    }
+}
+```
+
 
 ## Reference
 - [App Review](https://developer.apple.com/cn/app-store/review/)

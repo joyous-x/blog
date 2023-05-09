@@ -10,8 +10,23 @@ description:
 tags: 
 permalink:
 ---
+# 目录
+- [1、android-基础概念](#1android-基础概念)
+  + [资源目录 drawable && mipmap](#资源目录-drawable--mipmap)
+  + [引入本地其它目录的 module](#引入本地其它目录的-module)
+  + [gradle 中预定义变量的定义和使用](#gradle-中预定义变量的定义和使用)
+- [2、Gradle、Gradle Plugin](#2gradlegradle-plugin)
+- [3、Storage](#3storage)
+- [4、Splash Screen](#4splash-screen)
+- [5、刘海屏适配](#5刘海屏适配)
+- [6、Android Widgets](#6android-widgets)
+- [7、自定义 Dialog](#7自定义-dialog)
+- [8、自定义 View](#8自定义-view)
+- [9、Binding](#9binding)
+- [10、Uid & Pid & User Id](#10uid--pid--user-id)
 
 # Android
+
 ## 1、android 基础概念
 ### 资源目录 drawable && mipmap
 - ```drawable```是默认的图形资源文件夹，而```drawable-v24```是在**API 24及以上**版本中才能使用的图形资源的文件夹
@@ -27,7 +42,7 @@ permalink:
    + 修改 project 的 settings.gradle，以在include中引入模块，如：```include ':app', ':xxx'```
    + 修改 project 的 settings.gradle，以指定模块位置(配置在 local.properties 中的 xxx.dir 属性)，如：
       ``` 
-      /// 注：以下内容参考 flutter 项目对 local.properties 的使用
+      /// 注：以下内容参考 flutter 项目 settings.gradle 对 local.properties 的使用
 
       def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
       def properties = new Properties()
@@ -38,8 +53,106 @@ permalink:
       def XxxPath = properties.getProperty("xxx.dir")
       project(":xxx").projectDir = file("$XxxPath/xxx")
       ```
-5. 在模块中引用
+2. 在模块中引用
    + 修改 module 的 build.gradle： ```dependencies { implementation project(':xxx') }```
+
+### gradle 中预定义变量的定义和使用
+定义示例：
+```
+/// 注：以下内容参考 flutter 项目 build.gradle 对 local.properties 的使用
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+...
+
+android {
+    defaultConfig {
+        ...
+
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+
+        buildConfigField "String[]", "ICON_PACKS", "{\"classic\",\"material\"}"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("相对或绝对路径")
+            storePassword KEY_STORE_PASS_PropertiesDefined
+            keyAlias ALIAS_NAME_PropertiesDefined
+            keyPassword ALIAS_PASS_PropertiesDefined
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "gradle_defined_BUILD_TYPE", "\"debug\""
+            resValue "string", "gradle_defined_uid", "acountXxx"
+            resValue "string", "gradle_defined_pwd", "${propertiesDefinedPwd}"
+        }
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        ove {
+            dimension "version"
+            applicationIdSuffix = ".ove"
+
+            buildConfigField "String", "gradle_defined_BUILD_VERSION", "\"ove\""
+            buildConfigField "String[]", "gradle_defined_BUILD_INFOS", "{\"xxa\"," + "\"xxb\"}"
+        }
+    }
+}
+```
+
+使用示例：
+```
+  fun showToast(ctx: Context) {
+    Toast.show(ctx, BuildConfig.gradle_defined_BUILD_VERSION, Toast.LENGTH_LONG).show()
+  }
+```
+
+```
+  <TextView
+    android:id="@+id/tv_test"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/gradle_defined_uid" />
+```
+
+#### Gradle 中使用 *xxx.properties* 中的预定义变量
+可以在 **.properties** 中自定义在 gradle 文件中使用的常量。常用的文件有两种：
+- ```gradle.properties```
+  + android studio 创建项目时自动创建，存在于项目根目录
+  + gradle 可以直接引用其中定义的变量
+- ```local.properties```
+  + 自定义文件(文件名可自定义，常用 *local.properties*)，存在于项目根目录
+  + gradle 不能直接引用其中定义的变量，需要先加载文件: 如上文描述
+
+#### App 代码中使用 *build.gradle* 中的预定义变量
+可以在 **build.gradle** 中自定义在项目中引用的常量：
+- buildConfigField 
+  + 定义方式: ```buildConfigField 类型, 变量名, 值```
+  + 在代码中: 通过 ```BuildConfig.Xxx``` 引用
+- resValue
+  + 定义方式: ```resValue XML资源中的类型, 变量名, 值```
+  + 在资源中: 通过 ```@string/Xxx``` 引用, 其中*string*可以根据定义使用具体类型
 
 ## 2、Gradle、Gradle Plugin
 Android Studio 构建系统以 Gradle 为基础，并且 Android Gradle 插件添加了几项专用于构建 Android 应用的功能。
@@ -333,7 +446,7 @@ java.lang.Object
 
 https://ithelp.ithome.com.tw/articles/10233509
 
-## 10、Uid、Pid、User Id
+## 10、Uid & Pid & User Id
 ![android_uid_pid](./rsc/android_uid_pid.png)
 
 ### 1.1 查看
