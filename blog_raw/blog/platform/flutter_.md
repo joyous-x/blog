@@ -13,6 +13,16 @@ permalink:
 
 # Flutter
 
+## Future
+在传统的基于 闭包 的异步编程中，经常会出现 地狱嵌套 的问题，这使得高度异步的代码几乎无法阅读。Promise 则是解决这个问题的众多方案之一。
+
+### Future vs. Promise
+Future 和 Promise 是异步编程中经常提到的两个概念，两者的关系经常用一句话来概括 —— A Promise to Future。
+
+我们可以认为 Future 和 Promise 是一种异步编程技术的两个部分：
+- Future 是异步任务的返回值，表示一个未来值的占位符，是值的消费者。
+- Promise 是异步任务的执行过程，表示一个值的生产过程，是值的生产者。
+
 ## Flutter 状态管理
 IOS 和 Android 的原生开发模式是命令式编程模式。命令式编程要求开发者一步步描述整个构建过程，从而引导程序去构建用户界面。
 

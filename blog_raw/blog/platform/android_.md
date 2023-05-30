@@ -11,19 +11,48 @@ tags:
 permalink:
 ---
 # 目录
-- [1、android-基础概念](#1android-基础概念)
-  + [资源目录 drawable && mipmap](#资源目录-drawable--mipmap)
-  + [引入本地其它目录的 module](#引入本地其它目录的-module)
-  + [gradle 中预定义变量的定义和使用](#gradle-中预定义变量的定义和使用)
-- [2、Gradle、Gradle Plugin](#2gradlegradle-plugin)
-- [3、Storage](#3storage)
-- [4、Splash Screen](#4splash-screen)
-- [5、刘海屏适配](#5刘海屏适配)
-- [6、Android Widgets](#6android-widgets)
-- [7、自定义 Dialog](#7自定义-dialog)
-- [8、自定义 View](#8自定义-view)
-- [9、Binding](#9binding)
-- [10、Uid & Pid & User Id](#10uid--pid--user-id)
+- [目录](#目录)
+- [Android](#android)
+  - [1、android 基础概念](#1android-基础概念)
+    - [资源目录 drawable \&\& mipmap](#资源目录-drawable--mipmap)
+    - [引入本地其它目录的 module](#引入本地其它目录的-module)
+    - [gradle 中预定义变量的定义和使用](#gradle-中预定义变量的定义和使用)
+      - [Gradle 中使用 *xxx.properties* 中的预定义变量](#gradle-中使用-xxxproperties-中的预定义变量)
+      - [App 代码中使用 *build.gradle* 中的预定义变量](#app-代码中使用-buildgradle-中的预定义变量)
+  - [2、Gradle、Gradle Plugin](#2gradlegradle-plugin)
+    - [配置参数](#配置参数)
+      - [android.buildToolsVersion](#androidbuildtoolsversion)
+      - [android.compileSdkVersion](#androidcompilesdkversion)
+      - [android.defaultConfig.minSdkVersion](#androiddefaultconfigminsdkversion)
+      - [android.defaultConfig.targetSdkVersion](#androiddefaultconfigtargetsdkversion)
+  - [3、Storage](#3storage)
+  - [4、Splash Screen](#4splash-screen)
+    - [低版本 Android 使用 SplashScreen API](#低版本-android-使用-splashscreen-api)
+    - [启动画面的元素和机制](#启动画面的元素和机制)
+    - [迁移启动画面实现](#迁移启动画面实现)
+  - [5、全面屏(刘海屏)适配](#5全面屏刘海屏适配)
+    - [介绍：StatusBar、ActionBar、StatusBar](#介绍statusbaractionbarstatusbar)
+    - [状态栏的显示](#状态栏的显示)
+    - [沉浸式状态栏的适配](#沉浸式状态栏的适配)
+    - [全屏显示的适配](#全屏显示的适配)
+      - [Android P 及以上 适配](#android-p-及以上-适配)
+    - [Reference](#reference)
+  - [6、Android Widgets](#6android-widgets)
+    - [6.1 EditText \&\& TextInputLayout](#61-edittext--textinputlayout)
+  - [7、自定义 Dialog](#7自定义-dialog)
+  - [8、自定义 View](#8自定义-view)
+  - [9、Binding](#9binding)
+  - [10、Uid \& Pid \& User Id](#10uid--pid--user-id)
+    - [1.1 查看](#11-查看)
+    - [1.2 获取](#12-获取)
+    - [1.3 系统分配](#13-系统分配)
+  - [11、Window](#11window)
+  - [12、Reflection](#12reflection)
+- [TODO：](#todo)
+  - [Gradle](#gradle)
+  - [常见问题](#常见问题)
+    - [UIAutomatorViewer](#uiautomatorviewer)
+  - [Resources](#resources)
 
 # Android
 
@@ -323,9 +352,32 @@ requestLegacyExternalStorage | - | 有效<br>设置为 true 可停用分区存�
 可以参考官方文档：[将现有的启动画面实现迁移到 Android 12 及更高版本](https://developer.android.google.cn/guide/topics/ui/splash-screen/migrate?hl=zh-cn)
 
 
-## 5、刘海屏适配
+## 5、全面屏(刘海屏)适配
 [android_notch](./rsc/android_notch_define.png)
 
+### 介绍：StatusBar、ActionBar、StatusBar
+- StatusBar 
+  + 顶部系统状态栏
+- ActionBar -> TitleBar(android 3.0推出) -> ToolBar(android 5.0推出)
+  + 应用状态栏
+- NavigationBar
+  + 底部导航栏
+
+值得注意的是 TitleBar 和 ActionBar 在本质上是一样的，他们都不是我们常用的控件的形式，而是绑定在 DecorView 中的，可以通过 getWindow().setFeatureInt() 暴露出的几个方法进行修改功能和样式, 如：
+```
+使用 ".NoActionBar" 的主题风格，如："@style/Theme.AppCompat.Light.NoActionBar"
+  可以防止应用使用原生 ActionBar 类提供应用栏
+requestWindowFeature(Window.FEATURE_NO_TITLE) 
+getSupportActionBar().hide()
+```
+
+而 Android 5.0 推出了 ToolBar 则是一个完全独立的控件，可以独立设置，如：
+```
+ToolBar toolBar = (ToolBar)findViewById(R.id.toolbar)
+setSupportActionBar(toolBar)
+```
+
+### 状态栏的显示
 对状态栏的显示，一般有三种情况：
 1. 正常显示
    + 不用专注于状态栏
@@ -486,14 +538,32 @@ String packagename = getPackageManager().getNameForUid(uid);
 ### 1.3 系统分配
 https://www.jianshu.com/p/b33dd49f2ae6
 
-## 11、Reflection
-https://blog.csdn.net/u011240877/article/details/54604212
-https://www.cnblogs.com/jimuzz/p/14297042.html
+## 11、Window
+窗口管理：
+- window 
+    + view tree : 是 window 机制的操作单位，每一个 view tree 对应一个 window。
+        - view
+view树（后面使用view代称，后面我说的view都是指view树）是window的存在形式，window是view的管理者，同时也是view的(逻辑)载体
 
-## 12、Window
+
+- window 属性，其常量值大部分存储在WindowManager.LayoutParams类中
+  + type
+    - 对应窗口的 Z-Order (越大越靠近用户)
+      + 应用程序窗口：Z-Order 在 1-99
+      + 子窗口：Z-Order在1000-1999
+      + 系统级窗口：如Toast，Z-Order在2000-2999。如果要弹出自定义系统级窗口需要动态申请权限
+  + flag
+  + solfInputMode
+  + x、y、gravity、alpha属性：指定window的位置、透明度
+  + format：window的像素点格式，值定义在PixelFormat中
+
+
 https://blog.csdn.net/weixin_43766753/article/details/108350589
 > 专栏：https://blog.csdn.net/weixin_43766753/category_10258907.html
 
+## 12、Reflection
+https://blog.csdn.net/u011240877/article/details/54604212
+https://www.cnblogs.com/jimuzz/p/14297042.html
 
 
 > ------------------------
