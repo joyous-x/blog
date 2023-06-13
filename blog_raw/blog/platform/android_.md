@@ -365,10 +365,9 @@ requestLegacyExternalStorage | - | 有效<br>设置为 true 可停用分区存�
 
 值得注意的是 TitleBar 和 ActionBar 在本质上是一样的，他们都不是我们常用的控件的形式，而是绑定在 DecorView 中的，可以通过 getWindow().setFeatureInt() 暴露出的几个方法进行修改功能和样式, 如：
 ```
-使用 ".NoActionBar" 的主题风格，如："@style/Theme.AppCompat.Light.NoActionBar"
-  可以防止应用使用原生 ActionBar 类提供应用栏
 requestWindowFeature(Window.FEATURE_NO_TITLE) 
 getSupportActionBar().hide()
+...
 ```
 
 而 Android 5.0 推出了 ToolBar 则是一个完全独立的控件，可以独立设置，如：
@@ -376,6 +375,13 @@ getSupportActionBar().hide()
 ToolBar toolBar = (ToolBar)findViewById(R.id.toolbar)
 setSupportActionBar(toolBar)
 ```
+
+如果不想使用系统提供的原生 ActionBar，可以通过以下方式隐藏或禁止：
+1. 使用```.NoActionBar```的主题，如："@style/Theme.AppCompat.Light.NoActionBar"
+   + 使用此方法时，Activity 中 getActionBar() 会返回 null, 也就是说，代码中没有机会再操作ActionBar
+2. 在主题中隐藏：设置```android:windowActionBar```为 false
+3. 在代码中隐藏：```getSupportActionBar().hide()```
+   + 注意 getSupportActionBar 和 getActionBar 的使用
 
 ### 状态栏的显示
 对状态栏的显示，一般有三种情况：

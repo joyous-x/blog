@@ -17,18 +17,32 @@ permalink:
 > **为聊天机器人角色编写非常棒的提示是一项惊人的高杠杆技能，也是使用点点自然语言进行编程的早期示例**
 > --- Sam Altman
 
+## Chat
+目前的 AI 非常善于各种**转换**任务：如，行文风格、翻译任务等
 
-## 绘画
+关于 prompts(提示词):
+1. 明确
+2. 结构化
+3. 引导：step by step
+
+目前的 ChatGPT 等 AI 有一定的局限性，常称之为"幻觉"，是因为：它不知道自己的知识边界，所以会在某些情况下胡言乱语
+
+相关的 AI 使用中，常见的推理任务有：
+1. 情感分析
+2. 实体识别
+3. 主题提取
+
+## Painting
 
 ### Stable Diffusion
 基本流程：```添加噪声 → 深度学习 → 去噪并风格化重绘```
 
 1. 模型
   + 主流模型网站
-    - Hugging Face（抱脸）：https://huggingface.co/models
-      + 深度学习和人工智能的专业网站，大佬多，但找起来不是很直观
-    - Civitai（C站）：https://civitai.com/
-      + 全世界最受欢迎的AI绘画模型分享网站，除了模型还有很多优秀作品展示
+    - [Hugging Face（抱脸）](https://huggingface.co/models)
+      + 人工智能的专业网站，大佬多，但不是很直观
+    - [Civitai（C站）](https://civitai.com/)
+      + 全世界最受欢迎的AI绘画模型分享网站，除了模型外还有很多优秀作品展示
   + 分类
     + 二次元
       - 模型推荐：Anything V5、Counterfeit V2.5、Dreamlike Diffusion
@@ -96,6 +110,9 @@ permalink:
         样貌身形：如bad proportions、ugly
         四肢问题：如missing hands、extra fingers
         ``` 
+    + 提示词可以参考一些网站的**例图与提示词记录**的优秀示例：如，
+      - [OpenArt](https://openart.ai/)
+      - [ArtHubAi](https://arthub.ai/)
 3. 高清修复
    + Hi-Res Fix : 文生图, 涉及了重绘的放大
    + SD upscale : 图生图, 涉及了重绘的放大

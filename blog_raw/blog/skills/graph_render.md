@@ -9,8 +9,8 @@ description:
 tags: 
 permalink:
 ---
-
 # Render
+## Render
 DX包含D3D，D3D是DX的主要图形处理部分，OpenGl从某方面来说是一个API。
 
 ```mermaid
@@ -46,6 +46,12 @@ flowchart LR
 ![Window程序、Direct3D、GDI 和硬件间的关联](./rsc/graph_d3d_gdi_sys.png)
 
 ![OpenGL Geometry Primitives](./rsc/graph_opengl_geometric_primitives.png)
+
+## 常见操作：mask、blendMode
+- mask : 蒙层
+  + 只使用 alpha 通道, ```mask.alpha(值变换到在0 ~ 1之间) * ramImage.alpha = finalImage.alpha```
+- blend mode
+  + TODO：
 
 ## Reference
 - [3D渲染相关基本概念](https://www.cnblogs.com/kekec/p/8463292.html)
