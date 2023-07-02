@@ -31,6 +31,7 @@ permalink:
     - [启动画面的元素和机制](#启动画面的元素和机制)
     - [迁移启动画面实现](#迁移启动画面实现)
   - [5、全面屏(刘海屏)适配](#5全面屏刘海屏适配)
+    - [ToolBar 介绍](#toolbar-介绍)
     - [介绍：StatusBar、ActionBar、StatusBar](#介绍statusbaractionbarstatusbar)
     - [状态栏的显示](#状态栏的显示)
     - [沉浸式状态栏的适配](#沉浸式状态栏的适配)
@@ -353,7 +354,21 @@ requestLegacyExternalStorage | - | 有效<br>设置为 true 可停用分区存�
 
 
 ## 5、全面屏(刘海屏)适配
-[android_notch](./rsc/android_notch_define.png)
+![android_notch](./rsc/android_notch_define.png)
+
+### ToolBar 介绍
+![android_toolbar_view](./rsc/android_toolbar_view.png)
+1、toolbar:navigationlcon 设置 navigation button
+2、toolbar:logo 设置 1ogo 图标
+3、toolbar:title 设置标题
+4、toolbar:title TextColor 设置标题文字颜色
+5、toolbar:subtitle 设置副标题
+6.toolbar:subtitleTextColor 设置副标题文字颜色
+7、toolbar:titleTextAppearance 设置 title text 相关属性，如：字体,颜色，大小等等
+8、toolbar:subtitle TextAppearance 设置 subtitle text 相关属性，如：字体,颜色，大小等等
+9、toolbar:logoDescription logo 描述
+10、android:background Toolbar 背景
+11、android:theme 主题
 
 ### 介绍：StatusBar、ActionBar、StatusBar
 - StatusBar 

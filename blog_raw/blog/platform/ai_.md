@@ -189,3 +189,49 @@ permalink:
          单批数量推荐保持为1
              因为单批作多张图的方法是将其“拼合”为一张大图去生成的
         ``` 
+
+
+
+吴恩达-扩散模型diffusion的工作原理
+https://www.bilibili.com/video/BV1MP411D7cY/?spm_id_from=333.788.recommend_more_video.7&vd_source=0f4802c5cb8ea34e5603a6296a21f66e
+吴恩达-2022-中英字幕
+https://www.bilibili.com/video/BV1pZ4y1v7Cf/?p=116&vd_source=0f4802c5cb8ea34e5603a6296a21f66e
+
+
+
+[Stable Diffusion（一）Stable Diffusion 原理](https://www.cnblogs.com/zackstang/p/17324257.html)
+[Stable Diffusion（二）WebUI使用指南](https://www.cnblogs.com/zackstang/p/17324263.html)
+[Stable Diffusion（三）Dreambooth finetune模型](https://www.cnblogs.com/zackstang/p/17324331.html)
+https://stable-diffusion-art.com/samplers/#Noise_schedule
+
+
+https://www.bilibili.com/video/BV1MP411D7cY/?spm_id_from=333.788.recommend_more_video.7&vd_source=0f4802c5cb8ea34e5603a6296a21f66e
+https://www.bilibili.com/video/BV1bm4y1A7v7/?vd_source=0f4802c5cb8ea34e5603a6296a21f66e
+
+
+
+1. 角色提示词模版
+   + https://github.com/f/awesome-chatgpt-prompts/blob/6717b3346e300839248e4d99f90be8fb130a8197/prompts.csv
+2. vits 语音
+   + [火山引擎语音合成能力](https://www.volcengine.com/product/tts)
+     + 不支持跨多语言(中英可以)
+3. ai-chat：
+   + 智普api
+
+
+[Build & Share Delightful Machine Learning Apps](https://gradio.app/)
+
+
+
+
+no idea 级别的噪声图，完全看不出是什么，但它的每个像素都是通过正态分布采样得到的 ？？？
+
+So, when you ask the neural network for a new sprite:
+    1. You can sample noise from the normal distribution
+    2. Get a completely new sprite by using the net to remove the noise
+
+Sampling
+
+
+
+

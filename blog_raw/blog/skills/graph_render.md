@@ -50,7 +50,9 @@ flowchart LR
 ## 常见操作：mask、blendMode
 - mask : 蒙层
   + 只使用 alpha 通道, ```mask.alpha(值变换到在0 ~ 1之间) * ramImage.alpha = finalImage.alpha```
-- blend mode
+  + 在 ps 中，一般图层蒙版只用黑白和不同浓度的灰色，来控制图层的不透明度
+    - 白色是不透明(表示不透明度FF)，黑色是透明(表示不透明度00)，灰色是半透明，越灰则透明度越高
+- blend mode : 图层混合，可以改变图片的色彩
   + TODO：
 
 ## Reference

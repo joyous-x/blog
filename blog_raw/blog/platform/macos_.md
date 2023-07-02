@@ -11,163 +11,6 @@ permalink:
 
 # MacOS 要点
 
-## 基础概括
-### 命名
-在开发过程中经常见到一些库的前缀，如，NS 等，了解其含义后可以帮助我们快速掌握其核心：
-- NS
-  + 乔帮主当年被人挤兑出苹果，自立门户的时候做了个公司叫做 NextStep，里面这一整套开发包很是让一些科学家们喜欢，而现在Mac OS用的就是NextStep这一套函数库，里面所有的类都用NextStep的缩写打头命名，也就是 NS**** 
-- CF：```Core Foundation```
-- CA：```Core Animation```
-- CG：```Core Graphics```
-- UI：```User Interface```
-
-### Project & Package
-- Workspace
-  - Xcode的一种文件，用来管理工程和里面的文件，一个workspace可以包含若干个工程，甚至可以添加任何你想添加的文件
-  - workspace中的工程默认都是在同一个编译目录下，也就是workspace的编译目录。由于每个工程中的文件都在workspace的编译目录下，所以每个工程之间的文件都是相互可以引用的。
-- Project
-  - project里面包含了所有的源文件，资源文件和构建一个或者多个product的信息。project利用他们去编译我们所需的product，也帮我们组织它们之间的关系。
-  - 一个project可以包含一个或者多个target。project定义了一些基本的编译设置，每个target都继承了project的默认设置，每个target可以通过重新设置target的编译选项来定义自己的特殊编译选项。
-- Target
-  - target定义了构造一个product所需的文件和编译指令。一个target对应于一个product。target说白了就是告诉编译系统要编译的文件和编译设置。编译指令就是根据build settings and build phases来确定的。
-- Scheme
-  - scheme定义了编译集合中的若干target，编译时的一些设置以及要执行的测试集合。
-- Group
-  - 用于在 XCode 的目录结构导航栏中组织源文件。Project文件始终是组(group)和文件结构层次结构(file structure hierarchy)的根
-  - 指定某些文件的所属工程目录(.pbxproj 文件)的路径
-
-- Package : Swift Package
-  - Multiplatform
-- Framework 
-  - Multiplatform
-  - 实质上，就是一个有着特定结构的文件夹，其中存放各种共享的资源。这些资源通常是 图片、Xibs、动态库、静态库...等，它们被封装成 bundle 存储
-  - 有一个独立的工作区(运行环境)，所以嵌入的依赖库可以和 app 环境的依赖库相同，且不会产生 duplicate symbol
-- Static Library
-  - 不能使用 Swift 代码 ？？
-- Dynamic Library
-- Metal Library
-  - Metal 是一个和 OpenGL ES 类似的面向底层的图形编程接口，通过使用相关的 api 可以直接操作 GPU
-  - Metal 是 iOS 平台独有的，意味着它不能像 OpenGL ES 那样跨平台，但是它能最大的挖掘苹果移动设备的 GPU 能力，进行复杂的运算，像 Unity 等游戏引擎都通过 Metal 对 3D 能力进行了优化
-  - 下边的层级关系可以帮助我们更好的认识 Metal(平时接触的较多的是前两层)：
-    - ```UIKit -> Core Graphics/Animation/Image -> Metal/OpenGL ES -> GPU Driver -> GPU -> Display```
-
-
-## 过审
-```mermaid 
-graph LR
-    subgraph 提审流程
-        A(Prepare For Upload) --> B(Waiting For Review) --> C(In Review) --> D(Pending Developer Release) --> E(Ready For Sale)
-    end
-```
-
-苹果审核，分为：
-- 预审
-- 机审  
-  + 机审主要是对代码进行机器审核，排查APP是否重复应用
-- 人工审核
-  + 主要在 In Review（审核）阶段
-  + 这个阶段主要看的是App的元数据，例如APP封面、功能、体验等等，注重用户体验。
-
-### 马甲包
-马甲包主要有以下几种用途：
-
-#### A/B测试
-正常情况下，任何一款产品都是要不断的更新功能的。如果我们直接在主包上更新，一旦新功能不被用户接受那就损失大了，我们前期大量投资带来的用户将会流失，这对很多产品开发者来说是不可承受之痛。
-
-如果使用马甲包，则可以随意测试新功能，好的功能就在主包上迭代，不好的也无所谓，马甲包本身就是来背锅的。
-
-#### 抗风险
-马甲包对于优化人员来说就是一个试水的工具，用于app刷量、规避账号限制、防下架应急措施、竞品竞争等，规避主包风险，当主APP或马甲包被应用市场下架后，用户也可以被导向另一APP。
-
-#### 导量
-主包和马甲包属于同一个平台，用户信息可以共享。通过弹窗,广告,Push等引导用户到App Store下载主App。有一部份App接了网盟相互导流。
-
-#### 增加关键词覆盖数
-App Store关键词长度上限是100个字符,据了解人为正常优化的极限是关键词覆盖数在4000左右,那些覆盖数在8000+的都是利用了苹果漏洞。所以,多做一个马甲,也就意味着覆盖的关键词可以更多。
-
-### Guideline 4.3 - Design - Spam (重复应用)
-对于马甲包，需要仔细研究苹果的审核条款以及采用逆向思维（假如我是审核员，我会怎么审核我们提交的APP）来分析审核中出现的问题。也可以参考现有成功案例，如：**快手、快手极速版、快手概念版；抖音、抖音极速版 等**
-
-一个 ipa 包主要包含：元数据、代码 以及 资源，所以，可以考虑从以下几方面来改善苹果给予应用的 4.3 反馈：
-
-<div style="width:50px">类别</div> | <div style="width:90px">项目</div> | <div style="width:100px">名称</div> | <div style="width:25px">优先级</div> | 描述 | 说明
-:-- | :-- | :-- | --- | --- | ---
-元数据 | APP信息 | 1. 名字<br>2. ICON<br>3. 标题、副标题<br>4. 应用描述<br>5. Bundle ID(包名)<br>6. 版权人<br>7. 版本号(规则) | P0 | | 
-元数据 | APP信息 | 1. 商店宣传图<br>2. 搜索关键词<br>3. 支持网站<br>4. 隐私协议网站 | P0 | | 
-元数据 | APP信息 | 1. 分类<br>2. 地区<br>3. 价格 | P0 | 1. 修改产品分类，打造与原产品不同的产品侧重属性分类<br>2. 修改应用程序发布地区，打造与原产品不同的售卖地区或分不同地区运营<br>3. 针对收费产品，可以修改应用程序价格，打造与原产品不同的价格级别
-环境 | 帐号 | 开发者帐号<br>测试账号<br>演示账号 | P0 | | 1. 在同一设备对多个苹果账号开启双重验证的话，苹果很容易将账号之间关联起来
-环境 | 打包<br>上传<br>提交 | 电脑<br>IP<br>提交间隔 | P0 | | 1. 每台MAC上打的马甲包不要超过5个<br>2. 上传马甲包时，IP 不要跟其他马甲包的 IP 相同<br>3. 不同马甲包提交应当间隔一天以上
-资源 | 合集bundle<br>布局文件<br>图片<br>音视频<br>字体 | 1. 名称、路径<br>2. 属性<br>3. hash值 | P0 | 1. 修改资源(压缩或微调文件)<br>2. 适当添加一些(无用)资源<br>3. 适当删除一些资源| 小道消息，UDID(32位十六进制字符串)也是苹果匹配文件特征的一个方式
-资源 | 链接 | 域名<br>接口<br>跳转 ? | P0 | | 苹果会开VPN测试国内APP
-人工 | 界面 | UI风格<br>主色调 | P1 | | 
-运行时 | UI界面 | 1. 首页面<br>2. 其他页面 | P0 | 1. 运行时界面截屏相似度<br>2. 首页面一定要有差异化<br>3. 最好全新UI
-运行时 | 产物 | | ? | 1. 运行时生成的文件(如，日志、配置)<br>2. 
-运行时 | 网络 | | ??? | 1. 参数<br>2. 应答 <br>3. webview | 据说，会进行 Mock测试，修改返回信息，然后看APP是否有隐藏功能
-运行时 | 代码 | | ?? | 越狱环境下，通过运行时拿到app的所有代码，hook 网络请求，hook C函数，hook 调用栈等
-代码 | 混淆 | 类<br>方法<br>属性 | P0 | | 
-代码 | 混淆 | 字符串常量<br>uuid | P0 | | uuid 生成规则未知，可以用其他工程生成的uuid替换<br>常见的 uuid 在 project.pbxproj 中
-代码 | 混淆 | 文件名<br>目录名<br>工程名<br>目录结构 | P0 | | 文件包括：包括资源和代码
-代码 | 混淆 | 静态库加密 | P1 | | 几维安全的在线静态库加密，过审率高且免费，缺陷不能支持脚本加密
-代码 | 无效代码 | 类、方法、属性、字符串常量 | P1 | | 1. 垃圾类之间相互调用、主代码调用垃圾类垃圾函数<br>2. 垃圾代码量占总代码的30% - 40%为宜<br>3. 放在独立目录即可
-代码 | 重构 | 类或方法 | P1 | 有理由相信，类的属性或方法数超过某一阈值时，会被进一步审核 | 如，某个文件比较大，就需要多去修改里面的方法名，变量名，以及顺序；
-代码 | 重构 | 功能 | ？ | 1. 删除部分功能<br>2. 添加某些功能 | 修改功能特征，最好不能完全使用之前的功能
-代码 | 重构 | 第三方库(框架) | ??? | 1. 替换、添加或删除<br>2. 导入几个无用库、框架<br>3. 嵌入的SDK需要单独申请(?) | 个人觉得，应当排除掉三方库，再来比对项目独有特征的相似性
-
-
-注意：
-- App的应用元数据指的是我们需要在开发者后台所填写的资料，包括但不限于标题、简介、关键词等。这些尽量保持唯一性，对于过审是有帮助的
-- 代码审核，主要在 机器审核 阶段，我们认为要求代码的相似程度不高于45%
-- 混淆可以降低反馈 4.3 的概率，但是苹果也会逐渐加强这方面的审核技术，如果检测到代码混淆比较明显的话，就会给予 2.3.1 的反馈。
-- 推荐用一些比较高级的代码混淆技术来提高过审几率，例如顶象技术的iOS安全编译器来混淆代码的，主要还免费
-- 编译路径，xcode编译的时候会把部分文件的路径编译进二进制，用户Users目录同时也会包含在里面
-- 两个马甲包不要关联到同一个开发者帐号的信息；比如打包时关联。并且苹果对开发者帐号会进行权重管理，权重越低的帐号，审核越严格。同样的包，可能在权重高的帐号上就能过，在权重低的帐号上就是4.3
-- *马甲包激活数据能否提供 ; 马甲包用户数据库独立，不使用主包的库（主要用于IDFA排重）;*
-
-## Symbols - dSym
-
-### 简介
-dSym 指的是 Debug Symbols, 我们称之为符号表文件。包含着内存与符号如函数名，文件名，行号等的映射，在崩溃日志分析方面起到了举足轻重的作用。
-
-dwarf 的全称是 Debugging with Attribute Record Formats，其实，就是一种源码调试信息的记录格式，主要用于源码级调试，如 gdb、llvm 调试或者在 Xcode 进行断点调试。
-
-### 构成
-dSYM 的文件构成：
-```
-MyDemo.app.dSYM
-└── Contents
-    ├── Info.plist
-    └── Resources
-        └── DWARF
-            └── MyDemo 
-```
-
-在汇编产生的目标文件(```*.o```)中，包含着```dwarf```信息。
-1. 如果我们在 Debug 模式下打包且选择了 Debug Information Format 为 DWARF
-   - 那么最终的 App Mach-O 文件中则会包含 dwarf 信息
-2. 如果我们在 Release 模式下打包且选择了 Debug Information Format 为 DWARF with dSYM File
-   - 那么则会通过 dsymutil 根据 Mach-O 文件中的 dwarf 信息生成```dSYM```文件
-   - 然后通过 strip 命令去除掉 Mach-O 中的调试符号化信息，以减少包体积以及不必要的源码隐私泄漏
-
-
-### 疑问
-#### XCode编译后没有生成dSYM文件？
-
-XCode Release 编译默认会生成 dSYM 文件，而 Debug 编译默认不会生成。可以修改对应的Xcode配置，如下即可：
-```
-XCode -> Build Settings -> Code Generation -> Generate Debug Symbols -> Yes
-XCode -> Build Settings -> Build Option -> Debug Information Format -> DWARF with dSYM File
-```
-
-此外，只有当 Crash 对应 APP 的 UUID 和 dSYM 的 UUID 相匹配时，符号才可用。可用通过命令查看 dump 的 UUID：```xcrun dwarfdump --uuid <dSYM文件>```
-
-#### XCode编译后生成的dSYM文件位置？
-找到 XCode 的项目目录列表中的```Products```目录，其中包含了生成的```*.app```文件，右键此文件，选择```Show in Finder```，即可看到```*.app.dSYM```文件
-
-
-### Reference
-- [Bugly iOS 符号表配置](https://bugly.qq.com/docs/user-guide/symbol-configuration-ios/?v=1.0.0)
-
-
 ## Rending
 ![ios-rendering-framework-relationship](rsc/ios-rendering-framework-relationship.png)
 
@@ -381,37 +224,10 @@ MyCircularHandler ..|> MyCircularConfigurationIntentHandling
    + 通过 小组件View 的 widgetURL 方法指定:
       - 注意：```Widgets support one widgetURL modifier in their view hierarchy. If multiple views have widgetURL modifiers, the behavior is undefined.```
 
-
+ 
 ## DynamicIsland(灵动岛)、LiveActivity(实时活动)
 ### 简介
-1. 样式(显示实时活动的视图)
-   + 包括：紧凑前视图、紧凑尾视图、最小视图和扩展视图
-   + 位置：
-     + 灵动岛
-       - 条件：需要设备支持灵动岛
-       - 视图：当用户触摸灵动岛，且灵动岛中有紧凑或最小视图，同时实时活动更新时，会出现扩展视图
-     + 锁屏界面上的 banner 卡片
-       - 条件：需要设备系统在 iOS 16 及以上
-       - 视图：在不支持灵动岛的设备上，锁屏时将显示此视图
-   + 在支持实时活动的设备的灵动岛上：
-       - 当 App 开始一个唯一活跃的实时活动时，紧凑前视图和尾视图一起出现，在灵动岛中形成一个有凝聚力的视图
-       - 当多个实时活动处于活动状态时(无论是来自我们的 App 还是来自多个 App)，系统会选择并显示两个最小视图：
-         + 一个最小视图显示附加到灵动岛，而另一个显示为分离的样式(一个同灵动岛等高的圆形视图)
-       - 默认情况下，灵动岛中的紧凑视图和最小视图使用黑色背景颜色和白色文本。 使用 keylineTint(_:) 修改器将可选的色调应用到灵动岛，例如青色
-2. 更新
-   + 开发者若要更新实时活动的动态数据，请在 App 中使用 ActivityKit 框架或允许实时活动接收远程推送通知
-     - 而小组件通过 timeline 机制进行更新
-   + 当实时活动被主动停止时，视图仍可能会存在一段时间，所以，在停止时，系统提供了机会以更新最后的状态：
-      ```activity.end(using: finalState, dismissalPolicy: dismissalPolicy)```
-3. 限制
-   + ActivityKit 更新和远程推送通知更新的更新动态数据大小不能超过 4KB
-   + 每个实时活动运行在自己的沙盒中，它无法访问网络或接收位置更新
-     - 这一点与小组件有所不同
-   + 实时活动会一直保留在锁定屏幕上，直到用户主动将其移除，或交由系统在4小时后将其移除
-     - 实时活动会灵动上岛最多保留8小时，在锁定屏幕上最多保留12小时
-   + 为确保系统可以在每个位置显示 App 的实时活动，开发者必须支持所有视图
-   + 系统会疏忽任何动画修饰符——例如，withAnimation(_:_:) 和 animation(_:value:) 并改用体系的动画时刻。
-4. 样式变化
+
 
 
 // https://juejin.cn/post/7144268555779850248
@@ -426,11 +242,6 @@ MyCircularHandler ..|> MyCircularConfigurationIntentHandling
 375 x 667 pt | 148 x 148 pt | 322 x 148 pt | 322 x 324 pt
 320 x 568 pt | 141 x 141 pt | 291 x 141 pt | 291 x 299 pt
 
-
-机型 | Screen Size | Island | Island Lead/Trail | Island Mini | 
-:- | :-: | :-: | :-: | :-: | :-: | 
-14 Pro | :-: | 37 * 126 | 37 * 52 | 37 * (37 ~ 45)
-14 Pro Max | :-: | 37 * 126 | 37 * 62 | 37 * (37 ~ 45)
 
 ## 自定义 UIView
 
@@ -559,3 +370,5 @@ NO. | Name | Description | Note | Others
 5 | network | post、get、download and decompress
 6 | net image | 
 7 | **More** | 
+
+
