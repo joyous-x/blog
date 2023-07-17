@@ -10,4 +10,4 @@ permalink:
 ---
 
 # tcpip思维导图
-![tcpip思维导图](../rsc/network/tcpip_mind_map.png)
+![tcpip思维导图](./rsc/tcpip_mind_map.png)

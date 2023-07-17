@@ -31,7 +31,7 @@ GFW
 
 做 为虚拟网卡驱动，Tun/tap驱动程序的数据接收和发送并不直接和真实网卡打交道，而是通过用户态来转交。
 
-![vpn_data_flow](../rsc/vpn_data_flow.png)
+![vpn_data_flow](./rsc/vpn_data_flow.png)
 SS 原理
 
 ## 
@@ -75,7 +75,7 @@ IP 地理位置为什么重要？DNS 解锁又是怎么一回事？
     vpn -> ss/ssr -> v2ray -> trojan
 
 协议使用：
-    vpn: 数据链路层，完全没有特征对抗，主流的VPN协议有PPTP、L2TP、IPSec、OpenVPN和SSTP，具体区别如下：![vpn_protocols_comparison](../rsc/vpn_protocols_comparison.png)
+    vpn: 数据链路层，完全没有特征对抗，主流的VPN协议有PPTP、L2TP、IPSec、OpenVPN和SSTP，具体区别如下：![vpn_protocols_comparison](./rsc/vpn_protocols_comparison.png)
 
 socks5: 会话层
 v2ray: 常用协议组合 - vmess + websocket + tls

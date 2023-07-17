@@ -273,5 +273,5 @@ MySQL EXPLAIN 只能解释 SELECT 查询，并不会对存储程序调用 和 IN
 存储引擎中的锁
 InnoDB 在 SHOW INNODB STATUS 的输出中显露了一些锁信息。如果事务正在等待某个锁，这个锁会显示在 SHOW INNODB STATUS 输出的 TRANSACTIONS 部分。
 
-![mysql.执行路径](../rsc/db/mysql.exec_path.png)
-![mysql.如何分析和配置查询缓存](../rsc/db/mysql.analyze_and_query.png)
+![mysql.执行路径](./rsc/db/mysql.exec_path.png)
+![mysql.如何分析和配置查询缓存](./rsc/db/mysql.analyze_and_query.png)

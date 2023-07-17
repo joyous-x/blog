@@ -12,7 +12,7 @@ permalink:
 # Linux
 
 ## 性能领域工具图谱
-![Linux性能领域大师布伦丹·格雷格的工具图谱](../rsc/linux_perfermance_tools_by_BrendanGregg.png)
+![Linux性能领域大师布伦丹·格雷格的工具图谱](./rsc/linux_perfermance_tools_by_BrendanGregg.png)
 
 ## 常用命令
 Category | Command | Function | Example | Note

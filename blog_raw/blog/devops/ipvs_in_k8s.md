@@ -26,13 +26,13 @@ k8s 版本大于 1.8 时，默认采用的 ipvs。我们的集群 k8s 的底层�
 ### 知识点准备
 - ipvs 工作模型
     + LVS DR原理详解图
-        - ![LVS DR原理详解图](../../rsc/ipvs/LVS_DR.png)
+        - ![LVS DR原理详解图](./rsc/ipvs/LVS_DR.png)
     + LVS FULLNAT模式
-        - ![LVS FULLNAT模式](../../rsc/ipvs/LVS_FULLNAT.png)
+        - ![LVS FULLNAT模式](./rsc/ipvs/LVS_FULLNAT.png)
     + LVS NAT原理详解图
-        - ![LVS NAT原理详解图](../../rsc/ipvs/LVS_NAT.png)
+        - ![LVS NAT原理详解图](./rsc/ipvs/LVS_NAT.png)
     + LVS TUN原理
-        - ![LVS TUN原理](../../rsc/ipvs/LVS_TUN.png)
+        - ![LVS TUN原理](./rsc/ipvs/LVS_TUN.png)
 - 连接保持：
     + [lvs-persistent-connection](https://www.yangcs.net/posts/lvs-persistent-connection/)
 - ipvs:

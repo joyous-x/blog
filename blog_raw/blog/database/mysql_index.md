@@ -21,8 +21,8 @@ permalink:
 
 ## B+Tree
 这里，我们需要说一下，常用的索引结构 B+ tree, 
-![BTree](../rsc/db/B-Tree.png)
-![B+Tree](../rsc/db/B+Tree.png)
+![BTree](./rsc/db/B-Tree.png)
+![B+Tree](./rsc/db/B+Tree.png)
 
 从图中也可以看到，B+树与B树的不同在于：
 1. 所有数据都存储在叶子节点，非叶子节点不存储真正的data
