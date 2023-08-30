@@ -189,9 +189,35 @@ permalink:
          单批数量推荐保持为1
              因为单批作多张图的方法是将其“拼合”为一张大图去生成的
         ``` 
+## Stable Diffusion
+latent diffusion -> stable diffusion
+txt -> CLIP (中的文本编码器)
+优化器 Optimizer：AdamW8bit
+lora + 正则 == Dreambooth
 
+- [零基础学会Stable Diffusion](https://www.bilibili.com/video/BV1As4y127HW/)
+  + Stamp_v1
+- [【AI绘画】从零开始的AI绘画入门教程——魔法导论](https://zhuanlan.zhihu.com/p/613158048)
+  - [【AI绘画】全部模型种类总结 / 使用方法 / 简易训练指导——魔导绪论](https://www.bilibili.com/read/cv21362202?from=articleDetail)
+    + [【AI绘画】深入理解Stable Diffusion！](https://www.bilibili.com/video/BV1x8411m76H)
+  - [【AI绘画】最佳人物模型训练！保姆式LoRA模型训练教程 一键包发布](https://www.bilibili.com/video/BV1fs4y1x7p2)
+- [LoRA training scripts](https://github.com/Akegarasu/lora-scripts)
 
+## 特点
 
+DDIM 采样，善于局部重绘
+img2img 的 inpaint 蒙层来局部重绘 ：更关注全图效果，但重绘方式为填充潜空间噪声时，效果几近于 controlnet 的 inpaint 重绘模型
+controlnet 的 inpaint 重绘模型进行局部重绘 ：更关注局部填充效果
+
+Controlinet 的tile 模型是用于分块绘制时分区识别tag，避免每个小块都被重绘为完整的图的模型，需要和SD 放大或者 Tiled Diffusion 这些方法共同使用，但也出现了一些特殊用法，比如作为普通囪生图使用。
+
+放大算法：
+    SwinR系列 - 明确以及锐化线条，更能保持原图，不易产生多余的奇怪东西
+    潜变量系列 - 擅长生产各种细节，但容易过度繁复，在重绘度低时将产生模糊
+
+涂过重绘蒙板的区域发灰：一般是模型内置 vae 坏了，需要外置一个
+
+## 其他
 吴恩达-扩散模型diffusion的工作原理
 https://www.bilibili.com/video/BV1MP411D7cY/?spm_id_from=333.788.recommend_more_video.7&vd_source=0f4802c5cb8ea34e5603a6296a21f66e
 吴恩达-2022-中英字幕
@@ -209,19 +235,7 @@ https://www.bilibili.com/video/BV1MP411D7cY/?spm_id_from=333.788.recommend_more_
 https://www.bilibili.com/video/BV1bm4y1A7v7/?vd_source=0f4802c5cb8ea34e5603a6296a21f66e
 
 
-
-1. 角色提示词模版
-   + https://github.com/f/awesome-chatgpt-prompts/blob/6717b3346e300839248e4d99f90be8fb130a8197/prompts.csv
-2. vits 语音
-   + [火山引擎语音合成能力](https://www.volcengine.com/product/tts)
-     + 不支持跨多语言(中英可以)
-3. ai-chat：
-   + 智普api
-
-
 [Build & Share Delightful Machine Learning Apps](https://gradio.app/)
-
-
 
 
 no idea 级别的噪声图，完全看不出是什么，但它的每个像素都是通过正态分布采样得到的 ？？？

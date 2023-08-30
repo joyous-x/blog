@@ -49,6 +49,7 @@ permalink:
     - [1.3 系统分配](#13-系统分配)
   - [11、Window](#11window)
   - [12、Reflection](#12reflection)
+  - [13、Binder](#13binder)
 - [TODO：](#todo)
   - [Gradle](#gradle)
   - [常见问题](#常见问题)
@@ -585,6 +586,17 @@ https://blog.csdn.net/weixin_43766753/article/details/108350589
 ## 12、Reflection
 https://blog.csdn.net/u011240877/article/details/54604212
 https://www.cnblogs.com/jimuzz/p/14297042.html
+
+## 13、Binder
+Binder 的核心进程: ServiceManager、Client、Server 以及内核的 Binder 驱动
+
+1. 驱动提供 handle(句柄) 以供应用层和内核交互
+2. ServiceManager 中注册了 handle=0 的默认句柄到驱动，以供 C/S 都可以方便的找到 ServiceManager
+
+Client(BpBinder(Native)、BinderProxy(Java)) 与 Server(BBinder(Native)、Binder(Java))
+- 通过handle构造Client端的BpBinder(Native层)，与此对应的是Java层的BinderProxy
+- 通过handle，驱动找到Server端进程，进而调用BBinder(Native层)，与此对应的是Java层的Binder
+- 通过handle的一系列中转，Client.transact()成功调用了Server.onTransact()，一次Binder通信就过程就完成了
 
 
 > ------------------------
