@@ -15,7 +15,6 @@ permalink:
 - [Android](#android)
   - [1、android 基础概念](#1android-基础概念)
     - [资源目录 drawable \&\& mipmap](#资源目录-drawable--mipmap)
-    - [引入本地其它目录的 module](#引入本地其它目录的-module)
     - [gradle 中预定义变量的定义和使用](#gradle-中预定义变量的定义和使用)
       - [Gradle 中使用 *xxx.properties* 中的预定义变量](#gradle-中使用-xxxproperties-中的预定义变量)
       - [App 代码中使用 *build.gradle* 中的预定义变量](#app-代码中使用-buildgradle-中的预定义变量)
@@ -68,24 +67,7 @@ permalink:
   + 但，某些应用启动器显示的应用图标会比设备的密度级别所要求的大，所以为了保证效果，需要保留所有分辨率的应用图标
     - 参考：[将应用图标放在 mipmap 目录中](https://developer.android.com/training/multiscreen/screendensities?hl=zh-cn#mipmap)
 
-### 引入本地其它目录的 module
-1. 在项目中引用并指定位置
-   + 修改 project 的 settings.gradle，以在include中引入模块，如：```include ':app', ':xxx'```
-   + 修改 project 的 settings.gradle，以指定模块位置(配置在 local.properties 中的 xxx.dir 属性)，如：
-      ``` 
-      /// 注：以下内容参考 flutter 项目 settings.gradle 对 local.properties 的使用
 
-      def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
-      def properties = new Properties()
-
-      assert localPropertiesFile.exists()
-      localPropertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
-
-      def XxxPath = properties.getProperty("xxx.dir")
-      project(":xxx").projectDir = file("$XxxPath/xxx")
-      ```
-2. 在模块中引用
-   + 修改 module 的 build.gradle： ```dependencies { implementation project(':xxx') }```
 
 ### gradle 中预定义变量的定义和使用
 定义示例：
@@ -191,23 +173,6 @@ Android Studio 构建系统以 Gradle 为基础，并且 Android Gradle 插件�
 虽然 Android 插件通常会与 Android Studio 的更新步调保持一致，但插件（以及 Gradle 系统的其余部分）可独立于 Android Studio 运行并单独更新。
 
 不过，Gradle 和 Android Gradle Plugin 的版本需要匹配，同时，Android GradlePlugin 和 Android Studio 也有兼容性要求。具体可以[参考文档：gradle-plugin](https://developer.android.google.cn/studio/releases/gradle-plugin?hl=zh-cn)。
-
-修改 Gradle 和 Android Gradle Plugin 版本的方法有：
-1. 在 Android Studio 的 ```File > Project Structure > Project``` 菜单中指定 Gradle、Gradle Plugin 版本
-2. Gradle 版本: 在 ```gradle/wrapper/gradle-wrapper.properties``` 文件中修改 Gradle 分发引用来指定：
-    ```
-    ...
-    distributionUrl = "https\://services.gradle.org/distributions/gradle-7.4.2-bin.zip"
-    ...
-    ```
-3. Gradle Plugin 版本: 在顶级 build.gradle 文件中进行指定，如：
-    ``` Groovy
-    plugins {
-        id 'com.android.application' version '7.2.0' apply false
-        id 'com.android.library' version '7.2.0' apply false
-        id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
-    }
-    ```
 
 ### 配置参数
 一般情况下有：```buildToolsVersion >= compileSdkVersion >= targetSdkVersion```
