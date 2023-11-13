@@ -54,12 +54,8 @@ Kotlin中所有类的基类都是Any
 1. 当```lambda literal```是函数调用的最后一个参数时，可以放到括号的外边。如果 lambda 是函数的唯一参数时，甚至可以去掉括号。
 
 ## 二、Scope Function
-Function | identifier | return value
---- | --- | ---
-let | it | last line of literal
-run | this | last line of literal
-also | it | this
-apply | this | this
+![kotlin_let_run_apply](./rsc/kotlin_let_run_apply.png)
+
 
 ### Function Type
 1. Function type 的模式为：```(A) -> O```

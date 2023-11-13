@@ -152,13 +152,37 @@ android {
 TODO:
 
 ### App 代码中使用 *build.gradle* 中的预定义变量
-可以在 **build.gradle** 中自定义在项目中引用的常量：
-- buildConfigField 
+```mermaid
+flowchart LR
+    properties(local.properties等属性文件) --> Gradle
+    GradleDependencies --> Gradle
+    Gradle --> Code(代码中的 BuildConfig 对象)
+    Gradle --> Manifest(manifest.xml 中的 placeholder 变量)
+
+    subgraph Gradle
+        G(build.gradle)
+    end
+
+    subgraph GradleDependencies
+        VC(version catalog)
+        S(自定义项目根目录的 gradle 文件)
+        P(自定义 GradlePlugin，包括buildsrc项目)
+    end
+```
+
+- build.gradle 使用 properties 文件
+  + 常见的是在 setting.gradle 中加载 local.properties 到 Properties 对象中，再使用```getProperty```方法获取变量值
+- build.gradle 使用自定义的 gradle 文件
+  + 常见做法是 project 根目录的 gradle 文件中自定义 ext 属性，在 build.gradle 中先使用```apply from: "config.gradle"```来引入属性，再通过```rootProject.ext.xxx```访问
+- build.gradle 使用 version catalog
+  + gradle 插件 7.0 以上版本使用 version catalog 进行依赖管理
+- build.gradle 中定义 buildConfigField 
   + 定义方式: ```buildConfigField 类型, 变量名, 值```
   + 在代码中: 通过 ```BuildConfig.Xxx``` 引用
-- resValue
+- build.gradle 中定义 resValue
   + 定义方式: ```resValue XML资源中的类型, 变量名, 值```
   + 在资源中: 通过 ```@string/Xxx``` 引用, 其中*string*可以根据定义使用具体类型
+
 
 ## 三、引入子工程
 ### 显式指示子工程路径
