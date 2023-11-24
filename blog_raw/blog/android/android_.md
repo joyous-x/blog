@@ -15,7 +15,8 @@ permalink:
 - [Android](#android)
   - [1、android 基础概念](#1android-基础概念)
     - [资源目录 drawable \&\& mipmap](#资源目录-drawable--mipmap)
-    - [gradle 中预定义变量的定义和使用](#gradle-中预定义变量的定义和使用)
+    - [Window 窗口管理](#window-窗口管理)
+    - [Gradle 中预定义变量的定义和使用](#gradle-中预定义变量的定义和使用)
       - [Gradle 中使用 *xxx.properties* 中的预定义变量](#gradle-中使用-xxxproperties-中的预定义变量)
       - [App 代码中使用 *build.gradle* 中的预定义变量](#app-代码中使用-buildgradle-中的预定义变量)
   - [2、Gradle、Gradle Plugin](#2gradlegradle-plugin)
@@ -24,7 +25,13 @@ permalink:
       - [android.compileSdkVersion](#androidcompilesdkversion)
       - [android.defaultConfig.minSdkVersion](#androiddefaultconfigminsdkversion)
       - [android.defaultConfig.targetSdkVersion](#androiddefaultconfigtargetsdkversion)
-  - [3、Storage](#3storage)
+  - [3、Context \&\& Storage](#3context--storage)
+    - [3.1 Context](#31-context)
+    - [3.2 Uid \& Pid \& User Id](#32-uid--pid--user-id)
+      - [查看](#查看)
+      - [获取](#获取)
+      - [系统分配](#系统分配)
+    - [3.3 Storage](#33-storage)
   - [4、Splash Screen](#4splash-screen)
     - [低版本 Android 使用 SplashScreen API](#低版本-android-使用-splashscreen-api)
     - [启动画面的元素和机制](#启动画面的元素和机制)
@@ -38,17 +45,12 @@ permalink:
       - [Android P 及以上 适配](#android-p-及以上-适配)
     - [Reference](#reference)
   - [6、Android Widgets](#6android-widgets)
-    - [6.1 EditText \&\& TextInputLayout](#61-edittext--textinputlayout)
-  - [7、自定义 Dialog](#7自定义-dialog)
-  - [8、自定义 View](#8自定义-view)
-  - [9、Binding](#9binding)
-  - [10、Uid \& Pid \& User Id](#10uid--pid--user-id)
-    - [1.1 查看](#11-查看)
-    - [1.2 获取](#12-获取)
-    - [1.3 系统分配](#13-系统分配)
-  - [11、Window](#11window)
-  - [12、Reflection](#12reflection)
-  - [13、Binder](#13binder)
+    - [6.1 自定义 Dialog](#61-自定义-dialog)
+    - [6.2 自定义 View](#62-自定义-view)
+    - [6.3 EditText \&\& TextInputLayout](#63-edittext--textinputlayout)
+  - [7、Binding](#7binding)
+  - [8、Reflection](#8reflection)
+  - [9、Binder](#9binder)
 - [TODO：](#todo)
   - [Gradle](#gradle)
   - [常见问题](#常见问题)
@@ -68,8 +70,27 @@ permalink:
     - 参考：[将应用图标放在 mipmap 目录中](https://developer.android.com/training/multiscreen/screendensities?hl=zh-cn#mipmap)
 
 
+### Window 窗口管理
+- window 
+    + view tree : 是 window 机制的操作单位，每一个 view tree 对应一个 window。
+        - view
 
-### gradle 中预定义变量的定义和使用
+view树（后面使用view代称，后面我说的view都是指view树）是window的存在形式，window是view的管理者，同时也是view的(逻辑)载体
+
+- window 属性，其常量值大部分存储在WindowManager.LayoutParams类中
+  + type
+    - 对应窗口的 Z-Order (越大越靠近用户)
+      + 应用程序窗口：Z-Order 在 1-99
+      + 子窗口：Z-Order在1000-1999
+      + 系统级窗口：如Toast，Z-Order在2000-2999。如果要弹出自定义系统级窗口需要动态申请权限
+  + flag
+  + solfInputMode
+  + x、y、gravity、alpha属性：指定window的位置、透明度
+  + format：window的像素点格式，值定义在PixelFormat中
+
+[more about window](https://blog.csdn.net/weixin_43766753/article/details/108350589)
+
+### Gradle 中预定义变量的定义和使用
 定义示例：
 ```
 /// 注：以下内容参考 flutter 项目 build.gradle 对 local.properties 的使用
@@ -209,7 +230,51 @@ build.gradle 中，是 Android 提供向前兼容的主要依据
  
 比如, Android 6.0 系统引用了运行时权限这个功能, 如果你将targetSdkVersion 指定为23或者更高, 那么系统就会为你的程序启动运行时权限。如果你将targetSdkVersion 指定为22, 那么就说明你的程序最高只在Android 5.1系统上做过充分的测试, Android6.0系统中引入的新功能就不会启动了。
 
-## 3、Storage
+## 3、Context && Storage
+
+### 3.1 Context
+![Context UML](./rsc/android_context_uml.png)
+
+### 3.2 Uid & Pid & User Id
+![android_uid_pid](./rsc/android_uid_pid.png)
+
+#### 查看
+```adb shell ps | grep com.tencent.mm```
+
+u0_a110：以"_"为界线, 前一部分是UserId, 后一部分是ApplicationId. 转为int值即为:
+```
+u0_a110 == 0 * 100000 + (10110) == 10110 == uid;
+        (u0) * (十万)   a110
+```
+1> u0即表示userId = 0;
+2> a110中的"a"永远翻译为10000(一万)
+2> "userId * 100000 + appId = uid"是代码中写死的规则, 全系统通用.
+
+```adb shell cat proc/[pid]/status```
+查看系统中 进程相关的 Gid、Uid 等信息
+
+#### 获取
+通过包名获取UID
+```
+    PackageManager mPm = getPackageManager();
+    try {
+        ApplicationInfo applicationInfo = mPm.getApplicationInfo("com.tencent.mm", 0);
+        int uid = applicationInfo.uid;
+        Toast.makeText(MainActivity.this, "" + uid, Toast. LENGTH_SHORT).show();
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+```
+
+通过 UID 获取包名
+```
+String packagename = getPackageManager().getNameForUid(uid);
+```
+
+#### 系统分配
+https://www.jianshu.com/p/b33dd49f2ae6
+
+### 3.3 Storage
 [应用数据和文件](https://developer.android.google.cn/guide/topics/data)
 
 内部存储、外部存储(专有、共享)
@@ -440,22 +505,7 @@ public class FullScreenActivity extends AppCompatActivity {
 [支持刘海屏](https://developer.android.com/guide/topics/display-cutout?hl=zh-cn)
 
 ## 6、Android Widgets
-### 6.1 EditText && TextInputLayout
-```
-java.lang.Object
-   ↳	android.view.View
- 	   ↳	android.widget.TextView
- 	 	   ↳	android.widget.EditText
- 	 	 	   ↳	androidx.appcompat.widget.AppCompatEditText
- 	 	 	 	   ↳	com.google.android.material.textfield.TextInputEditText
- 	   ↳	android.view.ViewGroup
- 	 	   ↳	android.widget.LinearLayout
- 	 	 	   ↳	com.google.android.material.textfield.TextInputLayout
-
-// TextInputLayout which wraps a TextInputEditText, EditText, or descendant to show a floating label when the hint is hidden while the user inputs text.
-```
-
-## 7、自定义 Dialog
+### 6.1 自定义 Dialog
 ```
     // 实例化 Dialog 对象，并应用自定义的 NormalDialogStyle 去掉系统样式
     Dialog dialog = new Dialog(this,R.style.NormalDialogStyle);
@@ -478,81 +528,34 @@ java.lang.Object
     dialog.show();
 ```
 
-## 8、自定义 View
+### 6.2 自定义 View
 
-## 9、Binding
+### 6.3 EditText && TextInputLayout
+```
+java.lang.Object
+   ↳	android.view.View
+ 	   ↳	android.widget.TextView
+ 	 	   ↳	android.widget.EditText
+ 	 	 	   ↳	androidx.appcompat.widget.AppCompatEditText
+ 	 	 	 	   ↳	com.google.android.material.textfield.TextInputEditText
+ 	   ↳	android.view.ViewGroup
+ 	 	   ↳	android.widget.LinearLayout
+ 	 	 	   ↳	com.google.android.material.textfield.TextInputLayout
+
+// TextInputLayout which wraps a TextInputEditText, EditText, or descendant to show a floating label when the hint is hidden while the user inputs text.
+```
+
+## 7、Binding
 那么LiveData与ViewModel的组合使用可以说是双剑合璧，而Lifecycles贯穿其中。
 
 https://ithelp.ithome.com.tw/articles/10233509
 
-## 10、Uid & Pid & User Id
-![android_uid_pid](./rsc/android_uid_pid.png)
 
-### 1.1 查看
-```adb shell ps | grep com.tencent.mm```
-
-u0_a110
-
-以"_"为界线, 前一部分是UserId, 后一部分是ApplicationId. 转为int值即为:
-u0_a110 == 0 * 100000 + (10110) == 10110 == uid;
-         (u0)*(十万)   a110
-
-1> u0即表示userId = 0;
-2> a110中的"a"永远翻译为10000(一万)
-2> "userId * 100000 + appId = uid"是代码中写死的规则, 全系统通用.
-
-```adb shell cat proc/[pid]/status```
-查看系统中 进程相关的 Gid、Uid 等信息
-
-### 1.2 获取
-通过包名获取UID
-```
-    PackageManager mPm = getPackageManager();
-    try {
-        ApplicationInfo applicationInfo = mPm.getApplicationInfo("com.tencent.mm", 0);
-        int uid = applicationInfo.uid;
-        Toast.makeText(MainActivity.this, "" + uid, Toast. LENGTH_SHORT).show();
-    }catch (Exception e){
-        e.printStackTrace();
-    }
-```
-
-通过 UID 获取包名
-```
-String packagename = getPackageManager().getNameForUid(uid);
-```
-
-### 1.3 系统分配
-https://www.jianshu.com/p/b33dd49f2ae6
-
-## 11、Window
-窗口管理：
-- window 
-    + view tree : 是 window 机制的操作单位，每一个 view tree 对应一个 window。
-        - view
-view树（后面使用view代称，后面我说的view都是指view树）是window的存在形式，window是view的管理者，同时也是view的(逻辑)载体
-
-
-- window 属性，其常量值大部分存储在WindowManager.LayoutParams类中
-  + type
-    - 对应窗口的 Z-Order (越大越靠近用户)
-      + 应用程序窗口：Z-Order 在 1-99
-      + 子窗口：Z-Order在1000-1999
-      + 系统级窗口：如Toast，Z-Order在2000-2999。如果要弹出自定义系统级窗口需要动态申请权限
-  + flag
-  + solfInputMode
-  + x、y、gravity、alpha属性：指定window的位置、透明度
-  + format：window的像素点格式，值定义在PixelFormat中
-
-
-https://blog.csdn.net/weixin_43766753/article/details/108350589
-> 专栏：https://blog.csdn.net/weixin_43766753/category_10258907.html
-
-## 12、Reflection
+## 8、Reflection
 https://blog.csdn.net/u011240877/article/details/54604212
 https://www.cnblogs.com/jimuzz/p/14297042.html
 
-## 13、Binder
+## 9、Binder
 Binder 的核心进程: ServiceManager、Client、Server 以及内核的 Binder 驱动
 
 1. 驱动提供 handle(句柄) 以供应用层和内核交互

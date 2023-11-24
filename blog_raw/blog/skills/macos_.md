@@ -65,8 +65,7 @@ GPU 图形渲染流水线的具体实现可分为六个阶段，如下图所示�
 
 ## Widget
 ### extensions
-```mermaid 
-classDiagram
+```mermaid classDiagram
 
 class View {
   <<protocol, system>>
