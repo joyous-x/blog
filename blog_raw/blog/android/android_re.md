@@ -10,6 +10,17 @@ permalink:
 ---
 # Android Reverse Engine
 
+## BugReport
+ adb bugreport
+
+## Pull APK
+```
+    adb shell pm list packages
+    adb shell pm path xxx
+    adb pull path_xxx
+```
+
+
 ## Debug APK
 ### 步骤
 1. 反编译包

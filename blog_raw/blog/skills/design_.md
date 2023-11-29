@@ -1,5 +1,5 @@
 ---
-title: UI 杂项
+title: Android/IoS Design
 date: 2022-02-22 22:07:00
 lastmod: null
 publish: true
@@ -10,23 +10,48 @@ tags:
 permalink:
 ---
 
-# UI 杂项
+# 目录
+- [目录](#目录)
+- [Android/IoS Design](#androidios-design)
+- [Android](#android)
+  - [Screen](#screen)
+  - [Z-Space](#z-space)
+  - [Color](#color)
+    - [Material Color Slots](#material-color-slots)
+    - [ColorStateList (CSL)](#colorstatelist-csl)
+    - [Tools](#tools)
+  - [Animation](#animation)
+  - [Layout](#layout)
+    - [文字](#文字)
+    - [常用布局尺寸](#常用布局尺寸)
+- [Tools](#tools-1)
+- [Android](#android-1)
+    - [颜色](#颜色)
+    - [组件（Components）](#组件components)
+      - [底部导航（Bottom navigation）](#底部导航bottom-navigation)
+      - [底部动作条（Bottom Sheets）](#底部动作条bottom-sheets)
+      - [卡片（Cards）](#卡片cards)
+      - [纸片（Chips）](#纸片chips)
+      - [提示框（Dialogs）](#提示框dialogs)
+      - [分隔线（Dividers）](#分隔线dividers)
+      - [列表（Lists）](#列表lists)
+      - [菜单（Menus）](#菜单menus)
+      - [进度和动态（Progress \& activity）](#进度和动态progress--activity)
+      - [Snackbars \& toasts](#snackbars--toasts)
+      - [副标题（Subheaders）](#副标题subheaders)
+      - [Tabs](#tabs)
+      - [文本字段（Text fields）](#文本字段text-fields)
+      - [导航抽屉（Navigation drawer）](#导航抽屉navigation-drawer)
+      - [设置界面（Settings）](#设置界面settings)
 
-## Collection
+# Android/IoS Design
 
-Category | Link | Description
---- | --- | ---
-配色 | [coolors](https://coolors.co) | 
-配色 | [colorhunt](https://colorhunt.co) | 
-配色 | [colorkit](https://colorkit.io/) | 
-渐变 | [Gradienta](https://gradienta.io/) | 1. 可商用，而且下载像素也很高
-渐变 | [Lstore Graphics](https://www.ls.graphics/) | 1. 提供了100种渐变，大部分为不规则路径
-渐变 | [Eggradients](https://www.eggradients.com/) | 1. 用鸡蛋的形状来展示各种渐变的, 有超过200种渐变方案
-渐变 | [Grabient](https://www.grabient.com/) | 1. 可以灵活选择渐变方向
-渐变 | [Gradientsguru](http://gradientsguru.com/) |
+# Android
+[Material Design](https://m3.material.io/)质感设计，由 Google 推出的设计语言，旨在为手机、平板、电脑等平台提供一致、更广泛的『外观和感觉』。
 
-## Android
-### 屏幕
+Material Design 的核心思想，就是把物理世界的体验带进屏幕。去掉现实中的杂质和随机性，保留其最原始纯净的形态、空间关系、变化与过渡，配合虚拟世界的灵活特性，还原最贴近真实的体验，达到简洁与直观的效果。
+
+## Screen
 Google 规定的屏幕密度列表(mdpi、hdpi、xhdpi...)是依据 dpi 而定
 
 标识 | DPI(像素密度) | 像素比 | 画布尺寸(px) 
@@ -44,63 +69,113 @@ xxxhdpi | 640 | @4.0x | 2160 x 3840
 - 如果想一稿适配ios，那就新建720×1280  分辨率72，像素/英寸。
 - 如果单独设计安卓MD新规范，那就新建1080×1920  分辨率72，像素/英寸。
 
-### 颜色
-在 Android 中 0x00 表示完全透明，0xFF 表示完全不透明，比较适中的透明度是 0x1E
-
-### Material Design
-[Material Design](https://www.google.com/design/spec/material-design/)，质感设计，由 Google 推出的设计语言，旨在为手机、平板、电脑等平台提供一致、更广泛的『外观和感觉』。
-
-Material Design 的核心思想，就是把物理世界的体验带进屏幕。去掉现实中的杂质和随机性，保留其最原始纯净的形态、空间关系、变化与过渡，配合虚拟世界的灵活特性，还原最贴近真实的体验，达到简洁与直观的效果。
-
-Material Design 是最重视跨平台体验的一套设计语言。由于规范严格细致，保证它在各个平台使用体验高度一致。
-
-![material_design_sample](./rsc/material_design_sample.png)
-
-
-### 空间
+## Z-Space
 Material Design引入了z轴的概念，z轴垂直于屏幕，用来表现元素的层叠关系。z值（海拔高度）越高，元素离界面底层（水平面）越远，投影越重。这里有一个前提，所有的元素的厚度都是1dp。
-
-所有元素都有默认的海拔高度，对它进行操作会抬升它的海拔高度，操作结束后，它应该落回默认海拔高度。同一种元素，同样的操作，抬升的高度是一致的。
-
-注意：这不止是设计中的概念，开发人员确实可以通过一个值来控制元素的海拔高度和投影。
-
 ![material_design_space](./rsc/material_design_space.png)
 
+## Color
+### Material Color Slots
+Material Design 提供可供填充的12 个颜色"槽(slots)"，这些色值构成应用的整体调色板。每个"槽" 都有一个设计术语(如Primary)，该术语则对应一个可在应用主题中覆盖的颜色属性 (如 Primary 这个术语对应 colorPrimary 这个颜色属性)。这些是浅色和深色主题默认的基准色值。
+![](./rsc/android_theme_colors_name.png)
+Material 组件使用这些颜色属性为各个 widget 着色。在android 的样式表中通过如下方式引用：```app:background="?attr/colorSecondary"```
+![](./rsc/android_theme_color_usage_sample.png)
+这些主题颜色属性继承自 AppCompat 和平台本身，而其余属性则来由 MDC。每个颜色属性的完整来源见下表。
+![](./rsc/android_theme_colors.png)
+它们的主要用途有：
+- colorPrimary 和 colorSecondary 是用于呈现品牌的颜色 
+- colorPrimaryVariant 和 colorSecondaryVariant 是品牌颜色较浅或较深的阴影色 
+- colorSurface 用于表单或表面 (如卡片颜色和应用的底部弹出菜单颜色)
+- android:colorBackground 是应用的窗口背景颜色 
+- colorError 用于错误和警告 
+- 各种各样的 "On" 颜色 (colorOnPrimary、colorOnSecondary、colorOnSurface 等) 用于为显示在其他颜色上方的前景内容 (如文本和图标) 进行着色
 
-### 动画
+除 Material 主题指定的 12 个颜色槽以外，您的设计系统可能还会用到其他颜色槽。幸运的是，在 Android 上声明颜色属性的操作很简单：
+```
+<!- In res/values/attrs.xml ->
+<attr name=" colorCustom" format="color" />
+
+<!-- In res/values/themes.xml -->
+<style name="Theme.App" parent="Theme.MaterialComponents.*">
+    ...
+    <item name=" colorCustom">@color/...</item>
+</style>
+```
+
+### ColorStateList (CSL)
+对于常用到的仅 alpha 通道不一样的颜色，建议使用 res/color 目录中存储的 ColorStateList (CSL)。CSL 里的项目可以包含一个颜色引用和 alpha 值，这非常适合这样的场景。
+
+### Tools
+- [Material Color palettes](https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors)
+- [Adobe Color](https://color.adobe.com/zh/create/color-wheel)
+
+## Animation
 Material Design 重视动画效果，它反复强调一点：动画不只是装饰，它有含义，能表达元素、界面之间的关系，具备功能上的作用。
-
-#### easing
+- easing
 ![material_design_animation_easing](./rsc/material_design_animation_easing.gif)
-
-动画要贴近真实世界，就要重视 easing。物理世界中的运动和变化都是有加速和减速过程的，忽然开始、忽然停止的匀速动画显得机械而不真实。考虑动画的easing，要先考虑它在现实世界中的运动规律。
-
-#### 水波纹
+- 水波纹
 ![material_design_animation_waterwave](./rsc/material_design_animation_waterwave.gif)
-
-#### 转场效果
+- 转场效果
 ![material_design_animation_trans](./rsc/material_design_animation_trans_b.gif)
-
-所有可点击的元素，都应该有这样的反馈效果。通过这个动画，将点击的位置与所操作的元素关联起来，体现了 Material Design 动画的功能性。
-
+- 过渡动画、反馈效果
+通过反馈效果动画，将点击的位置与所操作的元素关联起来，体现了 Material Design 动画的功能性。通过过渡动画，表达界面之间的空间与层级关系，并且跨界面传递信息。从父界面进入子界面，需要抬升子元素的海拔高度，并展开至整个屏幕，反之亦然。
 ![material_design_animation_trans](./rsc/material_design_animation_trans_a.gif)
-
-通过过渡动画，表达界面之间的空间与层级关系，并且跨界面传递信息。从父界面进入子界面，需要抬升子元素的海拔高度，并展开至整个屏幕，反之亦然。
-
 ![material_design_animation_trans](./rsc/material_design_animation_trans_c.gif)
-
-多个相似元素，动画的设计要有先后次序，起到引导视线的作用。
-
+- 视线引导
+多个相似元素，动画的设计要有先后次序，要符合统一的规律，起到引导视线的作用。
 ![material_design_animation_trans](./rsc/material_design_animation_trans_d.gif)
 
-相似元素的运动，要符合统一的规律。
+## Layout
+### 文字
+用途 | 小字提示 | 正文/按钮 | 小标题 | Appbar文字 | 大标题 | 超大号文字
+--- | --- | --- | --- | --- | --- | ---
+字号 | 12sp | 14sp(桌面端13sp) | 16sp(桌面端15sp) | 20sp | 24sp | 34sp/45sp/56sp/112sp
 
-#### 细节动画 
-通过图标的变化和一些细节来达到令人愉悦的效果:
+长篇幅正文，每行建议60字符（英文）左右。短文本，建议每行30字符（英文）左右。
 
-![material_design_animation_detail](./rsc/material_design_animation_detail.gif)
+### 常用布局尺寸
+最新MD规范的做法:
+- 8dp原则: 栅格系统的最小单位是8dp，一切距离、尺寸都应该是8dp的整数倍
+- 可操作元素最小点击区域尺寸：48dp X 48dp
+
+以下是一些常见的尺寸与距离(注意：平板与PC上留白更多，距离与尺寸要相应增大)：
+用途 | 距离
+--- | :---:
+顶部状态栏高度 | 24dp
+Appbar最小高度 | 56dp
+底部导航栏高度 | 48dp
+悬浮按钮 | 56x56dp/40x40dp
+用户头像 | 64x64dp/40x40dp
+小图标点击区域 | 48x48dp
+侧边抽屉到屏幕右边的距离 | 56dp
+卡片间距 | 8dp
+分隔线上下留白 | 8dp
+大多元素的留白距离 | 16dp
+屏幕左右对齐基线 | 16dp
+文字左侧对齐基线 | 72dp
+
+![material_design_norm_dp](./rsc/material_design_norm_dp.png)
 
 
+
+# Tools
+Category | Link | Description
+--- | --- | ---
+配色 | [coolors](https://coolors.co) | 
+配色 | [colorhunt](https://colorhunt.co) | 
+配色 | [colorkit](https://colorkit.io/) | 
+渐变 | [Gradienta](https://gradienta.io/) | 1. 可商用，而且下载像素也很高
+渐变 | [Lstore Graphics](https://www.ls.graphics/) | 1. 提供了100种渐变，大部分为不规则路径
+渐变 | [Eggradients](https://www.eggradients.com/) | 1. 用鸡蛋的形状来展示各种渐变的, 有超过200种渐变方案
+渐变 | [Grabient](https://www.grabient.com/) | 1. 可以灵活选择渐变方向
+渐变 | [Gradientsguru](http://gradientsguru.com/) |
+
+
+-----------------------------------------------------------
+-----------------------------------------------------------
+-----------------------------------------------------------
+
+
+# Android
 ### 颜色
 <center class="half">
     <img src="./rsc/material_design_color_a.png"/>
@@ -127,42 +202,6 @@ Appbar 背景使用主色，状态栏背景使用深一级的主色或20%透明�
 --- | --- | --- | --- | --- |
 黑色 | 87% | 54% | 26% | 12%
 白色 | 100% | 70% | 30% | 12%
-
-### 文字
-用途 | 小字提示 | 正文/按钮 | 小标题 | Appbar文字 | 大标题 | 超大号文字
---- | --- | --- | --- | --- | --- | ---
-字号 | 12sp | 14sp(桌面端13sp) | 16sp(桌面端15sp) | 20sp | 24sp | 34sp/45sp/56sp/112sp
-
-长篇幅正文，每行建议60字符（英文）左右。短文本，建议每行30字符（英文）左右。
-
-### 布局
-所有可操作元素最小点击区域尺寸：48dp X 48dp。
-
-
-最新MD规范的做法:
-- 8dp原则: 栅格系统的最小单位是8dp，一切距离、尺寸都应该是8dp的整数倍
-
-以下是一些常见的尺寸与距离：
-用途 | 距离
---- | :---:
-顶部状态栏高度 | 24dp
-Appbar最小高度 | 56dp
-底部导航栏高度 | 48dp
-悬浮按钮 | 56x56dp/40x40dp
-用户头像 | 64x64dp/40x40dp
-小图标点击区域 | 48x48dp
-侧边抽屉到屏幕右边的距离 | 56dp
-卡片间距 | 8dp
-分隔线上下留白 | 8dp
-大多元素的留白距离 | 16dp
-屏幕左右对齐基线 | 16dp
-文字左侧对齐基线 | 72dp
-
-![material_design_norm_dp](./rsc/material_design_norm_dp.png)
-
-另外注意56dp这个数字，许多尺寸可变的控件，比如对话框、菜单等，宽度都可以按56的整数倍来设计。
-
-还有非常多规范，不详细列举，遵循8dp栅格很容易找到适合的尺寸与距离。平板与PC上留白更多，距离与尺寸要相应增大。
 
 ### 组件（Components）
 #### 底部导航（Bottom navigation）
@@ -248,20 +287,6 @@ Dividers 主要用于管理和分隔列表和页面布局内的内容，以便�
 
 ![material_design_component_divider_e](./rsc/material_design_component_divider_e.png)
 
-#### 网格（Grids）
-网格列表是一种标准列表视图的可选组件。网格列表与应用于布局和其他可视视图中的网格有着明显的区别。
-
-一般来说，网格只能垂直滚动。单个瓦片不支持滑动手势，**也不鼓励使用拖放操作**。网格中的单元格间距是2dp或8dp。
-
-![material_design_component_grid_a](./rsc/material_design_component_grid_a.png)
-
-网格由单元格构成，单元格中的瓦片用来承载内容。瓦片可以横跨多个单元格:
-
-![material_design_component_grid_b](./rsc/material_design_component_grid_b.png)
-
-瓦片内容包括主要内容（primary content）和次要内容(secondary content)。主要内容是有着重要区别的内容，典型的如图片。次要内容可以是一个动作按钮或者文本。
-
-![material_design_component_grid_c](./rsc/material_design_component_grid_c.png)
 
 #### 列表（Lists）
 列表作为一个单一的连续元素来以垂直排列的方式显示多行条目。
@@ -407,41 +432,6 @@ tab文字要显示完整，字号保持一致，不能折行，文字与图标�
 
 ![material_design_component_text_n](./rsc/material_design_component_text_n.png)
 
-#### 工具提示（Tooltips）
-提示只用在小图标上，文字不需要提示。鼠标悬停、获得焦点、手指长按都可以触发提示。
-
-![material_design_component_tooltip_a](./rsc/material_design_component_tooltip_a.png)
-
-触摸提示（左）和鼠标提示（右）的尺寸是不同的，背景都带有90%的透明度:
-
-<center class="half">
-<img src="./rsc/material_design_component_tooltip_b.png"/>
-<img src="./rsc/material_design_component_tooltip_c.png"/>
-</center>
-
-#### Steppers
-<center class="half">
-<img src="./rsc/material_design_component_steper_a.png"/>
-<img src="./rsc/material_design_component_steper_b.png"/>
-</center>
-
-#### 导航（Navigation）
-Tabs:
-
-![material_design_component_nav_a](./rsc/material_design_component_nav_a.png)
-
-Bottom navigation bar 1:
-
-![material_design_component_nav_b](./rsc/material_design_component_nav_b.png)
-
-Bottom navigation bar 2:
-
-![material_design_component_nav_c](./rsc/material_design_component_nav_c.png)
-
-Navigation drawer:
-
-![material_design_component_nav_d](./rsc/material_design_component_nav_d.png)
-
 #### 导航抽屉（Navigation drawer）
 侧边抽屉从左侧滑出，占据整个屏幕高度，遵循普通列表的布局规则。手机端的侧边抽屉距离屏幕右侧56dp。
 
@@ -454,11 +444,6 @@ Navigation drawer:
 <img src="./rsc/material_design_component_drawer_c.png"/>
 </center>
 
-#### 通知（Notifications）
-![material_design_component_notification](./rsc/material_design_component_notification.png)
-
-#### 权限（Permissions）
-![material_design_component_permission](./rsc/material_design_component_permission.png)
 
 #### 设置界面（Settings）
 ![material_design_component_setting](./rsc/material_design_component_setting.png)
@@ -469,13 +454,3 @@ Navigation drawer:
 <img src="./rsc/material_design_component_setting_b.png"/>
 <img src="./rsc/material_design_component_setting_c.png"/>
 </center>
-
-## Reference
-1. https://www.cnblogs.com/weekbo/p/9018121.html
-
-使用 `style` 属性修改文字的背景色:
-<font style="background: red">红色</font>
-<font style="background: green">绿色</font>
-<font style="background: blue">蓝色</font>
-<font style="background: rgb(200,100,100)">颜色值</font>
-<font style="background: #FF00BB">颜色值</font>
