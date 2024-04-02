@@ -278,12 +278,12 @@ https://www.jianshu.com/p/b33dd49f2ae6
 [应用数据和文件](https://developer.android.google.cn/guide/topics/data)
 
 内部存储、外部存储(专有、共享)
-
+```
 /
     data ：内部存储
     mnt ：外部存储
     sdcard ：外部存储
-    storage/emulated/<legacy> ：外部存储
+    storage/emulated/<legacy:user_id> ：外部存储
 
 内部存储
     /data/user/0/<package> ：其中0表示用户ID
@@ -293,17 +293,15 @@ https://www.jianshu.com/p/b33dd49f2ae6
         /data/data/<package>/shared_prefs
         /data/data/<package>/databses
 
-外部存储    
+外部存储
     /sdcard/
     /mnt/sdcard/ : Android4.0版本之前的显示
-    /storage/sdcard0 : Android4.0版本之后的显示
-    /storage/emulated/<legacy> ：
+    /storage/emulated/<legacy:user_id> ：
+        /storage/emulated/0/Android/data/<package> ： 外部存储私有目录
+        /storage/emulated/0/Android/data/<package>以外 ： 外部存储公有目录
 
-    随着 android 系统的发展，外部存储的挂载点依次变化，同时为了向后兼容，把以前的挂载点软链到新的挂载点
-
-    /storage/emulated/0/Android/data/<package> ： 外部存储私有目录
-    /storage/emulated/0/Android/data/<package>以外 ： 外部存储公有目录
-
+随着 android 系统的发展，外部存储的挂载点依次变化，同时为了向后兼容，把以前的挂载点软链到新的挂载点
+```
 
 项目 | Android 10以前 | Android 10 | Android 10之后
 :--|--|--|--

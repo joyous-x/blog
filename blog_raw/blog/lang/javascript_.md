@@ -114,3 +114,17 @@ JavaScript中，你可以在函数的任何位置声明多个var语句，并且�
     typeof global_fromfunc; // "undefined"
 ```
 
+## 基础
+### CSS
+- [选择器](https://web.qianguyihao.com/02-CSS%E5%9F%BA%E7%A1%80/10-CSS3%E9%80%89%E6%8B%A9%E5%99%A8%E8%AF%A6%E8%A7%A3.html)
+  + 标签 : ```xxx```
+  + id : ```#xxx```
+  + class : ```.xxx```
+  + 伪类（伪类选择器）
+    - 伪类：同一个标签，根据其不同的种状态，有不同的样式。这就叫做“伪类”。伪类用冒号来表示。
+  
+### NPM
+- 版本控制
+  + [Tilde (~) vs Caret (^) in package.json](https://medium.com/geekculture/tilde-vs-caret-in-package-json-whats-the-difference-2682b7e6ecf8)
+    - **~**: ```major.minor.bugfix``` 保持小版本号不能变更，但可以更新 bugfix
+    - **^**: ```major.minor.bugfix``` 保持大版本号不能变更，但可以更新 minor
