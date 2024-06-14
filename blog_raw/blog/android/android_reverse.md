@@ -179,3 +179,11 @@ bbs:
    Application.onCreate
    Activity\Service\BroadcastReceiver
    ```
+
+
+
+Xposed → C++部分，Xposed版的zygote，用于替换原生zygote，并为XposedBridge提供JNI方法，需由XposedInstaller在root后放到/system/bin目录下；
+XposedBridge → Java部分，编译后会生成一个jar包，负责在Native层与Framework层进行交互；
+XposedInstaller → Xposed插件管理及功能控制的APP，包括启用、下载、禁用插件等功能；
+XposedTools → 用于编译Xposed及XposedBridge；
+
