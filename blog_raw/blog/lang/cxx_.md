@@ -12,7 +12,18 @@ permalink:
 ---
 
 # C && C++
-## 一、基础
+
+# 一、基础
+## 1.1 编译
+c/c++ 源代码一般会通过以下步骤，被编译、链接成可执行文件：
+1. 预处理(Preprocess) : ``` gcc -E test.cpp -o test.i ```
+2. 编译为汇编(Compilation): ``` gcc -S test.i -o test.s ```
+3. 汇编(Assembly): ``` gcc -c test.s -o test.o ```
+4. 连接(Linking): ``` gcc test.o -o test ```
+
+当然，上述步骤可以直接通过 ``` gcc define.cpp test.cpp -o test ``` 一步到位.
+
+## 1.2 标准库
 c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++标准库)的实现规范, 但不同的编译器对标准库的实现方法各不一致
 
 | Subject | Content | Status |
@@ -25,7 +36,7 @@ c && c++ 标准定义了语法、语言特性 以及 C++ 内置库(也就是C++�
 | 平台特性 | window、linux | &#9744; |
 | 技巧 | Tricks and Traps | &#9744; |
 
-## 二、Feature
+## 1.3 Feature
 Version | Name | Sample | Note
 --- | --- | --- | --- 
 C++11 | rvalue reference | ```int &&ref_a_left = 6; ``` | 右值引用 和 移动语义
@@ -60,7 +71,7 @@ C++11 | constexpr length for const string | ```template<class T>```<br>```conste
 C++17 | constexpr length for const string | ```constexpr auto l = std::char_traits<char>::length("123");``` |
 
 
-### 一、Thriving in a Crowded and Changing World: C++ 2006–2020
+### Thriving in a Crowded and Changing World: C++ 2006–2020
 这是 C++ 之父 Bjarne Stroustrup 的 [HOPL4](https://www.stroustrup.com/hopl20main-p5-p-bfc9cd4--final.pdf) 论文的标题。
 
 HOPL(History of Programming Languages，编程语言历史)ACM(Association of Computing Machines，国际计算机协会)旗下的一个会议，约每十五年举办一次。
@@ -69,9 +80,9 @@ Bjarne 的这篇论文是他为 2021 年 HOPL IV 会议准备的论文，它涵�
 
 鉴于这篇论文可以帮助 C++ 从业者对 C++ 的设计原则和历史有一个系统的了解，全球 C++ 及系统软件技术大会的主办方 Boolan 组织了一群译者，把这篇重要论文翻译成了中文: [在拥挤和变化的世界中茁壮成长：C++ 2006–2020](https://github.com/Cpp-Club/Cxx_HOPL4_zh)
 
-## 三、多态
-### 1. 虚函数表内存模型
-### 2. 方法派发(dispatch)流程(选择正确方法调用的过程) 
+# 二、多态
+## 1. 虚函数表内存模型
+## 2. 方法派发(dispatch)流程(选择正确方法调用的过程) 
 + 派发机制按照选择正确方法的时期(编译期和运行期)，可以分为: static dispatch 和 dynamic dispatch
   + static dispatch
     - 在编译期就完全确定调用方法的分派方式。也就是说，编译期直接决定函数地址(方法指针)，运行时可以直接通过函数地址调用方法。
@@ -94,7 +105,7 @@ Bjarne 的这篇论文是他为 2021 年 HOPL IV 会议准备的论文，它涵�
       - 在组件对象模型编程中,使用late binding的最大优势在于,不要求编译器在编译期间去引用包含对象的库.这使得编译过程可以更有效的去避免类的虚函数表突然更改带来的冲突.
       - 大部分的动态类型语言都可以在运行时去修改对象的方法列表, 因此他们就需要late binding.
 
-## 四、模版
+# 三、模版
 模板分为函数模板(function template)和类模板(class template), 一般在头文件中定义, 可能被包含多次，编译和链接时会消除等价模板实例；
 
 C++ 模板有以下特点：
@@ -103,7 +114,7 @@ C++ 模板有以下特点：
 
 所谓元编程，就是编写直接生成或操纵程序的程序，而 C++ 模板赋予了 C++ 语言提元编程的能力。
 
-### 图灵完备
+## 图灵完备
 C++ 模板最初是为实现泛型编程设计的，但人们发现模板的能力远远不止于最初的设计初衷。一个重要理论结论就是：C++ 模板是图灵完备的(Turing-complete)。也就是说，C++ 模板元编程是"意外"功能，而不是设计的功能，这也是 C++ 模板元编程语法丑陋的根源。
 
 C++ 模板是图灵完备的，主要体现在具备以下能力：
@@ -129,7 +140,7 @@ C++ 模板是图灵完备的，主要体现在具备以下能力：
 
 ![模板元编程概览框图](./rsc/cxx_template_meta.png)
 
-#### 模板特例化(template specialization)
+### 模板特例化(template specialization)
 模板的特例化分完全特例化(full specialization)和部分特例化(partial specialization)。实例化将会匹配参数集合最小的特例。
 
 模板特化时，使用类型等价判断规则确定使用(模板的多个实例中的)哪一个模板：
@@ -138,12 +149,12 @@ C++ 模板是图灵完备的，主要体现在具备以下能力：
 
 可变模版参数(variadic templates)，C++11新增的最强大的特性之一。可以用递归实现伪变长参数模板，C++11 变长参数模板背后的原理也是模板递归；
 
-### 函数式编程
+## 函数式编程
 从编程范型(programming paradigm)上来说，C++ 模板是函数式编程(functional programming)，它的主要特点是：函数调用不产生任何副作用(没有可变的存储，都是编译期常量)，用递归形式实现循环结构的功能。
 
 函数式编程看上去似乎效率低下(因为它和数学接近，而不是和硬件工作方式接近)，但有自己的优势：描述问题更加简洁清晰(前提是熟悉这种方式)，没有可变的变量就没有数据依赖，方便进行并行化。
 
-### 关键字：template、typename、this
+## 关键字：template、typename、this
 template、typename、this 关键字用来消除歧义，避免编译错误或产生不符预期的结果；
 
 C++标准规定，如果解析器在一个模板中遇到一个嵌套依赖名字，它假定那个名字不是一个类型，除非显式用 typename 关键字前置修饰该名字；
@@ -152,7 +163,7 @@ C++标准规定，如果解析器在一个模板中遇到一个嵌套依赖名�
 
 this 用于指定查找基类中的成员(当基类是依赖模板参数的类模板实例时，由于实例化总是推迟，这时不依赖模板参数的名字不在基类中查找)。
 
-### 特性(traits)，策略(policy)，标签(tag)
+## 特性(traits)，策略(policy)，标签(tag)
 特性，策略，标签是模板编程常用技巧，它们可以是模板变得更加通用。
 
 特性(traits)一般是对类型的信息(如 value_type、 reference)进行包装，使得上层代码可以以统一的接口访问这些信息。C++ 模板元编程会涉及大量的类型计算，很多时候要提取类型的信息(typedef、 常量值等)，如果这些类型的信息的访问方式不一致(如上面的迭代器和指针)，我们将不得不定义特例，这会导致大量重复代码的出现(另一种代码膨胀)，而通过加一层特性可以很好的解决这一问题。
@@ -161,21 +172,22 @@ this 用于指定查找基类中的成员(当基类是依赖模板参数的类�
 
 标签(tag)一般是一个空类，其作用是作为一个独一无二的类型名字用于标记一些东西，典型的例子是 STL 迭代器的五种类型的名字(input_iterator_tag, output_iterator_tag, forward_iterator_tag, bidirectional_iterator_tag, random_access_iterator_tag)
 
-### 缺点
+## 缺点
 C++ 模板编程的两个问题是：
 - 难调试，会产生冗长且难以阅读的编译错误信息
   + 可以增加一些检查代码，让编译器及时报错
 - 代码膨胀(源代码膨胀、二进制对象文件膨胀)
   + 使用特性、策略等让模板更通用，可能的话合并一些模板实例
 
-### Reference
+## Reference
 - [关于模板元编程](https://www.eet-china.com/mp/a39910.html)
 
 
-## 五、导入(import)导出(export) 
-### 1. 对象
+# 四、导入(import)导出(export) 
+## 1. 对象
 - 函数、接口、类、成员函数、成员变量
-### 2. 使用
+
+## 2. 使用
 - 导出
   + 模块定义文件(.def)
   + ```__declspec(export)```、```__declspec(import)```
@@ -219,7 +231,8 @@ C++ 模板编程的两个问题是：
         ```
 - 注意
   + 类、成员函数、成员变量 导出时的对象归属问题
-### 3. 名称修饰(符号名)
+
+# 五、名称修饰(符号名)
 - 查看方法：
   + Linux
     - gcc 编译，而后以 **nm** 命令查看动态、静态库以及```.o```中的符号
@@ -249,8 +262,8 @@ C++ 模板编程的两个问题是：
     - 所有的符号都以"_Z"开头，对于嵌套的名字(在名称空间或在类里面的)，后面紧跟"N"，然后是各个名称空间和类的名字，每个名字前是名字字符串长度，再以"E"结尾。对于一个函数来说，它的参数列表紧跟在"E"后面。
       + 比如 N::C::func 经过名称修饰以后就是 _ZN1N1C4funcE。N::C::func(int) 函数签名经过修饰为 _ZN1N1C4funcEi, 对于int类型来说，就是字母"i"。
 
-## 特性
-+ const
+# 六、特性
+## const
   + 指针：位于*的左侧 或 右侧
   + 成员变量
   + 成员函数
@@ -259,7 +272,8 @@ C++ 模板编程的两个问题是：
   + 对象
     - 该对象的任何非const成员函数都不能被调用，因为任何非const成员函数会有修改成员变量的企图
   + *const_cast<type_id> (expression)*
-+ attribute
+
+## attribute
     ```
       #if defined(__GCC__)
       /*
@@ -301,7 +315,203 @@ C++ 模板编程的两个问题是：
   - https://godbolt.org/
   - https://cppinsights.io/
 
-## Reference
+
+# 七、Traps
+## 1. Enum
+### 1.1 疑问
+```
+class Test {
+public:
+    enum Result {
+        Result_OK = 0x1000,
+    };
+
+    Test(enum Result emRst) {
+        m_nRst = emRst;
+    }
+
+    static int m_nRst;
+};
+
+int Test::m_nRst = 0; /* OK */
+// Test::m_nRst = 0; /* ERROR, 此声明没有存储类或类型说明符 */
+
+int main() { 
+    Test(Test::Result(Test::Result_OK)); /* OK */
+    Test((Test::Result)Test::Result_OK); /* OK */
+    // Test(Test::Result_OK); /* ERROR, 当前范围内无法定义 constant "Test::Result_OK" */
+}
+```
+
+**为什么上述代码在去掉注释"//"后，vs2019编译器会提示错误？**
+
+### 1.2 背景
+我们需要明白，enum 关键字会定义一个类型，同时，其内定义的项目会被展开为int型常量到定义 enum 的作用域。
+
+这会造成，在全局位置定义的 enum 类型中的项目名需要是全局唯一的, 如下述定义会编译出错(*error C2365: “a”: 重定义*)：
+```
+enum X { a };
+enum Y { a };
+```
+
+由此，为了解决**作用域 以及 强类型限定**问题，**C++11 中引入了 enum class 或 enum struct**。
+
+### 1.3 解答
+1. 全局位置的 *ERROR, 此声明没有存储类或类型说明符*：
+   + c/c++ 没有全局代码块，在全局位置的是 **声明或定义**
+2. 传递枚举值到枚举类型参数时 *ERROR, 当前范围内无法定义 constant*：
+   + ？
+   + vs2019 会报错，但，g++ 在 linux 下编译正常
+     - 可能是：强类型限定造成现在拒绝枚举量与int之间的隐式转换
+
+## 2. Array & Pointer
+### 2.1 疑问
+```
+// define.c
+int arr[] = { 1,2,3 };
+int* arm = &arr[0];
+
+// test.c
+int art[] = { 5,6,7,8,9 };
+extern int* arr;
+
+void test() {
+    int* x = arr + 1;
+    int* m = art + 1;
+}
+```
+
+请问 test 函数中的 x 和 m 分别是多少？(int)x = 5, *m = 6
+
+同我们的认知：**数组可以当成指针使用** 不一样，对吧...
+
+### 2.2 解答
+将上述代码编译成汇编后的代码如下：
+- define.cpp
+```
+        .file   "define.cpp"
+        .text
+        .globl  arr
+        .data
+        .align 8
+        .type   arr, @object
+        .size   arr, 12
+arr:
+        .long   1
+        .long   2
+        .long   3
+        .globl  arm
+        .section        .data.rel.local,"aw"
+        .align 8
+        .type   arm, @object
+        .size   arm, 8
+arm:
+        .quad   arr
+        .ident  "GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+        .section        .note.GNU-stack,"",@progbits
+        .section        .note.gnu.property,"a"
+        .align 8
+        .long    1f - 0f
+        .long    4f - 1f
+        .long    5
+```
+
+- test.cpp
+```
+        .file   "test.cpp"
+        .text
+        .globl  art
+        .data
+        .align 16
+        .type   art, @object
+        .size   art, 20
+art:
+        .long   5
+        .long   6
+        .long   7
+        .long   8
+        .long   9
+        .text
+        .globl  test
+        .type   test, @function
+test:
+.LFB0:
+        .cfi_startproc
+        endbr64
+        pushq   %rbp
+        .cfi_def_cfa_offset 16
+        .cfi_offset 6, -16
+        movq    %rsp, %rbp
+        .cfi_def_cfa_register 6
+        movq    arr(%rip), %rax
+        addq    $4, %rax
+        movq    %rax, -16(%rbp)
+        leaq    4+art(%rip), %rax
+        movq    %rax, -8(%rbp)
+        movq    -8(%rbp), %rax
+        movl    (%rax), %eax
+        movl    %eax, -20(%rbp)
+        nop
+        popq    %rbp
+        .cfi_def_cfa 7, 8
+        ret
+        .cfi_endproc
+.LFE0:
+        .size   test, .-test
+        .ident  "GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0"
+        .section        .note.GNU-stack,"",@progbits
+        .section        .note.gnu.property,"a"
+        .align 8
+        .long    1f - 0f
+        .long    4f - 1f
+        .long    5
+```
+
+观察：
+- ```define.cpp```中 arr 和 arm 的定义
+- ```test.cpp```中 arr(%rip) 和 art(%rip) 的操作
+
+可以发现：
+1. 数组可以当成指针使用，的原因是：**编译器帮忙做了取地址操作**
+2. 因为 ```extern int* arr``` 在使用时**缺少了**编译器帮忙做*取地址操作*这一动作，直接被把 arr 当成了 指针使用：具体的方式可以参考 arm 的定义：**直接把 arm 的值当成了地址使用**
+
+## 3. Single Parameter Constructor
+C++中单参数构造函数是可以被隐式调用的，主要有两种情形会隐式调用单参数构造函数:
+- 同类型对象的拷贝构造
+  + 即用相同类型的其它对象来初始化当前对象
+- 不同类型对象的隐式转换
+  + 即其它类型对象隐式调用单参数拷贝构造函数初始化当前对象。比如 A a=1; 就是隐式转换，而不是显示调用构造函数，即A a(1); 像 A(1) 这种涉及类型转换的单参数构造函数，又被称为转换构造函数(Converting Constructor)
+
+可以通过 explict 关键字避免这种隐式调用。
+
+## 4. HeapOnly & StackOnly
+  ```
+      #include <iostream>
+      class HeapOnly {
+      public:  
+          HeapOnly() { }
+          void destroy() const { delete this; }
+      private:  
+          ~HeapOnly() { }
+      };
+      class StackOnly {
+      public:
+          StackOnly() { }
+          ~StackOnly() { }
+      private:
+          void* operator new(size_t);
+      };
+      int main() {  
+          StackOnly s; // ok
+          StackOnly *p = new StackOnly; // wrong
+          HeapOnly *p = new HeapOnly; // ok
+          p->destroy();
+          HeapOnly h;  // wrong
+          return 0;
+      }
+  ```
+
+# Reference
 - 《深度探索C++对象模型》
 - 《Effective C++》
 - 《More Effecitve C++》
